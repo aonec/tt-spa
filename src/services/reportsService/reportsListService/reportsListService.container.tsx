@@ -15,7 +15,7 @@ import {
   EmployeeReportDatePeriodType,
   EmployeeReportType,
 } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
-import { createRunnerService } from '../createRunnerService/createRunnerService.models';
+import { createRunnerService } from '../../reportsService/createRunnerService/createRunnerService.models';
 
 const { outputs, gates, inputs } = reportsListService;
 const { ReportsHistoryGate } = gates;

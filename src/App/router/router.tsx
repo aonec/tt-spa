@@ -52,9 +52,7 @@ import { NonResidentialBuildingProfileContainer } from 'services/objects/nonResi
 import { IndividualMeteringDeviceProfileContainer } from 'services/devices/individualMeteringDeviceProfile';
 import { currentUserService } from 'services/currentUser/currentUserService';
 import { ObjectsProfileContainer } from 'services/objects/objectsProfileService';
-import { ReportsPageContainer } from 'services/reports';
 import { ReportsContainer } from 'services/reportsService';
-import { developmentSettingsService } from 'services/developmentSettings/developmentSettings.models';
 import {
   DistrictBordersByAddressContainer,
   districtBordersByAddressService,
@@ -72,7 +70,7 @@ import { useUnit } from 'effector-react';
 import { tokensService } from 'api/tokensService';
 import { UserProfileContainer } from 'services/currentUser/currentUserService/currentUserService.container';
 import { CurrentUserEditServiceContainer } from 'services/currentUser/currentUserEditService';
-import { createRunnerService } from 'services/reports/createRunnerService/createRunnerService.models';
+import { createRunnerService } from 'services/reportsService/createRunnerService/createRunnerService.models';
 import { CurrentAnalyticsContainer } from 'services/supervisor/currentAnalytics';
 import { CommonAnalyticsContainer } from 'services/supervisor/commonAnalytics';
 
@@ -157,10 +155,6 @@ export const useRoutes = (
   currentUserRoles: ESecuredIdentityRoleNameStringDictionaryItem[],
 ) => {
   const { isAuth } = useUnit({ isAuth: tokensService.outputs.$isAuth });
-
-  const featureToggles = useUnit(
-    developmentSettingsService.outputs.$featureToggles,
-  );
 
   const roles = useMemo(() => {
     return (
@@ -593,14 +587,8 @@ export const useRoutes = (
         },
         {
           path: '/reports',
-          element: featureToggles.reportsConstructor ? (
-            isSeniorOperator ? (
-              <ReportsContainer />
-            ) : (
-              <AccessDeniedPage />
-            )
-          ) : isSeniorOperator ? (
-            <ReportsPageContainer />
+          element: isSeniorOperator ? (
+            <ReportsContainer />
           ) : (
             <AccessDeniedPage />
           ),
