@@ -22,7 +22,7 @@ import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { SpaceLine } from 'ui-kit/SpaceLine';
 import {
-  ResourceNamesDictionary,
+  ClosingReasonsDictionary,
   ResourceShortNamesDictionary,
 } from 'dictionaries';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
@@ -49,6 +49,9 @@ export const MainInfo: FC<MainInfoProps> = ({
     deviceMountPlace,
     isPolling,
     sealNumber,
+    closingDate,
+    closingReason,
+    openingDate,
   } = individualDevice;
 
   const { values, setFieldValue, handleSubmit } = useFormik({
@@ -66,6 +69,9 @@ export const MainInfo: FC<MainInfoProps> = ({
       sealInstallationDate: sealInstallationDate
         ? dayjs(sealInstallationDate)
         : null,
+      closingDate: closingDate ? dayjs(closingDate) : null,
+      openingDate: openingDate ? dayjs(openingDate) : null,
+      closingReason: closingReason,
     },
     enableReinitialize: true,
     onSubmit: (data) => {
@@ -76,11 +82,14 @@ export const MainInfo: FC<MainInfoProps> = ({
         bitDepth: Number(data.bitDepth),
         scaleFactor: Number(data.scaleFactor),
         sealNumber: data.sealNumber,
-        sealInstallationDate: !values.sealInstallationDate
+        sealInstallationDate: !data.sealInstallationDate
           ? null
-          : dayjs(values.sealInstallationDate, 'DD.MM.YYYY').format(),
+          : dayjs(data.sealInstallationDate, 'DD.MM.YYYY').format(),
         mountPlaceId: data.mountPlaceId,
         isPolling: data.isPolling,
+        closingDate: !data.closingDate
+          ? null
+          : dayjs(data.closingDate, 'DD.MM.YYYY').format(),
       };
       const deviceId = individualDevice.id;
 
@@ -88,7 +97,7 @@ export const MainInfo: FC<MainInfoProps> = ({
     },
   });
 
-  const next = useSwitchInputOnEnter(dataKey, false);
+  const next = useSwitchInputOnEnter(dataKey, false, false);
 
   return (
     <Wrapper>
@@ -111,7 +120,7 @@ export const MainInfo: FC<MainInfoProps> = ({
             placeholder="Укажите место"
             disabled={!mountPlaces || !isOperator}
             data-reading-input={dataKey}
-            onKeyDown={fromEnter(() => next(2))}
+            onKeyDown={fromEnter(() => next(0))}
             showAction={['focus']}
           >
             {mountPlaces?.map((elem) => (
@@ -146,66 +155,48 @@ export const MainInfo: FC<MainInfoProps> = ({
             type="text"
             onChange={(value) => setFieldValue('model', value.target.value)}
             data-reading-input={dataKey}
-            onKeyDown={fromEnter(() => next(0))}
+            onKeyDown={fromEnter(() => next(2))}
           />
         </FormItem>
       </GridContainer>
 
       <GridContainer>
-        <GridContainer>
-          <FormItem label="Разрядность">
-            <Input
-              disabled={!isOperator}
-              placeholder="Укажите разрядность"
-              type="number"
-              onChange={(value) =>
-                setFieldValue('bitDepth', value.target.value)
-              }
-              value={values.bitDepth || undefined}
-              data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(3))}
-            />
-          </FormItem>
-          <FormItem label="Разрядность">
-            <Input
-              disabled={!isOperator}
-              placeholder="Укажите разрядность"
-              type="number"
-              onChange={(value) =>
-                setFieldValue('bitDepth', value.target.value)
-              }
-              value={values.bitDepth || undefined}
-              data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => next(3))}
-            />
-          </FormItem>
-        </GridContainer>
-
-        <FormItem label="Тариф прибора">
-          <Select
-            value={mountPlaces ? values.mountPlaceId || undefined : ''}
-            onChange={(value) => setFieldValue('mountPlaceId', value)}
-            placeholder="Укажите место"
-            disabled={!mountPlaces || !isOperator}
+        <FormItem label="Разрядность">
+          <Input
+            disabled={!isOperator}
+            placeholder="Укажите разрядность"
+            type="number"
+            onChange={(value) => setFieldValue('bitDepth', value.target.value)}
+            value={values.bitDepth || undefined}
             data-reading-input={dataKey}
-            onKeyDown={fromEnter(() => next(2))}
-            showAction={['focus']}
-          >
-            {mountPlaces?.map((elem) => (
-              <Select.Option value={elem.id} key={elem.id}>
-                {elem.description}
-              </Select.Option>
-            ))}
-          </Select>
+            onKeyDown={fromEnter(() => next(3))}
+          />
+        </FormItem>
+        <FormItem label="Множитель">
+          <Input
+            disabled={!isOperator}
+            placeholder="Укажите разрядность"
+            type="number"
+            onChange={(value) =>
+              setFieldValue('scaleFactor', value.target.value)
+            }
+            value={values.scaleFactor || undefined}
+            data-reading-input={dataKey}
+            onKeyDown={fromEnter(() => next(4))}
+          />
         </FormItem>
       </GridContainer>
 
-      <FormItem label="Дата ввода в эксплуатацию">
-        <DatePicker
-          value={dayjs(values.lastCheckingDate)}
-          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
-        />
-      </FormItem>
+      <GridContainer>
+        <FormItem label="Дата ввода в эксплуатацию">
+          <DatePicker
+            disabled
+            value={dayjs(values.openingDate)}
+            onChange={(value) => setFieldValue('openingDate', value)}
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
+          />
+        </FormItem>
+      </GridContainer>
 
       {isOperator && (
         <SwitchWrapper>
@@ -260,6 +251,7 @@ export const MainInfo: FC<MainInfoProps> = ({
               setFieldValue('sealInstallationDate', date);
             }}
             data-reading-input={dataKey}
+            onKeyDown={fromEnter(() => next(6))}
           />
         </FormItem>
       </GridContainer>
@@ -267,12 +259,21 @@ export const MainInfo: FC<MainInfoProps> = ({
       <GridContainer>
         <FormItem label="Дата закрытия">
           <DatePicker
-            value={dayjs(values.lastCheckingDate)}
+            value={values.closingDate}
+            onChange={(date) => {
+              setFieldValue('closingDate', date);
+            }}
             format={{ format: 'DD.MM.YYYY', type: 'mask' }}
+            data-reading-input={dataKey}
+            onKeyDown={fromEnter(() => next(7))}
           />
         </FormItem>
+
         <FormItem label="Причина закрытия">
-          <Input value={values.sealNumber || undefined} disabled />
+          <Input
+            value={ClosingReasonsDictionary[values.closingReason]}
+            disabled
+          />
         </FormItem>
       </GridContainer>
 

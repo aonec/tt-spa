@@ -6,7 +6,6 @@ import {
   DeviceTitle,
   LoaderWrapper,
   PageTitle,
-  ResourceIconLookupWrapper,
   SubTitleWrapper,
   Wrapper,
 } from './EditIndividualPage.styled';
@@ -18,9 +17,7 @@ import { GoBack } from 'ui-kit/shared/GoBack';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { Tabs } from 'ui-kit/Tabs';
 import { MainInfo } from './Tabs/MainInfo';
-import { Documents } from './Tabs/Documents';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
-import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { usePermission } from 'hooks/usePermission';
@@ -46,7 +43,6 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
   const tabItems = useMemo(
     () => [
       { label: 'Общая информация', key: EditIndividualDeviceTabs.CommonInfo },
-      { label: 'Документы', key: EditIndividualDeviceTabs.Documents },
     ],
     [],
   );
@@ -66,7 +62,8 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
               <PageTitle>
                 <DeviceTitle>
                   <DeviceModel>{individualDevice?.model}</DeviceModel>
-                  <DeviceNumber>{`(${individualDevice?.serialNumber})`}</DeviceNumber>. Редактирование
+                  <DeviceNumber>{`(${individualDevice?.serialNumber})`}</DeviceNumber>
+                  . Редактирование
                 </DeviceTitle>
                 <SubTitleWrapper>
                   <Address to={`/apartments/${address?.apartmentId}`}>
@@ -97,7 +94,6 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
                 isOperator={isOperator}
               />
             )}
-          {currentTab === EditIndividualDeviceTabs.Documents && <Documents />}
         </>
       )}
     </Wrapper>
