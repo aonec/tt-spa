@@ -10,6 +10,7 @@ export function getTasksFilters({
   dashboardType,
   resourceType,
   malfunctionType,
+  deviationType,
 }: {
   dashboardType: DashboardDataType;
   resourceType?: ResourceType;
@@ -32,11 +33,29 @@ export function getTasksFilters({
   }
 
   if (
-    dashboardType === DashboardDataType.MalfunctionsCount ||
-    dashboardType === DashboardDataType.AverageCompletionTime
+    malfunctionType &&
+    (dashboardType === DashboardDataType.MalfunctionsCount ||
+      dashboardType === DashboardDataType.AverageCompletionTime)
   ) {
+    const taskTypes: { [key: string]: string } = {
+      [ManagingFirmTaskType.CalculatorMalfunction]:
+        EManagingFirmTaskFilterType.CalculatorMalfunctionAny,
+      [ManagingFirmTaskType.HousingDeviceMalfunction]:
+        EManagingFirmTaskFilterType.HousingDeviceMalfunctionAny,
+      [ManagingFirmTaskType.CalculatorLackOfConnection]:
+        EManagingFirmTaskFilterType.CalculatorLackOfConnection,
+      [ManagingFirmTaskType.MeasurementErrorCommercial]:
+        EManagingFirmTaskFilterType.MeasurementErrorAny,
+    };
+
     return {
-      taskType: malfunctionType,
+      taskType: taskTypes[malfunctionType],
+    };
+  }
+
+  if (dashboardType === DashboardDataType.TasksCount) {
+    return {
+      taskType: EManagingFirmTaskFilterType.TemperatureNormativeDeviation,
     };
   }
 }
