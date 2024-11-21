@@ -65,15 +65,8 @@ export const EditIndividualPage: FC<EditIndividualPageProps> = ({
             title={
               <PageTitle>
                 <DeviceTitle>
-                  {individualDevice?.resource && (
-                    <ResourceIconLookupWrapper>
-                      <ResourceIconLookup
-                        resource={individualDevice?.resource}
-                      />
-                    </ResourceIconLookupWrapper>
-                  )}
                   <DeviceModel>{individualDevice?.model}</DeviceModel>
-                  <DeviceNumber>{`(${individualDevice?.serialNumber}). Редактирование`}</DeviceNumber>
+                  <DeviceNumber>{`(${individualDevice?.serialNumber})`}</DeviceNumber>. Редактирование
                 </DeviceTitle>
                 <SubTitleWrapper>
                   <Address to={`/apartments/${address?.apartmentId}`}>

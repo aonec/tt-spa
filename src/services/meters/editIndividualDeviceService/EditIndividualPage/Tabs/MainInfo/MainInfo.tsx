@@ -5,6 +5,7 @@ import {
   ButtonSC,
   Footer,
   GridContainer,
+  ResouceWrapper,
   SwitchWrapper,
   TextWrapper,
   Wrapper,
@@ -20,6 +21,11 @@ import { Button } from 'ui-kit/Button';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { SpaceLine } from 'ui-kit/SpaceLine';
+import {
+  ResourceNamesDictionary,
+  ResourceShortNamesDictionary,
+} from 'dictionaries';
+import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 
 const dataKey = 'edit-individual-device-main-info';
 
@@ -86,59 +92,118 @@ export const MainInfo: FC<MainInfoProps> = ({
 
   return (
     <Wrapper>
-      <FormItem label="Модель прибора">
-        <Input
-          disabled={!isOperator}
-          value={values.model || undefined}
-          placeholder="Укажите модель"
-          type="text"
-          onChange={(value) => setFieldValue('model', value.target.value)}
-          data-reading-input={dataKey}
-          onKeyDown={fromEnter(() => next(0))}
-        />
-      </FormItem>
-
-      <FormItem label="Серийный номер">
-        <Input
-          disabled={!isOperator}
-          value={values.serialNumber || undefined}
-          placeholder="Укажите серийный номер"
-          type="text"
-          onChange={(value) =>
-            setFieldValue('serialNumber', value.target.value)
-          }
-          data-reading-input={dataKey}
-          onKeyDown={fromEnter(() => next(1))}
-        />
-      </FormItem>
-
-      <FormItem label="Место установки">
-        <Select
-          value={mountPlaces ? values.mountPlaceId || undefined : ''}
-          onChange={(value) => setFieldValue('mountPlaceId', value)}
-          placeholder="Укажите место"
-          disabled={!mountPlaces || !isOperator}
-          data-reading-input={dataKey}
-          onKeyDown={fromEnter(() => next(2))}
-          showAction={['focus']}
-        >
-          {mountPlaces?.map((elem) => (
-            <Select.Option value={elem.id} key={elem.id}>
-              {elem.description}
+      <GridContainer>
+        <FormItem label="Тип ресурса">
+          <Select value={resource} disabled>
+            <Select.Option value={resource} key={resource}>
+              <ResouceWrapper>
+                {ResourceIconLookup({ resource })}
+                {ResourceShortNamesDictionary[resource]}
+              </ResouceWrapper>
             </Select.Option>
-          ))}
-        </Select>
-      </FormItem>
+          </Select>
+        </FormItem>
 
-      <FormItem label="Разрядность">
-        <Input
-          disabled={!isOperator}
-          placeholder="Укажите разрядность"
-          type="number"
-          onChange={(value) => setFieldValue('bitDepth', value.target.value)}
-          value={values.bitDepth || undefined}
-          data-reading-input={dataKey}
-          onKeyDown={fromEnter(() => next(3))}
+        <FormItem label="Место установки">
+          <Select
+            value={mountPlaces ? values.mountPlaceId || undefined : ''}
+            onChange={(value) => setFieldValue('mountPlaceId', value)}
+            placeholder="Укажите место"
+            disabled={!mountPlaces || !isOperator}
+            data-reading-input={dataKey}
+            onKeyDown={fromEnter(() => next(2))}
+            showAction={['focus']}
+          >
+            {mountPlaces?.map((elem) => (
+              <Select.Option value={elem.id} key={elem.id}>
+                {elem.description}
+              </Select.Option>
+            ))}
+          </Select>
+        </FormItem>
+      </GridContainer>
+
+      <GridContainer>
+        <FormItem label="Серийный номер">
+          <Input
+            disabled={!isOperator}
+            value={values.serialNumber || undefined}
+            placeholder="Укажите серийный номер"
+            type="text"
+            onChange={(value) =>
+              setFieldValue('serialNumber', value.target.value)
+            }
+            data-reading-input={dataKey}
+            onKeyDown={fromEnter(() => next(1))}
+          />
+        </FormItem>
+
+        <FormItem label="Модель прибора">
+          <Input
+            disabled={!isOperator}
+            value={values.model || undefined}
+            placeholder="Укажите модель"
+            type="text"
+            onChange={(value) => setFieldValue('model', value.target.value)}
+            data-reading-input={dataKey}
+            onKeyDown={fromEnter(() => next(0))}
+          />
+        </FormItem>
+      </GridContainer>
+
+      <GridContainer>
+        <GridContainer>
+          <FormItem label="Разрядность">
+            <Input
+              disabled={!isOperator}
+              placeholder="Укажите разрядность"
+              type="number"
+              onChange={(value) =>
+                setFieldValue('bitDepth', value.target.value)
+              }
+              value={values.bitDepth || undefined}
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(3))}
+            />
+          </FormItem>
+          <FormItem label="Разрядность">
+            <Input
+              disabled={!isOperator}
+              placeholder="Укажите разрядность"
+              type="number"
+              onChange={(value) =>
+                setFieldValue('bitDepth', value.target.value)
+              }
+              value={values.bitDepth || undefined}
+              data-reading-input={dataKey}
+              onKeyDown={fromEnter(() => next(3))}
+            />
+          </FormItem>
+        </GridContainer>
+
+        <FormItem label="Тариф прибора">
+          <Select
+            value={mountPlaces ? values.mountPlaceId || undefined : ''}
+            onChange={(value) => setFieldValue('mountPlaceId', value)}
+            placeholder="Укажите место"
+            disabled={!mountPlaces || !isOperator}
+            data-reading-input={dataKey}
+            onKeyDown={fromEnter(() => next(2))}
+            showAction={['focus']}
+          >
+            {mountPlaces?.map((elem) => (
+              <Select.Option value={elem.id} key={elem.id}>
+                {elem.description}
+              </Select.Option>
+            ))}
+          </Select>
+        </FormItem>
+      </GridContainer>
+
+      <FormItem label="Дата ввода в эксплуатацию">
+        <DatePicker
+          value={dayjs(values.lastCheckingDate)}
+          format={{ format: 'DD.MM.YYYY', type: 'mask' }}
         />
       </FormItem>
 
@@ -196,6 +261,18 @@ export const MainInfo: FC<MainInfoProps> = ({
             }}
             data-reading-input={dataKey}
           />
+        </FormItem>
+      </GridContainer>
+
+      <GridContainer>
+        <FormItem label="Дата закрытия">
+          <DatePicker
+            value={dayjs(values.lastCheckingDate)}
+            format={{ format: 'DD.MM.YYYY', type: 'mask' }}
+          />
+        </FormItem>
+        <FormItem label="Причина закрытия">
+          <Input value={values.sealNumber || undefined} disabled />
         </FormItem>
       </GridContainer>
 
