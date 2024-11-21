@@ -46,6 +46,7 @@ const changeFiltersByGroupType = createEvent<TaskGroupingFilter>();
 const changeGroupType = createEvent<TaskGroupingFilter>();
 const changePageNumber = createEvent<number>();
 const searchTasks = createEvent<GetTasksListRequestPayload>();
+const setAddress = createEvent<{ city: string; street: string }>();
 
 const getApartmentFx = createEffect<FiltersGatePayload, ApartmentResponse>(
   fetchApartment,
@@ -80,6 +81,11 @@ const $searchState = createStore<GetTasksListRequestPayload>({
     ...oldFilters,
     ...filters,
     PageNumber: 1,
+  }))
+  .on(setAddress, (filters, address) => ({
+    ...filters,
+    City: address.city,
+    Street: address.street,
   }))
   .on(changeFiltersByGroupType, ({ City }, GroupType) => ({
     GroupType,
@@ -182,12 +188,15 @@ split({
     apartmentId: (searchParams) => Boolean(searchParams.apartmentId),
     pipeNodeId: (searchParams) => Boolean(searchParams.pipeNodeId),
     deviceId: (searchParams) => Boolean(searchParams.deviceId),
+    address: (searchParams) =>
+      Boolean(searchParams.city) && Boolean(searchParams.street),
   },
   cases: {
     housingStock: getHousingStockFx,
     apartmentId: getApartmentFx,
     pipeNodeId: setPipeNodeId,
     deviceId: setDeviceId,
+    address: setAddress,
   },
 });
 

@@ -247,6 +247,8 @@ export const getAcceptableSearchParams = () => {
   const params = {
     apartmentId: searchParams.get('apartmentId'),
     housingStockId: searchParams.get('housingStockId'),
+    city: searchParams.get('city'),
+    street: searchParams.get('street'),
     pipeNodeId: searchParams.get('pipeNodeId'),
     deviceId:
       searchParams.get('calculatorId') ||

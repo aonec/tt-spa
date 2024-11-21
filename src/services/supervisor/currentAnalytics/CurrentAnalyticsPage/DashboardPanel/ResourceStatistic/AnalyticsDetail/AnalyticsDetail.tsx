@@ -4,6 +4,8 @@ import { Props } from './AnalyticsDetail.types';
 import { useUnit } from 'effector-react';
 import { currentAnalyticsService } from 'services/supervisor/currentAnalytics/currentAnalyticsService.models';
 import { useNavigate } from 'react-router-dom';
+import { dashboardSummaryQuery } from 'services/supervisor/currentAnalytics/currentAnalyticsService.api';
+import { stringify } from 'query-string';
 
 export const AnalyticsDetail: FC<Props> = ({
   data,
@@ -14,9 +16,10 @@ export const AnalyticsDetail: FC<Props> = ({
   title,
 }) => {
   const isDanger = data.expiredTasksCount !== 0;
-  const { setFilters, filters } = useUnit({
+  const { setFilters, dashboardSummary } = useUnit({
     filters: currentAnalyticsService.outputs.$dashboardFilters,
     setFilters: currentAnalyticsService.inputs.setDashboardFilters,
+    dashboardSummary: dashboardSummaryQuery.$data,
   });
   const navigate = useNavigate();
 
@@ -24,8 +27,15 @@ export const AnalyticsDetail: FC<Props> = ({
     <Wrapper
       danger={isDanger}
       onClick={() => {
-        if (filters.ManagementFirmId || filters.City) {
-          navigate(`/tasks/list/Observing?housingStockId=${data.id}`);
+        if (
+          dashboardSummary?.breadCrumbs?.managingFirmId ||
+          dashboardSummary?.breadCrumbs?.city
+        ) {
+          const queryString = stringify({
+            city: dashboardSummary?.breadCrumbs?.city,
+            street: data.label,
+          });
+          navigate(`/tasks/list/Observing?${queryString}`);
 
           return;
         }
