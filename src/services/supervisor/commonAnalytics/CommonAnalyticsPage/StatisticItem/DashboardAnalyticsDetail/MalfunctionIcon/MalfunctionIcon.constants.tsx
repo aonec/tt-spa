@@ -38,7 +38,7 @@ export const MalfunctionIcons: { [key in ManagingFirmTaskType]: ReactNode } = {
 
 export const MalfunctionDescription: { [key: string]: string } = {
   [ManagingFirmTaskType.CalculatorLackOfConnection]:
-    'Превышение погрешности измерения',
+    'Отсутствие подключения с прибором',
   [ManagingFirmTaskType.CalculatorMalfunction]: 'Неполадки с вычислителем',
   [ManagingFirmTaskType.HousingDeviceMalfunction]: 'Неполадки с ОДПУ',
   [ManagingFirmTaskType.MeasurementErrorCommercial]:
