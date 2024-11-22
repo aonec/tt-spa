@@ -14,4 +14,5 @@ export type Props = {
 export type ChartType = {
   x: string;
   y: number;
+  label: number;
 };

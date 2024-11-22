@@ -11,6 +11,8 @@ import { AddressTreeSelect } from 'ui-kit/shared/AddressTreeSelect';
 import dayjs from 'dayjs';
 import { useUnit } from 'effector-react';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { Segmented } from 'ui-kit/Segmented';
+import { currentAnalyticsService } from '../../currentAnalyticsService.models';
 
 export const AnalyticsSearch: FC<Props> = ({
   dashboardFilters,
@@ -20,14 +22,33 @@ export const AnalyticsSearch: FC<Props> = ({
   selectValue,
   setValue,
 }) => {
-  const { existingCities } = useUnit({
+  const { existingCities, periodType, setPeriodType } = useUnit({
     existingCities: addressSearchService.outputs.$existingCities,
+    periodType: currentAnalyticsService.outputs.$periodType,
+    setPeriodType: currentAnalyticsService.inputs.setPeriodType,
   });
 
   return (
-    <Wrapper>
+    <Wrapper isCommon={Boolean(isCommon)}>
+      {!isCommon && (
+        <Segmented
+          active={periodType}
+          items={[
+            {
+              title: 'На сегодня',
+              name: 'today',
+            },
+            {
+              title: 'Период',
+              name: 'period',
+            },
+          ]}
+          onChange={setPeriodType}
+        />
+      )}
       {!isCommon && (
         <RangePicker
+          disabled={periodType === 'today'}
           small
           format="DD.MM.YYYY"
           value={
@@ -44,7 +65,10 @@ export const AnalyticsSearch: FC<Props> = ({
               To: value?.[1]?.endOf('day').utc(true).toISOString(),
             });
           }}
-          disabledDate={(date) => date.isAfter(dayjs())}
+          disabledDate={(date) => {
+            const now = dayjs();
+            return date.isAfter(now) || date.isSame(now, 'day');
+          }}
         />
       )}
       {isCommon && (
@@ -105,7 +129,9 @@ export const AnalyticsSearch: FC<Props> = ({
         small
         value={dashboardFilters.City}
         allowClear
-        onChange={(city) => setDashboardFilters({ City: city as string })}
+        onChange={(city) =>
+          setDashboardFilters({ City: city as string, ManagementFirmId: null })
+        }
       >
         {existingCities?.map((city) => (
           <Select.Option key={city} value={city}>

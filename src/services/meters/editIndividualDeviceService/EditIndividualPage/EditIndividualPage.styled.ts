@@ -30,6 +30,7 @@ export const DeviceNumber = styled.div`
   font-size: 32px;
   line-height: 48px;
   margin-left: 8px;
+  color: rgba(39, 47, 90, 0.6);
 `;
 
 export const SubTitleWrapper = styled.div`

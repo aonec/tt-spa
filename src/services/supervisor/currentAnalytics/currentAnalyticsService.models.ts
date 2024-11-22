@@ -36,6 +36,31 @@ const $dashboardParams = combine(
   (params, dashboardType) => ({ ...params, dashboardType }),
 );
 
+const setPeriodType = createEvent<'today' | 'period'>();
+
+const $periodType = createStore<'today' | 'period'>('today').on(
+  setPeriodType,
+  (_, type) => type,
+);
+
+sample({
+  clock: $periodType.updates,
+  fn: (type) => {
+    if (type === 'today') {
+      return {
+        From: dayjs().startOf('day').utc(true).toISOString(),
+        To: dayjs().endOf('day').utc(true).toISOString(),
+      };
+    } else {
+      return {
+        From: dayjs().subtract(7, 'day').startOf('day').utc(true).toISOString(),
+        To: dayjs().subtract(1, 'day').endOf('day').utc(true).toISOString(),
+      };
+    }
+  },
+  target: setDashboardFilters,
+});
+
 sample({
   source: $dashboardFilters,
   clock: [CurrentAnalyticsGate.open, $dashboardFilters.updates],
@@ -70,7 +95,13 @@ export const currentAnalyticsService = {
     setCurrentDashboardType,
     setDashboardFilters,
     resetDashboardFilters,
+    setPeriodType,
   },
-  outputs: { $currentDashboardType, $isLoading, $dashboardFilters },
+  outputs: {
+    $currentDashboardType,
+    $isLoading,
+    $dashboardFilters,
+    $periodType,
+  },
   gates: { CurrentAnalyticsGate },
 };

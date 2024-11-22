@@ -12,6 +12,7 @@ export function prepareChartData(
       return data?.map((chart) => ({
         x: dayjs(chart.date).format('DD'),
         y: chart.value || 0,
+        label: chart.value || 0,
       }));
     } else {
       return data?.map((chart) => ({
@@ -20,6 +21,7 @@ export function prepareChartData(
           .replace(/(\d+)\s([а-яА-Я]{3})[а-яА-Я]*/u, '$1 $2'),
 
         y: chart.value || 0,
+        label: chart.value || 0,
       }));
     }
   }
@@ -47,7 +49,7 @@ export function prepareChartData(
         0,
       );
 
-      return { x: weekKey, y: totalValue };
+      return { x: weekKey, y: totalValue, label: totalValue };
     });
   } else if (selectValue === EDateRange.Quarter) {
     // Группировка по месяцам
@@ -71,12 +73,13 @@ export function prepareChartData(
         0,
       );
 
-      return { x: monthKey, y: totalValue };
+      return { x: monthKey, y: totalValue, label: totalValue };
     });
   }
 
   return data?.map((chart) => ({
     x: dayjs(chart.date).format('DD'),
     y: chart.value || 0,
+    label: chart.value || 0,
   }));
 }

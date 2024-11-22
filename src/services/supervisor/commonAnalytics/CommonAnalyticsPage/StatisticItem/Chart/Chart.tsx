@@ -1,7 +1,13 @@
 import { FC, useMemo } from 'react';
 import { horizontalAxisStyle, verticalAxisStyle } from './Chart.styled';
 import { Props } from './Chart.types';
-import { VictoryAxis, VictoryBar, VictoryChart, VictoryTheme } from 'victory';
+import {
+  VictoryAxis,
+  VictoryBar,
+  VictoryChart,
+  VictoryTheme,
+  VictoryTooltip,
+} from 'victory';
 import { TickComponent } from 'ui-kit/shared/GraphComponents/TickComponent';
 import { getMax } from './Chart.utils';
 
@@ -43,13 +49,18 @@ export const Chart: FC<Props> = ({ chart }) => {
         style={{ data: { fill: 'rgba(24, 158, 233, 1)' } }}
         data={chart || mock}
         barWidth={40}
-        // barRatio={1}
         cornerRadius={2}
-        // labels={({ datum }) => {
-        //   if (datum.y !== 0 && datum.y > 30) {
-        //     return datum.y;
-        //   }
-        // }}
+        labelComponent={
+          <VictoryTooltip
+            flyoutWidth={40}
+            cornerRadius={2}
+            style={{ color: '#fff' }}
+            flyoutStyle={{
+              fill: '#fff',
+              stroke: 'rgba(24, 158, 233, 1)',
+            }}
+          />
+        }
       />
     </VictoryChart>
   );
