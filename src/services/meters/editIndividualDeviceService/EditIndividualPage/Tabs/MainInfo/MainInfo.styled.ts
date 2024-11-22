@@ -43,3 +43,9 @@ export const Footer = styled.div`
   gap: 16px;
   margin-top: 16px;
 `;
+
+export const ResouceWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;

@@ -22,7 +22,7 @@ export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
     [EIndividualDeviceReadingsSource.TelegramBot]: <TelegramIcon />,
     [EIndividualDeviceReadingsSource.DeviceTelemetry]: <DeviceIcon />,
     [EIndividualDeviceReadingsSource.Duplicated]: <DubbedIcon />,
-    [EIndividualDeviceReadingsSource.TtmFromGis]: <></>,
+    [EIndividualDeviceReadingsSource.TtmFromGis]: <ErcIcon />,
   }[sourceType]);
 
 export const getSourceName = (
@@ -40,7 +40,7 @@ export const getSourceName = (
     [EIndividualDeviceReadingsSource.DeviceTelemetry]:
       'Автоматические показания с счетчика',
     [EIndividualDeviceReadingsSource.Duplicated]: 'Продублированные показания',
-    [EIndividualDeviceReadingsSource.TtmFromGis]: 'Гис',
+    [EIndividualDeviceReadingsSource.TtmFromGis]: 'ГИС (TTM)',
   }[source];
 
   return name;
