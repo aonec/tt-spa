@@ -88,8 +88,11 @@ split({
   },
 });
 
+const $city = $dashboardFilters.map(({ City }) => City || null);
+
 sample({
-  clock: CurrentAnalyticsGate.open,
+  source: $city,
+  clock: [CurrentAnalyticsGate.open, $city.updates],
   target: dashboardOrganizationsQuery.start,
 });
 

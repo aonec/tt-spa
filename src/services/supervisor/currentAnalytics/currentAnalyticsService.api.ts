@@ -13,10 +13,11 @@ import { stringify } from 'query-string';
 import { getDetailSuffix } from './currentAnalyticsService.utils';
 
 export const dashboardOrganizationsQuery = createQuery<
-  [],
+  [string | null],
   OrganizationResponsePagedList
 >({
-  handler: () => axios.get(`/Dashboard/filter/organizations`),
+  handler: (city) =>
+    axios.get(`/Dashboard/filter/organizations`, { params: { city } }),
 });
 
 export const dashboardSummaryQuery = createQuery<
