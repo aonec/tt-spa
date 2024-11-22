@@ -13,6 +13,7 @@ const { ExistingCitiesGate, ExistingStreetsGate, AddressSearchGate } = gates;
 
 export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   fields,
+  initialValues,
   handleSubmit: onSubmit,
   customTemplate,
   showLabels,
@@ -43,7 +44,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   });
 
   const { values, setFieldValue, handleSubmit } = useFormik({
-    initialValues: {
+    initialValues: initialValues || {
       apartment: '',
       corpus: '',
       house: '',
@@ -54,6 +55,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     onSubmit: (data) => {
       onSubmit && onSubmit(data);
     },
+    enableReinitialize: true,
   });
 
   const preparedFields = useMemo(

@@ -92,6 +92,8 @@ export const ToExecutionTasksExtendedSearchForm: FC<
     [FilteredTaskTypes, preparedTaskTypes],
   );
 
+  console.log(values);
+
   return (
     <ToExecutionWrapper>
       <StyledContainerAdressSection>
