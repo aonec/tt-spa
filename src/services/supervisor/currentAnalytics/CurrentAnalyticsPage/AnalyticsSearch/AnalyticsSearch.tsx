@@ -29,14 +29,10 @@ export const AnalyticsSearch: FC<Props> = ({
     setPeriodType: currentAnalyticsService.inputs.setPeriodType,
   });
 
-  const filteredOrganizations = useMemo(() => {
+  const preparedOrganizations = useMemo(() => {
     if (!dashboardFilters.City) return organizationsList?.items || [];
 
-    return (
-      organizationsList?.items?.filter(
-        (elem) => elem.address?.city === dashboardFilters.City,
-      ) || []
-    );
+    return organizationsList?.items || [];
   }, [organizationsList, dashboardFilters.City]);
 
   return (
@@ -159,7 +155,7 @@ export const AnalyticsSearch: FC<Props> = ({
           setDashboardFilters({ ManagementFirmId: value as number })
         }
       >
-        {filteredOrganizations.map((elem) => (
+        {preparedOrganizations.map((elem) => (
           <Select key={elem.id} value={elem.id}>
             {elem.name}
           </Select>
