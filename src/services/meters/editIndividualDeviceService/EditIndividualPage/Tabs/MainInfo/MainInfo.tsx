@@ -261,7 +261,7 @@ export const MainInfo: FC<MainInfoProps> = ({
           <DatePicker
             value={values.closingDate}
             onChange={(date) => {
-              setFieldValue('closingDate', date);
+              setFieldValue('closingDate', date.add(3, 'hours'));
             }}
             format={{ format: 'DD.MM.YYYY', type: 'mask' }}
             data-reading-input={dataKey}
