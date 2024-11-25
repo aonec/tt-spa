@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react';
-import { last } from 'lodash';
+import { isEmpty, last } from 'lodash';
 import React, { FC, useEffect, useMemo } from 'react';
 import { addressSearchService } from './addressSearchService.models';
 import { AddressSearchContainerProps } from './addressSearchService.types';
@@ -19,6 +19,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   disabledFields,
   onChange,
   className,
+  initialValues,
   isError = false,
   isFocus = false,
   autoBurn = false,
@@ -32,6 +33,8 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     setWithApartment,
     existingApartmentNumbers,
     defaultOrganizationCity,
+    setInitialValues,
+    verifiedInitialValues,
   } = useUnit({
     cities: outputs.$existingCities,
     streets: outputs.$existingStreets,
@@ -40,9 +43,11 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     setWithApartment: inputs.setWithApartment,
     existingApartmentNumbers: outputs.$existingApartmentNumbers,
     defaultOrganizationCity: currentOrganizationService.outputs.$defaultCity,
+    verifiedInitialValues: outputs.$verifiedInitialValues,
+    setInitialValues: inputs.setInitialValues,
   });
 
-  const { values, setFieldValue, handleSubmit } = useFormik({
+  const { values, setFieldValue, handleSubmit, setValues } = useFormik({
     initialValues: {
       apartment: '',
       corpus: '',
@@ -66,6 +71,33 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
       }),
     [hasCorpuses, fields],
   );
+
+  useEffect(() => {
+    initialValues && setInitialValues(initialValues);
+  }, [initialValues, setInitialValues]);
+
+  useEffect(() => {
+    if (verifiedInitialValues) {
+      setValues({
+        apartment: verifiedInitialValues.apartment || '',
+        corpus: verifiedInitialValues.corpus || '',
+        house: verifiedInitialValues.house || '',
+        question: verifiedInitialValues.question || '',
+        street: verifiedInitialValues.street || '',
+        city: verifiedInitialValues.city || '',
+      });
+    }
+    if (!verifiedInitialValues || isEmpty(verifiedInitialValues)) {
+      setValues({
+        city: values.city,
+        apartment: '',
+        corpus: '',
+        house: '',
+        question: '',
+        street: '',
+      });
+    }
+  }, [setValues, verifiedInitialValues, values.city]);
 
   useEffect(() => {
     const withApartment = preparedFields.some(
