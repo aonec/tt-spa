@@ -6,7 +6,11 @@ import { useUnit } from 'effector-react';
 import { ConfirmReadingValueContainer } from 'services/meters/readingsHistoryService/confirmReadingService';
 import { getElectricNodesQuery } from './AccountingNodesReadingsService.api';
 import { accountingNodesReadingsInputService } from 'services/meters/accountingNodesReadingsInputService';
-import { transformToIndividualDeviceReadingsHistory } from './AccountingNodesReadingsService.utils';
+import {
+  mapToDeviceReadingsHistory,
+  transformToIndividualDeviceReadingsHistory,
+} from './AccountingNodesReadingsService.utils';
+import { ReadingHistoryModal } from './view/ReadingHistoryModal';
 
 const { inputs, outputs, gates } = AccountingNodesReadingsService;
 const { HousingStockIdGate } = gates;
@@ -47,11 +51,14 @@ export const AccountingNodesReadingsContainer = () => {
     }).unsubscribe;
   }, [navigate, id]);
 
-  // const preparedReadings = transformToIndividualDeviceReadingsHistory(readings)
+  const preparedReadings = mapToDeviceReadingsHistory(readings);
+
 
   return (
     <>
       <ConfirmReadingValueContainer />
+
+      <ReadingHistoryModal preparedReadings={preparedReadings} />
 
       <HousingStockIdGate id={Number(id)} />
       <AccountingNodesReadings

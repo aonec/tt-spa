@@ -81,8 +81,6 @@ const $readings = createStore<NodeReadingsDataByDevices>({})
   })
   .reset(AccountingNodesReadingsInputGate.close);
 
-$readings.watch((data) => console.log(data));
-
 const setLoadingStatusToNonResConsumptionInput = createEvent<{
   oldReadingId: string;
 }>();
