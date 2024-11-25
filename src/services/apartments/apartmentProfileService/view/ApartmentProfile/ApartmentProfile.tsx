@@ -43,7 +43,10 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
     apartment?.housingStock?.address?.additionalAddresses;
   const tasksCount = apartment?.activeTaskIds?.length || 0;
 
-  const homeowner = apartment?.homeownerAccounts?.[0];
+  const homeowner =
+    apartment?.homeownerAccounts?.find(
+      (elem) => elem.isMainPersonalAccountNumber,
+    ) || apartment?.homeownerAccounts?.[0];
 
   const filteredHomeownerAccounts =
     apartment?.homeownerAccounts?.filter((elem) => !elem.closedAt) || [];
