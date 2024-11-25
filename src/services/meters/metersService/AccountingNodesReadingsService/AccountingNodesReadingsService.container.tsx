@@ -5,6 +5,8 @@ import { AccountingNodesReadingsService } from './AccountingNodesReadingsService
 import { useUnit } from 'effector-react';
 import { ConfirmReadingValueContainer } from 'services/meters/readingsHistoryService/confirmReadingService';
 import { getElectricNodesQuery } from './AccountingNodesReadingsService.api';
+import { accountingNodesReadingsInputService } from 'services/meters/accountingNodesReadingsInputService';
+import { transformToIndividualDeviceReadingsHistory } from './AccountingNodesReadingsService.utils';
 
 const { inputs, outputs, gates } = AccountingNodesReadingsService;
 const { HousingStockIdGate } = gates;
@@ -23,6 +25,7 @@ export const AccountingNodesReadingsContainer = () => {
     sum,
     upSliderIndex,
     isElectricNodesFetched,
+    readings,
   } = useUnit({
     address: outputs.$housingStockAddress,
     electricNodes: getElectricNodesQuery.$data,
@@ -33,6 +36,7 @@ export const AccountingNodesReadingsContainer = () => {
     handleGetElectricNodes: inputs.fetchElectricNodes,
     upSliderIndex: inputs.upSliderIndex,
     downSliderIndex: inputs.downSliderIndex,
+    readings: accountingNodesReadingsInputService.outputs.$readings,
   });
 
   useEffect(() => {
@@ -42,6 +46,8 @@ export const AccountingNodesReadingsContainer = () => {
       navigate(`/meters/accountingNodes/${address.housingStockId}`);
     }).unsubscribe;
   }, [navigate, id]);
+
+  // const preparedReadings = transformToIndividualDeviceReadingsHistory(readings)
 
   return (
     <>

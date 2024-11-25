@@ -49,6 +49,7 @@ const getReadingsOfElectricNodeFx = createEffect<
   { nodeId: number },
   HousingMeteringDeviceReadingsIncludingPlacementResponse[]
 >(fetchReadingsOfElectricNode);
+
 const $readings = createStore<NodeReadingsDataByDevices>({})
   .on(getReadingsOfElectricNodeFx.doneData, (readings, result) => {
     if (!result.length) {
@@ -79,6 +80,8 @@ const $readings = createStore<NodeReadingsDataByDevices>({})
     return { ...readings, [deviceId]: filteredReadings };
   })
   .reset(AccountingNodesReadingsInputGate.close);
+
+$readings.watch((data) => console.log(data));
 
 const setLoadingStatusToNonResConsumptionInput = createEvent<{
   oldReadingId: string;
