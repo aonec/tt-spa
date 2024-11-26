@@ -1,5 +1,5 @@
-import { IndividualDeviceReadingsHistoryResponse } from 'api/types';
+import { AccountingNodesReadingsYearHistoryResponse } from '../../../AccountingNodesReadingsService.types';
 
 export type Props = {
-  preparedReadings: IndividualDeviceReadingsHistoryResponse;
+  preparedReadings: AccountingNodesReadingsYearHistoryResponse[];
 };

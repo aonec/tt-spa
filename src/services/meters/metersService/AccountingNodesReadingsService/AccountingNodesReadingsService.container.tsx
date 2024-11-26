@@ -6,10 +6,7 @@ import { useUnit } from 'effector-react';
 import { ConfirmReadingValueContainer } from 'services/meters/readingsHistoryService/confirmReadingService';
 import { getElectricNodesQuery } from './AccountingNodesReadingsService.api';
 import { accountingNodesReadingsInputService } from 'services/meters/accountingNodesReadingsInputService';
-import {
-  mapToDeviceReadingsHistory,
-  transformToIndividualDeviceReadingsHistory,
-} from './AccountingNodesReadingsService.utils';
+import { mapToDeviceReadingsHistory } from './AccountingNodesReadingsService.utils';
 import { ReadingHistoryModal } from './view/ReadingHistoryModal';
 
 const { inputs, outputs, gates } = AccountingNodesReadingsService;
@@ -30,6 +27,9 @@ export const AccountingNodesReadingsContainer = () => {
     upSliderIndex,
     isElectricNodesFetched,
     readings,
+    handleCloseHistory,
+    isHistoryOpen,
+    deviceId,
   } = useUnit({
     address: outputs.$housingStockAddress,
     electricNodes: getElectricNodesQuery.$data,
@@ -41,6 +41,9 @@ export const AccountingNodesReadingsContainer = () => {
     upSliderIndex: inputs.upSliderIndex,
     downSliderIndex: inputs.downSliderIndex,
     readings: accountingNodesReadingsInputService.outputs.$readings,
+    handleCloseHistory: inputs.handleCloseHistory,
+    isHistoryOpen: outputs.$isHistoryOpen,
+    deviceId: outputs.$deviceId,
   });
 
   useEffect(() => {
@@ -51,16 +54,24 @@ export const AccountingNodesReadingsContainer = () => {
     }).unsubscribe;
   }, [navigate, id]);
 
-  const preparedReadings = mapToDeviceReadingsHistory(readings);
+  const readingsById = readings[deviceId!];
 
+  const preparedReadings = mapToDeviceReadingsHistory(readingsById);
+
+  console.log({ readings });
 
   return (
     <>
       <ConfirmReadingValueContainer />
 
-      <ReadingHistoryModal preparedReadings={preparedReadings} />
+      <ReadingHistoryModal
+        preparedReadings={preparedReadings}
+        handleCloseHistory={handleCloseHistory}
+        isOpen={isHistoryOpen}
+      />
 
       <HousingStockIdGate id={Number(id)} />
+
       <AccountingNodesReadings
         handleGetElectricNodes={handleGetElectricNodes}
         address={address}

@@ -13,7 +13,7 @@ export const ReadingHistory: FC<Props> = ({ preparedReadings }) => {
         <div>Последние показания</div>
       </TableHeader>
 
-      {preparedReadings.yearReadings?.map((yearReading) => (
+      {preparedReadings?.map((yearReading) => (
         <YearItem yearReading={yearReading} key={yearReading.year} />
       ))}
     </Wrapper>

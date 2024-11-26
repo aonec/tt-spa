@@ -6,7 +6,6 @@ import dayjs from 'dayjs';
 import { getMonthName } from 'services/meters/readingsHistoryService/utils';
 
 export const MonthItem: FC<Props> = ({ monthData }) => {
-
   const actialReading = useMemo(() => {
     if (!monthData.readings) {
       return null;
@@ -21,7 +20,7 @@ export const MonthItem: FC<Props> = ({ monthData }) => {
 
   const monthName = getMonthName(monthData.month);
 
-  const value = Math.round(Number(actialReading?.value1));
+  const value = Math.round(Number(actialReading?.value));
 
   const date = dayjs(actialReading?.uploadTime).format('DD.MM.YYYY hh:mm');
 

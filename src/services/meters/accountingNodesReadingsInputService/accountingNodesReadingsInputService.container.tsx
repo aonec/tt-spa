@@ -29,6 +29,7 @@ export const AccountingNodesReadingsInputContainer: FC<
     updateReadingsSum,
     openConfirmReadingModal,
     closeConfirmReadingModal,
+    handleOpenHistory,
   } = useUnit({
     allReadings: outputs.$readings,
     inputStatuses: outputs.$deviceInputStatuses,
@@ -40,6 +41,7 @@ export const AccountingNodesReadingsInputContainer: FC<
     updateReadingsSum: AccountingNodesReadingsService.inputs.updateNodeReadings,
     openConfirmReadingModal: inputs.openConfirmReadingModal,
     closeConfirmReadingModal: inputs.closeConfirmReadingModal,
+    handleOpenHistory: AccountingNodesReadingsService.inputs.handleOpenHistory,
   });
 
   const deviceInputStatuses = inputStatuses[device.id] || {};
@@ -155,6 +157,7 @@ export const AccountingNodesReadingsInputContainer: FC<
         handleSendNonResConsumption={handleSendNonResConsumption}
         handleValidateReading={handleValidateReading}
         handleUpdateReadingsSum={handleUpdateReadingsSum}
+        handleOpenHistory={handleOpenHistory}
       />
     </>
   );

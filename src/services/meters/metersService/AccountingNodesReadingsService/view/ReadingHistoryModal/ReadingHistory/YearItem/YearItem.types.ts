@@ -1,5 +1,5 @@
-import { IndividualDeviceReadingsYearHistoryResponse } from 'api/types';
+import { AccountingNodesReadingsYearHistoryResponse } from 'services/meters/metersService/AccountingNodesReadingsService/AccountingNodesReadingsService.types';
 
 export type Props = {
-  yearReading: IndividualDeviceReadingsYearHistoryResponse;
+  yearReading: AccountingNodesReadingsYearHistoryResponse;
 };
