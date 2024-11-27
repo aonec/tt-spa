@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react';
-import { isEmpty, last } from 'lodash';
+import { last } from 'lodash';
 import React, { FC, useEffect, useMemo } from 'react';
 import { addressSearchService } from './addressSearchService.models';
 import { AddressSearchContainerProps } from './addressSearchService.types';
@@ -47,14 +47,14 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     setInitialValues: inputs.setInitialValues,
   });
 
-  const { values, setFieldValue, handleSubmit, setValues } = useFormik({
+  const { values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
-      apartment: '',
-      corpus: '',
-      house: '',
-      question: '',
-      street: '',
-      city: '',
+      apartment: verifiedInitialValues?.apartment || '',
+      corpus: verifiedInitialValues?.corpus || '',
+      house: verifiedInitialValues?.house || '',
+      question: verifiedInitialValues?.question || '',
+      street: verifiedInitialValues?.street || '',
+      city: verifiedInitialValues?.city || '',
     },
     onSubmit: (data) => {
       onSubmit && onSubmit(data);
@@ -77,28 +77,28 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     initialValues && setInitialValues(initialValues);
   }, [initialValues, setInitialValues]);
 
-  useEffect(() => {
-    if (verifiedInitialValues) {
-      setValues({
-        apartment: verifiedInitialValues.apartment || '',
-        corpus: verifiedInitialValues.corpus || '',
-        house: verifiedInitialValues.house || '',
-        question: verifiedInitialValues.question || '',
-        street: verifiedInitialValues.street || '',
-        city: verifiedInitialValues.city || '',
-      });
-    }
-    if (!verifiedInitialValues || isEmpty(verifiedInitialValues)) {
-      setValues({
-        city: values.city,
-        apartment: '',
-        corpus: '',
-        house: '',
-        question: '',
-        street: '',
-      });
-    }
-  }, [setValues, verifiedInitialValues, values.city]);
+  // useEffect(() => {
+  //   if (verifiedInitialValues) {
+  //     setValues({
+  //       apartment: verifiedInitialValues.apartment || '',
+  //       corpus: verifiedInitialValues.corpus || '',
+  //       house: verifiedInitialValues.house || '',
+  //       question: verifiedInitialValues.question || '',
+  //       street: verifiedInitialValues.street || '',
+  //       city: verifiedInitialValues.city || '',
+  //     });
+  //   }
+  //   if (!verifiedInitialValues || isEmpty(verifiedInitialValues)) {
+  //     setValues({
+  //       city: values.city,
+  //       apartment: '',
+  //       corpus: '',
+  //       house: '',
+  //       question: '',
+  //       street: '',
+  //     });
+  //   }
+  // }, [setValues, verifiedInitialValues, values.city]);
 
   useEffect(() => {
     const withApartment = preparedFields.some(
