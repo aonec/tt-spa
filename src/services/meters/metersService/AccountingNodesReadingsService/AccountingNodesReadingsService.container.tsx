@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AccountingNodesReadings } from './view/AccountingNodesReadings';
 import { AccountingNodesReadingsService } from './AccountingNodesReadingsService.model';
@@ -54,11 +54,15 @@ export const AccountingNodesReadingsContainer = () => {
     }).unsubscribe;
   }, [navigate, id]);
 
-  const readingsById = readings[deviceId!];
+  const readingsById = useMemo(
+    () => (deviceId ? readings[deviceId] : null),
+    [deviceId, readings],
+  );
 
-  const preparedReadings = mapToDeviceReadingsHistory(readingsById);
-
-  console.log({ readings });
+  const preparedReadings = useMemo(
+    () => mapToDeviceReadingsHistory(readingsById),
+    [readingsById],
+  );
 
   return (
     <>

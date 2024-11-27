@@ -1,19 +1,18 @@
-import { NodeReadingsDataByDevices } from 'services/meters/accountingNodesReadingsInputService/accountingNodesReadingsInputService.types';
 import {
   AccountingNodesReadingsMonthHistoryResponse,
   AccountingNodesReadingsYearHistoryResponse,
   HistoryMonthReadingType,
 } from './AccountingNodesReadingsService.types';
 import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'api/types';
-
 import dayjs from 'dayjs';
 
 export function mapToDeviceReadingsHistory(
-  nodeReadingsData: HousingMeteringDeviceReadingsIncludingPlacementResponse[],
+  nodeReadingsData:
+    | HousingMeteringDeviceReadingsIncludingPlacementResponse[]
+    | null,
 ) {
-  // Проверяем, что nodeReadingsData является массивом
-  if (!Array.isArray(nodeReadingsData)) {
-    throw new Error('Expected nodeReadingsData to be an array');
+  if (!nodeReadingsData) {
+    return [];
   }
 
   const yearReadings: AccountingNodesReadingsYearHistoryResponse[] = [];
@@ -25,16 +24,14 @@ export function mapToDeviceReadingsHistory(
     };
   } = {};
 
-  for (const reading of nodeReadingsData) {
-    // Проверяем, что в reading есть нужные данные
+  nodeReadingsData.forEach((reading) => {
     if (!reading.uploadDate || !reading.nodeId || reading.value === undefined) {
-      continue; // Пропускаем некорректные данные
+      return;
     }
 
-    // Используем dayjs для работы с датой
     const uploadDate = dayjs(reading.uploadDate);
     const year = uploadDate.year();
-    const month = uploadDate.month() + 1; // месяц в dayjs начинается с 0
+    const month = uploadDate.month() + 1;
 
     // Инициализируем год и месяц, если еще не существует
     if (!readingsByYearAndMonth[year]) {
@@ -44,7 +41,6 @@ export function mapToDeviceReadingsHistory(
       readingsByYearAndMonth[year][month] = [];
     }
 
-    // Формируем объект для истории показаний устройства
     const historyItem: HistoryMonthReadingType = {
       id: reading.nodeId,
       value: reading.value,
@@ -60,26 +56,49 @@ export function mapToDeviceReadingsHistory(
 
     // Добавляем элемент в нужный месяц и год
     readingsByYearAndMonth[year][month].push(historyItem);
-  }
+  });
+
+  // Сортировка по годам (по убыванию)
+  const sortedYears = Object.keys(readingsByYearAndMonth)
+    .map((year) => parseInt(year))
+    .sort((a, b) => b - a); // Сортировка по убыванию года
+
+  // Сортировка месяцев от 1 до 12 для каждого года и сортировка по uploadTime внутри каждого месяца
+  sortedYears.forEach((year) => {
+    const sortedMonths = Object.keys(readingsByYearAndMonth[year])
+      .map((month) => parseInt(month))
+      .sort((a, b) => a - b); // Сортировка месяцев от 1 до 12
+
+    sortedMonths.forEach((month) => {
+      // Сортировка внутри месяца по uploadTime (по убыванию)
+      readingsByYearAndMonth[year][month].sort((a, b) => {
+        return dayjs(b.uploadTime).isBefore(dayjs(a.uploadTime)) ? 1 : -1;
+      });
+    });
+  });
 
   // Конвертируем данные из годового и месячного формата в AccountingNodesReadingsYearHistoryResponse
-  for (const year in readingsByYearAndMonth) {
+  sortedYears.forEach((year) => {
     const yearItem: AccountingNodesReadingsYearHistoryResponse = {
-      year: parseInt(year),
+      year: year,
       monthReadings: [],
     };
 
-    for (const month in readingsByYearAndMonth[year]) {
+    const sortedMonths = Object.keys(readingsByYearAndMonth[year])
+      .map((month) => parseInt(month))
+      .sort((a, b) => a - b);
+
+    sortedMonths.forEach((month) => {
       const monthItem: AccountingNodesReadingsMonthHistoryResponse = {
-        month: parseInt(month),
+        month: month,
         readings: readingsByYearAndMonth[year][month],
       };
 
       yearItem.monthReadings!.push(monthItem);
-    }
+    });
 
     yearReadings.push(yearItem);
-  }
+  });
 
   return yearReadings;
 }
