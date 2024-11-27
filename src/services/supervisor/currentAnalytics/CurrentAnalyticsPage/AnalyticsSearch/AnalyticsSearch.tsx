@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import { Wrapper } from './AnalyticsSearch.styled';
 import { EDateRange, Props } from './AnalyticsSearch.types';
 import { RangePicker } from 'ui-kit/RangePicker';
@@ -28,12 +28,6 @@ export const AnalyticsSearch: FC<Props> = ({
     periodType: currentAnalyticsService.outputs.$periodType,
     setPeriodType: currentAnalyticsService.inputs.setPeriodType,
   });
-
-  const preparedOrganizations = useMemo(() => {
-    if (!dashboardFilters.City) return organizationsList?.items || [];
-
-    return organizationsList?.items || [];
-  }, [organizationsList, dashboardFilters.City]);
 
   return (
     <Wrapper isCommon={Boolean(isCommon)}>
@@ -155,7 +149,7 @@ export const AnalyticsSearch: FC<Props> = ({
           setDashboardFilters({ ManagementFirmId: value as number })
         }
       >
-        {preparedOrganizations.map((elem) => (
+        {organizationsList?.items?.map((elem) => (
           <Select key={elem.id} value={elem.id}>
             {elem.name}
           </Select>

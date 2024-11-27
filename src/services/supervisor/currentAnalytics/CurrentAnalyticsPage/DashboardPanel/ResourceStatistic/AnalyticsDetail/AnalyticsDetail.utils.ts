@@ -1,6 +1,5 @@
 import {
   EManagingFirmTaskFilterType,
-  ETemperatureNormativeDeviationType,
   ManagingFirmTaskType,
   ResourceType,
 } from 'api/types';
@@ -10,44 +9,33 @@ export function getTasksFilters({
   dashboardType,
   resourceType,
   malfunctionType,
-  deviationType,
 }: {
   dashboardType: DashboardDataType;
   resourceType?: ResourceType;
   malfunctionType?: ManagingFirmTaskType;
-  deviationType?: ETemperatureNormativeDeviationType;
 }) {
-  if (
-    dashboardType === DashboardDataType.PipeRupturesCount ||
-    dashboardType === DashboardDataType.ResourceDisconnectsCount
-  ) {
-    const taskType =
-      dashboardType === DashboardDataType.PipeRupturesCount
-        ? EManagingFirmTaskFilterType.PipeRupture
-        : EManagingFirmTaskFilterType.ResourceDisconnecting;
+  const isPipeRuptures = dashboardType === DashboardDataType.PipeRupturesCount;
+  const isResourceDisconnects =
+    dashboardType === DashboardDataType.ResourceDisconnectsCount;
+  const isMalfunctions = dashboardType === DashboardDataType.MalfunctionsCount;
+  const isAverageTime =
+    dashboardType === DashboardDataType.AverageCompletionTime;
 
+  if (isPipeRuptures) {
     return {
       resource: resourceType,
-      taskType: taskType,
+      taskType: EManagingFirmTaskFilterType.PipeRupture,
     };
   }
 
-  if (
-    malfunctionType &&
-    (dashboardType === DashboardDataType.MalfunctionsCount ||
-      dashboardType === DashboardDataType.AverageCompletionTime)
-  ) {
-    const taskTypes: { [key: string]: string } = {
-      [ManagingFirmTaskType.CalculatorMalfunction]:
-        EManagingFirmTaskFilterType.CalculatorMalfunctionAny,
-      [ManagingFirmTaskType.HousingDeviceMalfunction]:
-        EManagingFirmTaskFilterType.HousingDeviceMalfunctionAny,
-      [ManagingFirmTaskType.CalculatorLackOfConnection]:
-        EManagingFirmTaskFilterType.CalculatorLackOfConnection,
-      [ManagingFirmTaskType.MeasurementErrorCommercial]:
-        EManagingFirmTaskFilterType.MeasurementErrorAny,
+  if (isResourceDisconnects) {
+    return {
+      resource: resourceType,
+      taskType: EManagingFirmTaskFilterType.ResourceDisconnecting,
     };
+  }
 
+  if (malfunctionType && (isMalfunctions || isAverageTime)) {
     return {
       taskType: taskTypes[malfunctionType],
     };
@@ -59,3 +47,14 @@ export function getTasksFilters({
     };
   }
 }
+
+const taskTypes: { [key: string]: string } = {
+  [ManagingFirmTaskType.CalculatorMalfunction]:
+    EManagingFirmTaskFilterType.CalculatorMalfunctionAny,
+  [ManagingFirmTaskType.HousingDeviceMalfunction]:
+    EManagingFirmTaskFilterType.HousingDeviceMalfunctionAny,
+  [ManagingFirmTaskType.CalculatorLackOfConnection]:
+    EManagingFirmTaskFilterType.CalculatorLackOfConnection,
+  [ManagingFirmTaskType.MeasurementErrorCommercial]:
+    EManagingFirmTaskFilterType.MeasurementErrorAny,
+};
