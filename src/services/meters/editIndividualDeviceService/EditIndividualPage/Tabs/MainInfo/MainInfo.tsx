@@ -259,6 +259,7 @@ export const MainInfo: FC<MainInfoProps> = ({
       <GridContainer>
         <FormItem label="Дата закрытия">
           <DatePicker
+            picker="month"
             value={values.closingDate}
             onChange={(date) => {
               setFieldValue('closingDate', date.add(3, 'hours'));
