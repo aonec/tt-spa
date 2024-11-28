@@ -12,8 +12,8 @@ export const AnalyticsDetail: FC<Props> = ({
   data,
   hideExpired,
   malfunctionType,
-  deviationType,
   resourceType,
+  deviationType,
   title,
 }) => {
   const isDanger = data.expiredTasksCount !== 0;
