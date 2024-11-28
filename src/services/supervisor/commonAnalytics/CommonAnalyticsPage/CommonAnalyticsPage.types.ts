@@ -2,6 +2,7 @@ import {
   DashboardSummaryResponse,
   DashboardTaskMalfunctionResponse,
   DashboardTaskResourceResponse,
+  OrganizationResponsePagedList,
 } from 'api/types';
 import {
   DashboardDataType,
@@ -21,4 +22,5 @@ export type Props = {
     | DashboardTaskResourceResponse[]
     | DashboardTaskMalfunctionResponse[]
     | null;
+  organizations: OrganizationResponsePagedList | null;
 };
