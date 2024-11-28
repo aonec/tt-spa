@@ -206,6 +206,10 @@ export const useRoutes = (
     : `/tasks/list/${TaskGroupingFilter.Executing}`;
 
   const redirectRoute = useMemo(() => {
+    if (!isAuth) {
+      return `/login`;
+    }
+
     if (!roles.length) return '/';
 
     if (isSupervisor) {
@@ -217,7 +221,7 @@ export const useRoutes = (
     }
 
     return initialTasksPath;
-  }, [roles.length, isSupervisor, isOperator, initialTasksPath]);
+  }, [roles.length, isSupervisor, isOperator, initialTasksPath, isAuth]);
 
   const isShowNodeArchivePage =
     isAdministrator ||
