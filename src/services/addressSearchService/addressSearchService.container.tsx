@@ -59,6 +59,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     onSubmit: (data) => {
       onSubmit && onSubmit(data);
     },
+    enableReinitialize: true,
   });
 
   const preparedFields = useMemo(

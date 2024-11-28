@@ -21,6 +21,7 @@ export const AnalyticsSearch: FC<Props> = ({
   isCommon,
   selectValue,
   setValue,
+  organizationsList,
 }) => {
   const { existingCities, periodType, setPeriodType } = useUnit({
     existingCities: addressSearchService.outputs.$existingCities,
@@ -139,7 +140,21 @@ export const AnalyticsSearch: FC<Props> = ({
           </Select.Option>
         ))}
       </Select>
-      <Select placeholder="УК" small allowClear></Select>
+      <Select
+        placeholder="УК"
+        small
+        allowClear
+        value={dashboardFilters.ManagementFirmId}
+        onChange={(value) =>
+          setDashboardFilters({ ManagementFirmId: value as number })
+        }
+      >
+        {organizationsList?.items?.map((elem) => (
+          <Select key={elem.id} value={elem.id}>
+            {elem.name}
+          </Select>
+        ))}
+      </Select>
       <AddressTreeSelect
         small
         placeholder="Адрес"

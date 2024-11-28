@@ -11,3 +11,9 @@ export const DashboardPanelWrapper = styled.div`
   grid-template-columns: 1fr 1fr 1fr;
   gap: 8px;
 `;
+
+export const StatusPanelWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;

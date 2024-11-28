@@ -36,6 +36,7 @@ export const CommonAnalyticsPage: FC<Props> = ({
         resetDashboardFilters={resetDashboardFilters}
         selectValue={selectValue}
         setValue={setValue}
+        organizationsList={null}
       />
       <InfoOptionsPanels
         dashboardSummary={dashboardSummary}
