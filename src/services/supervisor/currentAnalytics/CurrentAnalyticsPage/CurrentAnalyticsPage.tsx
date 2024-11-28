@@ -1,5 +1,9 @@
 import { FC, useMemo } from 'react';
-import { DashboardPanelWrapper, Wrapper } from './CurrentAnalyticsPage.styled';
+import {
+  DashboardPanelWrapper,
+  StatusPanelWrapper,
+  Wrapper,
+} from './CurrentAnalyticsPage.styled';
 import { Props } from './CurrentAnalyticsPage.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { AnalyticsSearch } from './AnalyticsSearch';
@@ -15,6 +19,7 @@ import { AverageTimeDashboardPanel } from './DashboardPanel/AverageTimeDashboard
 import { TaskQualityDashboardPanel } from './DashboardPanel/TaskQualityDashboardPanel';
 import { Empty } from 'antd';
 import { BreadCrumbs } from './BreadCrumbs';
+import { FilterStatus } from './FilterStatus';
 
 export const CurrentAnalyticsPage: FC<Props> = ({
   isLoadingSummary,
@@ -30,6 +35,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
   dashboardFilters,
   setDashboardFilters,
   resetDashboardFilters,
+  organizationsList,
 }) => {
   const dataList = useMemo(() => {
     const dataMap = {
@@ -164,6 +170,7 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         dashboardFilters={dashboardFilters}
         setDashboardFilters={setDashboardFilters}
         resetDashboardFilters={resetDashboardFilters}
+        organizationsList={organizationsList}
       />
       <InfoOptionsPanels
         isLoading={isLoadingSummary}
@@ -171,10 +178,17 @@ export const CurrentAnalyticsPage: FC<Props> = ({
         currentDashboardType={currentDashboardType}
         setCurrentDashboardType={setCurrentDashboardType}
       />
-      <BreadCrumbs
-        setDashboardFilters={setDashboardFilters}
-        dashboardSummary={dashboardSummary}
-      />
+      <StatusPanelWrapper>
+        <BreadCrumbs
+          setDashboardFilters={setDashboardFilters}
+          dashboardSummary={dashboardSummary}
+        />
+        <FilterStatus
+          setDashboardFilters={setDashboardFilters}
+          dashboardFilters={dashboardFilters}
+          currentDashboardType={currentDashboardType}
+        />
+      </StatusPanelWrapper>
       <WithLoader isLoading={isLoadingSummary || isLoadingPanels}>
         {isEmpty && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
         {!isEmpty && (

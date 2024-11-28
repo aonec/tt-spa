@@ -1,1 +1,0 @@
-export { CreateReportModalContainer } from './CreateReportModalContainer';

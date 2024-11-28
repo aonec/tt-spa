@@ -12,6 +12,7 @@ export const TasksRouter = () => {
   const isSpectator = usePermission([
     ESecuredIdentityRoleName.ManagingFirmSpectator,
     ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+    ESecuredIdentityRoleName.Supervisor,
   ]);
 
   const initialTasksPath = isSpectator

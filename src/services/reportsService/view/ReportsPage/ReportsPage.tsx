@@ -16,8 +16,8 @@ import {
   ReportNamesDictionary,
   reportsSelectItems,
 } from './ReportsPage.constants';
-import { ReportsListContainer } from 'services/reports/reportsListService';
-import { CreateRunnerContainer } from 'services/reports/createRunnerService';
+import { CreateRunnerContainer } from 'services/reportsService/createRunnerService';
+import { ReportsListContainer } from 'services/reportsService/reportsListService';
 
 export const ReportsPage: FC = () => {
   const reportsListRef = useRef<HTMLDivElement>(null);
