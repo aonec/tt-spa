@@ -108,8 +108,10 @@ export const CreateNodePage: FC<CreateNodePageProps> = ({
         handleCancel={() => handleDeleteServiceZone(null)}
         handleSubmit={() => {
           handleDeleteServiceZone(null);
-          deletingServiceZone &&
+
+          if (deletingServiceZone) {
             handleFinallyDeleteServiceZone(deletingServiceZone.id);
+          }
         }}
         isDeleteServiceZoneDialogOpen={isDialogOpen}
       />

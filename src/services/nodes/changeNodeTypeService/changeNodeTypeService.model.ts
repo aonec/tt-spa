@@ -44,7 +44,7 @@ changeNodeTypeFx.failData.watch((error) => {
 
 sample({
   clock: $node,
-  filter: (node) => !Boolean(node),
+  filter: (node) => !node,
   target: clearPayload,
 });
 

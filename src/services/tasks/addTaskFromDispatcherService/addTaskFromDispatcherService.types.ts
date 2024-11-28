@@ -47,6 +47,6 @@ export type DeadlineRequest = {
 };
 
 export type ExecutorsListRequest = {
-  TaskReasonId: string;
-  TaskType: EisTaskType;
+  TaskReasonId?: string | null;
+  TaskType?: EisTaskType | null;
 };

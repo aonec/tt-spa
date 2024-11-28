@@ -86,8 +86,7 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
 
     const housingStockId = chosenBuilding?.buildingId;
 
-    if (!nodeId &&
-      housingStockId) {
+    if (!nodeId && housingStockId) {
       handleOnSearchDataChange({
         nodeResourceType,
         season,
@@ -95,7 +94,7 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
       });
     }
 
-    nodeId && handleNodeChoosen({ season, nodeId });
+    if (nodeId) handleNodeChoosen({ season, nodeId });
   };
 
   const { values, handleSubmit, setFieldValue } =
@@ -122,7 +121,7 @@ export const UniqueWorkingRange: FC<UniqueWorkingRangeProps> = ({
   }, [values.housingStockIdHash, preparedAddresses]);
 
   useEffect(() => {
-    housingStockId && handleFetchNodes(housingStockId);
+    if (housingStockId) handleFetchNodes(housingStockId);
   }, [housingStockId, handleFetchNodes]);
 
   const preparedNodes = nodes?.reduce((acc, node) => {

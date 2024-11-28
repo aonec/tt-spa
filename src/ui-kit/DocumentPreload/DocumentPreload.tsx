@@ -30,7 +30,7 @@ export const DocumentPreload: FC<DocumentPreloadProps> = ({
 
   return (
     <div>
-      {!Boolean(file) && (
+      {!file && (
         <DragAndDrop
           accept={accept}
           fileHandler={(files: FileList) => handleFile(files[0])}

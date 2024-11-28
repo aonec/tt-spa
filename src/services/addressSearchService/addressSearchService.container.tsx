@@ -57,7 +57,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
       city: verifiedInitialValues?.city || '',
     },
     onSubmit: (data) => {
-      onSubmit && onSubmit(data);
+      if (onSubmit) onSubmit(data);
     },
     enableReinitialize: true,
   });
@@ -74,7 +74,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   );
 
   useEffect(() => {
-    initialValues && setInitialValues(initialValues);
+    if (initialValues) setInitialValues(initialValues);
   }, [initialValues, setInitialValues]);
 
   // useEffect(() => {

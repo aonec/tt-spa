@@ -329,8 +329,9 @@ export const WorkWithIndividualDeviceForm: FC<
                 .utcOffset(0, true)
                 .toISOString();
 
-              !Boolean(values.futureCheckingDate) &&
+              if (!values.futureCheckingDate) {
                 setFieldValue('futureCheckingDate', nextDate);
+              }
             }}
           />
           <ErrorMessage>{errors.lastCheckingDate}</ErrorMessage>

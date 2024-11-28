@@ -20,7 +20,7 @@ export const DocumentsPanel: FC<DocumentsPanelProps> = ({
     .slice(0, 2);
 
   const cards = preparedDocuments.map((document) => (
-    <DocumentCardItem document={document} />
+    <DocumentCardItem document={document} key={document.id} />
   ));
 
   return (

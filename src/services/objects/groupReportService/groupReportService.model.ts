@@ -168,7 +168,7 @@ sample({
 sample({
   source: $reportFilters,
   clock: GroupReportGate.open,
-  filter: (filter) => !Boolean(filter),
+  filter: (filter) => !filter,
   target: getReportFiltersFx,
 });
 
@@ -246,7 +246,7 @@ sendByEmailFx.failData.watch((error) => {
   );
 });
 sendByEmailFx.pending.watch((isPending) => {
-  isPending && message.info('Отчёт формируется для отправки на почту', 60);
+  if (isPending) message.info('Отчёт формируется для отправки на почту', 60);
 });
 sendByEmailFx.doneData.watch(() => {
   message.destroy();

@@ -84,7 +84,7 @@ export const DistrictBordersByAddressPage: FC<
               Всего: {checkedAddressesAmount}{' '}
               {getCountText(checkedAddressesAmount, addressesCountTexts)}
               <LinkWrapper
-                disabled={!Boolean(checkedAddressesAmount)}
+                disabled={!checkedAddressesAmount}
                 onClick={() =>
                   checkedAddressesAmount && openShowAddressesModal()
                 }

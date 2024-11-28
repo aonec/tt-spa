@@ -47,8 +47,8 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
     <Wrapper>
       {isLoading && <Skeleton active />}
       <Content visible={!isLoading}>
-        {actionInfoComponents.map(({ Component }) => (
-          <TaskActionInfoElementWrapper>
+        {actionInfoComponents.map(({ Component, taskType }) => (
+          <TaskActionInfoElementWrapper key={taskType}>
             <Component />
           </TaskActionInfoElementWrapper>
         ))}

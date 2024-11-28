@@ -422,7 +422,7 @@ sample({
     Boolean(selectedTaskReasonOption?.id) && Boolean(selectedTaskType),
   fn: ({ selectedTaskReasonOption, selectedTaskType }) => ({
     TaskReasonId: selectedTaskReasonOption?.id,
-    TaskType: selectedTaskType!,
+    TaskType: selectedTaskType,
   }),
   target: getExecutorsListFx,
 });

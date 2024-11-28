@@ -9,7 +9,6 @@ import {
   Title,
   Wrapper,
 } from './ReportsPage.styled';
-import { ReportsPageProps } from './ReportsPage.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import {
   ReportIconsDictionary,
@@ -30,7 +29,7 @@ export const ReportsPage: FC = () => {
     if (!node) return;
 
     const handleScroll = () => {
-      node.scrollLeft && setScrollX(node.scrollLeft);
+      if (node.scrollLeft) setScrollX(node.scrollLeft);
     };
 
     node.addEventListener('scroll', handleScroll);

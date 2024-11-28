@@ -151,7 +151,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
             <>
               {`${address && getHousingStockItemAddress(address)} `}
               {additionalAddresses?.map((elem) => (
-                <AdditionalAddressWrapper>
+                <AdditionalAddressWrapper key={elem.id}>
                   {getHousingStockItemAddress(elem)}
                 </AdditionalAddressWrapper>
               ))}

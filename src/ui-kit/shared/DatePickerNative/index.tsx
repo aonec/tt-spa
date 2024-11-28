@@ -150,7 +150,11 @@ const InputSC = styled.input<{
 `;
 
 export const fromEnter =
-  (callback: (e: React.KeyboardEvent<HTMLInputElement>) => void) =>
-  (e: React.KeyboardEvent<HTMLInputElement>) => {
+  (
+    callback: (
+      e: React.KeyboardEvent<HTMLInputElement | HTMLDivElement | HTMLElement>,
+    ) => void,
+  ) =>
+  (e: React.KeyboardEvent<HTMLInputElement | HTMLDivElement | HTMLElement>) => {
     return e?.key === 'Enter' && callback(e);
   };

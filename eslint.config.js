@@ -11,8 +11,15 @@ export default [
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   {
+    settings: {
+      react: {
+        version: 'detect', // Automatically detect the React version
+      },
+    },
     rules: {
       'react/react-in-jsx-scope': 'off', // Отключение обязательного импорта React
+      'react/prop-types': 'off',
+      'react/no-unescaped-entities': 'off',
     },
   },
 ];

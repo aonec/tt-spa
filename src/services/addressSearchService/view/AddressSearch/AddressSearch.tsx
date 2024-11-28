@@ -151,7 +151,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         }}
         value={values.apartment || ''}
         onChange={(e) => {
-          handleChange(SearchFieldType.Apartment, e as any);
+          handleChange(SearchFieldType.Apartment, e);
         }}
         onKeyDown={fromEnter(() => {
           next(index);

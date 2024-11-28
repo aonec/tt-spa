@@ -73,7 +73,7 @@ export const IndividualDevicesExtendedSearch: FC<
         setIsOpen(false);
       }}
       handleClear={() => {
-        handleClear && handleClear();
+        if (handleClear) handleClear();
         resetForm();
       }}
       extendedSearchContent={

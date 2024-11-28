@@ -249,8 +249,9 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
         handleCancel={() => handleDeleteServiceZone(null)}
         handleSubmit={() => {
           handleDeleteServiceZone(null);
-          deletingServiceZone &&
+          if (deletingServiceZone) {
             handleFinallyDeleteServiceZone(deletingServiceZone.id);
+          }
         }}
         isDeleteServiceZoneDialogOpen={isDeleteServiceZoneDialogOpen}
       />

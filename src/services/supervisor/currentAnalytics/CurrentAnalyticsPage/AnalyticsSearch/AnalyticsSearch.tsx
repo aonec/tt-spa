@@ -53,7 +53,7 @@ export const AnalyticsSearch: FC<Props> = ({
           small
           format="DD.MM.YYYY"
           value={
-            Boolean(dashboardFilters.From && dashboardFilters.To)
+            dashboardFilters.From && dashboardFilters.To
               ? [
                   dayjs(dashboardFilters.From).utc(),
                   dayjs(dashboardFilters.To).utc(),
@@ -87,7 +87,7 @@ export const AnalyticsSearch: FC<Props> = ({
                   .toISOString(),
                 To: dayjs().endOf('day').utc(true).toISOString(),
               });
-              setValue && setValue(value);
+              if (setValue) setValue(value);
             }
             if (value === EDateRange.Month) {
               setDashboardFilters({
@@ -98,7 +98,7 @@ export const AnalyticsSearch: FC<Props> = ({
                   .toISOString(),
                 To: dayjs().endOf('day').utc(true).toISOString(),
               });
-              setValue && setValue(value);
+              if (setValue) setValue(value);
             }
             if (value === EDateRange.Quarter) {
               setDashboardFilters({
@@ -109,7 +109,7 @@ export const AnalyticsSearch: FC<Props> = ({
                   .toISOString(),
                 To: dayjs().endOf('day').utc(true).toISOString(),
               });
-              setValue && setValue(value);
+              if (setValue) setValue(value);
             }
           }}
         >

@@ -60,15 +60,15 @@ export const CorrectionReadings: FC<CorrectionReadingsProps> = ({
     <InvalidReadingsInfoWrapper>
       <InfoBlock title="Некорректные показания">
         {problemReadingValues?.map((value, index) => (
-          <InvalidReadingValueWrapper>
+          <InvalidReadingValueWrapper key={index}>
             <InvalidReadingValueIndex>T{index + 1}:</InvalidReadingValueIndex>{' '}
             <InvalidReadingValue>{value}</InvalidReadingValue>
           </InvalidReadingValueWrapper>
         ))}
       </InfoBlock>
       <InfoBlock title="Период">{readingDate}</InfoBlock>
-      <InfoBlock title="Оператор">{problemReading?.user?.name!}</InfoBlock>
-      <InfoBlock title="Причина ошибки">{task?.creationReason!}</InfoBlock>
+      <InfoBlock title="Оператор">{problemReading?.user?.name}</InfoBlock>
+      <InfoBlock title="Причина ошибки">{task?.creationReason}</InfoBlock>
       <ReadingsHistoryButton deviceId={device.id} />
     </InvalidReadingsInfoWrapper>
   );
