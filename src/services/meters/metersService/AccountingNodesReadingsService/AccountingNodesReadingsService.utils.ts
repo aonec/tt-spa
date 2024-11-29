@@ -1,5 +1,4 @@
 import {
-  AccountingNodesReadingsMonthHistoryResponse,
   AccountingNodesReadingsYearHistoryResponse,
   HistoryMonthReadingType,
 } from './AccountingNodesReadingsService.types';
@@ -10,95 +9,60 @@ export function mapToDeviceReadingsHistory(
   nodeReadingsData:
     | HousingMeteringDeviceReadingsIncludingPlacementResponse[]
     | null,
-) {
-  if (!nodeReadingsData) {
-    return [];
-  }
+): AccountingNodesReadingsYearHistoryResponse[] {
+  if (!nodeReadingsData) return [];
 
-  const yearReadings: AccountingNodesReadingsYearHistoryResponse[] = [];
+  const readingsByYearAndMonth: Record<
+    number,
+    Record<number, HistoryMonthReadingType[]>
+  > = {};
 
-  // Группируем по годам и месяцам
-  const readingsByYearAndMonth: {
-    [year: number]: {
-      [month: number]: HistoryMonthReadingType[];
-    };
-  } = {};
-
+  // Группируем данные по годам и месяцам
   nodeReadingsData.forEach((reading) => {
-    if (!reading.uploadDate || !reading.nodeId || reading.value === undefined) {
-      return;
-    }
+    const {
+      uploadDate,
+      nodeId,
+      value,
+      user,
+      isRemoved,
+      removedTime,
+      removedByUser,
+      isArchived,
+    } = reading;
 
-    const uploadDate = dayjs(reading.uploadDate);
-    const year = uploadDate.year();
-    const month = uploadDate.month() + 1;
+    if (!uploadDate || nodeId === undefined || value === undefined) return;
 
-    // Инициализируем год и месяц, если еще не существует
-    if (!readingsByYearAndMonth[year]) {
-      readingsByYearAndMonth[year] = {};
-    }
-    if (!readingsByYearAndMonth[year][month]) {
-      readingsByYearAndMonth[year][month] = [];
-    }
+    const date = dayjs(uploadDate);
+    const year = date.year();
+    const month = date.month() + 1;
 
-    const historyItem: HistoryMonthReadingType = {
-      id: reading.nodeId,
-      value: reading.value,
-      uploadTime: reading.uploadDate,
-      user: reading.user,
-      isRemoved: reading.isRemoved,
-      removedTime: reading.removedTime
-        ? dayjs(reading.removedTime).toISOString()
-        : null,
-      removedByUser: reading.removedByUser,
-      isArchived: reading.isArchived,
-    };
+    readingsByYearAndMonth[year] ??= {};
+    readingsByYearAndMonth[year][month] ??= [];
 
-    // Добавляем элемент в нужный месяц и год
-    readingsByYearAndMonth[year][month].push(historyItem);
-  });
-
-  // Сортировка по годам (по убыванию)
-  const sortedYears = Object.keys(readingsByYearAndMonth)
-    .map((year) => parseInt(year))
-    .sort((a, b) => b - a); // Сортировка по убыванию года
-
-  // Сортировка месяцев от 1 до 12 для каждого года и сортировка по uploadTime внутри каждого месяца
-  sortedYears.forEach((year) => {
-    const sortedMonths = Object.keys(readingsByYearAndMonth[year])
-      .map((month) => parseInt(month))
-      .sort((a, b) => a - b); // Сортировка месяцев от 1 до 12
-
-    sortedMonths.forEach((month) => {
-      // Сортировка внутри месяца по uploadTime (по убыванию)
-      readingsByYearAndMonth[year][month].sort((a, b) => {
-        return dayjs(b.uploadTime).isBefore(dayjs(a.uploadTime)) ? 1 : -1;
-      });
+    readingsByYearAndMonth[year][month].push({
+      id: nodeId,
+      value,
+      uploadTime: uploadDate,
+      user,
+      isRemoved,
+      removedTime: removedTime ? dayjs(removedTime).toISOString() : null,
+      removedByUser,
+      isArchived,
     });
   });
 
-  // Конвертируем данные из годового и месячного формата в AccountingNodesReadingsYearHistoryResponse
-  sortedYears.forEach((year) => {
-    const yearItem: AccountingNodesReadingsYearHistoryResponse = {
-      year: year,
-      monthReadings: [],
-    };
-
-    const sortedMonths = Object.keys(readingsByYearAndMonth[year])
-      .map((month) => parseInt(month))
-      .sort((a, b) => a - b);
-
-    sortedMonths.forEach((month) => {
-      const monthItem: AccountingNodesReadingsMonthHistoryResponse = {
-        month: month,
-        readings: readingsByYearAndMonth[year][month],
-      };
-
-      yearItem.monthReadings!.push(monthItem);
-    });
-
-    yearReadings.push(yearItem);
-  });
-
-  return yearReadings;
+  // Формируем итоговую структуру
+  return Object.entries(readingsByYearAndMonth)
+    .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA)) // Сортировка годов по убыванию
+    .map(([year, months]) => ({
+      year: Number(year),
+      monthReadings: Object.entries(months)
+        .sort(([monthA], [monthB]) => Number(monthA) - Number(monthB)) // Сортировка месяцев по возрастанию
+        .map(([month, readings]) => ({
+          month: Number(month),
+          readings: readings.sort((a, b) =>
+            dayjs(b.uploadTime).diff(dayjs(a.uploadTime)),
+          ), // Сортировка по времени
+        })),
+    }));
 }
