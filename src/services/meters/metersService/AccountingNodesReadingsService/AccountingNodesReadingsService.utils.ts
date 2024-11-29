@@ -30,6 +30,7 @@ export function mapToDeviceReadingsHistory(
       isArchived,
     } = reading;
 
+    if (isArchived || isRemoved) return;
     if (!uploadDate || nodeId === undefined || value === undefined) return;
 
     const date = dayjs(uploadDate);
