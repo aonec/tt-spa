@@ -34,6 +34,7 @@ export const CalculatorProfileContainer = () => {
     handleOpenConsumptionReportModal,
     isLoading,
     openDevicesListModal,
+    saveFile,
   } = useUnit({
     isLoading: outputs.$isLoading,
     calculator: outputs.$calculator,
@@ -41,6 +42,7 @@ export const CalculatorProfileContainer = () => {
     handleOpenCheckCalculatorModal: checkCalculatorService.inputs.openModal,
     handleOpenConsumptionReportModal: inputs.handleConsumptionReportModalOpen,
     openDevicesListModal: inputs.openDevicesListModal,
+    saveFile: inputs.saveFile,
   });
 
   const isPermitionToCalculatorActions = usePermission([
@@ -76,6 +78,7 @@ export const CalculatorProfileContainer = () => {
             }
             openDevicesListModal={openDevicesListModal}
             isPermitionToCalculatorActions={isPermitionToCalculatorActions}
+            saveFile={saveFile}
           />
         )}
       </WithLoader>

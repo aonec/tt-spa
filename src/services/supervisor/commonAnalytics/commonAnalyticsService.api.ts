@@ -4,9 +4,11 @@ import {
   DashboardSummaryResponse,
   DashboardTaskMalfunctionResponse,
   DashboardTaskResourceResponse,
+  OrganizationResponsePagedList,
 } from 'api/types';
 import { stringify } from 'query-string';
 import { DashboardQueryParams } from '../currentAnalytics/currentAnalyticsService.types';
+import { getDetailSuffix } from './commonAnalyticsService.utils';
 
 export const commonSummaryQuery = createQuery<
   [DashboardQueryParams],
@@ -19,12 +21,20 @@ export const commonSummaryQuery = createQuery<
     }),
 });
 
+export const dashboardOrganizationsQuery = createQuery<
+  [string | null],
+  OrganizationResponsePagedList
+>({
+  handler: (city) =>
+    axios.get(`/Dashboard/filter/organizations`, { params: { city } }),
+});
+
 export const dashboardPiperuptersQuery = createQuery<
   [DashboardQueryParams],
   DashboardTaskResourceResponse[]
 >({
   handler: (params) =>
-    axios.get(`/Dashboard/common/piperuptures`, {
+    axios.get(`/Dashboard/common/piperuptures${getDetailSuffix(params)}`, {
       params,
       paramsSerializer: (params) => stringify(params),
     }),
@@ -35,7 +45,7 @@ export const dashboardMalfunctionsQuery = createQuery<
   DashboardTaskMalfunctionResponse[]
 >({
   handler: (params) =>
-    axios.get(`/Dashboard/common/malfunctions`, {
+    axios.get(`/Dashboard/common/malfunctions${getDetailSuffix(params)}`, {
       params,
       paramsSerializer: (params) => stringify(params),
     }),
@@ -46,8 +56,11 @@ export const dashboardResourcedisconnectsQuery = createQuery<
   DashboardTaskResourceResponse[]
 >({
   handler: (params) =>
-    axios.get(`/Dashboard/common/resourcedisconnects`, {
-      params,
-      paramsSerializer: (params) => stringify(params),
-    }),
+    axios.get(
+      `/Dashboard/common/resourcedisconnects${getDetailSuffix(params)}`,
+      {
+        params,
+        paramsSerializer: (params) => stringify(params),
+      },
+    ),
 });

@@ -13,7 +13,7 @@ import { Props } from './DashboardAnalyticsDetail.types';
 
 export const DashboardResourceAnalyticsDetail: FC<
   Props<DashboardTaskResourceDetailsModel>
-> = ({ data }) => {
+> = ({ data, title }) => {
   return (
     <Wrapper>
       <Title>
@@ -35,7 +35,12 @@ export const DashboardResourceAnalyticsDetail: FC<
       />
       <AnalyticsDetailWrapper>
         {data.items?.map((item) => (
-          <AnalyticsDetail key={item.id} data={item} />
+          <AnalyticsDetail
+            key={item.id}
+            data={item}
+            title={title}
+            resourceType={data.resourceType}
+          />
         ))}
       </AnalyticsDetailWrapper>
     </Wrapper>

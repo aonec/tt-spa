@@ -6,11 +6,12 @@ import { NodeDocumentsListProps } from './NodeDocumentsList.types';
 
 export const NodeDocumentsList: FC<NodeDocumentsListProps> = ({
   documents,
+  saveFile,
 }) => {
   const isDocsExist = documents.length !== 0;
 
   const list = documents.map((document) => (
-    <NodeDocumentsItem document={document} key={document.id} />
+    <NodeDocumentsItem document={document} key={document.id} saveFile={saveFile} />
   ));
 
   return (

@@ -1,12 +1,61 @@
-import { FC } from 'react';
+import { FC, useCallback } from 'react';
 import { Name, NotClosedTasksCount, Wrapper } from './AnalyticsDetail.styled';
 import { Props } from './AnalyticsDetail.types';
+import { useUnit } from 'effector-react';
+import { commonAnalyticsService } from 'services/supervisor/commonAnalytics/commonAnalyticsService.models';
+import { getTasksFilters } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/DashboardPanel/ResourceStatistic/AnalyticsDetail/AnalyticsDetail.utils';
+import { stringify } from 'query-string';
+import { useNavigate } from 'react-router-dom';
 
-export const AnalyticsDetail: FC<Props> = ({ data, hideExpired }) => {
+export const AnalyticsDetail: FC<Props> = ({
+  data,
+  hideExpired,
+  title,
+  resourceType,
+  malfunctionType,
+}) => {
   const isDanger = data.expiredTasksCount !== 0;
 
+  const { filters, setFilters, dashboardType } = useUnit({
+    filters: commonAnalyticsService.outputs.$dashboardFilters,
+    setFilters: commonAnalyticsService.inputs.setDashboardFilters,
+    dashboardType: commonAnalyticsService.outputs.$currentDashboardType,
+  });
+
+  const navigate = useNavigate();
+
+  const handleClick = useCallback(() => {
+    if (!filters.ManagementFirmId) {
+      setFilters({ ManagementFirmId: data.id, City: title });
+
+      return;
+    }
+
+    const queryString = stringify({
+      city: filters.City,
+      street: data.label,
+      ...getTasksFilters({
+        dashboardType,
+        resourceType,
+        malfunctionType,
+      }),
+    });
+    navigate(`/tasks/list/Observing?${queryString}`);
+  }, [
+    dashboardType,
+    data.id,
+    data.label,
+    filters.City,
+    filters.ManagementFirmId,
+    malfunctionType,
+    navigate,
+    resourceType,
+    setFilters,
+    title,
+  ]);
+
   return (
-    <Wrapper danger={isDanger}>
+    <Wrapper danger={isDanger} onClick={handleClick}>
       <Name>{data.label}</Name>
       <div>
         {!hideExpired && (

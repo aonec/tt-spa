@@ -9,6 +9,7 @@ import {
   GosUslugiIcon,
   ErcIcon,
   UserIcon,
+  OtherSourceIcon,
 } from 'ui-kit/icons';
 
 export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
@@ -22,7 +23,7 @@ export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
     [EIndividualDeviceReadingsSource.TelegramBot]: <TelegramIcon />,
     [EIndividualDeviceReadingsSource.DeviceTelemetry]: <DeviceIcon />,
     [EIndividualDeviceReadingsSource.Duplicated]: <DubbedIcon />,
-    [EIndividualDeviceReadingsSource.TtmFromGis]: <ErcIcon />,
+    [EIndividualDeviceReadingsSource.TtmFromGis]: <OtherSourceIcon />,
   }[sourceType]);
 
 export const getSourceName = (
@@ -40,7 +41,7 @@ export const getSourceName = (
     [EIndividualDeviceReadingsSource.DeviceTelemetry]:
       'Автоматические показания с счетчика',
     [EIndividualDeviceReadingsSource.Duplicated]: 'Продублированные показания',
-    [EIndividualDeviceReadingsSource.TtmFromGis]: 'ГИС (TTM)',
+    [EIndividualDeviceReadingsSource.TtmFromGis]: 'ГИС ЖКХ',
   }[source];
 
   return name;

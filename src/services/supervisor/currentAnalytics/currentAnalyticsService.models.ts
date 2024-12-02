@@ -3,6 +3,7 @@ import { createGate } from 'effector-react';
 import {
   dashboardAverageTimeQuery,
   dashboardMalfunctionsQuery,
+  dashboardOrganizationsQuery,
   dashboardPiperuptersQuery,
   dashboardResourceDisconnectionQuery,
   dashboardServiceQualityQuery,
@@ -28,6 +29,12 @@ const $dashboardFilters = createStore<DashboardQueryParams>({
   To: dayjs().endOf('day').utc(true).toISOString(),
 })
   .on(setDashboardFilters, (prev, data) => ({ ...prev, ...data }))
+  .on(setCurrentDashboardType, (prev) => ({
+    ...prev,
+    ResourceType: null,
+    DeviationType: null,
+    MalfunctionType: null,
+  }))
   .reset(resetDashboardFilters);
 
 const $dashboardParams = combine(
@@ -79,6 +86,14 @@ split({
     [DashboardDataType.AverageCompletionTime]: dashboardAverageTimeQuery.start,
     [DashboardDataType.TasksCount]: dashboardServiceQualityQuery.start,
   },
+});
+
+const $city = $dashboardFilters.map(({ City }) => City || null);
+
+sample({
+  source: $city,
+  clock: [CurrentAnalyticsGate.open, $city.updates],
+  target: dashboardOrganizationsQuery.start,
 });
 
 const $isLoading = combine(

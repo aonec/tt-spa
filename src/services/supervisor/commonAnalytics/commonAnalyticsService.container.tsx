@@ -1,7 +1,10 @@
 import { useUnit } from 'effector-react';
 import { CommonAnalyticsPage } from './CommonAnalyticsPage';
 import { commonAnalyticsService } from './commonAnalyticsService.models';
-import { commonSummaryQuery } from './commonAnalyticsService.api';
+import {
+  commonSummaryQuery,
+  dashboardOrganizationsQuery,
+} from './commonAnalyticsService.api';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 
 const { inputs, outputs, gates } = commonAnalyticsService;
@@ -23,6 +26,7 @@ export const CommonAnalyticsContainer = () => {
     isLoading,
     isLoadingSummary,
     analyticsData,
+    organizations,
   } = useUnit({
     setDashboardFilters: inputs.setDashboardFilters,
     dashboardFilters: outputs.$dashboardFilters,
@@ -33,6 +37,7 @@ export const CommonAnalyticsContainer = () => {
     isLoading: outputs.$isLoading,
     isLoadingSummary: commonSummaryQuery.$pending,
     analyticsData: outputs.$analyticsData,
+    organizations: dashboardOrganizationsQuery.$data,
   });
 
   return (
@@ -49,6 +54,7 @@ export const CommonAnalyticsContainer = () => {
         isLoading={isLoading}
         isLoadingSummary={isLoadingSummary}
         analyticsData={analyticsData}
+        organizations={organizations}
       />
     </>
   );

@@ -13,7 +13,7 @@ import { MalfunctionIcon } from './MalfunctionIcon';
 
 export const DashboardMalfunctionAnalyticsDetail: FC<
   Props<DashboardTaskMalfunctionDetailsModel>
-> = ({ data }) => {
+> = ({ data, title }) => {
   return (
     <Wrapper>
       <Title>
@@ -40,7 +40,12 @@ export const DashboardMalfunctionAnalyticsDetail: FC<
       />
       <AnalyticsDetailWrapper>
         {data.items?.map((item) => (
-          <AnalyticsDetail key={item.id} data={item} />
+          <AnalyticsDetail
+            key={item.id}
+            data={item}
+            title={title}
+            malfunctionType={data.malfunctionType}
+          />
         ))}
       </AnalyticsDetailWrapper>
     </Wrapper>
