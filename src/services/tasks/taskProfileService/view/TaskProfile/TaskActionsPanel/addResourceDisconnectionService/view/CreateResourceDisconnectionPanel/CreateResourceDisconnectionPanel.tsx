@@ -7,7 +7,10 @@ import { Props } from './CreateResourceDisconnectionPanel.types';
 import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { DisablingResourceItem } from 'services/settings/resourcesDisablingScheduleService/views/DisablingResourcesList/DisablingResourceItem/DisablingResourceItem';
-import { ETaskConfirmationType } from 'api/types';
+import {
+  ETaskConfirmationType,
+  ResourceDisconnectingResponse,
+} from 'api/types';
 import { Trash } from 'react-bootstrap-icons';
 
 export const CreateResourceDisconnectionPanel: FC<Props> = ({
@@ -34,7 +37,9 @@ export const CreateResourceDisconnectionPanel: FC<Props> = ({
         <FormItem label="Отключение ресурса">
           <DisconnectionWrapper>
             <DisablingResourceItem
-              disconnection={createDisconnectionRequestPayload as any}
+              disconnection={
+                createDisconnectionRequestPayload as unknown as ResourceDisconnectingResponse
+              }
               openModal={() => void 0}
               key={0}
               isMinimized

@@ -49,7 +49,7 @@ const $appointment = createStore<AppointmentResponse | null>(null)
   .on(openModal, (_, { appointment }) => appointment)
   .reset(closeModal);
 const $actionType = $appointment.map((appointment) =>
-  Boolean(appointment)
+  appointment
     ? WorkWithAppointmentType.edit
     : WorkWithAppointmentType.create,
 );

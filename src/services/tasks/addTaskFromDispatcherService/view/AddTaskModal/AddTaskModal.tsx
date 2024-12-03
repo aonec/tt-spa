@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { AddTaskModalProps } from './AddTaskModal.types';
 import { AddTaskForm } from './AddTaskForm/AddTaskForm';
 import { FormModal } from 'ui-kit/Modals/FormModal/FormModal';

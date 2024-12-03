@@ -153,9 +153,11 @@ export const CreateDistrictBorderMapPage: FC<Props> = ({
         </div>
         <SearchAddresses
           handleSelect={(building) => {
+            if (!building.coordinates) return;
+
             const center = [
-              building.coordinates?.latitude!,
-              building.coordinates?.longitude!,
+              building.coordinates.latitude,
+              building.coordinates.longitude,
             ];
 
             setSearchBuilding(building);

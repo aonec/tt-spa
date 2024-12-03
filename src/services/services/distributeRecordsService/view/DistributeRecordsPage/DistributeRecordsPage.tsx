@@ -71,7 +71,7 @@ export const DistributeRecordsPage: FC<Props> = ({
           disabled={!appointmentDate}
           value={getDatePickerValue(appointmentDate)}
           onChange={(date) => {
-            date && handleSetAppointmentDate(date.format('YYYY-MM-DD'));
+            if (date) handleSetAppointmentDate(date.format('YYYY-MM-DD'));
           }}
           small
           style={{ width: 240 }}

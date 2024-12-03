@@ -23,7 +23,7 @@ export const ObjectDisconnectionAlerts: FC<ObjectDisconnectionAlertsProps> = ({
     }
 
     return (
-      <AlertWrapper>
+      <AlertWrapper key={disconnection.id}>
         <Alert type={AlertType.default} icon={AlertIconType.stop}>
           <AlertContent>
             <div>

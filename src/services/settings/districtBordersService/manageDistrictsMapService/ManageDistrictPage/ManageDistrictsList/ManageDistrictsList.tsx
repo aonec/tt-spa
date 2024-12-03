@@ -228,11 +228,12 @@ export const ManageDistrictsList: FC<Props> = ({
                                             color:
                                               ContextMenuButtonColor.danger,
                                             onClick: () => {
-                                              buildingId &&
+                                              if (buildingId) {
                                                 setDeletePayloadData({
                                                   districtId,
                                                   buildingId,
                                                 });
+                                              }
                                             },
                                           },
                                         ]}

@@ -20,7 +20,6 @@ export const SearchInspectorsHousingStocks: FC<
   inspectors,
   hosuingManagements,
   handleApplyFilters,
-  handleClearExtendedSearchValues,
   isSearchError,
   initialCity,
   handleSearchInspector,

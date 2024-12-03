@@ -39,7 +39,9 @@ export function useReadingHistoryValues() {
       try {
         await axios.post(`IndividualDeviceReadings/${id}/remove`);
         readingsHistoryService.inputs.refetchReadingHistory(Number(deviceId));
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      }
     },
     [deviceId],
   );
@@ -135,7 +137,7 @@ export function useReadingHistoryValues() {
         [dateString]: 'pending',
       }));
       try {
-        reading.value1 !== null && (await createReading(reading));
+        if (reading.value1 !== null) await createReading(reading);
         readingsHistoryService.inputs.refetchReadingHistory(Number(deviceId));
 
         setUploadingReadingsStatuses((prev) => ({

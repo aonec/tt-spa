@@ -189,7 +189,7 @@ export const createDiagramPie = (
   const length = 2 * Math.PI * radius;
 
   // смещение начальной точки
-  let startPoint = config.start in offsetRatio ? config.start : 'top';
+  const startPoint = config.start in offsetRatio ? config.start : 'top';
   const chartOffset = length * offsetRatio[startPoint];
 
   // расчетные данные для построения секторов
@@ -202,7 +202,7 @@ export const createDiagramPie = (
     let offset = chartOffset;
 
     if (sectorIndex > 0) {
-      let prevSector = sectors[sectorIndex - 1];
+      const prevSector = sectors[sectorIndex - 1];
       offset = prevSector.offset - prevSector.width;
     }
 

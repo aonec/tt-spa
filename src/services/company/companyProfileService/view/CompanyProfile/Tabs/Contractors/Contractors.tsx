@@ -29,6 +29,7 @@ export const Contractors: FC<ContractorsProps> = ({
         conractorsList?.items &&
         conractorsList.items.map((contractor) => (
           <ContractorItem
+            key={contractor.id}
             contractor={contractor}
             catchContractorId={catchContractorId}
             handleOpenEditContractorModal={handleOpenEditContractorModal}

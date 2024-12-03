@@ -37,6 +37,7 @@ export const getPayloadFromDistrict = (
       houses: district.houses || [],
     };
   } catch (e) {
+    console.error(e);
     return null;
   }
 };

@@ -40,7 +40,6 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
 
   useEffect(() => {
     setDistrictName(name);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formSection]);
 
   const handleSubmit = useCallback(() => {

@@ -25,7 +25,6 @@ export function useYMaps(
     setMap(map);
 
     return () => map.geoObjects.removeAll();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultCoordinates]);
 
   useEffect(() => {

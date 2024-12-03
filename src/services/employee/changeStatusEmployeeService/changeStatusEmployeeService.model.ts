@@ -132,10 +132,12 @@ sample({
   clock: fetchOrganizationUserTasksByRoles,
   source: $currentUser,
   filter: (user): user is OrganizationUserResponse => Boolean(user),
-  fn: (user): GetOrganizationUserTasksByRolesRequestParams => {
+  fn: (
+    user: OrganizationUserResponse,
+  ): GetOrganizationUserTasksByRolesRequestParams => {
     return {
-      userId: user?.id!,
-      roles: user?.roles!,
+      userId: user.id,
+      roles: user.roles || [],
     };
   },
   target: fetchOrganizationUserTasksByRolesFx,
@@ -187,7 +189,7 @@ successUpdateStatus.watch(() => message.success('Статус изменен!'))
 sample({
   source: $employeeStatus,
   filter: (data): data is EmployeeStatus => Boolean(data),
-  fn: (data) => data?.id!,
+  fn: (data: EmployeeStatus) => data.id,
   target: fetchOrganizationUserFx,
 });
 

@@ -115,16 +115,18 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
   const isSerialNumberAllreadyExist =
     serialNumberForChecking?.items?.[0]?.serialNumber === values.serialNumber;
 
-  const onChangeStartupReadings = (valueNumber: 1 | 2 | 3) => (e: any) =>
-    setFieldValue(
-      `startupReadings${valueNumber}`,
-      e.target.value === '' ? null : Number(e.target.value),
-    );
-  const onChangeDefaultReadings = (valueNumber: 1 | 2 | 3) => (e: any) =>
-    setFieldValue(
-      `defaultReadings${valueNumber}`,
-      e.target.value === '' ? null : Number(e.target.value),
-    );
+  const onChangeStartupReadings =
+    (valueNumber: 1 | 2 | 3) => (e: React.ChangeEvent<HTMLInputElement>) =>
+      setFieldValue(
+        `startupReadings${valueNumber}`,
+        e.target.value === '' ? null : Number(e.target.value),
+      );
+  const onChangeDefaultReadings =
+    (valueNumber: 1 | 2 | 3) => (e: React.ChangeEvent<HTMLInputElement>) =>
+      setFieldValue(
+        `defaultReadings${valueNumber}`,
+        e.target.value === '' ? null : Number(e.target.value),
+      );
 
   const rateNum = getIndividualDeviceRateNumByName(values.rateType);
 
@@ -277,7 +279,9 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
             onChange={(value) => setFieldValue('mountPlaceId', value)}
           >
             {mountPlaces?.map((elem) => (
-              <Select.Option value={elem.id}>{elem.description}</Select.Option>
+              <Select.Option value={elem.id} key={elem.id}>
+                {elem.description}
+              </Select.Option>
             ))}
           </Select>
           <ErrorMessage>{errors.mountPlaceId}</ErrorMessage>

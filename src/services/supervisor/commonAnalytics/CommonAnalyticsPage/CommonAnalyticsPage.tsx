@@ -49,6 +49,7 @@ export const CommonAnalyticsPage: FC<Props> = ({
       {!isLoading &&
         analyticsData?.map?.((analyticsData) => (
           <StatisticItem
+            key={analyticsData.title}
             data={analyticsData}
             selectValue={selectValue}
             currentDashboardType={currentDashboardType}
