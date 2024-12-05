@@ -25,7 +25,7 @@ export const AddTemperatureFileModal: FC<AddTemperatureFileModalProps> = ({
   setFile,
 }) => {
   const handleSubmit = () => {
-    file && handlePostTemplateFile(file);
+    if (file) handlePostTemplateFile(file);
   };
 
   return (
@@ -36,7 +36,7 @@ export const AddTemperatureFileModal: FC<AddTemperatureFileModalProps> = ({
       formId={formId}
       customSubmit={
         <ButtonFloat
-          disabled={!Boolean(file)}
+          disabled={!file}
           onClick={handleSubmit}
           isLoading={isFileLoading}
         >

@@ -401,12 +401,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onChange={(value) => {
                   setFieldValue('requestTime', value);
                 }}
-                onKeyDown={(event: any) => {
-                  if (
-                    event.key !== 'Backspace' &&
-                    event.currentTarget.value.length === 2
-                  ) {
-                    event.currentTarget.value = event.currentTarget.value + ':';
+                onKeyDown={(event) => {
+                  const target = event.currentTarget as HTMLInputElement;
+                  if (event.key !== 'Backspace' && target.value.length === 2) {
+                    target.value = target.value + ':';
                   }
                 }}
               />
@@ -444,8 +442,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onSelect={(value) => {
                 setFieldValue('selectedObjectAddress', value);
                 handleSelectHousingAddress(value);
-                values.apartmentNumber &&
+                if (values.apartmentNumber) {
                   handleSelectApartmentNumber(values.apartmentNumber);
+                }
 
                 if (isOnlySubscriberRequired || isNoAdditionalFieldsRequired) {
                   next(1);
@@ -575,7 +574,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
         {Boolean(resourceDisconnection.length) &&
           resourceDisconnection.map((disconnection) => (
-            <Alert centered icon={AlertIconType.info}>
+            <Alert centered icon={AlertIconType.info} key={disconnection.id}>
               {getResourceDisconnectionAlert(
                 disconnection.disconnectingType,
                 disconnection.resource,
@@ -651,7 +650,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
               onMouseDown={() => setReasonOpen(true)}
             >
               {taskReasonOptions.map((elem) => (
-                <Select.Option value={elem.value}>{elem.label}</Select.Option>
+                <Select.Option value={elem.value} key={elem.key}>
+                  {elem.label}
+                </Select.Option>
               ))}
             </SelectExpandable>
           </FormItem>
@@ -730,8 +731,9 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 }}
                 value={values.taskDeadlineDate}
                 onChange={(value) => {
-                  value !== undefined &&
+                  if (value) {
                     setFieldValue('taskDeadlineDate', value);
+                  }
                   setDatePickerOpen(false);
 
                   if (isNoAdditionalFieldsRequired) {
@@ -747,23 +749,25 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                     next(8);
                   }
                 }}
-                onKeyDown={fromEnter(() => {
-                  setFieldValue('taskDeadlineDate', dayjs());
-                  setDatePickerOpen(false);
+                onKeyDown={(e) =>
+                  fromEnter(() => {
+                    setFieldValue('taskDeadlineDate', dayjs());
+                    setDatePickerOpen(false);
 
-                  if (isNoAdditionalFieldsRequired) {
-                    next(5);
-                  }
-                  if (isOnlySourceNumberRequired) {
-                    next(6);
-                  }
-                  if (isOnlySubscriberRequired) {
-                    next(7);
-                  }
-                  if (isSubscriberAndSourceNumberRequired) {
-                    next(8);
-                  }
-                })}
+                    if (isNoAdditionalFieldsRequired) {
+                      next(5);
+                    }
+                    if (isOnlySourceNumberRequired) {
+                      next(6);
+                    }
+                    if (isOnlySubscriberRequired) {
+                      next(7);
+                    }
+                    if (isSubscriberAndSourceNumberRequired) {
+                      next(8);
+                    }
+                  })(e as React.KeyboardEvent<HTMLInputElement>)
+                }
               />
               <TimePickerMedium
                 needConfirm={true}
@@ -779,12 +783,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                 onMouseDown={() => {
                   setFieldValue('taskDeadlineTime', null);
                 }}
-                onKeyDown={(event: any) => {
-                  if (
-                    event.key !== 'Backspace' &&
-                    event.currentTarget.value.length === 2
-                  ) {
-                    event.currentTarget.value = event.currentTarget.value + ':';
+                onKeyDown={(event) => {
+                  const target = event.currentTarget as HTMLInputElement;
+                  if (event.key !== 'Backspace' && target.value.length === 2) {
+                    target.value = target.value + ':';
                   }
 
                   fromEnter(() => {
@@ -800,7 +802,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
                     if (isSubscriberAndSourceNumberRequired) {
                       next(9);
                     }
-                  })(event);
+                  })(event as React.KeyboardEvent<HTMLInputElement>);
                 }}
                 onOk={() => {
                   if (isNoAdditionalFieldsRequired) {

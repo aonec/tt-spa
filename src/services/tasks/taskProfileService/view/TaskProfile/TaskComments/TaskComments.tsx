@@ -16,7 +16,6 @@ export const TaskComments: FC<TaskCommentsProps> = ({
   comments,
   handleAddComment,
   handleSetComment,
-  isPerpetrator,
   commentText,
 }) => {
   const isCurrentCommentEmpty = commentText === '';

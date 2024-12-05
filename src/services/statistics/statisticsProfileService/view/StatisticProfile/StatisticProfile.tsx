@@ -39,7 +39,7 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
     if (searchType === SubscribersConsumptionSearchType.Houses) {
       return [
         {
-          hidden: !Boolean(housingStockId),
+          hidden: !housingStockId,
           title: 'Выгрузить список квартир',
           onClick: () => {
             const { BuildingNumber, Street } = housingStockAddress;

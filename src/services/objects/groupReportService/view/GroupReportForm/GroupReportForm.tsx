@@ -32,6 +32,7 @@ import { SelectMultiple } from 'ui-kit/SelectMultiple';
 import { ExportReportTypeTranslatesLookup } from 'services/reportsService/reportViewService/reportViewService.constants';
 import { prepareAddressesTreeData } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.utils';
 import { RegularUnloading } from './RegularUnloading';
+import { omit } from 'lodash';
 
 const withoutHouseMagement = 'withoutHouseMagement';
 
@@ -67,10 +68,8 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: (values) => {
-      const { isRegular, ...payload } = values;
-
       handleDownload({
-        ...payload,
+        ...omit(values, 'isRegular'),
         From: dayjs(values.From).format('YYYY-MM-DD'),
         To: dayjs(values.To).format('YYYY-MM-DD'),
       });

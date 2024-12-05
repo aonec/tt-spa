@@ -11,14 +11,12 @@ export const getIndividualDevice = async (
   id: number,
 ): Promise<IndividualDeviceResponse> => {
   if (!id) throw new Error('no id');
-  try {
-    const res: IndividualDeviceResponse = await axios.get(
-      `IndividualDevices/${id}`,
-    );
-    return res;
-  } catch (e) {
-    throw new Error(e as any);
-  }
+
+  const res: IndividualDeviceResponse = await axios.get(
+    `IndividualDevices/${id}`,
+  );
+
+  return res;
 };
 
 export const getIndividualDevicesModels = async (

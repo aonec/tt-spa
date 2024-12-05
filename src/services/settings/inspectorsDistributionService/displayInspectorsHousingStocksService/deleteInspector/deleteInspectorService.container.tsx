@@ -1,3 +1,4 @@
+import React from 'react';
 import { deleteInspectorService } from './deleteInspectorService.models';
 import { useUnit } from 'effector-react';
 import { FormModal } from 'ui-kit/Modals/FormModal';
@@ -25,7 +26,7 @@ export const DeleteInspectorContainer = () => {
       loading={isLoading}
       form={
         <Wrapper>
-          Вы действительно хоитие удалить инспектора "{inspector?.fullName}"
+          Вы действительно хоитие удалить инспектора &quot;{inspector?.fullName}&quot;
         </Wrapper>
       }
       submitButtonType="danger"

@@ -11,7 +11,7 @@ import { isUndefined } from 'lodash/fp';
 export const isDevMode = false;
 // import.meta.env.VITE_DEV_SETTINGS !== 'DISABLED' || true;
 
-let refreshPromise: null | Promise<any> = null;
+let refreshPromise: null | Promise<unknown> = null;
 const clearPromise = () => (refreshPromise = null);
 
 axios.defaults.baseURL = apiService.outputs.$devUrl.getState();
@@ -55,7 +55,7 @@ axios.interceptors.response.use(
       tokensService.inputs.setRefreshToken(refreshToken);
 
       saveToLocalStorage('permissions', permissions);
-      checkUrl('login', url) && saveToLocalStorage('roles', roles);
+      if (checkUrl('login', url)) saveToLocalStorage('roles', roles);
     }
 
     if (url && checkUrl('(users/current)', url)) {

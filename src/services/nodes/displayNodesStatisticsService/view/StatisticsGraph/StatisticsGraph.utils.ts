@@ -27,7 +27,7 @@ export function prepareDataForNodeStatistic(
   const result = [];
 
   for (let iterator = 0, index = 0; iterator < elemsCount; iterator++) {
-    let elem = {
+    const elem = {
       ...data[index],
       time: dayjs(data[index].time).utcOffset(0).format(),
     };
@@ -58,7 +58,7 @@ export function prepareDataForNodeStatistic(
 }
 
 const getTaskXPos = (payload: GetTaskXPosPayload) => {
-  let { currentData, minDate, maxDate, reportType } = payload;
+  const { currentData, minDate, maxDate, reportType } = payload;
   if (!currentData) {
     return null;
   }

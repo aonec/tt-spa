@@ -79,7 +79,7 @@ const $filteredProblemDevices =
     if (!devices) return [];
 
     return devices.filter((device) => {
-      return !Boolean(device.closingDate);
+      return !device.closingDate;
     });
   });
 

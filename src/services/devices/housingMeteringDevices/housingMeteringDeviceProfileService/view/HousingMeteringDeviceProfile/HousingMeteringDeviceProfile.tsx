@@ -49,7 +49,7 @@ export const HousingMeteringDeviceProfile: FC<
   const deviceAddress = housingMeteringDevice?.address?.address?.mainAddress;
   const deviceModel = housingMeteringDevice?.model;
   const deviceNumber = housingMeteringDevice?.serialNumber;
-  const isActive = !Boolean(housingMeteringDevice?.closingDate);
+  const isActive = !housingMeteringDevice?.closingDate;
   const resource = housingMeteringDevice?.resource;
 
   const tasksCount = housingMeteringDeviceTasks?.items?.length || 0;

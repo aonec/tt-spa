@@ -73,8 +73,9 @@ export const AccountingNodesReadingsInputContainer: FC<
             </>
           ),
           onSubmit: () => {
-            reading?.id &&
+            if (reading?.id) {
               removeReading({ id: reading.id, deviceId: device.id });
+            }
           },
           onCancel: closeConfirmReadingModal,
         });

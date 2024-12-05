@@ -46,7 +46,7 @@ export const SwitchStage: FC<SwitchStageProps> = ({
     validateOnChange: false,
     enableReinitialize: true,
     onSubmit: (data) => {
-      homeowner?.personalAccountNumber &&
+      if (homeowner?.personalAccountNumber) {
         handleSubmitSwitchStage({
           form: {
             personalAccountNumber: data.personalAccountNumber,
@@ -58,6 +58,7 @@ export const SwitchStage: FC<SwitchStageProps> = ({
           },
           replaceableAccountId: homeowner?.id,
         });
+      }
     },
   });
 

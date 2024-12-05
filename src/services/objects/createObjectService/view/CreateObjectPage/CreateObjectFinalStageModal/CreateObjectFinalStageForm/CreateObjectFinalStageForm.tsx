@@ -67,7 +67,9 @@ export const CreateObjectFinalStageForm: FC<
               </FieldDescrition>
               <GridContainerForAdditionalAddresses>
                 {createObjectData.additionalAddresses.map((elem) => (
-                  <FieldForAdditionalAddresses>
+                  <FieldForAdditionalAddresses
+                    key={`${elem.street}${elem.house}${elem.corpus}`}
+                  >
                     ул. {elem.street},
                     <SpacesHouseNumber>{elem.house}</SpacesHouseNumber>
                     {elem.corpus ? `к. ${elem.corpus} ` : ''}

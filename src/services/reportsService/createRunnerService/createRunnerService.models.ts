@@ -78,7 +78,7 @@ const $stageNumber = createStore(1)
   .reset(handleReset);
 
 const $failDataCount = createStore(0)
-  .on(handleFailData, (prev, _) => {
+  .on(handleFailData, (prev) => {
     return prev + 1;
   })
   .reset(handleReset);
@@ -113,11 +113,11 @@ handleReset.watch(() => {
 sample({
   clock: handleDownloadFile,
   source: $runnerReportPollInfo,
-  filter: (pollInfo) => {
+  filter: (pollInfo): pollInfo is PollResponse => {
     return pollInfo?.status === PollStatus.Done && Boolean(pollInfo?.id);
   },
-  fn: (pollInfo) => {
-    return pollInfo?.id!;
+  fn: (pollInfo: PollResponse) => {
+    return pollInfo.id;
   },
   target: getRunnerReportFileFx,
 });

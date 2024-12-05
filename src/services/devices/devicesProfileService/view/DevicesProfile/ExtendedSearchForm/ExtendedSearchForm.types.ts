@@ -5,7 +5,11 @@ import { NodesListRequestForm } from 'services/devices/displayDevicesService/dis
 
 export type ExtendedSearchFormProps = {
   values: NodesListRequestForm;
-  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+  setFieldValue: (
+    field: string,
+    value: unknown,
+    shouldValidate?: boolean,
+  ) => void;
   diametersConfig: DiamtersConfig;
   calculatorsModels: string[];
   handleFetchModels: (payload: string) => void;

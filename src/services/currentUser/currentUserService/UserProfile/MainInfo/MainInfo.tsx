@@ -16,7 +16,9 @@ export const MainInfo: FC<Props> = ({ currentUser }) => {
 
   const sortedUserRoles = sortUserRoles(currentUser.roles || []);
 
-  const roles = sortedUserRoles.map((role) => <Role> {role.value} </Role>);
+  const roles = sortedUserRoles.map((role) => (
+    <Role key={role.key}> {role.value} </Role>
+  ));
 
   return (
     <Wrapper>

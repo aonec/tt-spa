@@ -32,7 +32,7 @@ export const SearchAddresses: FC<SearchAddressesProps> = ({
   }, [existingHousingStocks?.items]);
 
   useEffect(() => {
-    const selectedOption = searchAdressesOptions.find(({ value, id }) => {
+    const selectedOption = searchAdressesOptions.find(({ value }) => {
       return value === search;
     });
 
