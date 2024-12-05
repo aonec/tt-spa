@@ -2491,6 +2491,8 @@ export interface GroupReportScheduleDetailsRequest {
   contractorIds?: number[] | null;
   /** @format date-time */
   initialDate?: string;
+  /** @format date-time */
+  nextDate?: string | null;
   reportSchedulePeriod: GroupReportSchedulePeriod;
 }
 
@@ -12467,6 +12469,7 @@ export class Api<
      */
     organizationsList: (
       query?: {
+        HeadManagementIncluded?: boolean;
         /** @format int32 */
         PageNumber?: number;
         /** @format int32 */
@@ -13309,11 +13312,11 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsCreategroupreportscheduleCreate
-     * @summary ReportRead
+     * @summary ReportAdd
      * @request POST:/api/Reports/creategroupreportschedule
      * @secure
      */
@@ -13342,6 +13345,23 @@ export class Api<
     reportsGetgroupreportscheduleList: (params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Reports/getgroupreportschedule`,
+        method: 'GET',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
+     *
+     * @tags Reports
+     * @name ReportsUpdategroupreportscheduleList
+     * @summary ReportRead
+     * @request GET:/api/Reports/updategroupreportschedule
+     * @secure
+     */
+    reportsUpdategroupreportscheduleList: (params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/updategroupreportschedule`,
         method: 'GET',
         secure: true,
         ...params,
@@ -13606,6 +13626,30 @@ export class Api<
     ) =>
       this.request<File, ErrorApiResponse>({
         path: `/api/Reports/FeedFlowPipeTemperatureReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reports
+     * @name ReportsDevicesWithLastReadingReportList
+     * @request GET:/api/Reports/DevicesWithLastReadingReport
+     * @secure
+     */
+    reportsDevicesWithLastReadingReportList: (
+      query?: {
+        /** @format uuid */
+        HouseManagementId?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/DevicesWithLastReadingReport`,
         method: 'GET',
         query: query,
         secure: true,
