@@ -50,6 +50,7 @@ export const AccountingNodesReadings: FC<AccountingNodesReadingsProps> = ({
           }
         }
         isError={!address && isElectricNodesFetched}
+        isCityPreselected
       />
       <WithLoader isLoading={isLoading}>
         <Wrapper>

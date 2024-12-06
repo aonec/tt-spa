@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react';
-import { last } from 'lodash';
+import { isEmpty, last } from 'lodash';
 import React, { FC, useEffect, useMemo } from 'react';
 import { addressSearchService } from './addressSearchService.models';
 import { AddressSearchContainerProps } from './addressSearchService.types';
@@ -74,31 +74,8 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   );
 
   useEffect(() => {
-    initialValues && setInitialValues(initialValues);
+    setInitialValues(initialValues || null);
   }, [initialValues, setInitialValues]);
-
-  // useEffect(() => {
-  //   if (verifiedInitialValues) {
-  //     setValues({
-  //       apartment: verifiedInitialValues.apartment || '',
-  //       corpus: verifiedInitialValues.corpus || '',
-  //       house: verifiedInitialValues.house || '',
-  //       question: verifiedInitialValues.question || '',
-  //       street: verifiedInitialValues.street || '',
-  //       city: verifiedInitialValues.city || '',
-  //     });
-  //   }
-  //   if (!verifiedInitialValues || isEmpty(verifiedInitialValues)) {
-  //     setValues({
-  //       city: values.city,
-  //       apartment: '',
-  //       corpus: '',
-  //       house: '',
-  //       question: '',
-  //       street: '',
-  //     });
-  //   }
-  // }, [setValues, verifiedInitialValues, values.city]);
 
   useEffect(() => {
     const withApartment = preparedFields.some(
