@@ -5410,13 +5410,13 @@ export interface UpdateElectricHousingMeteringDeviceRequest {
   bitDepth?: number | null;
   /** @format double */
   scaleFactor?: number | null;
-  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
-  resource?: EResourceType | null;
-  model?: string | null;
   /** @format date-time */
   lastCheckingDate?: string | null;
   /** @format date-time */
   futureCheckingDate?: string | null;
+  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
+  resource?: EResourceType | null;
+  model?: string | null;
   /** @format date-time */
   installationDate?: string | null;
   /** @format int32 */
@@ -5464,6 +5464,10 @@ export interface UpdateIndividualDeviceRequest {
   bitDepth?: number | null;
   /** @format double */
   scaleFactor?: number | null;
+  /** @format date-time */
+  lastCheckingDate?: string | null;
+  /** @format date-time */
+  futureCheckingDate?: string | null;
   model?: string | null;
   /** @format int32 */
   mountPlaceId?: number | null;
@@ -5511,13 +5515,13 @@ export interface UpdatePipeHousingMeteringDeviceRequest {
   bitDepth?: number | null;
   /** @format double */
   scaleFactor?: number | null;
-  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
-  resource?: EResourceType | null;
-  model?: string | null;
   /** @format date-time */
   lastCheckingDate?: string | null;
   /** @format date-time */
   futureCheckingDate?: string | null;
+  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
+  resource?: EResourceType | null;
+  model?: string | null;
   /** @format int32 */
   communicationPipeId?: number;
 }
