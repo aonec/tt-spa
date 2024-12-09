@@ -90,6 +90,14 @@ export const MainInfo: FC<MainInfoProps> = ({
         closingDate: !data.closingDate
           ? null
           : dayjs(data.closingDate, 'DD.MM.YYYY').format(),
+
+        lastCheckingDate: !data.lastCheckingDate
+          ? null
+          : dayjs(data.lastCheckingDate, 'DD.MM.YYYY').format(),
+
+        futureCheckingDate: !data.futureCheckingDate
+          ? null
+          : dayjs(data.futureCheckingDate, 'DD.MM.YYYY').format(),
       };
       const deviceId = individualDevice.id;
 
@@ -213,16 +221,16 @@ export const MainInfo: FC<MainInfoProps> = ({
       <GridContainer>
         <FormItem label="Дата поверки">
           <DatePicker
-            disabled
             value={dayjs(values.lastCheckingDate)}
             format={{ format: 'DD.MM.YYYY', type: 'mask' }}
+            onChange={(value) => setFieldValue('lastCheckingDate', value)}
           />
         </FormItem>
         <FormItem label="Дата Следующей поверки">
           <DatePicker
-            disabled
             value={dayjs(values.futureCheckingDate)}
             format={{ format: 'DD.MM.YYYY', type: 'mask' }}
+            onChange={(value) => setFieldValue('futureCheckingDate', value)}
           />
         </FormItem>
       </GridContainer>
