@@ -16,6 +16,7 @@ import { round } from 'utils/round';
 import { useNodeReadings } from './AccountingNodeReadingsLine.hook';
 import { getNodeReadingValue } from './AccountingNodeReadingsLine.utils';
 import { AccountingNodeReadingsInputBlock } from '../AccountingNodeReadingsInputBlock';
+import { HistoryIcon } from 'ui-kit/icons';
 
 export const AccountingNodeReadingsLine: FC<
   AccountingNodeReadingsLineProps
@@ -29,6 +30,7 @@ export const AccountingNodeReadingsLine: FC<
   handleSendNonResConsumption,
   readings,
   handleUpdateReadingsSum,
+  handleOpenHistory,
 }) => {
   const navigate = useNavigate();
 
@@ -152,6 +154,9 @@ export const AccountingNodeReadingsLine: FC<
       ) : (
         <div />
       )}
+
+      <HistoryIcon onClick={() => handleOpenHistory(device.id)} />
+
       <ContextMenuWrapper>
         <ContextMenuButton
           size="small"

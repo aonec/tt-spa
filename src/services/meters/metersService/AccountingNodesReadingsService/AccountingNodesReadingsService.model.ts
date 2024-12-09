@@ -67,6 +67,14 @@ const $sumOfReadings = $readingsList.map((readings) =>
   }, 0),
 );
 
+const handleOpenHistory = createEvent<number>();
+const handleCloseHistory = createEvent();
+
+const $deviceId = createStore<number | null>(null)
+  .on(handleOpenHistory, (_, id) => id)
+  .reset(handleCloseHistory);
+const $isHistoryOpen = $deviceId.map(Boolean);
+
 const $isLoading = getElectricNodesQuery.$pending;
 
 sample({
@@ -96,12 +104,16 @@ export const AccountingNodesReadingsService = {
     upSliderIndex,
     downSliderIndex,
     updateNodeReadings,
+    handleOpenHistory,
+    handleCloseHistory,
   },
   outputs: {
     $housingStockAddress,
     $isLoading,
     $sliderIndex,
     $sumOfReadings,
+    $deviceId,
+    $isHistoryOpen,
   },
   gates: {
     HousingStockIdGate,

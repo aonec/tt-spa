@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { ChevronIcon } from 'ui-kit/icons';
 
 export const accountingNodesReadingsListTemplate =
-  '0.9fr 0.38fr 0.6fr 0.6fr 0.35fr 0.6fr 70px';
+  '0.9fr 0.38fr 0.6fr 0.6fr 0.35fr 0.6fr 6px 60px';
 
 export const Wrapper = styled.div`
   display: grid;
