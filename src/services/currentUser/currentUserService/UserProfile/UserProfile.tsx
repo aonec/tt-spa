@@ -7,6 +7,7 @@ import { MainInfo } from './MainInfo';
 import { NotificationsContainer } from './Notifications/notificationsService.container';
 import { usePermission } from 'hooks/usePermission';
 import { ESecuredIdentityRoleName } from 'api/types';
+import { RegularReportsContainer } from './RegularReports';
 
 export const UserProfile: FC<Props> = ({ currentUser }) => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ export const UserProfile: FC<Props> = ({ currentUser }) => {
     () => [
       { label: 'Общие данные', key: UserProfileSection.MainInfo },
       { label: 'Уведомления', key: UserProfileSection.Notifications },
+      { label: 'Регулярные отчеты', key: UserProfileSection.RegularReports },
     ],
     [],
   );
@@ -54,6 +56,9 @@ export const UserProfile: FC<Props> = ({ currentUser }) => {
       )}
       {section === UserProfileSection.Notifications && (
         <NotificationsContainer />
+      )}
+      {section === UserProfileSection.RegularReports && (
+        <RegularReportsContainer />
       )}
     </Wrapper>
   );

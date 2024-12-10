@@ -1188,14 +1188,14 @@ export interface CreateElectricNodeRequest {
   counter?: CreateElectricHousingMeteringDeviceRequest | null;
 }
 
+export interface CreateGroupReportConfigurationRequest {
+  reportConfigurationDetails: GroupReportConfigurationDetailsRequest;
+  report: ComposeGroupReportRequest;
+}
+
 export interface CreateGroupReportRequest {
   title?: string | null;
   housingStockIds?: number[] | null;
-}
-
-export interface CreateGroupReportScheduleRequest {
-  reportScheduleDetails: GroupReportScheduleDetailsRequest;
-  report: ComposeGroupReportRequest;
 }
 
 export interface CreateHousingMeteringDeviceReadingsRequest {
@@ -2449,6 +2449,22 @@ export interface GetSummaryHousingConsumptionsByResourcesResponse {
   consumptions: EResourceTypeDoubleDictionaryItem[] | null;
 }
 
+export interface GroupReportConfigurationDetailsRequest {
+  emails: string[];
+  contractorIds: number[];
+  /** @format date-time */
+  initialDate: string;
+  /** @format date-time */
+  nextDate?: string | null;
+  reportConfigurationPeriod: GroupReportConfigurationPeriod;
+}
+
+export enum GroupReportConfigurationPeriod {
+  EveryTwoWeeks = 'EveryTwoWeeks',
+  EveryMonth = 'EveryMonth',
+  EveryQuarter = 'EveryQuarter',
+}
+
 export interface GroupReportContractorResponse {
   /** @format int32 */
   id: number;
@@ -2484,22 +2500,6 @@ export interface GroupReportResponse {
   /** @format uuid */
   houseManagementId: string | null;
   title: string | null;
-}
-
-export interface GroupReportScheduleDetailsRequest {
-  emails: string[];
-  contractorIds?: number[] | null;
-  /** @format date-time */
-  initialDate?: string;
-  /** @format date-time */
-  nextDate?: string | null;
-  reportSchedulePeriod: GroupReportSchedulePeriod;
-}
-
-export enum GroupReportSchedulePeriod {
-  EveryTwoWeeks = 'EveryTwoWeeks',
-  EveryMonth = 'EveryMonth',
-  EveryQuarter = 'EveryQuarter',
 }
 
 export interface GuidStringDictionaryItem {
@@ -5410,13 +5410,13 @@ export interface UpdateElectricHousingMeteringDeviceRequest {
   bitDepth?: number | null;
   /** @format double */
   scaleFactor?: number | null;
-  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
-  resource?: EResourceType | null;
-  model?: string | null;
   /** @format date-time */
   lastCheckingDate?: string | null;
   /** @format date-time */
   futureCheckingDate?: string | null;
+  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
+  resource?: EResourceType | null;
+  model?: string | null;
   /** @format date-time */
   installationDate?: string | null;
   /** @format int32 */
@@ -5436,6 +5436,13 @@ export interface UpdateElectricNodeRequest {
   /** @format int32 */
   nodeServiceZoneId?: number | null;
   locationName?: string | null;
+}
+
+export interface UpdateGroupReportConfigurationRequest {
+  /** @format int32 */
+  id?: number;
+  reportConfigurationDetails: GroupReportConfigurationDetailsRequest;
+  report: ComposeGroupReportRequest;
 }
 
 export interface UpdateHeatingStationRequest {
@@ -5464,6 +5471,10 @@ export interface UpdateIndividualDeviceRequest {
   bitDepth?: number | null;
   /** @format double */
   scaleFactor?: number | null;
+  /** @format date-time */
+  lastCheckingDate?: string | null;
+  /** @format date-time */
+  futureCheckingDate?: string | null;
   model?: string | null;
   /** @format int32 */
   mountPlaceId?: number | null;
@@ -5511,13 +5522,13 @@ export interface UpdatePipeHousingMeteringDeviceRequest {
   bitDepth?: number | null;
   /** @format double */
   scaleFactor?: number | null;
-  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
-  resource?: EResourceType | null;
-  model?: string | null;
   /** @format date-time */
   lastCheckingDate?: string | null;
   /** @format date-time */
   futureCheckingDate?: string | null;
+  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
+  resource?: EResourceType | null;
+  model?: string | null;
   /** @format int32 */
   communicationPipeId?: number;
 }
@@ -13315,17 +13326,17 @@ export class Api<
      * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
-     * @name ReportsCreategroupreportscheduleCreate
+     * @name ReportsCreategroupreportconfigurationCreate
      * @summary ReportAdd
-     * @request POST:/api/Reports/creategroupreportschedule
+     * @request POST:/api/Reports/creategroupreportconfiguration
      * @secure
      */
-    reportsCreategroupreportscheduleCreate: (
-      data: CreateGroupReportScheduleRequest,
+    reportsCreategroupreportconfigurationCreate: (
+      data: CreateGroupReportConfigurationRequest,
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
-        path: `/api/Reports/creategroupreportschedule`,
+        path: `/api/Reports/creategroupreportconfiguration`,
         method: 'POST',
         body: data,
         secure: true,
@@ -13337,33 +13348,38 @@ export class Api<
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Reports
-     * @name ReportsGetgroupreportscheduleList
+     * @name ReportsGetgroupreportconfigurationsList
      * @summary ReportRead
-     * @request GET:/api/Reports/getgroupreportschedule
+     * @request GET:/api/Reports/getgroupreportconfigurations
      * @secure
      */
-    reportsGetgroupreportscheduleList: (params: RequestParams = {}) =>
+    reportsGetgroupreportconfigurationsList: (params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
-        path: `/api/Reports/getgroupreportschedule`,
+        path: `/api/Reports/getgroupreportconfigurations`,
         method: 'GET',
         secure: true,
         ...params,
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
-     * @name ReportsUpdategroupreportscheduleList
-     * @summary ReportRead
-     * @request GET:/api/Reports/updategroupreportschedule
+     * @name ReportsUpdategroupreportconfigurationCreate
+     * @summary ReportAdd
+     * @request POST:/api/Reports/updategroupreportconfiguration
      * @secure
      */
-    reportsUpdategroupreportscheduleList: (params: RequestParams = {}) =>
+    reportsUpdategroupreportconfigurationCreate: (
+      data: UpdateGroupReportConfigurationRequest,
+      params: RequestParams = {},
+    ) =>
       this.request<void, ErrorApiResponse>({
-        path: `/api/Reports/updategroupreportschedule`,
-        method: 'GET',
+        path: `/api/Reports/updategroupreportconfiguration`,
+        method: 'POST',
+        body: data,
         secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
