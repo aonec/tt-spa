@@ -20,5 +20,5 @@ export const Percent = styled.div<{ isPositive: boolean }>`
   font-size: 12px;
   font-weight: 500;
   transform: translateY(5px);
-  color: ${({ isPositive }) => (isPositive ? '#17B45A' : '#FC525B')};
+  color: ${({ isPositive }) => (!isPositive ? '#17B45A' : '#FC525B')};
 `;
