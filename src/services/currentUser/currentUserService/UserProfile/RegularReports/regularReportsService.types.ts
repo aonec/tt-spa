@@ -1,26 +1,26 @@
-export {};
+import { EReportFormat, EReportType, EResourceType } from 'api/types';
 
-export type D = {
-  id: 3;
+export type RegularReportItem = {
+  id: number;
   reportConfigurationDetails: {
-    emails: 'mmmr.sh.i@gmail.com';
-    contractorIds: '2218237';
-    initialDate: '2024-11-01T00:00:00Z';
-    nextDate: null;
-    reportConfigurationPeriod: 'EveryTwoWeeks';
+    emails: string;
+    contractorIds: number;
+    initialDate: string | null;
+    nextDate: string | null;
+    reportConfigurationPeriod: string;
   };
   report: {
-    fileName: 'Групповой_отчёт_01.11.2024';
-    groupReportId: null;
-    managementFirmId: null;
-    houseManagementId: '4e5a1cca-5f4b-447c-9266-b2f97a3e85fb';
+    fileName: string | null;
+    groupReportId: string | null;
+    managementFirmId: string | null;
+    houseManagementId: string | null;
     buildingIds: [];
-    nodeResourceTypes: ['HotWaterSupply'];
-    nodeStatus: null;
-    reportType: 'Daily';
-    from: '2024-10-01T00:00:00';
-    to: '2024-10-31T00:00:00';
-    reportFormat: 'Consumption';
+    nodeResourceTypes: EResourceType[];
+    nodeStatus: string | null;
+    reportType: EReportType | null;
+    from: string | null;
+    to: string | null;
+    reportFormat: EReportFormat;
   };
-  creatorId: 1309662;
+  creatorId: number;
 };
