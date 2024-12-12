@@ -1,23 +1,63 @@
-import { createEffect, createStore, sample } from 'effector';
-import { getCurrentUser } from './regularReportsService.api';
+import { createEffect, createEvent, createStore, sample } from 'effector';
+import {
+  deleteGroupReportConfiguration,
+  getGroupReportConfigurations,
+} from './regularReportsService.api';
 import { createGate } from 'effector-react';
 import { GroupReportConfigurationServiceModel } from 'api/types';
+import { message } from 'antd';
+import { EffectFailDataAxiosError } from 'types';
 
 const PageGate = createGate();
 
-const getCurrentUserFx = createEffect<
+const handleDeleteReport = createEvent<number>();
+
+const handleFilterReportData = createEvent<number>();
+
+const getGroupReportConfigurationsFx = createEffect<
   void,
   GroupReportConfigurationServiceModel[]
->(getCurrentUser);
+>(getGroupReportConfigurations);
+
+const deleteGroupReportConfigurationFx = createEffect<
+  number,
+  void,
+  EffectFailDataAxiosError
+>(deleteGroupReportConfiguration);
 
 const $reportsData = createStore<GroupReportConfigurationServiceModel[] | null>(
   null,
-).on(getCurrentUserFx.doneData, (_, data) => data);
+)
+  .on(getGroupReportConfigurationsFx.doneData, (_, data) => data)
+  .on(handleFilterReportData, (prev, id) =>
+    prev?.filter((report) => report.id !== id),
+  );
 
-sample({ clock: PageGate.open, target: getCurrentUserFx });
+const $deletingReportId = createStore<number | null>(null)
+  .on(handleDeleteReport, (_, id) => id)
+  .reset(handleFilterReportData);
+
+sample({ clock: PageGate.open, target: getGroupReportConfigurationsFx });
+
+sample({ clock: handleDeleteReport, target: deleteGroupReportConfigurationFx });
+
+sample({
+  clock: deleteGroupReportConfigurationFx.doneData,
+  source: $deletingReportId,
+  filter: Boolean,
+  target: handleFilterReportData,
+});
+
+deleteGroupReportConfigurationFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
 
 export const regularReportsService = {
-  inputs: {},
+  inputs: { handleDeleteReport },
   outputs: { $reportsData },
   gates: { PageGate },
 };

@@ -9,4 +9,5 @@ export type Props = {
   isFirst: boolean;
   houseManagements: HouseManagementResponse[] | null;
   organizations: OrganizationResponsePagedList | null;
+  handleDeleteReport: (payload: number) => void;
 };

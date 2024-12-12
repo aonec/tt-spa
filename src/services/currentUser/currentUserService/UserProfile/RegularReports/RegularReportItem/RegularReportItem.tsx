@@ -8,7 +8,6 @@ import {
 } from './RegularReportItem.styled';
 import { Props } from './RegularReportItem.types';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
-import { Switch } from 'antd';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import { ListOpeningChevron } from 'ui-kit/shared/ListOpeningChevron';
 import {
@@ -16,12 +15,17 @@ import {
   ReportTypeDictionary,
   ResourcesNameDictionary,
 } from 'dictionaries';
+import {
+  ContextMenuButtonColor,
+  ContextMenuElement,
+} from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 
 export const RegularReportItem: FC<Props> = ({
   report,
   isFirst,
   houseManagements,
   organizations,
+  handleDeleteReport,
 }) => {
   const [isOpen, setOpen] = useState(isFirst);
 
@@ -65,6 +69,17 @@ export const RegularReportItem: FC<Props> = ({
     ? ReportTypeDictionary[report.report?.reportType]
     : 'Не найдено';
 
+  const menuButtonArr: ContextMenuElement[] = useMemo(
+    () => [
+      {
+        title: 'Удалить',
+        onClick: () => report.id && handleDeleteReport(report.id),
+        color: ContextMenuButtonColor.danger,
+      },
+    ],
+    [handleDeleteReport],
+  );
+
   return (
     <Wrapper>
       <ListOpeningChevron isOpen={isOpen} onClick={() => setOpen(!isOpen)} />
@@ -74,8 +89,8 @@ export const RegularReportItem: FC<Props> = ({
             {report.report?.fileName || '-'}
           </ReportName>
           <RightBlock>
-            <Switch size="small" checked={true} onChange={() => {}} />
-            <ContextMenuButton size="small" />
+            {/* <Switch size="small" checked={true} onChange={() => {}} /> */}
+            <ContextMenuButton size="small" menuButtons={menuButtonArr} />
           </RightBlock>
         </ItemHeader>
         {isOpen && (

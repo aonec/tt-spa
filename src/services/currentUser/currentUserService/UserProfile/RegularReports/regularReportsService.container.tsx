@@ -12,7 +12,7 @@ import {
 } from 'services/organizations';
 
 const {
-  // inputs,
+  inputs,
   outputs,
   gates: { PageGate },
 } = regularReportsService;
@@ -26,11 +26,13 @@ const {
 } = organizationsService;
 
 export const RegularReportsContainer = () => {
-  const { reportsData, houseManagements, organizations } = useUnit({
-    reportsData: outputs.$reportsData,
-    houseManagements: houseManagementsService.outputs.$houseManagements,
-    organizations: organizationsQuery.$data,
-  });
+  const { reportsData, houseManagements, organizations, handleDeleteReport } =
+    useUnit({
+      reportsData: outputs.$reportsData,
+      houseManagements: houseManagementsService.outputs.$houseManagements,
+      organizations: organizationsQuery.$data,
+      handleDeleteReport: inputs.handleDeleteReport,
+    });
 
   return (
     <>
@@ -47,6 +49,7 @@ export const RegularReportsContainer = () => {
             isFirst={reportsData.indexOf(report) === 0}
             houseManagements={houseManagements}
             organizations={organizations}
+            handleDeleteReport={handleDeleteReport}
           />
         ))}
         <PageGate />
