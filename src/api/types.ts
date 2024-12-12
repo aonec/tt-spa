@@ -989,6 +989,25 @@ export interface ComposeGroupReportRequest {
   nodeStatus?: ENodeCommercialAccountStatus | null;
 }
 
+export interface ComposeGroupReportServiceModel {
+  fileName?: string | null;
+  /** @format uuid */
+  groupReportId?: string | null;
+  /** @format int32 */
+  managementFirmId?: number | null;
+  /** @format uuid */
+  houseManagementId?: string | null;
+  buildingIds?: number[] | null;
+  nodeResourceTypes?: ResourceType[] | null;
+  nodeStatus?: NodeCommercialAccountStatus | null;
+  reportType?: ReportType;
+  /** @format date-time */
+  from?: string | null;
+  /** @format date-time */
+  to?: string | null;
+  reportFormat?: ReportFormat;
+}
+
 export interface ConfirmRequest {
   /** @minLength 1 */
   token: string;
@@ -1188,14 +1207,14 @@ export interface CreateElectricNodeRequest {
   counter?: CreateElectricHousingMeteringDeviceRequest | null;
 }
 
+export interface CreateGroupReportConfigurationRequest {
+  reportConfigurationDetails: GroupReportConfigurationDetailsRequest;
+  report: ComposeGroupReportRequest;
+}
+
 export interface CreateGroupReportRequest {
   title?: string | null;
   housingStockIds?: number[] | null;
-}
-
-export interface CreateGroupReportScheduleRequest {
-  reportScheduleDetails: GroupReportScheduleDetailsRequest;
-  report: ComposeGroupReportRequest;
 }
 
 export interface CreateHousingMeteringDeviceReadingsRequest {
@@ -2449,6 +2468,41 @@ export interface GetSummaryHousingConsumptionsByResourcesResponse {
   consumptions: EResourceTypeDoubleDictionaryItem[] | null;
 }
 
+export interface GroupReportConfigurationDetailsModel {
+  emails?: string | null;
+  contractorIds?: string | null;
+  /** @format date-time */
+  initialDate?: string;
+  /** @format date-time */
+  nextDate?: string | null;
+  reportConfigurationPeriod?: GroupReportConfigurationPeriod;
+}
+
+export interface GroupReportConfigurationDetailsRequest {
+  emails: string[];
+  contractorIds: number[];
+  /** @format date-time */
+  initialDate: string;
+  /** @format date-time */
+  nextDate?: string | null;
+  reportConfigurationPeriod: GroupReportConfigurationPeriod;
+}
+
+export enum GroupReportConfigurationPeriod {
+  EveryTwoWeeks = 'EveryTwoWeeks',
+  EveryMonth = 'EveryMonth',
+  EveryQuarter = 'EveryQuarter',
+}
+
+export interface GroupReportConfigurationServiceModel {
+  /** @format int32 */
+  id?: number;
+  reportConfigurationDetails?: GroupReportConfigurationDetailsModel | null;
+  report?: ComposeGroupReportServiceModel | null;
+  /** @format int32 */
+  creatorId?: number;
+}
+
 export interface GroupReportContractorResponse {
   /** @format int32 */
   id: number;
@@ -2484,22 +2538,6 @@ export interface GroupReportResponse {
   /** @format uuid */
   houseManagementId: string | null;
   title: string | null;
-}
-
-export interface GroupReportScheduleDetailsRequest {
-  emails: string[];
-  contractorIds?: number[] | null;
-  /** @format date-time */
-  initialDate?: string;
-  /** @format date-time */
-  nextDate?: string | null;
-  reportSchedulePeriod: GroupReportSchedulePeriod;
-}
-
-export enum GroupReportSchedulePeriod {
-  EveryTwoWeeks = 'EveryTwoWeeks',
-  EveryMonth = 'EveryMonth',
-  EveryQuarter = 'EveryQuarter',
 }
 
 export interface GuidStringDictionaryItem {
@@ -3938,6 +3976,13 @@ export interface NodeCheckResponsePagedList {
   items: NodeCheckResponse[] | null;
 }
 
+export enum NodeCommercialAccountStatus {
+  NotRegistered = 'NotRegistered',
+  Registered = 'Registered',
+  OnReview = 'OnReview',
+  Prepared = 'Prepared',
+}
+
 export interface NodeCommercialStatusResponse {
   value: ENodeCommercialAccountStatus;
   description: string | null;
@@ -4638,6 +4683,13 @@ export interface ReportEntryValue {
   doubleValue?: number | null;
 }
 
+export enum ReportFormat {
+  Consumption = 'Consumption',
+  Rso = 'Rso',
+  Undersupply = 'Undersupply',
+  RsoWithUndersupply = 'RsoWithUndersupply',
+}
+
 export interface ReportHeader {
   text?: string | null;
   group?: string | null;
@@ -4678,6 +4730,19 @@ export interface ReportRequestHistoryResponse {
   reportNameText: string | null;
   parameters: Record<string, string>;
   isActual: boolean;
+}
+
+export enum ReportType {
+  None = 'None',
+  Hourly = 'Hourly',
+  Daily = 'Daily',
+  Monthly = 'Monthly',
+  Total = 'Total',
+  Current = 'Current',
+  TotalCurrent = 'TotalCurrent',
+  Events = 'Events',
+  Settings = 'Settings',
+  Other = 'Other',
 }
 
 export interface ResourceDisconnectingCreateRequest {
@@ -5410,13 +5475,13 @@ export interface UpdateElectricHousingMeteringDeviceRequest {
   bitDepth?: number | null;
   /** @format double */
   scaleFactor?: number | null;
-  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
-  resource?: EResourceType | null;
-  model?: string | null;
   /** @format date-time */
   lastCheckingDate?: string | null;
   /** @format date-time */
   futureCheckingDate?: string | null;
+  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
+  resource?: EResourceType | null;
+  model?: string | null;
   /** @format date-time */
   installationDate?: string | null;
   /** @format int32 */
@@ -5436,6 +5501,13 @@ export interface UpdateElectricNodeRequest {
   /** @format int32 */
   nodeServiceZoneId?: number | null;
   locationName?: string | null;
+}
+
+export interface UpdateGroupReportConfigurationRequest {
+  /** @format int32 */
+  id?: number;
+  reportConfigurationDetails: GroupReportConfigurationDetailsRequest;
+  report: ComposeGroupReportRequest;
 }
 
 export interface UpdateHeatingStationRequest {
@@ -5464,6 +5536,10 @@ export interface UpdateIndividualDeviceRequest {
   bitDepth?: number | null;
   /** @format double */
   scaleFactor?: number | null;
+  /** @format date-time */
+  lastCheckingDate?: string | null;
+  /** @format date-time */
+  futureCheckingDate?: string | null;
   model?: string | null;
   /** @format int32 */
   mountPlaceId?: number | null;
@@ -5511,13 +5587,13 @@ export interface UpdatePipeHousingMeteringDeviceRequest {
   bitDepth?: number | null;
   /** @format double */
   scaleFactor?: number | null;
-  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
-  resource?: EResourceType | null;
-  model?: string | null;
   /** @format date-time */
   lastCheckingDate?: string | null;
   /** @format date-time */
   futureCheckingDate?: string | null;
+  housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
+  resource?: EResourceType | null;
+  model?: string | null;
   /** @format int32 */
   communicationPipeId?: number;
 }
@@ -13315,54 +13391,82 @@ export class Api<
      * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
-     * @name ReportsCreategroupreportscheduleCreate
-     * @summary ReportAdd
-     * @request POST:/api/Reports/creategroupreportschedule
+     * @name ReportsCreategroupreportconfigurationCreate
+     * @summary GroupReportConfigurationAdd
+     * @request POST:/api/Reports/creategroupreportconfiguration
      * @secure
      */
-    reportsCreategroupreportscheduleCreate: (
-      data: CreateGroupReportScheduleRequest,
+    reportsCreategroupreportconfigurationCreate: (
+      data: CreateGroupReportConfigurationRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/Reports/creategroupreportschedule`,
+      this.request<GroupReportConfigurationServiceModel, ErrorApiResponse>({
+        path: `/api/Reports/creategroupreportconfiguration`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
-     * @name ReportsGetgroupreportscheduleList
-     * @summary ReportRead
-     * @request GET:/api/Reports/getgroupreportschedule
+     * @name ReportsGetgroupreportconfigurationsList
+     * @summary GroupReportConfigurationRead
+     * @request GET:/api/Reports/getgroupreportconfigurations
      * @secure
      */
-    reportsGetgroupreportscheduleList: (params: RequestParams = {}) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/Reports/getgroupreportschedule`,
+    reportsGetgroupreportconfigurationsList: (params: RequestParams = {}) =>
+      this.request<GroupReportConfigurationServiceModel[], ErrorApiResponse>({
+        path: `/api/Reports/getgroupreportconfigurations`,
         method: 'GET',
         secure: true,
+        format: 'json',
         ...params,
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
-     * @name ReportsUpdategroupreportscheduleList
-     * @summary ReportRead
-     * @request GET:/api/Reports/updategroupreportschedule
+     * @name ReportsUpdategroupreportconfigurationCreate
+     * @summary GroupReportConfigurationUpdate
+     * @request POST:/api/Reports/updategroupreportconfiguration
      * @secure
      */
-    reportsUpdategroupreportscheduleList: (params: RequestParams = {}) =>
+    reportsUpdategroupreportconfigurationCreate: (
+      data: UpdateGroupReportConfigurationRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<GroupReportConfigurationServiceModel, ErrorApiResponse>({
+        path: `/api/Reports/updategroupreportconfiguration`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags Reports
+     * @name ReportsRemovegroupreportconfigurationDelete
+     * @summary GroupReportConfigurationDelete
+     * @request DELETE:/api/Reports/removegroupreportconfiguration/{id}
+     * @secure
+     */
+    reportsRemovegroupreportconfigurationDelete: (
+      id: number,
+      params: RequestParams = {},
+    ) =>
       this.request<void, ErrorApiResponse>({
-        path: `/api/Reports/updategroupreportschedule`,
-        method: 'GET',
+        path: `/api/Reports/removegroupreportconfiguration/${id}`,
+        method: 'DELETE',
         secure: true,
         ...params,
       }),
