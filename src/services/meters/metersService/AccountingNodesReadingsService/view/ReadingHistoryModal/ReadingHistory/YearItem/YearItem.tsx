@@ -5,7 +5,6 @@ import { Arrow } from 'services/meters/readingsHistoryService/readingsHistoryLis
 import { MonthItem } from './MonthItem';
 
 export const YearItem: FC<Props> = ({ yearReading }) => {
-
   const [isOpen, setOpen] = useState(true);
   return (
     <>
@@ -15,7 +14,7 @@ export const YearItem: FC<Props> = ({ yearReading }) => {
       </Wrapper>
       {isOpen &&
         yearReading.monthReadings?.map((monthData) => (
-          <MonthItem monthData={monthData} />
+          <MonthItem monthData={monthData} key={monthData.month} />
         ))}
     </>
   );

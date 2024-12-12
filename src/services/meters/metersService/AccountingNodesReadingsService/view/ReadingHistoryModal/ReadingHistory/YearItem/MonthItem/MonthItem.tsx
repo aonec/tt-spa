@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import { MonthName, Reading, ReadingDate, Wrapper } from './MonthItem.styled';
+import { MonthName, ReadingDate, Wrapper } from './MonthItem.styled';
 import { Props } from './MonthItem.types';
 import { getLatestUploadTimeItem } from './MonthItem.utils';
 import dayjs from 'dayjs';
