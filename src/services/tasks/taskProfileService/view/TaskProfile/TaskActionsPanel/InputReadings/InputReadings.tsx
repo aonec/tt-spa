@@ -14,6 +14,7 @@ import {
   ReadingInputSC,
   ReadingValuesWrapper,
 } from './InputReadings.styled';
+import dayjs from 'dayjs';
 
 export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
   const [readings, setReadings] = useState<Reading[]>([]);
@@ -27,14 +28,15 @@ export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
       setReadings(
         devices.map((device) => {
           const readingDate =
-            device.invalidReading?.readingDate || task?.creationTime!;
+            device.invalidReading?.actualReadingDate || task?.creationTime;
+
           return {
             value1: null,
             value2: null,
             value3: null,
             value4: null,
             deviceId: device.id,
-            readingDate,
+            readingDate: readingDate || dayjs().toISOString(),
           };
         }),
       );
@@ -76,6 +78,7 @@ export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
     <div>
       {task?.individualDevices?.map((device, index) => (
         <ReadingLine
+          key={device.id}
           device={device}
           reading={readings[index]}
           onChangeReading={(value, valueIndex) =>

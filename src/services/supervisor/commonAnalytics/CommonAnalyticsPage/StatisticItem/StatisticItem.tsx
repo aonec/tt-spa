@@ -60,7 +60,11 @@ export const StatisticItem: FC<Props> = ({
         <Chart chart={preparedChart} />
         <Resource>
           {details?.map((elem) => (
-            <DetailComponent key={elem.resourceType} data={elem} />
+            <DetailComponent
+              key={elem.resourceType}
+              data={elem}
+              title={data.title}
+            />
           ))}
         </Resource>
       </StatisticsWrapper>

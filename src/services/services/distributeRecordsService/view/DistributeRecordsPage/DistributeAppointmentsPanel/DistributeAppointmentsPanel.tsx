@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, ReactNode, useCallback, useMemo, useState } from 'react';
 import { DataNode } from 'antd/lib/tree';
 import {
   CancelAllText,
@@ -153,10 +153,12 @@ export const DistributeAppointmentsPanel: FC<
               selectable={false}
               checkable={true}
               treeData={data}
-              titleRender={(elem) => {
-                const node = elem as unknown as any;
+              titleRender={(elem): ReactNode | string => {
+                const node = elem as DataNode;
+
                 if (node.key !== node.title) {
-                  return node.title;
+                  // title?: React.ReactNode | ((data: DataNode) => React.ReactNode)
+                  return <>{node.title}</>;
                 }
                 return (
                   <RootWrapperTitle>

@@ -1,8 +1,11 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { sample } from 'effector';
 import { createGate } from 'effector-react';
-import { CalculatorResponse } from 'api/types';
-import { fetchCalculator } from './calculatorProfileService.api';
+import { CalculatorResponse, DocumentResponse } from 'api/types';
+import {
+  fetchCalculator,
+  saveFileRequest,
+} from './calculatorProfileService.api';
 import { consumptionReportCalculatorService } from '../consumptionReportCalculatorService';
 import { meteringDevicesService } from 'services/devices/resourceAccountingSystemsService/view/ResourceAccountingSystems/meteringDevicesService';
 import { calculatorCommentService } from './CalculatorProfile/calculatorCommentService';
@@ -14,6 +17,9 @@ const handleFecthCalculator = createEvent<number>();
 const getCalculatorFx = createEffect<number, CalculatorResponse>(
   fetchCalculator,
 );
+
+const saveFile = createEvent<DocumentResponse>();
+const saveFileFx = createEffect<DocumentResponse, void>(saveFileRequest);
 
 const $calculator = createStore<CalculatorResponse | null>(null)
   .on(getCalculatorFx.doneData, (_, device) => device)
@@ -59,6 +65,11 @@ sample({
   target: clearStore,
 });
 
+sample({
+  clock: saveFile,
+  target: saveFileFx,
+});
+
 export const calculatorProfileService = {
   inputs: {
     refetchCalculator,
@@ -67,6 +78,7 @@ export const calculatorProfileService = {
     handleConsumptionReportModalOpen:
       consumptionReportCalculatorService.inputs.handleModalOpen,
     openDevicesListModal: meteringDevicesService.inputs.openDevicesListModal,
+    saveFile,
   },
   outputs: {
     $calculator,

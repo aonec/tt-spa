@@ -109,7 +109,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
           value={serialNumber}
           placeholder="Введите серийный номер прибора"
           prefix={<SearchIcon />}
-          onKeyDown={fromEnter(submitForm)}
+          onKeyDown={fromEnter(() => submitForm())}
         />
       </FormItem>
     );

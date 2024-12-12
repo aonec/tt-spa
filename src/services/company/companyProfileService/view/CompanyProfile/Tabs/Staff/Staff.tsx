@@ -29,6 +29,7 @@ export const Staff: FC<StaffProps> = ({
       {!isLoadingStaff &&
         staffList?.items?.map((staff) => (
           <StaffItem
+            key={staff.id}
             staff={staff}
             handleOpenStatusChangeModal={handleOpenStatusChangeModal}
             handleCatchEmployeeStatusData={handleCatchEmployeeStatusData}

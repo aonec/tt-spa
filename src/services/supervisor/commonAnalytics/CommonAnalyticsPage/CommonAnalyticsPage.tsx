@@ -18,6 +18,7 @@ export const CommonAnalyticsPage: FC<Props> = ({
   isLoading,
   isLoadingSummary,
   analyticsData,
+  organizations,
 }) => {
   const isEmpty = useMemo(
     () => !analyticsData || !analyticsData.length || isLoading,
@@ -36,6 +37,7 @@ export const CommonAnalyticsPage: FC<Props> = ({
         resetDashboardFilters={resetDashboardFilters}
         selectValue={selectValue}
         setValue={setValue}
+        organizationsList={organizations}
       />
       <InfoOptionsPanels
         dashboardSummary={dashboardSummary}
@@ -45,8 +47,9 @@ export const CommonAnalyticsPage: FC<Props> = ({
       />
       {isEmpty && <EmptyStatisticItem isLoading={isLoading} />}
       {!isLoading &&
-        analyticsData?.map((analyticsData) => (
+        analyticsData?.map?.((analyticsData) => (
           <StatisticItem
+            key={analyticsData.title}
             data={analyticsData}
             selectValue={selectValue}
             currentDashboardType={currentDashboardType}

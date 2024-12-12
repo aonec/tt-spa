@@ -38,7 +38,7 @@ function sortArray(addresses: ModifiedAddressShortResponse[]) {
 
 // возвращает отсортированный массив адресов путем очерёдного вызова вышепредставленных функций
 export const sortStickyBodyAddress = (
-  addresses: (AddressShortResponse & { isDistributed: Boolean })[] | null,
+  addresses: (AddressShortResponse & { isDistributed: boolean })[] | null,
 ) => {
   if (!addresses) {
     return [];

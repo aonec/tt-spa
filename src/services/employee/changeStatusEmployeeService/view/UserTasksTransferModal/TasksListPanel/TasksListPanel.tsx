@@ -22,7 +22,7 @@ export const TasksListPanel: FC<TasksListPanelProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const tasksCountText = Boolean(filteredTasks.length)
+  const tasksCountText = filteredTasks.length
     ? `${filteredTasks.length} ${getCountText(
         filteredTasks.length,
         tasksCountTexts,

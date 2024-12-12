@@ -76,7 +76,8 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
               color: ContextMenuButtonColor.danger,
               onClick: () => {
                 handleOpenDeleteEmployeeModal();
-                userId && handleCatchEmployeeId(userId);
+
+                if (userId) handleCatchEmployeeId(userId);
               },
             },
           ],
@@ -96,7 +97,7 @@ export const EmployeeProfile: FC<EmployeeProfileProps> = ({
                 <BlockTitle>Компетенции</BlockTitle>
                 <CompetenciesContainer>
                   {userData?.competences.map((e) => (
-                    <СompetenceDiv>{e.title}</СompetenceDiv>
+                    <СompetenceDiv key={e.id}>{e.title}</СompetenceDiv>
                   ))}
                 </CompetenciesContainer>
               </>

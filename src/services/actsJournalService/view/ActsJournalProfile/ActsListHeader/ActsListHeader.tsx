@@ -4,16 +4,17 @@ import { ActsListHeaderProps } from './ActsListHeader.types';
 import { FilterExtendedSearch } from 'ui-kit/shared/FilterExtendedSearch';
 import { EActResourceType, EActType } from 'api/types';
 import { ActTypesNamesLookup } from 'dictionaries';
-import { actResourceNamesLookup } from 'ui-kit/shared/ResourceInfo/ResourceInfo.utils';
 import { SortButton } from './SortButton';
+import { actResourceNames } from '../AddNewActForm/AddNewActForm';
 
 export const ActsListHeader: FC<ActsListHeaderProps> = ({
   setActsFilter,
   filter,
 }) => {
-  const resources = Object.entries(actResourceNamesLookup).map(
-    ([key, value]) => ({ key: key as EActResourceType, value }),
-  );
+  const resources = Object.entries(actResourceNames).map(([key, value]) => ({
+    key: key as EActResourceType,
+    value,
+  }));
 
   const actTypes = Object.entries(ActTypesNamesLookup).map(([key, value]) => ({
     key: key as EActType,

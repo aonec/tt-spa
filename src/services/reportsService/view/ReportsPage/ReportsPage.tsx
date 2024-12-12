@@ -9,7 +9,6 @@ import {
   Title,
   Wrapper,
 } from './ReportsPage.styled';
-import { ReportsPageProps } from './ReportsPage.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import {
   ReportIconsDictionary,
@@ -19,7 +18,7 @@ import {
 import { CreateRunnerContainer } from 'services/reportsService/createRunnerService';
 import { ReportsListContainer } from 'services/reportsService/reportsListService';
 
-export const ReportsPage: FC<ReportsPageProps> = () => {
+export const ReportsPage: FC = () => {
   const reportsListRef = useRef<HTMLDivElement>(null);
 
   const [scrollX, setScrollX] = useState<number>(0);
@@ -30,7 +29,7 @@ export const ReportsPage: FC<ReportsPageProps> = () => {
     if (!node) return;
 
     const handleScroll = () => {
-      node.scrollLeft && setScrollX(node.scrollLeft);
+      if (node.scrollLeft) setScrollX(node.scrollLeft);
     };
 
     node.addEventListener('scroll', handleScroll);

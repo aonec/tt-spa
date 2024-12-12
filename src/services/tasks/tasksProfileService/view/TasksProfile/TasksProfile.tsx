@@ -176,7 +176,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
               />
             )}
             <WithLoader isLoading={isLoading}>
-              {Boolean(tasks?.length) ? (
+              {tasks?.length ? (
                 tasksList
               ) : (
                 <Empty

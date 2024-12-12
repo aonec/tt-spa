@@ -18,7 +18,7 @@ export const getTaskTypes = async (): Promise<
 export const getHousingManagements = async (): Promise<
   GuidStringDictionaryItem[] | null
 > => {
-  const res = await axios.get<any, BuildingFiltersResponse>(
+  const res = await axios.get<void, BuildingFiltersResponse>(
     'Buildings/filters',
   );
   return res?.houseManagements;

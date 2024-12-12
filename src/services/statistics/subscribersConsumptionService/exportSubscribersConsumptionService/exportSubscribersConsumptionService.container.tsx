@@ -29,7 +29,7 @@ export const ExportSubscribersConsumptionContainer: FC<
     setFilter: inputs.setSubscriberStatisticsFilter,
   });
 
-  const isButtonDisabled = !Boolean(fileName.length);
+  const isButtonDisabled = !fileName.length;
   const buttonText = isButtonDisabled
     ? 'Введите название файла'
     : 'Выгрузить список';

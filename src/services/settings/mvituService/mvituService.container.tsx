@@ -1,4 +1,4 @@
-import { useUnit } from 'effector-react';
+import React, { useUnit } from 'effector-react';
 import { ConfigureMvituPanel } from './ConfigureMvituPanel';
 import { CreateMvituIntegrationContainer } from './createMvituIntegration';
 import { createMvituIntegrationService } from './createMvituIntegration/createMvituIntegrationService.models';

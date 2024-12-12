@@ -35,3 +35,12 @@ export const MalfunctionIcons: { [key in ManagingFirmTaskType]: ReactNode } = {
   [ManagingFirmTaskType.RiserNoReadings]: <CalculatorIcon />,
   [ManagingFirmTaskType.TemperatureNormativeDeviation]: <CalculatorIcon />,
 };
+
+export const MalfunctionDescription: { [key: string]: string } = {
+  [ManagingFirmTaskType.CalculatorLackOfConnection]:
+    'Отсутствие подключения с прибором',
+  [ManagingFirmTaskType.CalculatorMalfunction]: 'Неполадки с вычислителем',
+  [ManagingFirmTaskType.HousingDeviceMalfunction]: 'Неполадки с ОДПУ',
+  [ManagingFirmTaskType.MeasurementErrorCommercial]:
+    'Превышение погрешности измерения',
+};

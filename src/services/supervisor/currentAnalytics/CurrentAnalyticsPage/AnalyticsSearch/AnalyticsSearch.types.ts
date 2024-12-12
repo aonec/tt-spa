@@ -1,3 +1,4 @@
+import { OrganizationResponsePagedList } from 'api/types';
 import { DashboardQueryParams } from '../../currentAnalyticsService.types';
 
 export type Props = {
@@ -7,6 +8,7 @@ export type Props = {
   isCommon?: boolean;
   selectValue?: EDateRange;
   setValue?: React.Dispatch<React.SetStateAction<EDateRange>>;
+  organizationsList: OrganizationResponsePagedList | null;
 };
 
 export enum EDateRange {

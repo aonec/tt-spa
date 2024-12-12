@@ -51,7 +51,7 @@ const getMenuButtons = ({
             <TrashIcon
               onClick={(e) => {
                 e.stopPropagation();
-                deletePhoneNumber && deletePhoneNumber(phone);
+                if (deletePhoneNumber) deletePhoneNumber(phone);
               }}
             />
           </IconsWrapper>
@@ -103,7 +103,7 @@ export const PhoneNumberField: FC<PhoneNumberFieldProps> = ({
           replacePhoneNumber({ oldPhoneNumber, phoneNumber })
         );
       }
-      addPhoneNumber && addPhoneNumber(phoneNumber);
+      if (addPhoneNumber) addPhoneNumber(phoneNumber);
     },
   });
 
@@ -128,6 +128,7 @@ export const PhoneNumberField: FC<PhoneNumberFieldProps> = ({
         ...(isEditable
           ? [
               <MenuItem
+                key="add-number"
                 color={'#189EE9'}
                 onClick={() => {
                   setIsEditing(true);

@@ -29,6 +29,7 @@ export const UsersListSelect: FC<UsersListSelectProps> = ({
 
         return (
           <UserWrapper
+            key={user.id}
             isSelected={isUserSelected}
             onClick={() => handleSelectUser(user.id)}
           >

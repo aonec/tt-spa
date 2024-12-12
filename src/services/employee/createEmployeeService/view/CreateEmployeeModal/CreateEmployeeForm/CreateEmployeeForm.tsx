@@ -123,7 +123,7 @@ export const CreateEmployeeForm: FC<CreateEmployeeFormProps> = ({
             }}
             value={values.roleTypes || undefined}
           >
-            {multipleSelectionUserRoles?.map((elem, i) => (
+            {multipleSelectionUserRoles?.map((elem) => (
               <SelectMultiple.Option value={elem.value || ''} key={elem.value}>
                 {elem.label}
               </SelectMultiple.Option>

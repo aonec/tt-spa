@@ -55,7 +55,7 @@ export const TaskQualityDashboardPanel: FC<
 
         <ResourceStatisticsWrapper>
           {otherData.map((item) => (
-            <OtherTaskQualityDetailStatistic item={item} />
+            <OtherTaskQualityDetailStatistic key={item.title} item={item} />
           ))}
         </ResourceStatisticsWrapper>
       </Wrapper>
@@ -86,7 +86,11 @@ export const TaskQualityDashboardPanel: FC<
       <SpaceLine noPadding noTop />
       <ResourceStatisticsWrapper>
         {data.details?.map((detail) => (
-          <TaskQualityDetail data={detail} title={data.title} />
+          <TaskQualityDetail
+            key={detail.deviationType}
+            data={detail}
+            title={data.title}
+          />
         ))}
       </ResourceStatisticsWrapper>
       <DetailButton value={data.title} />

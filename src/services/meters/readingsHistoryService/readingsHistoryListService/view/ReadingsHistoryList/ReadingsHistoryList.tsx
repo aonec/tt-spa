@@ -86,28 +86,31 @@ export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
 
       const getReadingValues = (
         type: 'value' | 'consumption' | 'averageConsumption',
-      ) =>
-        reading &&
-        getReadingValuesArray(
+      ) => {
+        if (!device?.rateType || !reading) return null;
+        return getReadingValuesArray(
           reading,
           type,
-          getIndividualDeviceRateNumByName(device?.rateType!),
+          getIndividualDeviceRateNumByName(device?.rateType),
         );
+      };
 
       const createReading = (values: (number | null)[]) => {
         if (!device?.id) return;
 
         const readingDate =
-          reading?.readingDateTime || getNewReadingDate(month, year);
+          reading?.actualReadingDate || getNewReadingDate(month, year);
 
-        uploadReading({
-          ...getReadingValuesObject(
-            values,
-            getIndividualDeviceRateNumByName(device?.rateType!),
-          ),
-          deviceId: device?.id,
-          readingDate,
-        } as IndividualDeviceReadingsCreateRequest);
+        if (device?.rateType) {
+          uploadReading({
+            ...getReadingValuesObject(
+              values,
+              getIndividualDeviceRateNumByName(device.rateType),
+            ),
+            deviceId: device?.id,
+            readingDate,
+          } as IndividualDeviceReadingsCreateRequest);
+        }
       };
 
       const handleEnter = (values: (number | null)[]) => {
@@ -127,7 +130,7 @@ export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
           ),
           values,
           rateNum!,
-          device?.resource!,
+          device?.resource,
           managementFirmConsumptionRates,
         );
 
@@ -171,10 +174,11 @@ export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
           editable={true}
           values={
             getReadingValues('value') ||
-            getFilledArray(
-              getIndividualDeviceRateNumByName(device?.rateType! || 0),
-              () => '' as any,
-            )
+            (device?.rateType &&
+              getFilledArray(
+                getIndividualDeviceRateNumByName(device?.rateType),
+                () => '',
+              ))
           }
           suffix={measurementUnit}
         />
@@ -377,7 +381,7 @@ export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
         <ConfirmReadingValueContainer />
         <TableHeader>
           {columnsNames.map((elem) => (
-            <div>{elem}</div>
+            <div key={elem}>{elem}</div>
           ))}
         </TableHeader>
         {readingsHistory?.yearReadings?.map((yearReading, index) =>

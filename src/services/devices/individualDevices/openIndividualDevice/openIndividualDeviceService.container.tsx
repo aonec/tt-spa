@@ -1,3 +1,4 @@
+import React from 'react';
 import { useUnit } from 'effector-react';
 import { openIndividualDeviceService } from './openIndividualDeviceService.models';
 import { FormModal } from 'ui-kit/Modals/FormModal';

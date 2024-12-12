@@ -25,7 +25,7 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
   handleChangePushStagePayload,
   pushStageRequestPayload,
 }) => {
-  let { halfSizeActions, fullSizeActions, bottomActions } =
+  const { halfSizeActions, fullSizeActions, bottomActions } =
     useTaskPanelActions(actions);
 
   const renderTaskAction = useCallback(
@@ -47,8 +47,8 @@ export const TaskActionsPanel: FC<TaskActionsPanelProps> = ({
     <Wrapper>
       {isLoading && <Skeleton active />}
       <Content visible={!isLoading}>
-        {actionInfoComponents.map(({ Component }) => (
-          <TaskActionInfoElementWrapper>
+        {actionInfoComponents.map(({ Component, taskType }) => (
+          <TaskActionInfoElementWrapper key={taskType}>
             <Component />
           </TaskActionInfoElementWrapper>
         ))}

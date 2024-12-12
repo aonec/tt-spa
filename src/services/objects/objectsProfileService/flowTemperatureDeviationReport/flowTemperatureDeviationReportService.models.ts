@@ -28,8 +28,10 @@ sample({
 });
 
 exportFlowTemperatureDeviationReportFx.failData.watch((error) => {
-  return message.error(
-    error.response.data.error.Text || error.response.data.error.Message,
+  message.error(
+    error.response.data.error?.Text ||
+      error.response.data.error?.Message ||
+      'Произошла ошибка',
   );
 });
 

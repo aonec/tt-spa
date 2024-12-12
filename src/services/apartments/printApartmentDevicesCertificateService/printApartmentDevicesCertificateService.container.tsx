@@ -49,7 +49,7 @@ export const PrintApartmentDevicesCertificateContainer: FC<Props> = ({
           <ReactToPrint
             trigger={() => <Button isLoading={isLoading}>Печать</Button>}
             content={() => {
-              const node = (certificateRef as any).current;
+              const node = certificateRef.current;
 
               return node;
             }}

@@ -73,6 +73,7 @@ import { CurrentUserEditServiceContainer } from 'services/currentUser/currentUse
 import { createRunnerService } from 'services/reportsService/createRunnerService/createRunnerService.models';
 import { CurrentAnalyticsContainer } from 'services/supervisor/currentAnalytics';
 import { CommonAnalyticsContainer } from 'services/supervisor/commonAnalytics';
+import { usePermission } from 'hooks/usePermission';
 
 const {
   gates: { CurrentUserGate },
@@ -189,9 +190,10 @@ export const useRoutes = (
     ESecuredIdentityRoleName.ManagingFirmExecutor,
   );
 
-  const isSpectator = roles.includes(
+  const isSpectator = usePermission([
     ESecuredIdentityRoleName.ManagingFirmSpectator,
-  );
+    ESecuredIdentityRoleName.Supervisor,
+  ]);
 
   const isSpectatingAdministrator = roles.includes(
     ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
@@ -206,6 +208,10 @@ export const useRoutes = (
     : `/tasks/list/${TaskGroupingFilter.Executing}`;
 
   const redirectRoute = useMemo(() => {
+    if (!isAuth) {
+      return `/login`;
+    }
+
     if (!roles.length) return '/';
 
     if (isSupervisor) {
@@ -217,7 +223,7 @@ export const useRoutes = (
     }
 
     return initialTasksPath;
-  }, [roles.length, isSupervisor, isOperator, initialTasksPath]);
+  }, [roles.length, isSupervisor, isOperator, initialTasksPath, isAuth]);
 
   const isShowNodeArchivePage =
     isAdministrator ||

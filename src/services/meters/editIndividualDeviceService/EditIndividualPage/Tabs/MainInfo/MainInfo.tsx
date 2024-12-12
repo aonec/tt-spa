@@ -259,9 +259,10 @@ export const MainInfo: FC<MainInfoProps> = ({
       <GridContainer>
         <FormItem label="Дата закрытия">
           <DatePicker
+            picker="month"
             value={values.closingDate}
             onChange={(date) => {
-              setFieldValue('closingDate', date);
+              setFieldValue('closingDate', date.add(3, 'hours'));
             }}
             format={{ format: 'DD.MM.YYYY', type: 'mask' }}
             data-reading-input={dataKey}

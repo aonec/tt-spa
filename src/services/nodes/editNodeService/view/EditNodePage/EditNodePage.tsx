@@ -31,7 +31,6 @@ export const EditNodePage: FC<EditNodePageProps> = ({
   setGrouptype,
   openAddNewZonesModal,
   nodeZones,
-  refetchNode,
   updateNode,
   handleOpenCreateCalculatorModal,
   calculators,

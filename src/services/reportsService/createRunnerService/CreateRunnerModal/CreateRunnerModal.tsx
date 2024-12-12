@@ -20,7 +20,6 @@ import { SelectMultiple } from 'ui-kit/SelectMultiple';
 const formId = 'Create-Runner-Modal';
 
 export const CreateRunnerModal: FC<Props> = ({
-  existingCities,
   organizations,
   houseManagements,
   addressesWithHouseManagements,

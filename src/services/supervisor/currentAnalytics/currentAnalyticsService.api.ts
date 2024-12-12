@@ -6,10 +6,19 @@ import {
   DashboardTaskMalfunctionResponse,
   DashboardTaskQualityResponse,
   DashboardTaskResourceResponse,
+  OrganizationResponsePagedList,
 } from 'api/types';
 import { DashboardQueryParams } from './currentAnalyticsService.types';
 import { stringify } from 'query-string';
 import { getDetailSuffix } from './currentAnalyticsService.utils';
+
+export const dashboardOrganizationsQuery = createQuery<
+  [string | null],
+  OrganizationResponsePagedList
+>({
+  handler: (city) =>
+    axios.get(`/Dashboard/filter/organizations`, { params: { city } }),
+});
 
 export const dashboardSummaryQuery = createQuery<
   [DashboardQueryParams],

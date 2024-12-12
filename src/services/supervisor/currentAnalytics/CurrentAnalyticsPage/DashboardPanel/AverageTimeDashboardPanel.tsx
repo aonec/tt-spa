@@ -37,7 +37,7 @@ export const AverageTimeDashboardPanel: FC<
         </AverageTime>
         <ResourceStatisticsWrapper>
           {otherData.map((item) => (
-            <OtherAverageTimeDetailStatistic item={item} />
+            <OtherAverageTimeDetailStatistic item={item} key={item.title} />
           ))}
         </ResourceStatisticsWrapper>
       </Wrapper>
@@ -55,7 +55,11 @@ export const AverageTimeDashboardPanel: FC<
       </AverageTime>
       <ResourceStatisticsWrapper>
         {data.details?.map((detail) => (
-          <TaskAverageTimeDetail data={detail} title={data.title} />
+          <TaskAverageTimeDetail
+            data={detail}
+            title={data.title}
+            key={detail.malfunctionType}
+          />
         ))}
       </ResourceStatisticsWrapper>
       <DetailButton value={data.title} />

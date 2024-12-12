@@ -7,6 +7,7 @@ import {
 import {
   commonSummaryQuery,
   dashboardMalfunctionsQuery,
+  dashboardOrganizationsQuery,
   dashboardPiperuptersQuery,
   dashboardResourcedisconnectsQuery,
 } from './commonAnalyticsService.api';
@@ -15,6 +16,7 @@ import {
   DashboardTaskMalfunctionResponse,
   DashboardTaskResourceResponse,
 } from 'api/types';
+import { getItemArray } from '../currentAnalytics/currentAnalyticsService.utils';
 
 const CommonAnalyticsGate = createGate();
 const setCurrentDashboardType = createEvent<DashboardDataType>();
@@ -32,7 +34,6 @@ const $dashboardFilters = createStore<DashboardQueryParams>({
   .on(setDashboardFilters, (prev, data) => ({
     ...prev,
     ...data,
-    From: data.From,
   }))
   .reset(resetDashboardFilters);
 
@@ -47,6 +48,14 @@ sample({
 sample({
   source: $dashboardFilters,
   target: [commonSummaryQuery.start],
+});
+
+const $city = $dashboardFilters.map(({ City }) => City || null);
+
+sample({
+  source: $city,
+  clock: [CommonAnalyticsGate.open, $city.updates],
+  target: dashboardOrganizationsQuery.start,
 });
 
 const $dashboardParams = combine(
@@ -77,9 +86,9 @@ const $isLoading = combine(
 const $analyticsData = createStore<
   DashboardTaskResourceResponse[] | DashboardTaskMalfunctionResponse[] | null
 >(null)
-  .on(dashboardPiperuptersQuery.$data, (_, data) => data)
-  .on(dashboardResourcedisconnectsQuery.$data, (_, data) => data)
-  .on(dashboardMalfunctionsQuery.$data, (_, data) => data);
+  .on(dashboardPiperuptersQuery.$data, (_, data) => getItemArray(data))
+  .on(dashboardResourcedisconnectsQuery.$data, (_, data) => getItemArray(data))
+  .on(dashboardMalfunctionsQuery.$data, (_, data) => getItemArray(data));
 
 export const commonAnalyticsService = {
   inputs: {

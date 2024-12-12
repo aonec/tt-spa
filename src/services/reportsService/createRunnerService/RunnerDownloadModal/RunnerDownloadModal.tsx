@@ -13,7 +13,6 @@ import { Dialog } from 'ui-kit/shared/Dialog/Dialog';
 
 export const RunnerDownloadModal: FC<Props> = ({
   isOpen,
-  setOpen,
   handleDownloadFile,
   isDownloading,
   handleReset,

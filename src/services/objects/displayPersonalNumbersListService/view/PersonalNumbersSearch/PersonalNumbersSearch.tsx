@@ -62,7 +62,7 @@ export const PersonalNumbersSearch: FC<PersonalNumbersSearchProps> = ({
             value={values.Question}
             onChange={(e) => setFieldValue('Question', e.target.value)}
             onClick={() => setFieldValue('Question', '')}
-            onKeyDown={fromEnter(handleSubmit)}
+            onKeyDown={fromEnter(() => handleSubmit())}
           />
         </SearchFieldsWrapper>
       </ExtendedSearch>

@@ -178,6 +178,14 @@ export const forbiddenList: ForbiddenUrl[] = [
     regExp: /^Reports\/ConsolidatedReport$/,
   },
   {
+    methods: ['GET'],
+    regExp: /^Reports\/FeedFlowPipeTemperatureReport$/,
+  },
+  {
+    methods: ['GET'],
+    regExp: /^Reports\/HeatIndividualDevicesReport$/,
+  },
+  {
     methods: ['PUT'],
     regExp: /^HomeownerAccounts\/\d+$/,
   },

@@ -21,6 +21,7 @@ export const AnalyticsSearch: FC<Props> = ({
   isCommon,
   selectValue,
   setValue,
+  organizationsList,
 }) => {
   const { existingCities, periodType, setPeriodType } = useUnit({
     existingCities: addressSearchService.outputs.$existingCities,
@@ -52,7 +53,7 @@ export const AnalyticsSearch: FC<Props> = ({
           small
           format="DD.MM.YYYY"
           value={
-            Boolean(dashboardFilters.From && dashboardFilters.To)
+            dashboardFilters.From && dashboardFilters.To
               ? [
                   dayjs(dashboardFilters.From).utc(),
                   dayjs(dashboardFilters.To).utc(),
@@ -86,7 +87,7 @@ export const AnalyticsSearch: FC<Props> = ({
                   .toISOString(),
                 To: dayjs().endOf('day').utc(true).toISOString(),
               });
-              setValue && setValue(value);
+              if (setValue) setValue(value);
             }
             if (value === EDateRange.Month) {
               setDashboardFilters({
@@ -97,7 +98,7 @@ export const AnalyticsSearch: FC<Props> = ({
                   .toISOString(),
                 To: dayjs().endOf('day').utc(true).toISOString(),
               });
-              setValue && setValue(value);
+              if (setValue) setValue(value);
             }
             if (value === EDateRange.Quarter) {
               setDashboardFilters({
@@ -108,7 +109,7 @@ export const AnalyticsSearch: FC<Props> = ({
                   .toISOString(),
                 To: dayjs().endOf('day').utc(true).toISOString(),
               });
-              setValue && setValue(value);
+              if (setValue) setValue(value);
             }
           }}
         >
@@ -139,7 +140,21 @@ export const AnalyticsSearch: FC<Props> = ({
           </Select.Option>
         ))}
       </Select>
-      <Select placeholder="УК" small allowClear></Select>
+      <Select
+        placeholder="УК"
+        small
+        allowClear
+        value={dashboardFilters.ManagementFirmId}
+        onChange={(value) =>
+          setDashboardFilters({ ManagementFirmId: value as number })
+        }
+      >
+        {organizationsList?.items?.map((elem) => (
+          <Select key={elem.id} value={elem.id}>
+            {elem.name}
+          </Select>
+        ))}
+      </Select>
       <AddressTreeSelect
         small
         placeholder="Адрес"
