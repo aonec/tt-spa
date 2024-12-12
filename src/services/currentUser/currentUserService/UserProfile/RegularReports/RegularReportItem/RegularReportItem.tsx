@@ -1,7 +1,8 @@
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import {
   ItemHeader,
   ReportName,
+  Resource,
   RightBlock,
   Wrapper,
 } from './RegularReportItem.styled';
@@ -10,16 +11,67 @@ import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { Switch } from 'antd';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import { ListOpeningChevron } from 'ui-kit/shared/ListOpeningChevron';
+import {
+  GroupReportConfigurationPeriodDictionary,
+  ReportTypeDictionary,
+  ResourcesNameDictionary,
+} from 'dictionaries';
 
-export const RegularReportItem: FC<Props> = ({ report, isFirst }) => {
+export const RegularReportItem: FC<Props> = ({
+  report,
+  isFirst,
+  houseManagements,
+  organizations,
+}) => {
   const [isOpen, setOpen] = useState(isFirst);
+
+  const unloadingType = useMemo(() => {
+    if (report.report?.houseManagementId) {
+      const houseManagement = houseManagements?.find(
+        (houseManagement) =>
+          houseManagement.id === report.report?.houseManagementId,
+      );
+      return `По домоуправлению | ${houseManagement?.name || 'не найдено'}`;
+    }
+    if (report.report?.managementFirmId) {
+      const managementFirm = organizations?.items?.find(
+        (managementFirm) =>
+          managementFirm.id === report.report?.managementFirmId,
+      );
+      return `По всей УК | ${managementFirm?.name || 'не найдено'}`;
+    }
+    if (report.report?.buildingIds?.length) {
+      return 'По домам';
+    }
+    return 'Не найдено';
+  }, [report, houseManagements, organizations]);
+
+  const resources = useMemo(() => {
+    return (
+      report.report?.nodeResourceTypes?.map(
+        (resource) => ResourcesNameDictionary[resource],
+      ) || ['Нет']
+    );
+  }, [report]);
+
+  const regularity = report.reportConfigurationDetails
+    ?.reportConfigurationPeriod
+    ? GroupReportConfigurationPeriodDictionary[
+        report.reportConfigurationDetails?.reportConfigurationPeriod
+      ]
+    : 'Не найдено';
+
+  const reportType = report.report?.reportType
+    ? ReportTypeDictionary[report.report?.reportType]
+    : 'Не найдено';
+
   return (
     <Wrapper>
       <ListOpeningChevron isOpen={isOpen} onClick={() => setOpen(!isOpen)} />
       <div>
         <ItemHeader>
           <ReportName onClick={() => setOpen(!isOpen)}>
-            {report.report.fileName}
+            {report.report?.fileName || '-'}
           </ReportName>
           <RightBlock>
             <Switch size="small" checked={true} onChange={() => {}} />
@@ -32,11 +84,13 @@ export const RegularReportItem: FC<Props> = ({ report, isFirst }) => {
             items={[
               {
                 key: 'Тип выгрузки',
-                value: 'По всей УК | УК “Уютный дом”',
+                value: unloadingType,
               },
               {
                 key: 'Зона',
-                value: 'ХВС | ХВС',
+                value: resources.map((el) => (
+                  <Resource key={el}>{el}</Resource>
+                )),
               },
               {
                 key: 'Категория узлов',
@@ -44,11 +98,11 @@ export const RegularReportItem: FC<Props> = ({ report, isFirst }) => {
               },
               {
                 key: 'Период и детализация',
-                value: 'С начала месяца | Суточная',
+                value: reportType,
               },
               {
                 key: 'Регулярность',
-                value: '1 раз в меяц',
+                value: regularity,
               },
             ]}
           />

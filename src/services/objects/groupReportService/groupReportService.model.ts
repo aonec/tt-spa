@@ -130,13 +130,17 @@ sample({
         reportType: clock?.ReportType,
         to: clock?.To,
       },
-      reportScheduleDetails: {
+      reportConfigurationDetails: {
         emails: [clock?.['Subscription.Email']],
         contractorIds: clock?.['Subscription.ContractorIds'],
         initialDate: clock?.['Subscription.TriggerAt'],
-        reportSchedulePeriod: clock?.['Subscription.Type'],
+        reportConfigurationPeriod: clock?.['Subscription.Type'],
       },
+<<<<<<< HEAD
     } as unknown as CreateGroupReportConfigurationRequest;
+=======
+    } as CreateGroupReportConfigurationRequest;
+>>>>>>> afac473b6 ([TT-859])
 
     return payload;
   },

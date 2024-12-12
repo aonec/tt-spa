@@ -1,6 +1,12 @@
-import { RegularReportItem } from '../regularReportsService.types';
+import {
+  GroupReportConfigurationServiceModel,
+  HouseManagementResponse,
+  OrganizationResponsePagedList,
+} from 'api/types';
 
 export type Props = {
-  report: RegularReportItem;
+  report: GroupReportConfigurationServiceModel;
   isFirst: boolean;
+  houseManagements: HouseManagementResponse[] | null;
+  organizations: OrganizationResponsePagedList | null;
 };
