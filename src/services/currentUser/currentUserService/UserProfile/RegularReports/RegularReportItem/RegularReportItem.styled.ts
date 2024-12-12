@@ -41,3 +41,11 @@ export const ReportName = styled.div`
   margin-bottom: 10px;
   cursor: pointer;
 `;
+
+export const Resource = styled.span`
+  border-radius: 4px;
+  background: rgba(24, 158, 233, 0.16);
+  padding: 6px 10px;
+  margin-right: 10px;
+  font-weight: 500;
+`;

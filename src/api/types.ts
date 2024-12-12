@@ -989,6 +989,25 @@ export interface ComposeGroupReportRequest {
   nodeStatus?: ENodeCommercialAccountStatus | null;
 }
 
+export interface ComposeGroupReportServiceModel {
+  fileName?: string | null;
+  /** @format uuid */
+  groupReportId?: string | null;
+  /** @format int32 */
+  managementFirmId?: number | null;
+  /** @format uuid */
+  houseManagementId?: string | null;
+  buildingIds?: number[] | null;
+  nodeResourceTypes?: ResourceType[] | null;
+  nodeStatus?: NodeCommercialAccountStatus | null;
+  reportType?: ReportType;
+  /** @format date-time */
+  from?: string | null;
+  /** @format date-time */
+  to?: string | null;
+  reportFormat?: ReportFormat;
+}
+
 export interface ConfirmRequest {
   /** @minLength 1 */
   token: string;
@@ -2449,6 +2468,16 @@ export interface GetSummaryHousingConsumptionsByResourcesResponse {
   consumptions: EResourceTypeDoubleDictionaryItem[] | null;
 }
 
+export interface GroupReportConfigurationDetailsModel {
+  emails?: string | null;
+  contractorIds?: string | null;
+  /** @format date-time */
+  initialDate?: string;
+  /** @format date-time */
+  nextDate?: string | null;
+  reportConfigurationPeriod?: GroupReportConfigurationPeriod;
+}
+
 export interface GroupReportConfigurationDetailsRequest {
   emails: string[];
   contractorIds: number[];
@@ -2463,6 +2492,15 @@ export enum GroupReportConfigurationPeriod {
   EveryTwoWeeks = 'EveryTwoWeeks',
   EveryMonth = 'EveryMonth',
   EveryQuarter = 'EveryQuarter',
+}
+
+export interface GroupReportConfigurationServiceModel {
+  /** @format int32 */
+  id?: number;
+  reportConfigurationDetails?: GroupReportConfigurationDetailsModel | null;
+  report?: ComposeGroupReportServiceModel | null;
+  /** @format int32 */
+  creatorId?: number;
 }
 
 export interface GroupReportContractorResponse {
@@ -3938,6 +3976,13 @@ export interface NodeCheckResponsePagedList {
   items: NodeCheckResponse[] | null;
 }
 
+export enum NodeCommercialAccountStatus {
+  NotRegistered = 'NotRegistered',
+  Registered = 'Registered',
+  OnReview = 'OnReview',
+  Prepared = 'Prepared',
+}
+
 export interface NodeCommercialStatusResponse {
   value: ENodeCommercialAccountStatus;
   description: string | null;
@@ -4638,6 +4683,13 @@ export interface ReportEntryValue {
   doubleValue?: number | null;
 }
 
+export enum ReportFormat {
+  Consumption = 'Consumption',
+  Rso = 'Rso',
+  Undersupply = 'Undersupply',
+  RsoWithUndersupply = 'RsoWithUndersupply',
+}
+
 export interface ReportHeader {
   text?: string | null;
   group?: string | null;
@@ -4678,6 +4730,19 @@ export interface ReportRequestHistoryResponse {
   reportNameText: string | null;
   parameters: Record<string, string>;
   isActual: boolean;
+}
+
+export enum ReportType {
+  None = 'None',
+  Hourly = 'Hourly',
+  Daily = 'Daily',
+  Monthly = 'Monthly',
+  Total = 'Total',
+  Current = 'Current',
+  TotalCurrent = 'TotalCurrent',
+  Events = 'Events',
+  Settings = 'Settings',
+  Other = 'Other',
 }
 
 export interface ResourceDisconnectingCreateRequest {
@@ -13327,7 +13392,7 @@ export class Api<
      *
      * @tags Reports
      * @name ReportsCreategroupreportconfigurationCreate
-     * @summary ReportAdd
+     * @summary GroupReportConfigurationAdd
      * @request POST:/api/Reports/creategroupreportconfiguration
      * @secure
      */
@@ -13335,29 +13400,31 @@ export class Api<
       data: CreateGroupReportConfigurationRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<GroupReportConfigurationServiceModel, ErrorApiResponse>({
         path: `/api/Reports/creategroupreportconfiguration`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsGetgroupreportconfigurationsList
-     * @summary ReportRead
+     * @summary GroupReportConfigurationRead
      * @request GET:/api/Reports/getgroupreportconfigurations
      * @secure
      */
     reportsGetgroupreportconfigurationsList: (params: RequestParams = {}) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<GroupReportConfigurationServiceModel[], ErrorApiResponse>({
         path: `/api/Reports/getgroupreportconfigurations`,
         method: 'GET',
         secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -13366,7 +13433,7 @@ export class Api<
      *
      * @tags Reports
      * @name ReportsUpdategroupreportconfigurationCreate
-     * @summary ReportAdd
+     * @summary GroupReportConfigurationUpdate
      * @request POST:/api/Reports/updategroupreportconfiguration
      * @secure
      */
@@ -13374,12 +13441,33 @@ export class Api<
       data: UpdateGroupReportConfigurationRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, ErrorApiResponse>({
+      this.request<GroupReportConfigurationServiceModel, ErrorApiResponse>({
         path: `/api/Reports/updategroupreportconfiguration`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags Reports
+     * @name ReportsRemovegroupreportconfigurationDelete
+     * @summary GroupReportConfigurationDelete
+     * @request DELETE:/api/Reports/removegroupreportconfiguration/{id}
+     * @secure
+     */
+    reportsRemovegroupreportconfigurationDelete: (
+      id: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/removegroupreportconfiguration/${id}`,
+        method: 'DELETE',
+        secure: true,
         ...params,
       }),
 

@@ -5,7 +5,7 @@ import { delay } from 'patronum';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
 import {
-  CreateGroupReportScheduleRequest,
+  CreateGroupReportConfigurationRequest,
   EReportType,
   GroupReportFormResponse,
   SendGroupReportRequest,
@@ -68,7 +68,7 @@ const $downloadReportPayload = createStore<GroupReportRequestPayload | null>(
 );
 
 const postRegularUploadFx = createEffect<
-  CreateGroupReportScheduleRequest,
+  CreateGroupReportConfigurationRequest,
   void,
   EffectFailDataAxiosError
 >(postRegularUpload);
@@ -130,13 +130,13 @@ sample({
         reportType: clock?.ReportType,
         to: clock?.To,
       },
-      reportScheduleDetails: {
+      reportConfigurationDetails: {
         emails: [clock?.['Subscription.Email']],
         contractorIds: clock?.['Subscription.ContractorIds'],
         initialDate: clock?.['Subscription.TriggerAt'],
-        reportSchedulePeriod: clock?.['Subscription.Type'],
+        reportConfigurationPeriod: clock?.['Subscription.Type'],
       },
-    } as CreateGroupReportScheduleRequest;
+    } as CreateGroupReportConfigurationRequest;
 
     return payload;
   },

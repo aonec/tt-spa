@@ -1,5 +1,6 @@
 import { axios } from 'api/axios';
-import { RegularReportItem } from './regularReportsService.types';
+import { GroupReportConfigurationServiceModel } from 'api/types';
 
-export const getCurrentUser = (): Promise<RegularReportItem[]> =>
-  axios.get('Reports/getgroupreportconfigurations');
+export const getCurrentUser = (): Promise<
+  GroupReportConfigurationServiceModel[]
+> => axios.get('Reports/getgroupreportconfigurations');

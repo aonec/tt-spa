@@ -26,7 +26,7 @@ import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import {
   EReportFormat,
   EReportType,
-  GroupReportSchedulePeriod,
+  GroupReportConfigurationPeriod,
 } from 'api/types';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
 import { ExportReportTypeTranslatesLookup } from 'services/reportsService/reportViewService/reportViewService.constants';
@@ -119,7 +119,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     [setFieldValue],
   );
   const handleChangeSubsType = useCallback(
-    (type?: GroupReportSchedulePeriod) =>
+    (type?: GroupReportConfigurationPeriod) =>
       setFieldValue("['Subscription.Type']", type),
     [setFieldValue],
   );

@@ -1,7 +1,7 @@
 import { axios } from 'api/axios';
 import queryString from 'query-string';
 import {
-  CreateGroupReportScheduleRequest,
+  CreateGroupReportConfigurationRequest,
   GroupReportFormResponse,
   SendGroupReportRequest,
 } from 'api/types';
@@ -38,5 +38,6 @@ export const sendByEmail = (payload: SendGroupReportRequest): Promise<void> =>
   axios.post('/Reports/SendGroupReport', payload);
 
 export const postRegularUpload = (
-  payload: CreateGroupReportScheduleRequest,
-): Promise<void> => axios.post('/Reports/creategroupreportschedule', payload);
+  payload: CreateGroupReportConfigurationRequest,
+): Promise<void> =>
+  axios.post('/Reports/creategroupreportconfiguration', payload);
