@@ -7,9 +7,10 @@ import {
 export const getIndividualDeviceMountPlaces = async (
   id: number,
 ): Promise<IndividualDeviceMountPlaceListResponse[]> => {
-  const res: any = await axios.get('IndividualDeviceMountPlaces', {
-    params: { apartmentId: id },
-  });
+  const res: { items: IndividualDeviceMountPlaceListResponse[] } =
+    await axios.get('IndividualDeviceMountPlaces', {
+      params: { apartmentId: id },
+    });
 
   return res.items;
 };

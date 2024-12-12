@@ -17,7 +17,6 @@ export const SelectedHousingStocksPanel: FC<SelectedHousingStocksProps> = ({
   isLoading,
   handleUpdate,
   housesInDistrict,
-  editindDistrictArray,
 }) => {
   return (
     <Wrapper>

@@ -29,7 +29,7 @@ export const EditHousingMeteringDevicePage: FC<
   communicationPipes,
 }) => {
   const address = housingMeteringDevice?.address?.address?.mainAddress;
-  const isActive = !Boolean(housingMeteringDevice?.closingDate);
+  const isActive = !housingMeteringDevice?.closingDate;
 
   const navigate = useNavigate();
   const onCancel = () => navigate(-1);

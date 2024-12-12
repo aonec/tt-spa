@@ -171,7 +171,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
         Number(Object.keys(columnError)[0]) !== data.outdoorTemperature!,
     );
 
-    if (Boolean(filteredDayPart.length)) {
+    if (filteredDayPart.length) {
       setColumnErrors([
         ...filteredColumnErrors,
         {
@@ -206,7 +206,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
         currentTemperatureNormative,
       );
 
-      if (Boolean(isPassValidation)) {
+      if (isPassValidation) {
         handlePassValidation(currentColumnError, columnErrors, data, dayTime);
       } else {
         handleNoPassValidation(currentColumnError, columnErrors, data, dayTime);

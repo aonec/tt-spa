@@ -65,8 +65,8 @@ export const AddressTab: FC<AddressTabProps> = ({
         submittedMainAddress,
         initialMainAddress,
       );
-      isMainAddressChanged &&
-        mainAddress &&
+
+      if (isMainAddressChanged && mainAddress) {
         handleUpdateHousingStockAddress({
           addressId: mainAddress.id,
           data: {
@@ -74,6 +74,7 @@ export const AddressTab: FC<AddressTabProps> = ({
             corpus: submittedMainAddress.corpus,
           },
         });
+      }
 
       data.additionalAddresses.forEach((submittedAdditionalAddress) => {
         const currentInitialAdditionalAddress = additionalAddresses?.find(
@@ -84,8 +85,7 @@ export const AddressTab: FC<AddressTabProps> = ({
           currentInitialAdditionalAddress,
         );
 
-        currentInitialAdditionalAddress?.id &&
-          isAdditionalAddressChanged &&
+        if (currentInitialAdditionalAddress?.id && isAdditionalAddressChanged) {
           handleUpdateHousingStockAddress({
             addressId: submittedAdditionalAddress.id,
             data: {
@@ -93,14 +93,18 @@ export const AddressTab: FC<AddressTabProps> = ({
               corpus: submittedAdditionalAddress.corpus,
             },
           });
+        }
 
-        !currentInitialAdditionalAddress?.id &&
-          submittedAdditionalAddress.street &&
+        if (
+          !currentInitialAdditionalAddress?.id &&
+          submittedAdditionalAddress.street
+        ) {
           handleCreateHousingStockAddress({
             street: submittedAdditionalAddress.street,
             number: submittedAdditionalAddress.number || undefined,
             corpus: submittedAdditionalAddress.corpus,
           });
+        }
       });
       setTimeout(() => handleRefetchHousingStock(), 500);
     },
@@ -251,16 +255,18 @@ export const AddressTab: FC<AddressTabProps> = ({
               onClick={() => {
                 const currentAdditionalAddress = address;
 
-                currentAdditionalAddress?.id &&
+                if (currentAdditionalAddress?.id) {
                   handleDeleteHousingStockAddress({
                     addressId: currentAdditionalAddress.id,
                   });
+                }
 
-                !Boolean(currentAdditionalAddress?.id) &&
+                if (!currentAdditionalAddress?.id) {
                   setFieldValue(
                     'additionalAddresses',
                     values.additionalAddresses.filter((_, i) => index !== i),
                   );
+                }
               }}
             >
               – Удалить адрес

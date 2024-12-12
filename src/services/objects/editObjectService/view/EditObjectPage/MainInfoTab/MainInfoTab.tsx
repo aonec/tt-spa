@@ -168,16 +168,19 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
         {values.heatingStationId && (
           <FormItem label="Тепловой пункт">
             <SelectedEntityPanel
-              children={selectedHeatingStation?.name}
               onEdit={() => {
                 openEditHeatingStationModal();
-                selectedHeatingStation &&
+
+                if (selectedHeatingStation) {
                   heatingStationCapture(selectedHeatingStation);
+                }
               }}
               onRemove={() => {
                 setFieldValue('heatingStationId', null);
               }}
-            />
+            >
+              {selectedHeatingStation?.name}
+            </SelectedEntityPanel>
           </FormItem>
         )}
 

@@ -14,21 +14,16 @@ export const splitHomeownerAccount = (payload: {
     payload.data,
   );
 
-export const doesApartmentExist = async ({
+export const doesApartmentExist = ({
   housingStockId,
   apartmentNumber,
 }: {
   housingStockId: number;
   apartmentNumber: string;
-}): Promise<number | null> => {
-  const res: any = await axios.get(
+}): Promise<number | null> =>
+  axios.get(
     `HousingStocks/${housingStockId}/doesApartmentExist/${apartmentNumber}`,
   );
-
-  if (typeof res === 'number') return res;
-
-  return res;
-};
 
 export const getIndividualDevices = async (
   params: GetIndividualDeviceRequestParams,

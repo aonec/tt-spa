@@ -28,7 +28,7 @@ export const MeteringDevicesListModal: FC<MeteringDevicesListModalProps> = ({
             {!isLoading &&
               Boolean(meterindDevicesList?.length) &&
               meterindDevicesList?.map((device) => (
-                <MeteringDeviceListItem device={device} />
+                <MeteringDeviceListItem device={device} key={device.id} />
               ))}
             {!isLoading && meterindDevicesList?.length === 0 && (
               <Empty

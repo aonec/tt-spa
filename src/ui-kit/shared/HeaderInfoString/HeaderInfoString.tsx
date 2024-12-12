@@ -6,7 +6,7 @@ export const HeaderInfoString: FC<HeaderInfoStringProps> = ({ children }) => {
   return (
     <Wrapper>
       {children.map((node, index) => (
-        <InfoItem>
+        <InfoItem key={index}>
           {node}
           {index < children.length - 1 && <PointIconSC />}
         </InfoItem>

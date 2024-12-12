@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { Description, Title, Wrapper } from './ConfigureMvituPanel.styled';
 import { Props } from './ConfigureMvituPanel.types';
 import { ConnectionIcon } from 'ui-kit/icons';

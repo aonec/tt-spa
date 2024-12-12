@@ -23,7 +23,6 @@ export const CreateCalculatorModal: FC<CreateCalculatorModalProps> = ({
   stepNumber,
   updatePayload,
   goPrevStep,
-  handleSubmitForm,
   isLoading,
   payload,
 }) => {

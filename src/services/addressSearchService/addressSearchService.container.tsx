@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react';
-import { isEmpty, last } from 'lodash';
+import { last } from 'lodash';
 import React, { FC, useEffect, useMemo } from 'react';
 import { addressSearchService } from './addressSearchService.models';
 import { AddressSearchContainerProps } from './addressSearchService.types';
@@ -57,7 +57,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
       city: verifiedInitialValues?.city || '',
     },
     onSubmit: (data) => {
-      onSubmit && onSubmit(data);
+      if (onSubmit) onSubmit(data);
     },
     enableReinitialize: true,
   });
@@ -74,7 +74,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
   );
 
   useEffect(() => {
-    setInitialValues(initialValues || null);
+    if (initialValues) setInitialValues(initialValues);
   }, [initialValues, setInitialValues]);
 
   useEffect(() => {

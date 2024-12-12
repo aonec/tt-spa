@@ -11,7 +11,6 @@ import {
 import { message } from 'antd';
 import { Input } from 'ui-kit/Input';
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   title: 'Icons',
   parameters: { layout: 'centered' },
@@ -36,6 +35,7 @@ export const All = () => {
           .filter(([name]) => name.toLowerCase().includes(search.toLowerCase()))
           .map(([name, Icon]) => (
             <IconInfoWrapper
+              key={name}
               onClick={() => {
                 navigator.clipboard.writeText(`<${name} />`);
                 message.info('Icon copied to clickboard');

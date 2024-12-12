@@ -16,9 +16,11 @@ export function NodeStatisticsTableColumn<T>({
       <TitleWrapper>{title}</TitleWrapper>
       {values.map((value) => {
         if (value === undefined) {
-          return <ValueWrapper>-</ValueWrapper>;
+          return <ValueWrapper key="minus">-</ValueWrapper>;
         }
-        return <ValueWrapper>{valueConstructor(value)}</ValueWrapper>;
+        return (
+          <ValueWrapper key="value">{valueConstructor(value)}</ValueWrapper>
+        );
       })}
     </Wrapper>
   );

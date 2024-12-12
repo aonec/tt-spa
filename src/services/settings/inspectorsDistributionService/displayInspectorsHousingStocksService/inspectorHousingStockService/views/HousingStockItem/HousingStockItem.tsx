@@ -62,7 +62,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
         }}
         onChange={(value) => {
           inspectorSelectRef?.current?.blur();
-          value && updateHousingStock({ inspectorId: value as number });
+          if (value) updateHousingStock({ inspectorId: value as number });
         }}
         small
         virtual={false}

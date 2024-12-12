@@ -48,30 +48,6 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "prettier"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "**/*.stories.*"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      },
-      {
-        "files": [
-          "**/*.{js,jsx,ts,tsx}"
-        ],
-        "rules": {
-          "no-console": "warn"
-        }
-      }
-    ]
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -98,6 +74,7 @@
   "devDependencies": {
     "@babel/helper-define-map": "^7.13.12",
     "@chromatic-com/storybook": "^2.0.2",
+    "@eslint/js": "^9.14.0",
     "@storybook/addon-essentials": "^8.3.5",
     "@storybook/addon-interactions": "^8.3.5",
     "@storybook/addon-links": "^8.3.5",
@@ -115,16 +92,16 @@
     "@vitejs/plugin-react": "^4.2.1",
     "babel-plugin-named-exports-order": "^0.0.2",
     "esbuild-plugin-react-virtualized": "^1.0.4",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-storybook": "^0.9.0",
+    "eslint": "^9.14.0",
+    "eslint-plugin-react": "^7.37.2",
+    "globals": "^15.11.0",
     "husky": "^8.0.3",
     "prettier": "^2.8.3",
     "prop-types": "^15.8.1",
     "sass": "^1.60.0",
     "storybook": "^8.3.5",
     "tsconfig-paths-webpack-plugin": "^4.0.1",
+    "typescript-eslint": "^8.12.2",
     "vite": "^5.2.11",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-svgr": "^4.2.0",

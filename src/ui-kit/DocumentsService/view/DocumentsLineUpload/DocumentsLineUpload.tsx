@@ -92,7 +92,9 @@ export const DocumentsLineUpload: FC<DocumentsLineUploadProps> = ({
               onClick={() => {
                 try {
                   axios.delete(`Documents/${document.id}`);
-                } catch (error) {}
+                } catch (error) {
+                  console.error(error);
+                }
                 removeDocument(document.id);
               }}
             />

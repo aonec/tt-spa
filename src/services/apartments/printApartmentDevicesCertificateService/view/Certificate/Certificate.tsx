@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-filename-extension */
 import React, { FC, useState } from 'react';
 import { useEffect } from 'react';
 import dayjs from 'api/dayjs';
@@ -47,14 +46,14 @@ export const Certificate: FC<Props> = ({ certificate, isPJKH }) => {
             <>
               от абонентского отдела
               <br />
-              ООО "Инженерный центр - НК"
+              ООО &quot;Инженерный центр - НК&quot;
             </>
           )}
           {isPJKH && (
             <>
               отдел по работе с ИПУ
               <br />
-              ООО УК "Эйбэт"
+              ООО УК &quot;Эйбэт&quot;
             </>
           )}
         </div>
@@ -175,7 +174,7 @@ export const Certificate: FC<Props> = ({ certificate, isPJKH }) => {
               </td>
             </tr>
             {devices?.map((x) => (
-              <tr>
+              <tr key={x.serialNumber}>
                 <td
                   style={{
                     padding: '6px',

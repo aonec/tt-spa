@@ -130,7 +130,7 @@ sample({
   clock: searchTasksTrigger,
   filter: ({ isTaskProfileOpen, searchState }) =>
     !isTaskProfileOpen && Boolean(searchState.GroupType),
-  fn: ({ isTaskProfileOpen, searchState }) => {
+  fn: ({ searchState }) => {
     const filteredData = _.omitBy(searchState, _.isNil);
     const filteredDataByNull = _.omitBy(
       filteredData,

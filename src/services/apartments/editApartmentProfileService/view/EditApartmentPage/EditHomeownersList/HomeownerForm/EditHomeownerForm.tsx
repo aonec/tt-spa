@@ -33,8 +33,7 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
     useFormik<EditHomeownerFormik>({
       initialValues: initialValues || formInitialValues,
       onSubmit: (values) => {
-        isEdit &&
-          handleEditHomeownerPreparation &&
+        if (isEdit && handleEditHomeownerPreparation) {
           handleEditHomeownerPreparation({
             personalAccountNumber: values.personalAccountNumber,
             name: values.name,
@@ -43,8 +42,9 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
             isMainOnApartment: values.isMainOnApartment,
             openAt: values.openAt,
           });
+        }
 
-        handleCreateHomeowner &&
+        if (handleCreateHomeowner && values.openAt) {
           handleCreateHomeowner({
             apartmentId: Number(apartmentId),
             personalAccountNumber: values.personalAccountNumber,
@@ -52,9 +52,10 @@ export const EditHomeownerForm: FC<EditHomeownerFormProps> = ({
             phoneNumbers: values.phoneNumbers,
             personType: values.personType || undefined,
             paymentCode: values.paymentCode || null,
-            openAt: values.openAt?.toISOString()!,
+            openAt: values.openAt?.toISOString(),
             isMainOnApartment: values.isMainOnApartment,
           });
+        }
       },
       validationSchema: validationSchema,
       validateOnChange: false,

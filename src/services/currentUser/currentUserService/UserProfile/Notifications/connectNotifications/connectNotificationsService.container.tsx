@@ -69,7 +69,7 @@ export const ConnectNotificationsContainer = () => {
           <Content>
             <OptionsWrapper>
               {options.map((option, index) => (
-                <OptionWrapper>
+                <OptionWrapper key={option.key}>
                   {index + 1}. {option}
                 </OptionWrapper>
               ))}
