@@ -35,6 +35,7 @@ export const All = () => {
           .filter(([name]) => name.toLowerCase().includes(search.toLowerCase()))
           .map(([name, Icon]) => (
             <IconInfoWrapper
+              key={name}
               onClick={() => {
                 navigator.clipboard.writeText(`<${name} />`);
                 message.info('Icon copied to clickboard');

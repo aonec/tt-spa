@@ -32,6 +32,7 @@ export const TasksRouter = () => {
 
   return [
     <Route
+      key="tasks"
       path="/tasks"
       element={<Navigate replace to={initialTasksPath} />}
     />,

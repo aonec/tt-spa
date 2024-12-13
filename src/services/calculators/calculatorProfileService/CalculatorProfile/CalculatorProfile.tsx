@@ -176,7 +176,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         />
       ),
       [CalculatorProfileGrouptype.Documents]: (
-        <NodeDocumentsList documents={documents || []} saveFile={saveFile}/>
+        <NodeDocumentsList documents={documents || []} saveFile={saveFile} />
       ),
     };
   }, [calculator, commonInfo, openDevicesListModal]);

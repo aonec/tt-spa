@@ -26,7 +26,8 @@ export const DeleteInspectorContainer = () => {
       loading={isLoading}
       form={
         <Wrapper>
-          Вы действительно хоитие удалить инспектора &quot;{inspector?.fullName}&quot;
+          Вы действительно хоитие удалить инспектора &quot;{inspector?.fullName}
+          &quot;
         </Wrapper>
       }
       submitButtonType="danger"

@@ -6,6 +6,7 @@ export const privates: MenuFiltrationConfig = {
     ESecuredIdentityRoleName.Operator,
     ESecuredIdentityRoleName.SeniorOperator,
   ],
+  [MenuType.WorkWithReadings]: [ESecuredIdentityRoleName.SeniorOperator],
   [MenuType.Services]: [
     ESecuredIdentityRoleName.Operator,
     ESecuredIdentityRoleName.SeniorOperator,
