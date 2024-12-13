@@ -33,8 +33,6 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     setWithApartment,
     existingApartmentNumbers,
     defaultOrganizationCity,
-    setInitialValues,
-    verifiedInitialValues,
   } = useUnit({
     cities: outputs.$existingCities,
     streets: outputs.$existingStreets,
@@ -43,18 +41,16 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     setWithApartment: inputs.setWithApartment,
     existingApartmentNumbers: outputs.$existingApartmentNumbers,
     defaultOrganizationCity: currentOrganizationService.outputs.$defaultCity,
-    verifiedInitialValues: outputs.$verifiedInitialValues,
-    setInitialValues: inputs.setInitialValues,
   });
 
   const { values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
-      apartment: verifiedInitialValues?.apartment || '',
-      corpus: verifiedInitialValues?.corpus || '',
-      house: verifiedInitialValues?.house || '',
-      question: verifiedInitialValues?.question || '',
-      street: verifiedInitialValues?.street || '',
-      city: verifiedInitialValues?.city || '',
+      apartment: initialValues?.apartment || '',
+      corpus: initialValues?.corpus || '',
+      house: initialValues?.house || '',
+      question: initialValues?.question || '',
+      street: initialValues?.street || '',
+      city: initialValues?.city || '',
     },
     onSubmit: (data) => {
       if (onSubmit) onSubmit(data);
@@ -72,10 +68,6 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
       }),
     [hasCorpuses, fields],
   );
-
-  useEffect(() => {
-    if (initialValues) setInitialValues(initialValues);
-  }, [initialValues, setInitialValues]);
 
   useEffect(() => {
     const withApartment = preparedFields.some(
