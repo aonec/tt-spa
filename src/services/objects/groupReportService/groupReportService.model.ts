@@ -257,6 +257,14 @@ sendByEmailFx.doneData.watch(() => {
   message.success('Отчёт успешно отправлен на почту');
 });
 
+postRegularUploadFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Не удалось создать расписание выгрузок',
+  );
+});
+
 export const groupReportService = {
   inputs: {
     openModal,
