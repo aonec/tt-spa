@@ -76,9 +76,11 @@ export const RegularReportItem: FC<Props> = ({
     ? ReportTypeDictionary[report.report?.reportType]
     : 'Не найдено';
 
-  const nodeStatus = report.report?.nodeStatus
-    ? NodeStatusTextDictionary[report.report?.nodeStatus]
-    : 'Не найдено';
+  const nodeStatus = useMemo(() => {
+    if (report.report?.nodeStatus === null) return 'Все';
+    if (!report.report?.nodeStatus) return 'Не найдено';
+    return NodeStatusTextDictionary[report.report?.nodeStatus];
+  }, [report]);
 
   const menuButtonArr: ContextMenuElement[] = useMemo(
     () => [
