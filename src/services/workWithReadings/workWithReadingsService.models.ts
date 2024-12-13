@@ -1,4 +1,4 @@
-import { createDomain, createEvent, createStore } from 'effector';
+import { createEvent, createStore } from 'effector';
 
 const handleReportTypeModalOpen = createEvent<boolean>();
 
@@ -8,6 +8,6 @@ const $isReportTypeModalOpen = createStore(false).on(
 );
 
 export const workWithReadingsService = {
-  inputs: {handleReportTypeModalOpen},
-  outputs: {$isReportTypeModalOpen},
+  inputs: { handleReportTypeModalOpen },
+  outputs: { $isReportTypeModalOpen },
 };

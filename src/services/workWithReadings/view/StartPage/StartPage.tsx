@@ -11,10 +11,7 @@ import { Props } from './StartPage.types';
 import { DocumentBigIcon, DownloadGrayIcon, ExportIcon } from 'ui-kit/icons';
 import { ChevronIconRight } from 'services/workingRanges/WorkingRangeTab/WorkingRangeTab.styled';
 
-export const StartPage: FC<Props> = ({
-  handleReportTypeModalOpen,
-  isReportTypeModalOpen,
-}) => {
+export const StartPage: FC<Props> = ({ handleReportTypeModalOpen }) => {
   return (
     <Wrapper>
       <PageTitle>Работа с показаниями</PageTitle>

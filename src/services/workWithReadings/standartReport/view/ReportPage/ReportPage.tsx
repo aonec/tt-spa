@@ -24,7 +24,7 @@ import { QuestionMarkCircleIcon, XCircleIcon } from 'ui-kit/icons';
 import { ChevronIconRight } from 'services/workingRanges/WorkingRangeTab/WorkingRangeTab.styled';
 import { Button } from 'ui-kit/Button';
 
-export const ReportPage: FC<Props> = ({}) => {
+export const ReportPage: FC<Props> = () => {
   const date = dayjs().format('MMMM YYYY');
 
   const uppercaseDate = date
@@ -88,8 +88,12 @@ export const ReportPage: FC<Props> = ({}) => {
       </Container>
 
       <Footer>
-        <Button size="small" disabled >Экспортировать</Button>
-        <Button size="small" type='ghost' >Отправить на email</Button>
+        <Button size="small" disabled>
+          Экспортировать
+        </Button>
+        <Button size="small" type="ghost">
+          Отправить на email
+        </Button>
       </Footer>
     </Wrapper>
   );
