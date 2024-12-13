@@ -2473,6 +2473,17 @@ export interface GetSummaryHousingConsumptionsByResourcesResponse {
   consumptions: EResourceTypeDoubleDictionaryItem[] | null;
 }
 
+export interface GroupReportConfigurationDetailsModel {
+  organizationUserIds?: number[] | null;
+  contractorIds?: number[] | null;
+  /** @format date-time */
+  initialDate?: string;
+  /** @format date-time */
+  nextDate?: string | null;
+  reportConfigurationPeriod?: GroupReportConfigurationPeriod;
+  isActive?: boolean;
+}
+
 export interface GroupReportConfigurationDetailsRequest {
   organizationUserIds: number[];
   contractorIds: number[];
@@ -13037,6 +13048,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags Reports
+     * @name ReportsRemovegroupreportconfigurationDelete
+     * @summary GroupReportConfigurationDelete
+     * @request DELETE:/api/Reports/removegroupreportconfiguration/{id}
+     * @secure
+     */
+    reportsRemovegroupreportconfigurationDelete: (id: number, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/removegroupreportconfiguration/${id}`,
+        method: 'DELETE',
+        secure: true,
         ...params,
       }),
 

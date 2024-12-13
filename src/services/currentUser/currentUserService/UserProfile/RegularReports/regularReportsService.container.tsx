@@ -26,13 +26,21 @@ const {
 } = organizationsService;
 
 export const RegularReportsContainer = () => {
-  const { reportsData, houseManagements, organizations, handleDeleteReport } =
-    useUnit({
-      reportsData: outputs.$reportsData,
-      houseManagements: houseManagementsService.outputs.$houseManagements,
-      organizations: organizationsQuery.$data,
-      handleDeleteReport: inputs.handleDeleteReport,
-    });
+  const {
+    reportsData,
+    houseManagements,
+    organizations,
+    handleDeleteReport,
+    handleChangeActivity,
+    isReportUpdating,
+  } = useUnit({
+    reportsData: outputs.$reportsData,
+    houseManagements: houseManagementsService.outputs.$houseManagements,
+    organizations: organizationsQuery.$data,
+    handleDeleteReport: inputs.handleDeleteReport,
+    handleChangeActivity: inputs.handleChangeActivity,
+    isReportUpdating: outputs.$isReportUpdating,
+  });
 
   return (
     <>
@@ -50,6 +58,8 @@ export const RegularReportsContainer = () => {
             houseManagements={houseManagements}
             organizations={organizations}
             handleDeleteReport={handleDeleteReport}
+            handleChangeActivity={handleChangeActivity}
+            isReportUpdating={isReportUpdating}
           />
         ))}
         <PageGate />

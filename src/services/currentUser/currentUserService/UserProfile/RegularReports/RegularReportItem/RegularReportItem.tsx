@@ -1,6 +1,8 @@
 import { FC, useMemo, useState } from 'react';
 import {
   ItemHeader,
+  PeriodWrapper,
+  RangePickerSC,
   ReportName,
   Resource,
   RightBlock,
@@ -12,6 +14,7 @@ import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import { ListOpeningChevron } from 'ui-kit/shared/ListOpeningChevron';
 import {
   GroupReportConfigurationPeriodDictionary,
+  NodeStatusTextDictionary,
   ReportTypeDictionary,
   ResourcesNameDictionary,
 } from 'dictionaries';
@@ -19,6 +22,8 @@ import {
   ContextMenuButtonColor,
   ContextMenuElement,
 } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
+import dayjs from 'dayjs';
+import { Switch } from 'antd';
 
 export const RegularReportItem: FC<Props> = ({
   report,
@@ -26,6 +31,8 @@ export const RegularReportItem: FC<Props> = ({
   houseManagements,
   organizations,
   handleDeleteReport,
+  handleChangeActivity,
+  isReportUpdating,
 }) => {
   const [isOpen, setOpen] = useState(isFirst);
 
@@ -69,6 +76,10 @@ export const RegularReportItem: FC<Props> = ({
     ? ReportTypeDictionary[report.report?.reportType]
     : 'Не найдено';
 
+  const nodeStatus = report.report?.nodeStatus
+    ? NodeStatusTextDictionary[report.report?.nodeStatus]
+    : 'Не найдено';
+
   const menuButtonArr: ContextMenuElement[] = useMemo(
     () => [
       {
@@ -89,7 +100,14 @@ export const RegularReportItem: FC<Props> = ({
             {report.report?.fileName || '-'}
           </ReportName>
           <RightBlock>
-            {/* <Switch size="small" checked={true} onChange={() => {}} /> */}
+            <Switch
+              size="small"
+              checked={report.reportConfigurationDetails?.isActive}
+              onChange={() => {
+                handleChangeActivity(report);
+              }}
+              loading={isReportUpdating}
+            />
             <ContextMenuButton size="small" menuButtons={menuButtonArr} />
           </RightBlock>
         </ItemHeader>
@@ -109,11 +127,23 @@ export const RegularReportItem: FC<Props> = ({
               },
               {
                 key: 'Категория узлов',
-                value: 'Коммерческий учет',
+                value: nodeStatus,
               },
               {
                 key: 'Период и детализация',
-                value: reportType,
+                value: (
+                  <PeriodWrapper>
+                    <RangePickerSC
+                      disabled
+                      small
+                      value={[
+                        dayjs(report.report?.from),
+                        dayjs(report.report?.to),
+                      ]}
+                    />
+                    | {reportType}
+                  </PeriodWrapper>
+                ),
               },
               {
                 key: 'Регулярность',

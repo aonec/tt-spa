@@ -2,9 +2,13 @@ import { createEffect, createEvent, createStore, sample } from 'effector';
 import {
   deleteGroupReportConfiguration,
   getGroupReportConfigurations,
+  updateGroupReportConfiguration,
 } from './regularReportsService.api';
 import { createGate } from 'effector-react';
-import { GroupReportConfigurationServiceModel } from 'api/types';
+import {
+  GroupReportConfigurationServiceModel,
+  UpdateGroupReportConfigurationRequest,
+} from 'api/types';
 import { message } from 'antd';
 import { EffectFailDataAxiosError } from 'types';
 
@@ -13,6 +17,9 @@ const PageGate = createGate();
 const handleDeleteReport = createEvent<number>();
 
 const handleFilterReportData = createEvent<number>();
+
+const handleChangeActivity =
+  createEvent<GroupReportConfigurationServiceModel>();
 
 const getGroupReportConfigurationsFx = createEffect<
   void,
@@ -25,12 +32,23 @@ const deleteGroupReportConfigurationFx = createEffect<
   EffectFailDataAxiosError
 >(deleteGroupReportConfiguration);
 
+const updateGroupReportConfigurationFx = createEffect<
+  UpdateGroupReportConfigurationRequest,
+  GroupReportConfigurationServiceModel,
+  EffectFailDataAxiosError
+>(updateGroupReportConfiguration);
+
 const $reportsData = createStore<GroupReportConfigurationServiceModel[] | null>(
   null,
 )
   .on(getGroupReportConfigurationsFx.doneData, (_, data) => data)
   .on(handleFilterReportData, (prev, id) =>
     prev?.filter((report) => report.id !== id),
+  )
+  .on(updateGroupReportConfigurationFx.doneData, (prev, updatedReport) =>
+    prev?.map((report) =>
+      report.id === updatedReport.id ? updatedReport : report,
+    ),
   );
 
 const $deletingReportId = createStore<number | null>(null)
@@ -48,6 +66,27 @@ sample({
   target: handleFilterReportData,
 });
 
+sample({
+  clock: handleChangeActivity,
+  fn: (report) =>
+    ({
+      report: report.report,
+      reportConfigurationDetails: {
+        contractorIds: [
+          Number(report.reportConfigurationDetails?.contractorIds),
+        ],
+        emails: [report.reportConfigurationDetails?.emails],
+        initialDate: report.reportConfigurationDetails?.initialDate,
+        reportConfigurationPeriod:
+          report.reportConfigurationDetails?.reportConfigurationPeriod,
+        nextDate: report.reportConfigurationDetails?.nextDate,
+        isActive: !report.reportConfigurationDetails?.isActive,
+      },
+      id: report.id,
+    } as UpdateGroupReportConfigurationRequest),
+  target: updateGroupReportConfigurationFx,
+});
+
 deleteGroupReportConfigurationFx.failData.watch((error) => {
   message.error(
     error.response.data.error.Text ||
@@ -56,8 +95,18 @@ deleteGroupReportConfigurationFx.failData.watch((error) => {
   );
 });
 
+updateGroupReportConfigurationFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  );
+});
+
+const $isReportUpdating = updateGroupReportConfigurationFx.pending;
+
 export const regularReportsService = {
-  inputs: { handleDeleteReport },
-  outputs: { $reportsData },
+  inputs: { handleDeleteReport, handleChangeActivity },
+  outputs: { $reportsData, $isReportUpdating },
   gates: { PageGate },
 };
