@@ -2,7 +2,7 @@ import queryString from 'query-string';
 import { axios } from 'api/axios';
 import { CalculatorIntoHousingStockResponse } from 'api/types';
 import { GetConsolidatedReport } from './consolidatedReportService.types';
-import { downloadURI } from 'services/reports/CreateReportModal/utils';
+import { downloadURI } from 'utils/downloadByURL';
 
 export const getConsolidatedReport = async ({
   Name,

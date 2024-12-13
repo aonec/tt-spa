@@ -112,7 +112,7 @@ const $deviceInputStatuses = createStore<NodeReadingsStatusesByDevices>({})
     ...statuses,
     [deviceId]: getELectricNodeInputStatuses(MetersInputBlockStatus.Loading),
   }))
-  .on(getReadingsOfElectricNodeFx.done, (statuses, { params, result }) => {
+  .on(getReadingsOfElectricNodeFx.done, (statuses, { result }) => {
     if (!result.length) {
       return statuses;
     }
@@ -126,7 +126,7 @@ const $deviceInputStatuses = createStore<NodeReadingsStatusesByDevices>({})
       .startOf('M')
       .diff(dayjs(readingDate).startOf('M'), 'M');
 
-    let statusesByDevice = statuses[deviceId];
+    const statusesByDevice = statuses[deviceId];
 
     statusesByDevice[index] = MetersInputBlockStatus.Loading;
 
@@ -141,7 +141,7 @@ const $deviceInputStatuses = createStore<NodeReadingsStatusesByDevices>({})
       .startOf('M')
       .diff(dayjs(readingDate).startOf('M'), 'M');
 
-    let statusesByDevice = statuses[deviceId];
+    const statusesByDevice = statuses[deviceId];
 
     statusesByDevice[index] = MetersInputBlockStatus.Done;
 
@@ -156,7 +156,7 @@ const $deviceInputStatuses = createStore<NodeReadingsStatusesByDevices>({})
       .startOf('M')
       .diff(dayjs(readingDate).startOf('M'), 'M');
 
-    let statusesByDevice = statuses[deviceId];
+    const statusesByDevice = statuses[deviceId];
 
     statusesByDevice[index] = MetersInputBlockStatus.Failed;
 
@@ -205,6 +205,8 @@ export const accountingNodesReadingsInputService = {
     removeReading,
     openConfirmReadingModal:
       confirmReadingService.inputs.openConfirmReadingModal,
+    closeConfirmReadingModal:
+      confirmReadingService.inputs.closeConfirmReadingModal,
   },
   outputs: {
     $readings,

@@ -56,7 +56,7 @@ export const EditDistrictBordersContainer = () => {
   const handleUpdateDistrictBorder = (coordinates: number[][]) => {
     if (!districtData) return;
 
-    id &&
+    if (id) {
       updateDistrict({
         id,
         additionalInfo: getDistrictJsonData({
@@ -64,6 +64,7 @@ export const EditDistrictBordersContainer = () => {
           districtPolygonCoordinates: coordinates,
         }),
       });
+    }
   };
 
   const handleAddHouse = (housesToAdd: number[]) => {

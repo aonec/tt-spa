@@ -90,7 +90,7 @@ export const LoginPage: FC<LoginPageProps> = ({
               onChange={(event) => {
                 setFieldValue('password', event.target.value);
               }}
-              onKeyDown={fromEnter(handleSubmit)}
+              onKeyDown={fromEnter(() => handleSubmit())}
               data-reading-input="login"
             />
             <ErrorMessage>{errors.password}</ErrorMessage>

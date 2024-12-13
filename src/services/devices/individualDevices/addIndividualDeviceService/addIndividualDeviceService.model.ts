@@ -62,7 +62,7 @@ sample({
 
     return { ...formData, documentsIds };
   }),
-  fn: (data) => data as any,
+  fn: (data) => data as CreateIndividualDeviceRequest,
   target: createIndividualDeviceFx,
 });
 

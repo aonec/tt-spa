@@ -339,7 +339,7 @@ sample({
     Boolean(selectedTaskReasonOption?.id),
   fn: ({ selectedTaskReasonOption, selectedTaskType }) =>
     ({
-      TaskReasonId: selectedTaskReasonOption?.id!,
+      TaskReasonId: selectedTaskReasonOption?.id,
       TaskType: selectedTaskType || undefined,
     } as DeadlineRequest),
   target: getErpTaskDeadlineFx,
@@ -421,8 +421,8 @@ sample({
   filter: ({ selectedTaskReasonOption, selectedTaskType }) =>
     Boolean(selectedTaskReasonOption?.id) && Boolean(selectedTaskType),
   fn: ({ selectedTaskReasonOption, selectedTaskType }) => ({
-    TaskReasonId: selectedTaskReasonOption?.id!,
-    TaskType: selectedTaskType!,
+    TaskReasonId: selectedTaskReasonOption?.id,
+    TaskType: selectedTaskType,
   }),
   target: getExecutorsListFx,
 });

@@ -9,6 +9,7 @@ import { SubscribersConsumptionContainer } from 'services/statistics/subscribers
 import { useNavigate } from 'react-router-dom';
 import { ResourceDisablingScheduleContainer } from 'services/settings/resourcesDisablingScheduleService/ResourceDisablingSchedule.container';
 import { chooseTypeOfResourceDisconnectionModalService } from 'services/resources/chooseTypeOfResourceDisconnectionModalService';
+import { ConnectionAnalysisContainer } from 'services/statistics/connectionAnalysisService';
 
 export const StatisticProfile: FC<StatisticProfileProps> = ({
   handleOpenExportStatisticModal,
@@ -38,7 +39,7 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
     if (searchType === SubscribersConsumptionSearchType.Houses) {
       return [
         {
-          hidden: !Boolean(housingStockId),
+          hidden: !housingStockId,
           title: 'Выгрузить список квартир',
           onClick: () => {
             const { BuildingNumber, Street } = housingStockAddress;
@@ -83,6 +84,10 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
         label: 'Отключение ресурсов',
         key: StatisticProfileGrouptype.disabledResources,
       },
+      {
+        label: 'Анализ подключения',
+        key: StatisticProfileGrouptype.connectionAnalysis,
+      },
     ],
     [],
   );
@@ -96,6 +101,9 @@ export const StatisticProfile: FC<StatisticProfileProps> = ({
     ),
     [StatisticProfileGrouptype.subscribersConsumption]: (
       <SubscribersConsumptionContainer />
+    ),
+    [StatisticProfileGrouptype.connectionAnalysis]: (
+      <ConnectionAnalysisContainer />
     ),
   };
 

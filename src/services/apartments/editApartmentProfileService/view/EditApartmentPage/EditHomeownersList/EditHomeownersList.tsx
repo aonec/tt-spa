@@ -71,16 +71,21 @@ export const EditHomeownersList: FC<EditHomeownersListProps> = ({
             return {
               key: homeowner.id,
               nodes: [
-                <Name>{homeowner.name}</Name>,
-                <PersonalAccountNumber>
+                <Name key="name">{homeowner.name}</Name>,
+                <PersonalAccountNumber key="personal-account-number">
                   {homeowner.personalAccountNumber}
                   {homeowner.isMainPersonalAccountNumber && <CrownIconSC />}
                 </PersonalAccountNumber>,
-                <PaymentCode>{homeowner.paymentCode}</PaymentCode>,
-                <Tooltip title={homeowner.phoneNumbers?.join(', ') || ''}>
+                <PaymentCode key="payment-code">
+                  {homeowner.paymentCode}
+                </PaymentCode>,
+                <Tooltip
+                  key="tooltip"
+                  title={homeowner.phoneNumbers?.join(', ') || ''}
+                >
                   <PaymentCode>{homeowner.phoneNumbers?.[0]}</PaymentCode>
                 </Tooltip>,
-                <IconsWrapper>
+                <IconsWrapper key="icons-wrapper">
                   <PencilIconSC
                     onClick={() => openEditHomeownerModal(payload)}
                   />

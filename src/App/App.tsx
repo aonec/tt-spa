@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Bootstrap } from './Bootstrap';
 import { useRoutes as useRouter } from 'react-router-dom';
 import { useUnit } from 'effector-react';

@@ -79,8 +79,8 @@ export const AddressIdSearch: FC<AddressIdSearchProps> = ({
           onFocus={() => setAddress({})}
           onKeyDown={(e) => {
             fromEnter(() => {
-              onEnter && onEnter(0);
-              bestStreetMatch && setAddress({ Street: bestStreetMatch });
+              onEnter?.(0);
+              if (bestStreetMatch) setAddress({ Street: bestStreetMatch });
             })(e);
           }}
           placeholder="Улица"
@@ -128,10 +128,10 @@ export const AddressIdSearch: FC<AddressIdSearchProps> = ({
               ApartmentNumber: undefined,
             })
           }
-          onKeyDown={(e: any) => {
+          onKeyDown={(e) => {
             fromEnter(() => {
               getApartmentId();
-              onEnter && onEnter(2);
+              onEnter?.(2);
             })(e);
           }}
           placeholder="Кв."

@@ -1,4 +1,4 @@
-import React, {
+import {
   ChangeEvent,
   FC,
   useCallback,
@@ -84,7 +84,9 @@ export const SearchTasks: FC<SearchTasksProps> = ({
     () =>
       fromEnter((e) => {
         e.currentTarget.blur();
-        setFieldValue(e.target.name, e.target.value);
+        const event = e as unknown as React.ChangeEvent<HTMLInputElement>;
+
+        setFieldValue(event.target.name, event.target.value);
         handleSubmit();
       }),
     [setFieldValue, handleSubmit],
@@ -99,7 +101,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   const clearAllFilters = useCallback(() => {
     clearFilters();
     resetForm();
-    grouptype && changeFiltersByGroupType(grouptype);
+    if (grouptype) changeFiltersByGroupType(grouptype);
   }, [clearFilters, resetForm, changeFiltersByGroupType, grouptype]);
 
   useEffect(() => {

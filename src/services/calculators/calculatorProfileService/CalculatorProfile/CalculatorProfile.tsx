@@ -17,6 +17,9 @@ import {
   TabsSC,
   PanelsWrapper,
   PageHeaderSC,
+  WarningIconSС,
+  NoConnectionIconSC,
+  CheckConnectionSС,
 } from './CalculatorProfile.styled';
 import { CalculatorProfileProps } from './CalculatorProfile.types';
 import { ConnectionInfo } from './ConnectionInfo';
@@ -24,7 +27,12 @@ import { DocumentsPanel } from './DocumentsPanel';
 import { NodeDocumentsList } from './NodeDocumentsList';
 import { RelatedNodesList } from './RelatedNodesList';
 import { ContextMenuButtonColor } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
-import { EHouseCategory, TaskGroupingFilter } from 'api/types';
+import {
+  EConnectionStatusType,
+  EHouseCategory,
+  TaskGroupingFilter,
+} from 'api/types';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 
 export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   calculator,
@@ -35,6 +43,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   handleOpenConsumptionReportModal,
   openDevicesListModal,
   isPermitionToCalculatorActions,
+  saveFile,
 }) => {
   const navigate = useNavigate();
 
@@ -88,6 +97,22 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
             key: 'Дата следующей поверки прибора',
             value: calculator?.futureCheckingDate
               ? getTimeStringByUTC(calculator.futureCheckingDate, 'DD.MM.YYYY')
+              : null,
+          },
+          {
+            key: 'Суточный архив',
+            value: calculator?.connectionInfo?.lastDailyArchiveTime
+              ? getTimeStringByUTC(
+                  calculator.connectionInfo.lastDailyArchiveTime,
+                )
+              : null,
+          },
+          {
+            key: 'Часовой архив',
+            value: calculator?.connectionInfo?.lastHourlyArchiveTime
+              ? getTimeStringByUTC(
+                  calculator.connectionInfo.lastHourlyArchiveTime,
+                )
               : null,
           },
         ]}
@@ -151,7 +176,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
         />
       ),
       [CalculatorProfileGrouptype.Documents]: (
-        <NodeDocumentsList documents={documents || []} />
+        <NodeDocumentsList documents={documents || []} saveFile={saveFile} />
       ),
     };
   }, [calculator, commonInfo, openDevicesListModal]);
@@ -171,6 +196,16 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
     [],
   );
 
+  const { isConnected, connectionInfo } = calculator;
+  const isConnectionError =
+    !(calculator.connection?.port && calculator.connection?.ipV4) ||
+    connectionInfo?.connectionStatus ===
+      EConnectionStatusType.UnstableConnection;
+
+  const isMalfunction =
+    connectionInfo?.connectionStatus ===
+    EConnectionStatusType.DeviceMalfunction;
+
   return (
     <div>
       <GoBack />
@@ -179,6 +214,21 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           <>
             <CalculatorIconSC />
             {headerTitle}
+            {!isConnected && (
+              <Tooltip title="Вычислитель не опрашивается">
+                <NoConnectionIconSC />
+              </Tooltip>
+            )}
+            {isConnected && isConnectionError && (
+              <Tooltip title="Проверьте настройки соединения">
+                <CheckConnectionSС />
+              </Tooltip>
+            )}
+            {isMalfunction && (
+              <Tooltip title="Вычислитель неисправен">
+                <WarningIconSС />
+              </Tooltip>
+            )}
           </>
         }
         contextMenu={menuButtons}
@@ -210,6 +260,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
               setGrouptype(CalculatorProfileGrouptype.Documents)
             }
             documents={documents || []}
+            saveFile={saveFile}
           />
         </PanelsWrapper>
       </ContentWrapper>

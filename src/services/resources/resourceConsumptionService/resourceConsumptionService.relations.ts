@@ -11,7 +11,7 @@ sample({
   clock: sample({
     source: resourceConsumptionService.outputs.$summaryConsumption,
     clock: resourceConsumptionFilterService.outputs.$addressesList,
-    filter: (summary) => !Boolean(summary),
+    filter: (summary) => !summary,
     fn: (_, addresses) => addresses,
   }),
   fn: (oldFilter, addresses) => {

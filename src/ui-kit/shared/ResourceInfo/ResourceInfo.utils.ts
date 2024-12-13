@@ -1,4 +1,8 @@
-import { EActResourceType } from 'api/types';
+import {
+  EActResourceType,
+  ETaskTargetObjectInfo,
+  ResourceType,
+} from 'api/types';
 
 export const actResourceNamesLookup = {
   [EActResourceType.ColdWaterSupply]: 'ХВС',
@@ -6,4 +10,7 @@ export const actResourceNamesLookup = {
   [EActResourceType.Electricity]: 'ЭЭ',
   [EActResourceType.Heat]: 'Тепло',
   [EActResourceType.All]: 'Все',
+  [ETaskTargetObjectInfo.MultipleResources]: 'Все',
+  [ETaskTargetObjectInfo.Calculator]: 'Вычислитель',
+  [ResourceType.None]: 'Нет',
 };

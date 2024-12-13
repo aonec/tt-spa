@@ -65,7 +65,7 @@ export const EditApartmentPage: FC<EditApartmentPageProps> = ({
           <>
             {address && getHousingStockItemAddress(address)}
             {additionalAddresses?.map((elem) => (
-              <AdditionalAddressWrapper>
+              <AdditionalAddressWrapper key={elem.id}>
                 {getHousingStockItemAddress(elem)}
               </AdditionalAddressWrapper>
             ))}

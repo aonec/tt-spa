@@ -1,10 +1,11 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
 import { combine, sample } from 'effector';
-import { delay, not } from 'patronum';
+import { delay } from 'patronum';
 import { createGate } from 'effector-react';
 import dayjs from 'api/dayjs';
 import {
+  CreateGroupReportScheduleRequest,
   EReportType,
   GroupReportFormResponse,
   SendGroupReportRequest,
@@ -13,6 +14,7 @@ import {
   downloadGroupReportRequest,
   fetchFilters,
   fetchGroupReport,
+  postRegularUpload,
   sendByEmail,
 } from './groupReportService.api';
 import {
@@ -29,6 +31,12 @@ const closeModal = createEvent();
 const $isOpen = createStore(false)
   .on(openModal, () => true)
   .on(closeModal, () => false);
+
+const setRegularUpload = createEvent<boolean>();
+const $isRegularUpload = createStore(false).on(
+  setRegularUpload,
+  (_, data) => data,
+);
 
 const getReportFiltersFx = createEffect<void, GroupReportFormResponse>(
   fetchFilters,
@@ -58,6 +66,12 @@ const setGroupReportPayload = createEvent<Partial<GroupReportRequestPayload>>();
 const $downloadReportPayload = createStore<GroupReportRequestPayload | null>(
   null,
 );
+
+const postRegularUploadFx = createEffect<
+  CreateGroupReportScheduleRequest,
+  void,
+  EffectFailDataAxiosError
+>(postRegularUpload);
 
 const $isFiltersLoading = getReportFiltersFx.pending;
 const $isDownloading = combine(
@@ -101,6 +115,36 @@ sample({
 
 sample({
   clock: $downloadReportPayload,
+  filter: $isRegularUpload,
+  fn: (clock) => {
+    const payload = {
+      report: {
+        fileName: clock?.FileName,
+        buildingIds: clock?.BuildingIds,
+        from: clock?.From,
+        houseManagementId: clock?.HouseManagementId,
+        managementFirmId: clock?.ManagementFirmId,
+        nodeResourceTypes: clock?.NodeResourceTypes,
+        nodeStatus: clock?.NodeStatus,
+        reportFormat: clock?.ReportFormat,
+        reportType: clock?.ReportType,
+        to: clock?.To,
+      },
+      reportScheduleDetails: {
+        emails: [clock?.['Subscription.Email']],
+        contractorIds: clock?.['Subscription.ContractorIds'],
+        initialDate: clock?.['Subscription.TriggerAt'],
+        reportSchedulePeriod: clock?.['Subscription.Type'],
+      },
+    } as CreateGroupReportScheduleRequest;
+
+    return payload;
+  },
+  target: postRegularUploadFx,
+});
+
+sample({
+  clock: $downloadReportPayload,
   filter: (payload): payload is GroupReportRequestPayload => {
     const isExist = Boolean(payload);
     const { From, To, ReportType } = payload || {};
@@ -124,7 +168,7 @@ sample({
 sample({
   source: $reportFilters,
   clock: GroupReportGate.open,
-  filter: (filter) => !Boolean(filter),
+  filter: (filter) => !filter,
   target: getReportFiltersFx,
 });
 
@@ -149,8 +193,7 @@ const $isSendByEmailWithError = createStore<boolean>(false)
 sample({
   clock: delayedPendingByEmailFx,
   source: $isSendByEmailWithError,
-  // filter: (isSendByEmailWithError) => !isSendByEmailWithError, //todo: регулярная выгрузка
-  filter: not($isSendByEmailWithError),
+  filter: (isSendByEmailWithError) => !isSendByEmailWithError,
   target: closeModal,
 });
 
@@ -203,7 +246,7 @@ sendByEmailFx.failData.watch((error) => {
   );
 });
 sendByEmailFx.pending.watch((isPending) => {
-  isPending && message.info('Отчёт формируется для отправки на почту', 60);
+  if (isPending) message.info('Отчёт формируется для отправки на почту', 60);
 });
 sendByEmailFx.doneData.watch(() => {
   message.destroy();
@@ -216,6 +259,7 @@ export const groupReportService = {
     closeModal,
     setGroupReportPayload,
     getGroupReport,
+    setRegularUpload,
   },
   outputs: {
     $isOpen,

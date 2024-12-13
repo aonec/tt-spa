@@ -251,16 +251,18 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
         {values.heatingStationId && (
           <FormItem label="Тепловой пункт">
             <SelectedEntityPanel
-              children={<Title>{selectedHeatingStation?.name}</Title>}
               onEdit={() => {
                 openEditHeatingStationModal();
-                selectedHeatingStation &&
+                if (selectedHeatingStation) {
                   heatingStationCapture(selectedHeatingStation);
+                }
               }}
               onRemove={() => {
                 setFieldValue('heatingStationId', null);
               }}
-            />
+            >
+              <Title>{selectedHeatingStation?.name}</Title>
+            </SelectedEntityPanel>
           </FormItem>
         )}
         <GridContainer>

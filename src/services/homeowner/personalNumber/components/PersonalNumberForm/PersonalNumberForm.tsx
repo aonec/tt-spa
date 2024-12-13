@@ -67,30 +67,33 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
       validateOnChange: false,
       enableReinitialize: true,
       onSubmit: (data) => {
-        apartmentId && handleAddPersonalNumber && handleAddPersonalNumber(data);
+        if (apartmentId && handleAddPersonalNumber) {
+          handleAddPersonalNumber(data);
+        }
 
-        data.homeownerId &&
-          handleEditHomeownerAccount &&
+        if (data.homeownerId && handleEditHomeownerAccount) {
           handleEditHomeownerAccount(data);
+        }
 
-        apartmentId &&
-          homeowner &&
-          handleSwitchHomeownerAccount &&
+        if (apartmentId && homeowner && handleSwitchHomeownerAccount) {
           handleSwitchHomeownerAccount({
             form: data,
             replaceableAccountId: homeowner.id,
           });
+        }
 
-        homeowner &&
-          handleSubmitSwitchStage &&
+        if (homeowner && handleSubmitSwitchStage) {
           handleSubmitSwitchStage({
             form: data,
             replaceableAccountId: homeowner.id,
           });
+        }
 
-        apartmentId &&
+        if (
+          apartmentId &&
           apartmentNumber &&
-          handleSubmitAddNewApartmentStage &&
+          handleSubmitAddNewApartmentStage
+        ) {
           handleSubmitAddNewApartmentStage({
             personalAccountNumber: data.personalAccountNumber,
             name: data.name,
@@ -101,6 +104,7 @@ export const PersonalNumberForm: FC<PersonalNumberFormProps> = ({
             apartmentId: apartmentId,
             apartmentNumber,
           });
+        }
       },
     });
 

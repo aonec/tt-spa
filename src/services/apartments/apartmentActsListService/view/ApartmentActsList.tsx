@@ -1,8 +1,7 @@
 import { Empty } from 'antd';
 import { EActResourceType, EActType } from 'api/types';
-import React, { FC, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { FilterExtendedSearch } from 'ui-kit/shared/FilterExtendedSearch';
-import { actResourceNamesLookup } from 'ui-kit/shared/ResourceInfo/ResourceInfo.utils';
 import { ApartmentActItem } from './ApartmentActItem';
 import {
   AddButton,
@@ -14,6 +13,7 @@ import {
 import { ApartmentActsListProps } from './ApartmentActsList.types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { ActTypesNamesLookup } from 'dictionaries';
+import { actResourceNames } from 'services/actsJournalService/view/ActsJournalProfile/AddNewActForm/AddNewActForm';
 
 export const ApartmentActsList: FC<ApartmentActsListProps> = ({
   acts,
@@ -51,9 +51,10 @@ export const ApartmentActsList: FC<ApartmentActsListProps> = ({
     ],
   );
 
-  const resources = Object.entries(actResourceNamesLookup).map(
-    ([key, value]) => ({ key: key as EActResourceType, value }),
-  );
+  const resources = Object.entries(actResourceNames).map(([key, value]) => ({
+    key: key as EActResourceType,
+    value,
+  }));
 
   const allowedFilters = Object.entries(ActTypesNamesLookup).map(
     ([key, value]) => ({

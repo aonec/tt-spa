@@ -80,6 +80,7 @@ export const TasksProfileContainer = () => {
     ESecuredIdentityRoleName.ManagingFirmSpectator,
     ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
     ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
+    ESecuredIdentityRoleName.Supervisor,
   ]);
 
   const { apartmentId, housingStockId } = queryString.parse(

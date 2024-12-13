@@ -1,5 +1,3 @@
-export type ReportsPageProps = {};
-
 export enum ReportType {
   IndividualDevices = 'IndividualDevices',
   ActsJournal = 'ActsJournal',

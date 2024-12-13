@@ -11,6 +11,8 @@ import {
   fetchDownloadHeatIndividualDeviceReport,
 } from './heatIndividualDevicesReportService.api';
 import { HeatIndividualDevicesReportPayload } from './heatIndividualDevicesReportService.types';
+import { message } from 'antd';
+import { EffectFailDataAxiosError } from 'types';
 
 const clearStore = createEvent();
 
@@ -20,9 +22,11 @@ const $isOpen = createStore(false)
   .on(openModal, () => true)
   .reset(closeModal);
 
-const downloadReportFx = createEffect<HeatIndividualDevicesReportPayload, void>(
-  fetchDownloadHeatIndividualDeviceReport,
-);
+const downloadReportFx = createEffect<
+  HeatIndividualDevicesReportPayload,
+  void,
+  EffectFailDataAxiosError
+>(fetchDownloadHeatIndividualDeviceReport);
 const downloadReport = createEvent<HeatIndividualDevicesReportPayload>();
 
 const $isLoading = downloadReportFx.pending;
@@ -69,6 +73,14 @@ sample({
 sample({
   clock: downloadReportFx.doneData,
   target: [closeModal, clearStore],
+});
+
+downloadReportFx.failData.watch((error) => {
+  message.error(
+    error.response.data.error?.Text ||
+      error.response.data.error?.Message ||
+      'Произошла ошибка',
+  );
 });
 
 export const heatIndividualDevicesReportService = {

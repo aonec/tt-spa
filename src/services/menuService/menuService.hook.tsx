@@ -1,6 +1,7 @@
 import { useUnit } from 'effector-react';
 import {
   CompanyProfileIcon,
+  CurrentAnalyticsIcon,
   DeviceIcon,
   DocumentIcon,
   DownloadIcon,
@@ -23,6 +24,24 @@ export const useMenuItems = (): MenuItem[] => {
   });
 
   return [
+    {
+      title: 'Текущая ситуация',
+      path: `/supervisor/currentAnalytics`,
+      icon: CurrentAnalyticsIcon,
+      type: MenuType.SupervisorAnalytics,
+    },
+    {
+      title: 'Общая аналитика',
+      path: `/supervisor/commonAnalytics`,
+      icon: StatisticIcon,
+      type: MenuType.SupervisorAnalytics,
+    },
+    // {
+    //   title: 'Потребление ресурсов',
+    //   path: `/supervisor/consumption`,
+    //   icon: StatisticIcon,
+    //   type: MenuType.SupervisorAnalytics,
+    // },
     {
       title: 'Задачи',
       path: '/tasks',

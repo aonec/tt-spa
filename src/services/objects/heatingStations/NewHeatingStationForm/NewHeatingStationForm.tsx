@@ -47,10 +47,11 @@ export const NewHeatingStationForm: FC<NewHeatingStationFormProps> = ({
       },
       enableReinitialize: true,
       onSubmit: (data) => {
-        handleCreateHeatingStation && handleCreateHeatingStation(data);
-        handleEditHeatingStation &&
-          openedHeatingStationData?.id &&
+        if (handleCreateHeatingStation) handleCreateHeatingStation(data);
+
+        if (handleEditHeatingStation && openedHeatingStationData?.id) {
           handleEditHeatingStation({ id: openedHeatingStationData?.id, data });
+        }
       },
       validateOnChange: false,
       validationSchema: yup.object().shape({

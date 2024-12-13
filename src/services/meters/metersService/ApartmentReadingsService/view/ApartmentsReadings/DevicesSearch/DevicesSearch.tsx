@@ -52,11 +52,13 @@ export const DevicesSearch: FC<DevicesSearchProps> = ({
       });
 
       setDevices(res.items);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
     setIsLoading(false);
   }
 
-  const onKeyDownHandler = (e: any) => {
+  const onKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e?.key === 'Enter') fetchDevices();
   };
 

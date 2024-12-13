@@ -110,7 +110,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
       data-reading-input={dataKey}
       onKeyDown={fromEnter(() => {
         handleSubmit();
-        handleSearchApartNumber();
+        handleSearchApartNumber(values);
         next(index);
       })}
       disabled={isDisabled}
@@ -151,7 +151,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         }}
         value={values.apartment || ''}
         onChange={(e) => {
-          handleChange(SearchFieldType.Apartment, e as any);
+          handleChange(SearchFieldType.Apartment, e);
         }}
         onKeyDown={fromEnter(() => {
           next(index);
@@ -170,7 +170,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
           small
           placeholder="Квартирa"
           data-reading-input={dataKey}
-          onClick={() => {
+          onMouseDown={() => {
             clearFields(index);
             setOpen(true);
           }}

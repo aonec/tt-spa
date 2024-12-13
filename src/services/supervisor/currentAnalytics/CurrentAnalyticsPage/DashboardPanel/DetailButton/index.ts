@@ -1,0 +1,1 @@
+export { DetailButton } from './DetailButton';

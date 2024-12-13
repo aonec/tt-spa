@@ -34,7 +34,7 @@ export const IndividualDevicesAddressSearch: FC<
       enableReinitialize: true,
     });
 
-  const submitWrap = async (callback: () => Promise<any>) => {
+  const submitWrap = async (callback: () => Promise<unknown>) => {
     await callback();
     handleSubmit();
   };

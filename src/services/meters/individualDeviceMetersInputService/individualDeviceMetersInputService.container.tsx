@@ -140,12 +140,14 @@ export const IndividualDeviceMetersInputContainer: FC<
               </>
             ),
             onSubmit: () => {
-              meterId &&
+              if (meterId) {
                 deleteMeter({
                   deviceId: device.id,
                   meterId: meterId,
                   readingDate: readingPayload.readingDate,
                 });
+              }
+
               resolve();
             },
             onCancel: reject,

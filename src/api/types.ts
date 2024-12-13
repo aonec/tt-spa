@@ -667,6 +667,14 @@ export interface CalculatorCommentResponse {
   lastModifiedUser: LastModifiedUserResponse | null;
 }
 
+export interface CalculatorConnectionInfoResponse {
+  connectionStatus: EConnectionStatusType | null;
+  /** @format date-time */
+  lastDailyArchiveTime: string | null;
+  /** @format date-time */
+  lastHourlyArchiveTime: string | null;
+}
+
 export interface CalculatorFilterResponse {
   nodeStatuses:
     | ENodeCommercialAccountStatusNullableStringDictionaryItem[]
@@ -725,6 +733,7 @@ export interface CalculatorIntoNodeResponse {
   address: BuildingShortResponse | null;
   /** @format int32 */
   infoId: number | null;
+  connectionInfo: CalculatorConnectionInfoResponse | null;
 }
 
 export interface CalculatorListResponse {
@@ -756,6 +765,7 @@ export interface CalculatorListResponse {
   /** @format int32 */
   numberOfTasks: number | null;
   comment: CalculatorCommentResponse | null;
+  connectionInfo: CalculatorConnectionInfoResponse | null;
 }
 
 export interface CalculatorListResponsePagedList {
@@ -810,6 +820,7 @@ export interface CalculatorResponse {
   /** @format int32 */
   numberOfTasks: number | null;
   comment: CalculatorCommentResponse | null;
+  connectionInfo: CalculatorConnectionInfoResponse | null;
 }
 
 export interface CallCenterWorkingConstructedReportResponse {
@@ -1182,6 +1193,11 @@ export interface CreateGroupReportRequest {
   housingStockIds?: number[] | null;
 }
 
+export interface CreateGroupReportScheduleRequest {
+  reportScheduleDetails: GroupReportScheduleDetailsRequest;
+  report: ComposeGroupReportRequest;
+}
+
 export interface CreateHousingMeteringDeviceReadingsRequest {
   /** @format date-time */
   readingDate: string;
@@ -1321,41 +1337,176 @@ export interface CreatingUser {
   middleName?: string | null;
 }
 
-export interface DashboardCurrentAnalitycsDetailsOthersResponse {
-  title: string | null;
-  items: DashboardCurrentAnalitycsDetailsResourceItemModel[] | null;
-}
-
-export interface DashboardCurrentAnalitycsDetailsResourceItemModel {
-  name?: string | null;
+export interface DashboardBaseTaskItemModel {
+  /** @format int32 */
+  id?: number;
+  label?: string | null;
   /** @format int32 */
   totalTasksCount?: number;
   /** @format int32 */
-  notClosedTasksCount?: number;
+  expiredTasksCount?: number;
 }
 
-export interface DashboardCurrentAnalitycsDetailsResourceModel {
-  resourceType?: TaskTargetObjectInfo;
-  items?: DashboardCurrentAnalitycsDetailsResourceItemModel[] | null;
+export interface DashboardChartModel {
+  /** @format date-time */
+  date?: string;
+  /** @format int32 */
+  value?: number;
 }
 
-export interface DashboardCurrentAnalitycsDetailsResponse {
-  title: string | null;
-  details: DashboardCurrentAnalitycsDetailsResourceModel[] | null;
+export interface DashboardFilterParameters {
+  /** @format date-time */
+  from?: string | null;
+  /** @format date-time */
+  to?: string | null;
+  city?: string | null;
+  /** @format int32 */
+  managementFirmId?: number | null;
+  buildingIds?: number[] | null;
+  resourceType?: ResourceType | null;
+  malfunctionType?: ManagingFirmTaskType | null;
+  deviationType?: ETemperatureNormativeDeviationType | null;
+  isTest?: boolean;
 }
 
-export interface DashboardCurrentAnalitycsResponse {
+export interface DashboardNavigationBreadCrumbs {
+  city?: string | null;
+  managingFirmName?: string | null;
+  /** @format int32 */
+  managingFirmId?: number | null;
+}
+
+export interface DashboardServiceQualityDetailsModel {
+  /** @format int32 */
+  totalTasksCount?: number;
+  /** @format int32 */
+  expiredTasksCount?: number;
+  deviationType?: ETemperatureNormativeDeviationType;
+  items?: DashboardBaseTaskItemModel[] | null;
+}
+
+export interface DashboardSummaryResponse {
   /** @format int32 */
   dashboardTasksCount: number;
   /** @format int32 */
   dashboardPipeRupturesCount: number;
+  /** @format double */
+  dashboardPipeRupturesPercentage: number;
   /** @format int32 */
   dashboardResourceDisconnectsCount: number;
+  /** @format double */
+  dashboardResourceDisconnectsPercentage: number;
   /** @format int32 */
   dashboardMalfunctionsCount: number;
+  /** @format double */
+  dashboardMalfunctionsPercentage: number;
+  /** @format double */
+  dashboardAverageCompletionTimeValue: number;
   dashboardAverageCompletionTime: string | null;
-  dashboardPanels: DashboardCurrentAnalitycsDetailsResponse[] | null;
-  dashboardOthers: DashboardCurrentAnalitycsDetailsOthersResponse | null;
+  /** @format double */
+  dashboardAverageCompletionTimePercentage: number;
+  /** @format int32 */
+  dashboardServiceQualityCount: number;
+  /** @format double */
+  dashboardServiceQualityPercentage: number;
+  filter: DashboardFilterParameters | null;
+  breadCrumbs: DashboardNavigationBreadCrumbs | null;
+}
+
+export interface DashboardTaskAverageTimeDetailsModel {
+  /** @format double */
+  averageCompletionTime?: number;
+  malfunctionType?: ManagingFirmTaskType;
+  malfunctionTypeDescription?: string | null;
+  items?: DashboardBaseTaskItemModel[] | null;
+}
+
+export interface DashboardTaskAverageTimeResponse {
+  title: string | null;
+  averageCompletionTime: string | null;
+  details: DashboardTaskAverageTimeDetailsModel[] | null;
+}
+
+export interface DashboardTaskMalfunctionDetailsModel {
+  /** @format int32 */
+  totalTasksCount?: number;
+  /** @format int32 */
+  expiredTasksCount?: number;
+  malfunctionType?: ManagingFirmTaskType;
+  malfunctionTypeDescription?: string | null;
+  items?: DashboardBaseTaskItemModel[] | null;
+}
+
+export interface DashboardTaskMalfunctionModel {
+  title?: string | null;
+  /** @format int32 */
+  totalTasksCount?: number;
+  /** @format double */
+  totalTasksPercentage?: number | null;
+  /** @format int32 */
+  expiredTasksCount?: number;
+  details?: DashboardTaskMalfunctionDetailsModel[] | null;
+  chart?: DashboardChartModel[] | null;
+}
+
+export interface DashboardTaskMalfunctionResponse {
+  title: string | null;
+  /** @format int32 */
+  totalTasksCount: number;
+  /** @format double */
+  totalTasksPercentage: number | null;
+  /** @format int32 */
+  expiredTasksCount: number;
+  details: DashboardTaskMalfunctionDetailsModel[] | null;
+  chart: DashboardChartModel[] | null;
+}
+
+export interface DashboardTaskQualityResponse {
+  title: string | null;
+  /** @format int32 */
+  totalTasksCount: number;
+  /** @format int32 */
+  expiredTasksCount: number;
+  /** @format int32 */
+  totalBuildingCount: number;
+  /** @format int32 */
+  buildingsWithTasksCount: number;
+  /** @format double */
+  averageCompletionTime: number;
+  details: DashboardServiceQualityDetailsModel[] | null;
+}
+
+export interface DashboardTaskResourceDetailsModel {
+  /** @format int32 */
+  totalTasksCount?: number;
+  /** @format int32 */
+  expiredTasksCount?: number;
+  resourceType?: ResourceType;
+  items?: DashboardBaseTaskItemModel[] | null;
+}
+
+export interface DashboardTaskResourceModel {
+  title?: string | null;
+  /** @format int32 */
+  totalTasksCount?: number;
+  /** @format double */
+  totalTasksPercentage?: number | null;
+  /** @format int32 */
+  expiredTasksCount?: number;
+  details?: DashboardTaskResourceDetailsModel[] | null;
+  chart?: DashboardChartModel[] | null;
+}
+
+export interface DashboardTaskResourceResponse {
+  title: string | null;
+  /** @format int32 */
+  totalTasksCount: number;
+  /** @format double */
+  totalTasksPercentage: number | null;
+  /** @format int32 */
+  expiredTasksCount: number;
+  details: DashboardTaskResourceDetailsModel[] | null;
+  chart: DashboardChartModel[] | null;
 }
 
 export interface DataAfterSplittingHomeownerAccountResponse {
@@ -1504,6 +1655,14 @@ export enum EClosingReason {
   ByLetter = 'ByLetter',
 }
 
+export enum EConnectionStatusType {
+  Unknown = 'Unknown',
+  Success = 'Success',
+  NoConnection = 'NoConnection',
+  UnstableConnection = 'UnstableConnection',
+  DeviceMalfunction = 'DeviceMalfunction',
+}
+
 export enum EConstructedReportDeviceStatus {
   Closed = 'Closed',
   Open = 'Open',
@@ -1593,6 +1752,7 @@ export enum EIndividualDeviceReadingsSource {
   TtmFromErc = 'TtmFromErc',
   TelegramBot = 'TelegramBot',
   DeviceTelemetry = 'DeviceTelemetry',
+  TtmFromGis = 'TtmFromGis',
 }
 
 export enum EIndividualDeviceReportOption {
@@ -1917,6 +2077,7 @@ export enum ESecuredIdentityRoleName {
   SeniorOperator = 'SeniorOperator',
   ManagingFirmSpectatorRestricted = 'ManagingFirmSpectatorRestricted',
   ManagingFirmSpectatingAdministrator = 'ManagingFirmSpectatingAdministrator',
+  Supervisor = 'Supervisor',
 }
 
 export interface ESecuredIdentityRoleNameStringDictionaryItem {
@@ -2065,6 +2226,11 @@ export enum ETasksState {
   NoTasks = 'NoTasks',
   OnTime = 'OnTime',
   MissedDeadline = 'MissedDeadline',
+}
+
+export enum ETemperatureNormativeDeviationType {
+  Overheating = 'Overheating',
+  Underheating = 'Underheating',
 }
 
 export enum EValueNodeWorkingRangeRelation {
@@ -2318,6 +2484,22 @@ export interface GroupReportResponse {
   /** @format uuid */
   houseManagementId: string | null;
   title: string | null;
+}
+
+export interface GroupReportScheduleDetailsRequest {
+  emails: string[];
+  contractorIds?: number[] | null;
+  /** @format date-time */
+  initialDate?: string;
+  /** @format date-time */
+  nextDate?: string | null;
+  reportSchedulePeriod: GroupReportSchedulePeriod;
+}
+
+export enum GroupReportSchedulePeriod {
+  EveryTwoWeeks = 'EveryTwoWeeks',
+  EveryMonth = 'EveryMonth',
+  EveryQuarter = 'EveryQuarter',
 }
 
 export interface GuidStringDictionaryItem {
@@ -3597,6 +3779,27 @@ export interface ManagementFirmLiteResponse {
   workingTime: string | null;
 }
 
+export enum ManagingFirmTaskType {
+  CalculatorMalfunction = 'CalculatorMalfunction',
+  CalculatorMalfunctionNonCommercial = 'CalculatorMalfunctionNonCommercial',
+  HousingDeviceMalfunction = 'HousingDeviceMalfunction',
+  HousingDeviceMalfunctionNonCommercial = 'HousingDeviceMalfunctionNonCommercial',
+  CalculatorLackOfConnection = 'CalculatorLackOfConnection',
+  IndividualDeviceCheck = 'IndividualDeviceCheck',
+  PipeRupture = 'PipeRupture',
+  CurrentApplication = 'CurrentApplication',
+  EmergencyApplication = 'EmergencyApplication',
+  IndividualDeviceReadingsCheck = 'IndividualDeviceReadingsCheck',
+  MeasurementErrorCommercial = 'MeasurementErrorCommercial',
+  MeasurementErrorNonCommercial = 'MeasurementErrorNonCommercial',
+  IndividualDeviceCheckNoReadings = 'IndividualDeviceCheckNoReadings',
+  RiserNoReadings = 'RiserNoReadings',
+  ResourceDisconnecting = 'ResourceDisconnecting',
+  CurrentApplicationUnassigned = 'CurrentApplicationUnassigned',
+  EmergencyApplicationUnassigned = 'EmergencyApplicationUnassigned',
+  TemperatureNormativeDeviation = 'TemperatureNormativeDeviation',
+}
+
 export interface MeasurableIntervalResponse {
   /** @format double */
   maxValue: number | null;
@@ -3987,6 +4190,7 @@ export interface OrganizationResponse {
   latitude: number | null;
   /** @format double */
   longitude: number | null;
+  type: OrganizationType;
 }
 
 export interface OrganizationResponsePagedList {
@@ -4005,6 +4209,13 @@ export interface OrganizationResponsePagedList {
   /** @format int32 */
   previousPageNumber: number;
   items: OrganizationResponse[] | null;
+}
+
+export enum OrganizationType {
+  ManagementFirm = 'ManagementFirm',
+  CallCenter = 'CallCenter',
+  ControllerFirm = 'ControllerFirm',
+  HeadManagement = 'HeadManagement',
 }
 
 export interface OrganizationUpdateRequest {
@@ -4545,6 +4756,14 @@ export interface ResourceDisconnectingUpdateRequest {
   documentId?: number | null;
 }
 
+export enum ResourceType {
+  None = 'None',
+  Heat = 'Heat',
+  HotWaterSupply = 'HotWaterSupply',
+  ColdWaterSupply = 'ColdWaterSupply',
+  Electricity = 'Electricity',
+}
+
 export interface SendGroupReportRequest {
   /**
    * @format email
@@ -5047,15 +5266,6 @@ export interface TaskStatisticsResponse {
   tasks: DateTimeTaskStatisticsItemArrayDictionaryItem[] | null;
 }
 
-export enum TaskTargetObjectInfo {
-  ColdWaterSupply = 'ColdWaterSupply',
-  HotWaterSupply = 'HotWaterSupply',
-  Electricity = 'Electricity',
-  Heat = 'Heat',
-  MultipleResources = 'MultipleResources',
-  Calculator = 'Calculator',
-}
-
 export interface TaskTargetObjectResponse {
   targetObjectInfo: ETaskTargetObjectInfo;
   title: string | null;
@@ -5263,6 +5473,8 @@ export interface UpdateIndividualDeviceRequest {
   contractorId?: number | null;
   connection?: MeteringDeviceConnection | null;
   isConnected?: boolean;
+  /** @format date-time */
+  closingDate?: string | null;
 }
 
 export interface UpdateIndividualDeviceSealRequest {
@@ -5581,7 +5793,7 @@ export class HttpClient<SecurityDataType = unknown> {
             : payloadFormatter(body),
       },
     ).then(async (response) => {
-      const r = response as HttpResponse<T, E>;
+      const r = response.clone() as HttpResponse<T, E>;
       r.data = null as unknown as T;
       r.error = null as unknown as E;
 
@@ -6852,6 +7064,8 @@ export class Api<
         HouseManagementId?: string;
         HouseCategory?: EHouseCategory;
         /** @format int32 */
+        ManagementFirmId?: number;
+        /** @format int32 */
         PageNumber?: number;
         /** @format int32 */
         PageSize?: number;
@@ -6894,6 +7108,8 @@ export class Api<
         /** @format uuid */
         HouseManagementId?: string;
         HouseCategory?: EHouseCategory;
+        /** @format int32 */
+        ManagementFirmId?: number;
         /** @format int32 */
         PageNumber?: number;
         /** @format int32 */
@@ -7208,7 +7424,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags CalculatorInfos
      * @name CalculatorInfosList
@@ -7275,6 +7491,7 @@ export class Api<
         filterHousingStockId?: number;
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
+        filterConnectionStatus?: EConnectionStatusType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -7330,6 +7547,7 @@ export class Api<
         filterHousingStockId?: number;
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
+        filterConnectionStatus?: EConnectionStatusType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -7817,18 +8035,840 @@ export class Api<
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardFilterOrganizationsList
+     * @summary OrganizationsReadAll
+     * @request GET:/api/Dashboard/filter/organizations
+     * @secure
+     */
+    dashboardFilterOrganizationsList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<OrganizationResponsePagedList, ErrorApiResponse>({
+        path: `/api/Dashboard/filter/organizations`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Супервайзер</li>
      *
      * @tags Dashboard
-     * @name DashboardCurrentList
+     * @name DashboardCurrentSummaryList
      * @summary DashboardView
-     * @request GET:/api/Dashboard/current
+     * @request GET:/api/Dashboard/current/summary
      * @secure
      */
-    dashboardCurrentList: (params: RequestParams = {}) =>
-      this.request<DashboardCurrentAnalitycsResponse[], ErrorApiResponse>({
-        path: `/api/Dashboard/current`,
+    dashboardCurrentSummaryList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardSummaryResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/summary`,
         method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentPiperupturesList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/piperuptures
+     * @secure
+     */
+    dashboardCurrentPiperupturesList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskResourceResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/piperuptures`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentPiperupturesCityList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/piperuptures/city
+     * @secure
+     */
+    dashboardCurrentPiperupturesCityList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskResourceModel[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/piperuptures/city`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentPiperupturesDetailList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/piperuptures/detail
+     * @secure
+     */
+    dashboardCurrentPiperupturesDetailList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskResourceResponse, ErrorApiResponse>({
+        path: `/api/Dashboard/current/piperuptures/detail`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentResourcedisconnectsList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/resourcedisconnects
+     * @secure
+     */
+    dashboardCurrentResourcedisconnectsList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskResourceResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/resourcedisconnects`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentResourcedisconnectsCityList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/resourcedisconnects/city
+     * @secure
+     */
+    dashboardCurrentResourcedisconnectsCityList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskResourceResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/resourcedisconnects/city`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentResourcedisconnectsDetailList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/resourcedisconnects/detail
+     * @secure
+     */
+    dashboardCurrentResourcedisconnectsDetailList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskResourceResponse, ErrorApiResponse>({
+        path: `/api/Dashboard/current/resourcedisconnects/detail`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentMalfunctionsList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/malfunctions
+     * @secure
+     */
+    dashboardCurrentMalfunctionsList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskMalfunctionResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/malfunctions`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentMalfunctionsCityList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/malfunctions/city
+     * @secure
+     */
+    dashboardCurrentMalfunctionsCityList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskMalfunctionResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/malfunctions/city`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentMalfunctionsDetailList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/malfunctions/detail
+     * @secure
+     */
+    dashboardCurrentMalfunctionsDetailList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskMalfunctionResponse, ErrorApiResponse>({
+        path: `/api/Dashboard/current/malfunctions/detail`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentAveragetimeList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/averagetime
+     * @secure
+     */
+    dashboardCurrentAveragetimeList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskAverageTimeResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/averagetime`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentAveragetimeCityList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/averagetime/city
+     * @secure
+     */
+    dashboardCurrentAveragetimeCityList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskAverageTimeResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/averagetime/city`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentAveragetimeDetailList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/averagetime/detail
+     * @secure
+     */
+    dashboardCurrentAveragetimeDetailList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskAverageTimeResponse, ErrorApiResponse>({
+        path: `/api/Dashboard/current/averagetime/detail`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentServicequalityList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/servicequality
+     * @secure
+     */
+    dashboardCurrentServicequalityList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskQualityResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/servicequality`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentServicequalityCityList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/servicequality/city
+     * @secure
+     */
+    dashboardCurrentServicequalityCityList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskQualityResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/current/servicequality/city`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCurrentServicequalityDetailList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/current/servicequality/detail
+     * @secure
+     */
+    dashboardCurrentServicequalityDetailList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskQualityResponse, ErrorApiResponse>({
+        path: `/api/Dashboard/current/servicequality/detail`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCommonSummaryList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/common/summary
+     * @secure
+     */
+    dashboardCommonSummaryList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardSummaryResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/common/summary`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCommonPiperupturesList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/common/piperuptures
+     * @secure
+     */
+    dashboardCommonPiperupturesList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskResourceResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/common/piperuptures`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCommonPiperupturesDetailList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/common/piperuptures/detail
+     * @secure
+     */
+    dashboardCommonPiperupturesDetailList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskResourceModel, ErrorApiResponse>({
+        path: `/api/Dashboard/common/piperuptures/detail`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCommonResourcedisconnectsList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/common/resourcedisconnects
+     * @secure
+     */
+    dashboardCommonResourcedisconnectsList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskResourceResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/common/resourcedisconnects`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCommonResourcedisconnectsDetailList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/common/resourcedisconnects/detail
+     * @secure
+     */
+    dashboardCommonResourcedisconnectsDetailList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskResourceModel, ErrorApiResponse>({
+        path: `/api/Dashboard/common/resourcedisconnects/detail`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCommonMalfunctionsList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/common/malfunctions
+     * @secure
+     */
+    dashboardCommonMalfunctionsList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskMalfunctionResponse[], ErrorApiResponse>({
+        path: `/api/Dashboard/common/malfunctions`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Супервайзер</li>
+     *
+     * @tags Dashboard
+     * @name DashboardCommonMalfunctionsDetailList
+     * @summary DashboardView
+     * @request GET:/api/Dashboard/common/malfunctions/detail
+     * @secure
+     */
+    dashboardCommonMalfunctionsDetailList: (
+      query?: {
+        /** @format date-time */
+        From?: string;
+        /** @format date-time */
+        To?: string;
+        City?: string;
+        /** @format int32 */
+        ManagementFirmId?: number;
+        BuildingIds?: number[];
+        ResourceType?: ResourceType;
+        MalfunctionType?: ManagingFirmTaskType;
+        DeviationType?: ETemperatureNormativeDeviationType;
+        IsTest?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardTaskMalfunctionModel, ErrorApiResponse>({
+        path: `/api/Dashboard/common/malfunctions/detail`,
+        method: 'GET',
+        query: query,
         secure: true,
         format: 'json',
         ...params,
@@ -8061,7 +9101,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
      *
      * @tags Documents
      * @name DocumentsPollArtifactDetail
@@ -8169,7 +9209,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags ElectricNodes
      * @name ElectricNodesDetail
@@ -8373,7 +9413,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags HeatingSeasons
      * @name HeatingSeasonsList
@@ -8467,7 +9507,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags HeatingStation
      * @name HeatingStationList
@@ -8508,7 +9548,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags HeatingStation
      * @name HeatingStationDetail
@@ -8920,7 +9960,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags HousingMeteringDeviceReadings
      * @name HousingMeteringDeviceReadingsList
@@ -9169,7 +10209,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesReadingsHistoryDetail
@@ -9642,7 +10682,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
      *
      * @tags IndividualDeviceMountPlaces
      * @name IndividualDeviceMountPlacesList
@@ -9670,7 +10710,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
      *
      * @tags IndividualDeviceMountPlaces
      * @name IndividualDeviceMountPlacesAllList
@@ -9761,7 +10801,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags IndividualDeviceReadings
      * @name IndividualDeviceReadingsDataForSubscriberAndNormativeConsumptionPlotList
@@ -10066,7 +11106,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesReadingsHistoryDetail
@@ -10122,6 +11162,8 @@ export class Api<
       query?: {
         /** @format date-time */
         FromDate?: string;
+        ExceptedHmIds?: string[];
+        HmIds?: string[];
         Command?: PollCommand;
         /** @format int32 */
         PollId?: number;
@@ -10148,6 +11190,8 @@ export class Api<
      */
     individualDevicesCloseDevicesWithoutReadingsCreate: (
       query?: {
+        ExceptedHmIds?: string[];
+        HmIds?: string[];
         ManagementFirmIds?: number[];
         /**
          * Кол-во месяцев без показаний от текущего
@@ -10216,7 +11260,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesConsumptionDetail
@@ -10237,7 +11281,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
      *
      * @tags IndividualDevices
      * @name IndividualDevicesLastReadingDetail
@@ -10258,7 +11302,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Inspectors
      * @name InspectorsList
@@ -10299,7 +11343,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Inspectors
      * @name InspectorsDetail
@@ -10427,7 +11471,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags ManagingFirms
      * @name ManagingFirmsTemperatureNormativesList
@@ -10516,7 +11560,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags ManagingFirms
      * @name ManagingFirmsTemperatureNormativesTemplateFileList
@@ -10725,7 +11769,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Nodes
      * @name NodesList
@@ -10745,6 +11789,7 @@ export class Api<
         addressHousingStockNumber?: string;
         addressCorpus?: string;
         addressHouseCategory?: EHouseCategory;
+        Type?: ENodeType;
         Resource?: EResourceType;
         RegistrationType?: ENodeRegistrationType;
         CommercialStatus?: ENodeCommercialAccountStatus;
@@ -10798,7 +11843,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Nodes
      * @name NodesChecksDetail
@@ -10898,7 +11943,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Nodes
      * @name NodesStatisticsDetail
@@ -10928,7 +11973,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Nodes
      * @name NodesTaskStatisticsDetail
@@ -10957,7 +12002,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Nodes
      * @name NodesDataForHousingConsumptionPlotList
@@ -10986,7 +12031,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Nodes
      * @name NodesSummaryHousingConsumptionsByResourcesList
@@ -11123,7 +12168,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeList
@@ -11148,7 +12193,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeHouseManagementDetail
@@ -11174,7 +12219,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeHousingStockDetail
@@ -11200,7 +12245,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeNodeDetail
@@ -11270,7 +12315,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeTypesList
@@ -11379,7 +12424,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags OrganizationCompetences
      * @name OrganizationCompetencesList
@@ -11424,6 +12469,7 @@ export class Api<
      */
     organizationsList: (
       query?: {
+        HeadManagementIncluded?: boolean;
         /** @format int32 */
         PageNumber?: number;
         /** @format int32 */
@@ -11714,7 +12760,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags OrganizationUserWorkingStatuses
      * @name OrganizationUserWorkingStatusesList
@@ -11846,7 +12892,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags PipeNodes
      * @name PipeNodesDetail
@@ -11888,7 +12934,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags PipeNodes
      * @name PipeNodesValidateCreate
@@ -11980,7 +13026,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags PipeNodes
      * @name PipeNodesPipesForAddingDeviceDetail
@@ -12011,7 +13057,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags PipeNodes
      * @name PipeNodesPipeMagistralTypesList
@@ -12035,7 +13081,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags PipeNodes
      * @name PipeNodesMeteringDevicesDetail
@@ -12056,7 +13102,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags PipeNodes
      * @name PipeNodesPipesDetail
@@ -12074,7 +13120,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Reports
      * @name ReportsList
@@ -12115,7 +13161,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Reports
      * @name ReportsReportDataList
@@ -12146,7 +13192,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Reports
      * @name ReportsReportList
@@ -12176,7 +13222,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Reports
      * @name ReportsConsolidatedReportList
@@ -12205,7 +13251,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Reports
      * @name ReportsGroupReportList
@@ -12244,7 +13290,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags Reports
      * @name ReportsSendGroupReportCreate
@@ -12262,6 +13308,62 @@ export class Api<
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags Reports
+     * @name ReportsCreategroupreportscheduleCreate
+     * @summary ReportAdd
+     * @request POST:/api/Reports/creategroupreportschedule
+     * @secure
+     */
+    reportsCreategroupreportscheduleCreate: (
+      data: CreateGroupReportScheduleRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/creategroupreportschedule`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
+     *
+     * @tags Reports
+     * @name ReportsGetgroupreportscheduleList
+     * @summary ReportRead
+     * @request GET:/api/Reports/getgroupreportschedule
+     * @secure
+     */
+    reportsGetgroupreportscheduleList: (params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/getgroupreportschedule`,
+        method: 'GET',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
+     *
+     * @tags Reports
+     * @name ReportsUpdategroupreportscheduleList
+     * @summary ReportRead
+     * @request GET:/api/Reports/updategroupreportschedule
+     * @secure
+     */
+    reportsUpdategroupreportscheduleList: (params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/updategroupreportschedule`,
+        method: 'GET',
+        secure: true,
         ...params,
       }),
 
@@ -12505,7 +13607,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Администратор УК без назначений задач</li>
      *
      * @tags Reports
      * @name ReportsFeedFlowPipeTemperatureReportList
@@ -12524,6 +13626,30 @@ export class Api<
     ) =>
       this.request<File, ErrorApiResponse>({
         path: `/api/Reports/FeedFlowPipeTemperatureReport`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reports
+     * @name ReportsDevicesWithLastReadingReportList
+     * @request GET:/api/Reports/DevicesWithLastReadingReport
+     * @secure
+     */
+    reportsDevicesWithLastReadingReportList: (
+      query?: {
+        /** @format uuid */
+        HouseManagementId?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/DevicesWithLastReadingReport`,
         method: 'GET',
         query: query,
         secure: true,
@@ -13057,7 +14183,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingList
@@ -13125,7 +14251,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingExportList
@@ -13170,7 +14296,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingDetail
@@ -13292,7 +14418,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags ResourceDisconnecting
      * @name ResourceDisconnectingFiltersList
@@ -13310,7 +14436,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags SubscriberStatistics
      * @name SubscriberStatisticsList
@@ -13391,7 +14517,7 @@ export class Api<
       ),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags SubscriberStatistics
      * @name SubscriberStatisticsExportList
@@ -13977,7 +15103,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li><li>Супервайзер</li>
      *
      * @tags TemperatureNormative
      * @name TemperatureNormativeList

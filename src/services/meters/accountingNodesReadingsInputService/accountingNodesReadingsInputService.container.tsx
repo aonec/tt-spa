@@ -11,6 +11,7 @@ import { UpdateAccountingNodesSumPayload } from '../metersService/AccountingNode
 import { PreValidatedNodeReadings } from './view/AccountingNodeReadingsLine/AccountingNodeReadingsLine.types';
 import dayjs from 'api/dayjs';
 import { getNodeReadingValue } from './view/AccountingNodeReadingsLine/AccountingNodeReadingsLine.utils';
+import { getLastReading } from './accountingNodesReadingsInputService.utils';
 
 const { gates, inputs, outputs } = accountingNodesReadingsInputService;
 const { AccountingNodesReadingsInputGate } = gates;
@@ -20,28 +21,33 @@ export const AccountingNodesReadingsInputContainer: FC<
 > = ({ sliderIndex, device, deviceIndex }) => {
   const {
     allReadings,
-    deviceInputStatuses,
+    inputStatuses,
     deviceNonResConsumptionInputStatuses,
-  } = {
-    allReadings: useUnit(outputs.$readings),
-    deviceInputStatuses: useUnit(outputs.$deviceInputStatuses)[device.id] || {},
-    deviceNonResConsumptionInputStatuses: useUnit(
+    sendReading,
+    sendNonResConsumption,
+    removeReading,
+    updateReadingsSum,
+    openConfirmReadingModal,
+    closeConfirmReadingModal,
+  } = useUnit({
+    allReadings: outputs.$readings,
+    inputStatuses: outputs.$deviceInputStatuses,
+    deviceNonResConsumptionInputStatuses:
       outputs.$nonResConsumptionInputStatuses,
-    ),
-  };
+    sendReading: inputs.sendReading,
+    sendNonResConsumption: inputs.sendNonResConsumptionReading,
+    removeReading: inputs.removeReading,
+    updateReadingsSum: AccountingNodesReadingsService.inputs.updateNodeReadings,
+    openConfirmReadingModal: inputs.openConfirmReadingModal,
+    closeConfirmReadingModal: inputs.closeConfirmReadingModal,
+  });
+
+  const deviceInputStatuses = inputStatuses[device.id] || {};
 
   const readings = useMemo(
     () => allReadings[device.id] || [],
     [allReadings, device],
   );
-
-  const sendReading = useUnit(inputs.sendReading);
-  const sendNonResConsumption = useUnit(inputs.sendNonResConsumptionReading);
-  const removeReading = useUnit(inputs.removeReading);
-  const updateReadingsSum = useUnit(
-    AccountingNodesReadingsService.inputs.updateNodeReadings,
-  );
-  const openConfirmReadingModal = useUnit(inputs.openConfirmReadingModal);
 
   const handleValidateReading = useCallback(
     (payload: PreValidatedNodeReadings) => {
@@ -49,9 +55,10 @@ export const AccountingNodesReadingsInputContainer: FC<
       const isEdited = value !== getNodeReadingValue(reading);
 
       const readingMonth = dayjs(readingDate).format('MMMM');
-      const prevReading = readings.find(
-        (elem) => elem.id === reading?.previousReadingsId,
-      );
+
+      const prevReading = !reading?.previousReadingsId
+        ? getLastReading(readingDate, readings)
+        : readings.find((elem) => elem.id === reading.previousReadingsId);
 
       if (!isEdited) {
         return null;
@@ -66,9 +73,11 @@ export const AccountingNodesReadingsInputContainer: FC<
             </>
           ),
           onSubmit: () => {
-            reading?.id &&
+            if (reading?.id) {
               removeReading({ id: reading.id, deviceId: device.id });
+            }
           },
+          onCancel: closeConfirmReadingModal,
         });
       }
 
@@ -81,23 +90,37 @@ export const AccountingNodesReadingsInputContainer: FC<
           oldReadingId: reading?.id,
         });
 
-      if (prevReading && value < prevReading.value) {
+      const prevReadingValue = Number(prevReading?.value);
+
+      if (value < prevReadingValue) {
         return openConfirmReadingModal({
           title: (
             <>
               Введенное показание по прибору <b>{device.serialNumber}</b> (
-              {device.model}) меньше предыдущего на:
-              {prevReading.value - value}
-              кВт/ч
+              {device.model}) меньше предыдущего на:{' '}
+              <b>{prevReadingValue - value}</b> кВт/ч
+              <div>
+                {' '}
+                Дата предыдущего показания:{' '}
+                <b> {dayjs(prevReading?.readingDate).format('DD.MM.YYYY')}</b>
+              </div>
             </>
           ),
           onSubmit: sendReadingCallback,
+          onCancel: closeConfirmReadingModal,
         });
       }
 
       sendReadingCallback();
     },
-    [sendReading, device, openConfirmReadingModal, removeReading, readings],
+    [
+      sendReading,
+      device,
+      openConfirmReadingModal,
+      removeReading,
+      readings,
+      closeConfirmReadingModal,
+    ],
   );
 
   const handleSendNonResConsumption = useCallback(

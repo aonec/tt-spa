@@ -53,8 +53,10 @@ export const createTimelineForTaskHeader = (
 
   return {
     timelineStyle: {
-      color: ColorLookup[currentStage?.timeStatus!],
-      width: `${currentStage?.timeProgress!}%`,
+      color: currentStage?.timeStatus
+        ? ColorLookup[currentStage.timeStatus]
+        : ColorLookup.Normal,
+      width: `${currentStage?.timeProgress}%`,
     },
     deadlineDate: `(до ${new Date(deadline).toLocaleDateString()})`,
     remainingTime,
@@ -144,8 +146,10 @@ export const createTimeline = (
 
   return {
     timelineStyle: {
-      color: ColorLookup[currentStage?.timeStatus!],
-      width: `${currentStage?.timeProgress!}%`,
+      color: currentStage?.timeStatus
+        ? ColorLookup[currentStage.timeStatus]
+        : ColorLookup.Normal,
+      width: `${currentStage?.timeProgress}%`,
     },
     deadlineDate: `(до ${new Date(deadline).toLocaleDateString()})`,
     remainingTime,
@@ -247,10 +251,14 @@ export const getAcceptableSearchParams = () => {
   const params = {
     apartmentId: searchParams.get('apartmentId'),
     housingStockId: searchParams.get('housingStockId'),
+    city: searchParams.get('city'),
+    street: searchParams.get('street'),
     pipeNodeId: searchParams.get('pipeNodeId'),
     deviceId:
       searchParams.get('calculatorId') ||
       searchParams.get('housingMeteringDeviceId'),
+    resource: searchParams.get('resource'),
+    taskType: searchParams.get('taskType'),
   };
 
   return params;

@@ -18,9 +18,9 @@ import {
 import { Select } from 'ui-kit/Select';
 import { Input } from 'ui-kit/Input';
 import { ActTypesNamesLookup } from 'dictionaries';
-import { actResourceNamesLookup } from 'ui-kit/shared/ResourceInfo/ResourceInfo.utils';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { AddressIdSearchContainer } from 'services/actsJournalService/addressIdSearchService';
+import { EActResourceType } from 'api/types';
 
 const dataKey = 'add-new-act';
 
@@ -116,7 +116,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           showAction={['focus']}
           small
         >
-          {Object.entries(actResourceNamesLookup)?.map(([type, value]) => (
+          {Object.entries(actResourceNames)?.map(([type, value]) => (
             <Select.Option key={type} value={type}>
               {value}
             </Select.Option>
@@ -174,4 +174,12 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
       </BottomBlock>
     </>
   );
+};
+
+export const actResourceNames = {
+  [EActResourceType.ColdWaterSupply]: 'ХВС',
+  [EActResourceType.HotWaterSupply]: 'ГВС',
+  [EActResourceType.Electricity]: 'ЭЭ',
+  [EActResourceType.Heat]: 'Тепло',
+  [EActResourceType.All]: 'Все',
 };

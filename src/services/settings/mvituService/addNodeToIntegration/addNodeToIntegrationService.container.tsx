@@ -1,4 +1,4 @@
-import { useUnit } from 'effector-react';
+import React, { useUnit } from 'effector-react';
 import { AddNodeToIntegrationModal } from './AddNodeToIntegrationModal';
 import { addNodeToIntegrationService } from './addNodeToIntegrationService.models';
 import {

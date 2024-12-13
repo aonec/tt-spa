@@ -12,6 +12,7 @@ export const TasksRouter = () => {
   const isSpectator = usePermission([
     ESecuredIdentityRoleName.ManagingFirmSpectator,
     ESecuredIdentityRoleName.ManagingFirmSpectatorRestricted,
+    ESecuredIdentityRoleName.Supervisor,
   ]);
 
   const initialTasksPath = isSpectator
@@ -31,6 +32,7 @@ export const TasksRouter = () => {
 
   return [
     <Route
+      key="tasks"
       path="/tasks"
       element={<Navigate replace to={initialTasksPath} />}
     />,

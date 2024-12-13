@@ -3,7 +3,9 @@ import { sample, split } from 'effector';
 import { createGate } from 'effector-react';
 import {
   ApartmentResponse,
+  EManagingFirmTaskFilterType,
   EOrderByRule,
+  EResourceType,
   HousingStockResponse,
   TaskGroupingFilter,
   TaskPaginationOrderRule,
@@ -46,6 +48,12 @@ const changeFiltersByGroupType = createEvent<TaskGroupingFilter>();
 const changeGroupType = createEvent<TaskGroupingFilter>();
 const changePageNumber = createEvent<number>();
 const searchTasks = createEvent<GetTasksListRequestPayload>();
+const setAddress = createEvent<{
+  city: string;
+  street: string;
+  resource?: EResourceType;
+  taskType?: EManagingFirmTaskFilterType;
+}>();
 
 const getApartmentFx = createEffect<FiltersGatePayload, ApartmentResponse>(
   fetchApartment,
@@ -81,6 +89,13 @@ const $searchState = createStore<GetTasksListRequestPayload>({
     ...filters,
     PageNumber: 1,
   }))
+  .on(setAddress, (filters, paylaod) => ({
+    ...filters,
+    City: paylaod.city,
+    Street: paylaod.street,
+    TaskType: paylaod.taskType,
+    Resource: paylaod.resource,
+  }))
   .on(changeFiltersByGroupType, ({ City }, GroupType) => ({
     GroupType,
     City,
@@ -115,7 +130,7 @@ sample({
   clock: searchTasksTrigger,
   filter: ({ isTaskProfileOpen, searchState }) =>
     !isTaskProfileOpen && Boolean(searchState.GroupType),
-  fn: ({ isTaskProfileOpen, searchState }) => {
+  fn: ({ searchState }) => {
     const filteredData = _.omitBy(searchState, _.isNil);
     const filteredDataByNull = _.omitBy(
       filteredData,
@@ -182,12 +197,15 @@ split({
     apartmentId: (searchParams) => Boolean(searchParams.apartmentId),
     pipeNodeId: (searchParams) => Boolean(searchParams.pipeNodeId),
     deviceId: (searchParams) => Boolean(searchParams.deviceId),
+    address: (searchParams) =>
+      Boolean(searchParams.city) && Boolean(searchParams.street),
   },
   cases: {
     housingStock: getHousingStockFx,
     apartmentId: getApartmentFx,
     pipeNodeId: setPipeNodeId,
     deviceId: setDeviceId,
+    address: setAddress,
   },
 });
 
