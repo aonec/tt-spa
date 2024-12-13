@@ -71,7 +71,7 @@ export const ReportPage: FC<Props> = () => {
         <Panel>
           <LeftBlock>
             <XCircleIcon />
-            <PanelTitle> Приборы без показаний более 4 месяцев </PanelTitle>
+            <PanelTitle> Приборы без показаний более 6 месяцев </PanelTitle>
           </LeftBlock>
           <RightBlock>
             <Info>10 приборов</Info> <Blue>Закрыть приборы</Blue>
