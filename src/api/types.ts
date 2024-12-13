@@ -2476,6 +2476,7 @@ export interface GroupReportConfigurationDetailsModel {
   /** @format date-time */
   nextDate?: string | null;
   reportConfigurationPeriod?: GroupReportConfigurationPeriod;
+  isActive?: boolean;
 }
 
 export interface GroupReportConfigurationDetailsRequest {
@@ -2485,6 +2486,7 @@ export interface GroupReportConfigurationDetailsRequest {
   initialDate: string;
   /** @format date-time */
   nextDate?: string | null;
+  isActive?: boolean;
   reportConfigurationPeriod: GroupReportConfigurationPeriod;
 }
 

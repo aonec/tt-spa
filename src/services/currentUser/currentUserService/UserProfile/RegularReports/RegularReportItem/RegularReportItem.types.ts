@@ -10,4 +10,6 @@ export type Props = {
   houseManagements: HouseManagementResponse[] | null;
   organizations: OrganizationResponsePagedList | null;
   handleDeleteReport: (payload: number) => void;
+  handleChangeActivity: (payload: GroupReportConfigurationServiceModel) => void;
+  isReportUpdating: boolean;
 };

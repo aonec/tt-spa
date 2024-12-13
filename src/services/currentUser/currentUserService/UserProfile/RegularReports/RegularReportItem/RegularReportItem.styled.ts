@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { RangePicker } from 'ui-kit/RangePicker';
 
 export const PageWrapper = styled.div`
   width: 680px;
@@ -40,6 +41,16 @@ export const ReportName = styled.div`
   font-size: 20px;
   margin-bottom: 10px;
   cursor: pointer;
+`;
+
+export const PeriodWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+export const RangePickerSC = styled(RangePicker)`
+  width: 220px;
 `;
 
 export const Resource = styled.span`
