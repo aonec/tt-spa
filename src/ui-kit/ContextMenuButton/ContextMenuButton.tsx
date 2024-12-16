@@ -69,7 +69,9 @@ export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
   const menu = () => (
     <Menu
       onClick={(e) => {
-        e.domEvent.stopPropagation();
+        (
+          e.domEvent as unknown as { stopImmediatePropagation(): void }
+        ).stopImmediatePropagation();
       }}
     >
       {menuButtonsFiltered &&
