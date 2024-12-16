@@ -143,8 +143,8 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
                 <AlertWrapper>
                   <Alert type={AlertType.danger} icon={AlertIconType.info}>
                     Этот адрес не включен ни в один район, добавьте дом &quot;
-                    {getHousingStockItemAddress(address!)}&quot; в один из районов
-                    или создайте новый район.
+                    {getHousingStockItemAddress(address!)}&quot; в один из
+                    районов или создайте новый район.
                   </Alert>
                 </AlertWrapper>
               )}
