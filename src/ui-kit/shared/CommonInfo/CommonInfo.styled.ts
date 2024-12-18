@@ -1,7 +1,7 @@
 import { Skeleton } from 'antd';
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ isLastUnderline: boolean }>`
   display: grid;
   grid-template-columns: 0.75fr 1fr;
   border-bottom: 1px solid #dcdee4;
@@ -10,6 +10,11 @@ export const Wrapper = styled.div`
   line-height: 16px;
   grid-gap: 15px;
   padding: 15px 0;
+
+  &:last-child {
+    border-bottom: ${({ isLastUnderline }) =>
+      isLastUnderline ? '1px solid #dcdee4' : 'none'};
+  }
 `;
 
 export const KeyWrapper = styled.div`
@@ -17,6 +22,7 @@ export const KeyWrapper = styled.div`
   overflow: hidden;
   display: flex;
   align-items: center;
+  font-weight: 500;
 `;
 
 export const ValueWrapper = styled.div`

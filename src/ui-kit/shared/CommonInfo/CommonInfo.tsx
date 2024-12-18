@@ -11,6 +11,7 @@ export const CommonInfo: FC<CommonInfoProps> = ({
   items,
   className,
   isLoading,
+  isLastUnderline = true,
 }) => {
   return (
     <div className={className}>
@@ -20,7 +21,7 @@ export const CommonInfo: FC<CommonInfoProps> = ({
         }
 
         return (
-          <Wrapper key={key}>
+          <Wrapper key={key} isLastUnderline={isLastUnderline}>
             <KeyWrapper>{key}</KeyWrapper>
             {isLoading ? (
               <SkeletonLoader active />

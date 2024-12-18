@@ -7,4 +7,5 @@ export type Props = {
 export enum UserProfileSection {
   MainInfo = 'mainInfo',
   Notifications = 'notifications',
+  RegularReports = 'regularReports',
 }
