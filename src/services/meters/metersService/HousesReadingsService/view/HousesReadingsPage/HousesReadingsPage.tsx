@@ -53,6 +53,7 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
           }
         }
         isError={!housingStock && isHousingStockFetched}
+        isCityPreselected
       />
       <WithLoader isLoading={isLoadingHousingStock}>
         {!housingStock && !isHousingStockFetched && <TypeAddressToStart />}

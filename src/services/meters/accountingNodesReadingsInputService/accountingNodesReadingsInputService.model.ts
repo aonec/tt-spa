@@ -49,6 +49,7 @@ const getReadingsOfElectricNodeFx = createEffect<
   { nodeId: number },
   HousingMeteringDeviceReadingsIncludingPlacementResponse[]
 >(fetchReadingsOfElectricNode);
+
 const $readings = createStore<NodeReadingsDataByDevices>({})
   .on(getReadingsOfElectricNodeFx.doneData, (readings, result) => {
     if (!result.length) {

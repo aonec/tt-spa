@@ -1,9 +1,9 @@
 import { RequestStatusShared } from '../../../readingsHistoryListService.types';
 
 export type ReadingFieldsProps = {
+  rateNum: number | null;
   values?: (string | null)[];
   noReading?: boolean;
-  rateNum: number | null;
   suffix?: string | null;
   editable?: boolean;
   onChange?: (value: string, index: number) => void;
