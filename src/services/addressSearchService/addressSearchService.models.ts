@@ -12,7 +12,6 @@ import {
 } from './addressSearchService.types';
 import { AddressSearchValues } from './view/AddressSearch/AddressSearch.types';
 import { ApartmentListResponsePagedList } from 'api/types';
-import { isEqual } from 'lodash';
 
 const handleSearchApartNumber = createEvent<AddressSearchValues>();
 const handleResetForm = createEvent();
@@ -58,19 +57,6 @@ const $existingApartmentNumbers = createStore<ExistingApartmentNumberType[]>([])
   })
   .reset(handleResetForm);
 
-const setInitialValues = createEvent<Partial<AddressSearchValues> | null>();
-
-const $verifiedInitialValues = createStore<Partial<AddressSearchValues> | null>(
-  null,
-).on(setInitialValues, (prev, income) => {
-  const isInitialValuesRealyChange = !isEqual(prev, income);
-  if (isInitialValuesRealyChange) {
-    return income;
-  } else {
-    return prev;
-  }
-});
-
 const AddressSearchGate = createGate();
 const ExistingCitiesGate = createGate();
 const ExistingStreetsGate = createGate<GetExistingSteetRequestParams>();
@@ -114,13 +100,11 @@ export const addressSearchService = {
     $existingStreets,
     $isExistingCitiesLoading,
     $existingApartmentNumbers,
-    $verifiedInitialValues,
   },
   inputs: {
     handleSearchApartNumber,
     setWithApartment,
     handleResetForm,
-    setInitialValues,
   },
   gates: {
     ExistingCitiesGate,

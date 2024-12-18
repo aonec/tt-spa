@@ -117,18 +117,17 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
             { fieldType: SearchFieldType.Street, templateValue: '0.7fr' },
           ]}
           handleSubmit={handleSubmit}
-          initialValues={
-            address && {
-              city: address.city || undefined,
-              street: address.street || undefined,
-              house: address.number || undefined,
-              corpus: address.corpus || undefined,
-              apartment: apartment?.apartmentNumber || undefined,
-              question: selectedHomeownerName || undefined,
-            }
-          }
+          initialValues={{
+            city: address?.city || undefined,
+            street: address?.street || undefined,
+            house: address?.number || undefined,
+            corpus: address?.corpus || undefined,
+            apartment: apartment?.apartmentNumber || undefined,
+            question: selectedHomeownerName || undefined,
+          }}
           isError={!isLoadingApartment && !apartment && isApartmentFetched}
           isFocus={true}
+          isCityPreselected
         />
         <WithLoader isLoading={isLoadingApartment}>
           {!apartment && !isApartmentFetched && <TypeAddressToStart />}

@@ -12,20 +12,22 @@ import {
   OtherSourceIcon,
 } from 'ui-kit/icons';
 
-export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
-  ({
+export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) => {
+  const icon = {
     [EIndividualDeviceReadingsSource.Archive]: <ArchiveIcon />,
-    [EIndividualDeviceReadingsSource.Bank]: <BankIcon />,
     [EIndividualDeviceReadingsSource.GosUslugi]: <GosUslugiIcon />,
     [EIndividualDeviceReadingsSource.Erc]: <ErcIcon />,
     [EIndividualDeviceReadingsSource.Ttm]: <UserIcon />,
     [EIndividualDeviceReadingsSource.TtmFromErc]: <ErcIcon />,
     [EIndividualDeviceReadingsSource.TelegramBot]: <TelegramIcon />,
+    [EIndividualDeviceReadingsSource.Bank]: <BankIcon />,
     [EIndividualDeviceReadingsSource.DeviceTelemetry]: <DeviceIcon />,
     [EIndividualDeviceReadingsSource.Duplicated]: <DubbedIcon />,
     [EIndividualDeviceReadingsSource.TtmFromGis]: <OtherSourceIcon />,
-  }[sourceType]);
+  }[sourceType];
 
+  return icon || <OtherSourceIcon />;
+};
 export const getSourceName = (
   source: EIndividualDeviceReadingsSource,
   userName: string | null = '',
@@ -44,5 +46,5 @@ export const getSourceName = (
     [EIndividualDeviceReadingsSource.TtmFromGis]: 'ГИС ЖКХ',
   }[source];
 
-  return name;
+  return name || source;
 };

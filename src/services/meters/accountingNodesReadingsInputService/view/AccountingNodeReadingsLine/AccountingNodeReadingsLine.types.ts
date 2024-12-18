@@ -22,6 +22,7 @@ export type AccountingNodeReadingsLineProps = {
   handleUpdateReadingsSum: (
     payload: Omit<UpdateAccountingNodesSumPayload, 'id'>,
   ) => void;
+  handleOpenHistory: (payload: number) => void;
 };
 
 export type PreValidatedNodeReadings = {

@@ -33,9 +33,9 @@ export const Percentage = styled.div<{ isPositive: boolean }>`
   padding: 1px 4px;
   border-radius: 4px;
   background-color: ${({ isPositive }) =>
-    isPositive ? '#17b45b23' : '#fc525a21'};
+    !isPositive ? '#17b45b23' : '#fc525a21'};
 
-  color: ${({ isPositive }) => (isPositive ? '#17B45A' : '#FC525B')};
+  color: ${({ isPositive }) => (!isPositive ? '#17B45A' : '#FC525B')};
 `;
 
 export const StatisticsWrapper = styled.div`

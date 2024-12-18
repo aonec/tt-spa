@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AccountingNodesReadings } from './view/AccountingNodesReadings';
 import { AccountingNodesReadingsService } from './AccountingNodesReadingsService.model';
 import { useUnit } from 'effector-react';
 import { ConfirmReadingValueContainer } from 'services/meters/readingsHistoryService/confirmReadingService';
 import { getElectricNodesQuery } from './AccountingNodesReadingsService.api';
+import { accountingNodesReadingsInputService } from 'services/meters/accountingNodesReadingsInputService';
+import { mapToDeviceReadingsHistory } from './AccountingNodesReadingsService.utils';
+import { ReadingHistoryModal } from './view/ReadingHistoryModal';
 
 const { inputs, outputs, gates } = AccountingNodesReadingsService;
 const { HousingStockIdGate } = gates;
@@ -23,6 +26,10 @@ export const AccountingNodesReadingsContainer = () => {
     sum,
     upSliderIndex,
     isElectricNodesFetched,
+    readings,
+    handleCloseHistory,
+    isHistoryOpen,
+    deviceId,
   } = useUnit({
     address: outputs.$housingStockAddress,
     electricNodes: getElectricNodesQuery.$data,
@@ -33,6 +40,10 @@ export const AccountingNodesReadingsContainer = () => {
     handleGetElectricNodes: inputs.fetchElectricNodes,
     upSliderIndex: inputs.upSliderIndex,
     downSliderIndex: inputs.downSliderIndex,
+    readings: accountingNodesReadingsInputService.outputs.$readings,
+    handleCloseHistory: inputs.handleCloseHistory,
+    isHistoryOpen: outputs.$isHistoryOpen,
+    deviceId: outputs.$deviceId,
   });
 
   useEffect(() => {
@@ -43,11 +54,28 @@ export const AccountingNodesReadingsContainer = () => {
     }).unsubscribe;
   }, [navigate, id]);
 
+  const readingsById = useMemo(
+    () => (deviceId ? readings[deviceId] : null),
+    [deviceId, readings],
+  );
+
+  const preparedReadings = useMemo(
+    () => mapToDeviceReadingsHistory(readingsById),
+    [readingsById],
+  );
+
   return (
     <>
       <ConfirmReadingValueContainer />
 
+      <ReadingHistoryModal
+        preparedReadings={preparedReadings}
+        handleCloseHistory={handleCloseHistory}
+        isOpen={isHistoryOpen}
+      />
+
       <HousingStockIdGate id={Number(id)} />
+
       <AccountingNodesReadings
         handleGetElectricNodes={handleGetElectricNodes}
         address={address}
