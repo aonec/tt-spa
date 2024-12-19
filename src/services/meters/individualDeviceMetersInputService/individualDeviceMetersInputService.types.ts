@@ -41,6 +41,7 @@ export enum ValidationReadingsResultType {
   CompareProblem = 'CompareProblem',
   LimitsExcess = 'LimitsExcess',
   EmptyValues = 'EmptyValues',
+  BitDepthExcess = 'BitDepthExcess',
   Success = 'Success',
 }
 
