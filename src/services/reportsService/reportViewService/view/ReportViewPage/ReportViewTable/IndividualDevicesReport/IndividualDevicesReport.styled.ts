@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const ResourceWrapper = styled.div`
@@ -11,6 +12,14 @@ export const ApartmentNumber = styled.div`
   font-size: 14px;
   color: #272f5a;
   margin-bottom: 4px;
+`;
+
+export const LinkSc = styled(Link)`
+  font-weight: 700;
+  font-size: 14px;
+  color: #272f5a;
+  margin-bottom: 4px;
+  margin-right: 6px;
 `;
 
 export const PhoneNumber = styled.div`

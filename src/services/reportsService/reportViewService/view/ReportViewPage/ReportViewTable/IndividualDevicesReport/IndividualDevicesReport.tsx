@@ -3,6 +3,7 @@ import {
   ApartmentNumber,
   ClosingDate,
   FullAddressWrapper,
+  LinkSc,
   PhoneNumber,
   ResourceWrapper,
 } from './IndividualDevicesReport.styled';
@@ -16,11 +17,13 @@ import { Table } from 'ui-kit/Table';
 import {
   EConstructedReportDeviceStatus,
   EIndividualDeviceReportOption,
+  ESecuredIdentityRoleName,
 } from 'api/types';
 import dayjs from 'api/dayjs';
 import { Empty } from 'antd';
 import { getReportElemAddress } from '../ReportViewTable.utils';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
+import { usePermission } from 'hooks/usePermission';
 
 export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   individualDevicesReportData,
@@ -37,6 +40,11 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
 
   const isInvalidCheckingDates =
     reportOption === EIndividualDeviceReportOption.InvalidCheckingDates;
+
+  const isOperators = usePermission([
+    ESecuredIdentityRoleName.Operator,
+    ESecuredIdentityRoleName.SeniorOperator,
+  ]);
 
   if (!individualDevicesReportData) {
     return (
@@ -57,9 +65,20 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           render: (elem) => {
             const { addressString, number } = getReportElemAddress(elem);
 
+            const apartmentNumber = isOperators ? (
+              <LinkSc
+                target="_blank"
+                to={`/apartments/${elem.apartmentId}/commonData`}
+              >
+                Кв. №{number}
+              </LinkSc>
+            ) : (
+              <ApartmentNumber>Кв. №{number}</ApartmentNumber>
+            );
+
             return (
               <FullAddressWrapper>
-                <ApartmentNumber>Кв. №{number}</ApartmentNumber>
+                {apartmentNumber}
                 <Tooltip zIndex={10} title={addressString}>
                   {addressString}
                 </Tooltip>
