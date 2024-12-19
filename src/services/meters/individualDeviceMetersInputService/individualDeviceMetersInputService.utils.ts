@@ -58,6 +58,7 @@ export function validateReadings(
   createMeterPayload: MeterInputUploadReadingPayload,
   consumptionRate: ConsumptionRateResponse | null,
   readings: PreparedReadingsData,
+  bitDepth: number | null,
 ): ValidationReadingsResult {
   const previousReading = getExistingReading(readings, meterIndex, 'prev');
   const nextReading = getExistingReading(readings, meterIndex, 'next');
@@ -68,6 +69,11 @@ export function validateReadings(
 
   if (isAllValuesEmpty)
     return { type: ValidationReadingsResultType.EmptyValues };
+
+  const bitDepthCheckResult =
+    bitDepth && checkBitDepth(uploadingReadingLite, rateNum, bitDepth);
+
+  if (bitDepthCheckResult) return bitDepthCheckResult;
 
   const previousReadingLite =
     previousReading && getReadingLite(previousReading, rateNum);
@@ -96,6 +102,19 @@ export function validateReadings(
   if (checkReadingLimitsResult) return checkReadingLimitsResult;
 
   return { type: ValidationReadingsResultType.Success };
+}
+
+function checkBitDepth(
+  uploadingReadingLite: ReadingLite,
+  rateNum: number,
+  bitDepth: number,
+): ValidationReadingsResult | null {
+  return getFilledArray(
+    rateNum,
+    (index) => uploadingReadingLite[getReadingValueKey(index)],
+  ).some((value) => String(Math.trunc(value || 0)).length > bitDepth)
+    ? { type: ValidationReadingsResultType.BitDepthExcess }
+    : null;
 }
 
 function checkIsAllValuesEmpty(reading: ReadingLite, rateNum: number) {
