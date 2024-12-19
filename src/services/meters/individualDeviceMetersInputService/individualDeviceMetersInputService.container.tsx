@@ -108,6 +108,7 @@ export const IndividualDeviceMetersInputContainer: FC<
           readingPayload,
           consumptionRate,
           preparedReadingsData,
+          device.bitDepth,
         );
 
         const reject = () => {
@@ -202,6 +203,20 @@ export const IndividualDeviceMetersInputContainer: FC<
                   {result.limit}
                   {unit}
                 </b>
+              </>
+            ),
+            onSubmit: sendMeter,
+            onCancel: reject,
+          });
+        }
+
+        if (result.type === ValidationReadingsResultType.BitDepthExcess) {
+          return void openConfirmReadingModal({
+            title: (
+              <>
+                Количество знаков перед запятой превышает разрядность. Проверьте
+                показание или отредактируйте разрядность прибора{' '}
+                <b>({device.bitDepth})</b>
               </>
             ),
             onSubmit: sendMeter,
