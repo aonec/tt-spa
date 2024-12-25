@@ -6,12 +6,12 @@ import React, { FC, useEffect, useMemo } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { Input } from 'ui-kit/Input';
-import { Select } from 'ui-kit/Select';
 import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled';
 import { RowWrapper } from '../GroupReportForm.styled';
 import { SubsTypeRadioOptions } from './RegularUnloading.constants';
 import { SwitchWrapper, Wrapper } from './RegularUnloading.styled';
 import { RegularUnloadingProps } from './RegularUnloading.types';
+import { SelectMultiple } from 'ui-kit/SelectMultiple';
 
 export const RegularUnloading: FC<RegularUnloadingProps> = ({
   contractors,
@@ -87,12 +87,16 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
               />
               <ErrorMessage>{errors['Subscription.Email']}</ErrorMessage>
             </FormItem>
+
             <FormItem label="Контрагенты">
-              <Select
+              <SelectMultiple
                 placeholder="Выберите из списка"
                 options={contractorsOptions}
                 value={contractorValue}
-                onChange={(id) => handleChangeContractorIds([Number(id)])}
+                onChange={(id) => {
+                  console.log(id);
+                  handleChangeContractorIds(id as number[]);
+                }}
               />
             </FormItem>
           </RowWrapper>
