@@ -6,7 +6,7 @@ import { RegularUnloadSubscription } from 'services/objects/groupReportService/g
 
 export type RegularUnloadingProps = {
   handleChangeEmail: (email?: string) => void;
-  handleChangeContractorIds: (ids?: number[]) => void;
+  handleChangeContractorIds: (ids?: string[]) => void;
   handleThriggerAt: (date?: string) => void;
   handleChangeIsRegular: (isRegular: boolean) => void;
   contractors: GroupReportContractorResponse[];
