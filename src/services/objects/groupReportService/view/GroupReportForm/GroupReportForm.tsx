@@ -76,6 +76,8 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     },
   });
 
+  console.log(values)
+
   const addressesTreeData = prepareAddressesTreeData(
     addressesWithHouseManagements,
     null,
@@ -111,7 +113,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
   }, [organizations, setFieldValue, values.exportType]);
 
   const handleChangeContractorIds = useCallback(
-    (ids?: number[]) => setFieldValue("['Subscription.ContractorIds']", ids),
+    (ids?: string[]) => setFieldValue("['Subscription.ContractorIds']", ids),
     [setFieldValue],
   );
   const handleChangeEmail = useCallback(

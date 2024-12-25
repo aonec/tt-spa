@@ -51,14 +51,6 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
     handleThriggerAt,
   ]);
 
-  const contractorValue = useMemo(() => {
-    const contractor = values?.['Subscription.ContractorIds']?.[0];
-    if (contractor) {
-      return String(contractor);
-    }
-    return;
-  }, [values]);
-
   return (
     <Wrapper>
       <SwitchWrapper
@@ -92,10 +84,10 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
               <SelectMultiple
                 placeholder="Выберите из списка"
                 options={contractorsOptions}
-                value={contractorValue}
-                onChange={(id) => {
-                  console.log(id);
-                  handleChangeContractorIds(id as number[]);
+                value={values?.['Subscription.ContractorIds']}
+                onChange={(ids) => {
+                  console.log(ids);
+                  handleChangeContractorIds(ids as string[]);
                 }}
               />
             </FormItem>
