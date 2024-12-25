@@ -73,7 +73,7 @@ export const EditNodeCommonInfo: FC<EditNodeCommonInfoProps> = ({
       );
 
       updateNode({
-        title: node.title,
+        title: values.title,
         nodeServiceZoneId: selectedZoneId,
         communicationPipes: communicationPipes.map((pipe) => ({
           ...pipe,

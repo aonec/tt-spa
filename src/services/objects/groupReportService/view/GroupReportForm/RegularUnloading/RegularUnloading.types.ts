@@ -1,6 +1,6 @@
 import {
   GroupReportContractorResponse,
-  GroupReportSchedulePeriod,
+  GroupReportConfigurationPeriod,
 } from 'api/types';
 import { RegularUnloadSubscription } from 'services/objects/groupReportService/groupReportService.types';
 
@@ -12,7 +12,7 @@ export type RegularUnloadingProps = {
   contractors: GroupReportContractorResponse[];
   values: RegularUnloadSubscription & { isRegular: boolean };
   errors: RegularUnloadingErrors;
-  handleChangeSubsType: (value?: GroupReportSchedulePeriod) => void;
+  handleChangeSubsType: (value?: GroupReportConfigurationPeriod) => void;
   setRegularUpload: (payload: boolean) => void;
 };
 
