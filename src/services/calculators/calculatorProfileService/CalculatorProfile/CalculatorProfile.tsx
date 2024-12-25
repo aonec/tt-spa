@@ -5,7 +5,6 @@ import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { LinkCard } from 'ui-kit/shared/LinkCard';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
-import { getTimeStringByUTC } from 'utils/getTimeStringByUTC';
 import { CalculatorProfileGrouptype } from '../calculatorProfileService.constants';
 import { CalculatorCommentContainer } from './calculatorCommentService';
 import {
@@ -33,6 +32,7 @@ import {
   TaskGroupingFilter,
 } from 'api/types';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
+import dayjs from 'dayjs';
 
 export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   calculator,
@@ -90,29 +90,33 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           {
             key: 'Дата поверки прибора',
             value: calculator?.lastCheckingDate
-              ? getTimeStringByUTC(calculator.lastCheckingDate, 'DD.MM.YYYY')
+              ? dayjs(calculator.lastCheckingDate)
+                  .subtract(3, 'h')
+                  .format('DD.MM.YYYY HH:mm')
               : null,
           },
           {
             key: 'Дата следующей поверки прибора',
             value: calculator?.futureCheckingDate
-              ? getTimeStringByUTC(calculator.futureCheckingDate, 'DD.MM.YYYY')
+              ? dayjs(calculator.futureCheckingDate)
+                  .subtract(3, 'h')
+                  .format('DD.MM.YYYY HH:mm')
               : null,
           },
           {
             key: 'Суточный архив',
             value: calculator?.connectionInfo?.lastDailyArchiveTime
-              ? getTimeStringByUTC(
-                  calculator.connectionInfo.lastDailyArchiveTime,
-                )
+              ? dayjs(calculator.connectionInfo.lastDailyArchiveTime)
+                  .subtract(3, 'h')
+                  .format('DD.MM.YYYY HH:mm')
               : null,
           },
           {
             key: 'Часовой архив',
             value: calculator?.connectionInfo?.lastHourlyArchiveTime
-              ? getTimeStringByUTC(
-                  calculator.connectionInfo.lastHourlyArchiveTime,
-                )
+              ? dayjs(calculator.connectionInfo.lastHourlyArchiveTime)
+                  .subtract(3, 'h')
+                  .format('DD.MM.YYYY HH:mm')
               : null,
           },
         ]}

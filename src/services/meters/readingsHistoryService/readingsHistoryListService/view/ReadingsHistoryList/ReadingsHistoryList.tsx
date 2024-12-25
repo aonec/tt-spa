@@ -99,7 +99,7 @@ export const ReadingsHistoryList: FC<ReadingsHistoryListProps> = ({
         if (!device?.id) return;
 
         const readingDate =
-          reading?.actualReadingDate || getNewReadingDate(month, year);
+          reading?.readingDateTime || getNewReadingDate(month, year);
 
         if (device?.rateType) {
           uploadReading({
