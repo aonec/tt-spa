@@ -151,6 +151,10 @@ export const RegularReportItem: FC<Props> = ({
                 key: 'Регулярность',
                 value: regularity,
               },
+              {
+                key: 'Email',
+                value: report.reportConfigurationDetails?.emails,
+              },
             ]}
           />
         )}

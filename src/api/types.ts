@@ -1779,6 +1779,7 @@ export enum EIndividualDeviceReportOption {
   ClosedDeviceOnOneOfRisers = 'ClosedDeviceOnOneOfRisers',
   DeviceCheckingDateExpiration = 'DeviceCheckingDateExpiration',
   ClosedDevices = 'ClosedDevices',
+  InvalidBitDepth = 'InvalidBitDepth',
 }
 
 export enum ELivingHouseType {
@@ -2462,6 +2463,13 @@ export interface GetDataForIndividualDevicesConsumptionPlotResponse {
 
 export interface GetHousingMeteringDeviceReadingsResponse {
   items: HousingMeteringDeviceReadingsIncludingPlacementResponse[] | null;
+}
+
+export interface GetIndividualDevicesToClose {
+  /** @format int32 */
+  expiredCheckingDateCount?: number;
+  /** @format int32 */
+  withoutReadingsCount?: number;
 }
 
 export interface GetSummaryHousingConsumptionsByResourcesResponse {
@@ -3619,6 +3627,8 @@ export interface IndividualDevicesConstructedReportResponse {
   houseNumber: string | null;
   corpus: string | null;
   apartmentNumber: string | null;
+  /** @format int32 */
+  apartmentId: number;
   resource: EResourceType;
   serialNumber: string | null;
   model: string | null;
@@ -3626,6 +3636,7 @@ export interface IndividualDevicesConstructedReportResponse {
   closedDeviceOnOneOfRisersOption: ClosedDeviceOnOneOfRisersConstructedReportResponse | null;
   deviceCheckingDateExpirationOption: DeviceCheckingDateExpirationConstructedReportResponse | null;
   closedDevicesOption: ClosedDevicesConstructedReportResponse | null;
+  invalidBitDepthOption: InvalidBitDepthConstructedReportResponse | null;
 }
 
 export interface InspectorCreateRequest {
@@ -3689,6 +3700,13 @@ export interface InspectorsConstructedReportResponse {
    */
   dayPlan: number;
   counts: number[] | null;
+}
+
+export interface InvalidBitDepthConstructedReportResponse {
+  /** @format int32 */
+  bitDepth: number | null;
+  /** @format double */
+  scaleFactor: number | null;
 }
 
 export interface InvalidCheckingDatesConstructedReportResponse {
@@ -4631,6 +4649,24 @@ export interface PollResponse {
   doneAt: string | null;
   actionType: PollActionType;
   hasFile: boolean;
+}
+
+export interface PollResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+  /** @format int32 */
+  pageNumber: number;
+  /** @format int32 */
+  pageSize: number;
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+  /** @format int32 */
+  nextPageNumber: number;
+  /** @format int32 */
+  previousPageNumber: number;
+  items: PollResponse[] | null;
 }
 
 export interface ProblemDetails {
@@ -11019,6 +11055,24 @@ export class Api<
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesGetAllClosingList
+     * @summary MeteringDevicesRead
+     * @request GET:/api/IndividualDevices/getAllClosing
+     * @secure
+     */
+    individualDevicesGetAllClosingList: (params: RequestParams = {}) =>
+      this.request<GetIndividualDevicesToClose, ErrorApiResponse>({
+        path: `/api/IndividualDevices/getAllClosing`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Исполнитель УК</li>
      *
      * @tags IndividualDevices
@@ -13786,6 +13840,37 @@ export class Api<
         query: query,
         secure: true,
         format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags Reports
+     * @name ReportsIndividualDevicesReportArchivesList
+     * @summary IndividualDevicesReportCreate
+     * @request GET:/api/Reports/IndividualDevicesReportArchives
+     * @secure
+     */
+    reportsIndividualDevicesReportArchivesList: (
+      query?: {
+        /** @format int32 */
+        PageNumber?: number;
+        /** @format int32 */
+        PageSize?: number;
+        OrderBy?: OrderByRule;
+        /** @format int32 */
+        Skip?: number;
+        /** @format int32 */
+        Take?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/IndividualDevicesReportArchives`,
+        method: 'GET',
+        query: query,
+        secure: true,
         ...params,
       }),
 
