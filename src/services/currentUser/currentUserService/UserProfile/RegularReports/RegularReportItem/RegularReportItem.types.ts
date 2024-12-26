@@ -1,7 +1,9 @@
 import {
+  ContractorListResponse,
   GroupReportConfigurationServiceModel,
   HouseManagementResponse,
   OrganizationResponsePagedList,
+  OrganizationUserListResponsePagedList,
 } from 'api/types';
 
 export type Props = {
@@ -12,4 +14,6 @@ export type Props = {
   handleDeleteReport: (payload: number) => void;
   handleChangeActivity: (payload: GroupReportConfigurationServiceModel) => void;
   isReportUpdating: boolean;
+  staffList: OrganizationUserListResponsePagedList | null;
+  contractors: ContractorListResponse[] | null;
 };

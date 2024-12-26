@@ -131,7 +131,7 @@ sample({
         to: clock?.To,
       },
       reportConfigurationDetails: {
-        emails: [clock?.['Subscription.Email']],
+        organizationUserIds: clock?.['Subscription.OrganizationUserIds'],
         contractorIds: clock?.['Subscription.ContractorIds'],
         initialDate: clock?.['Subscription.TriggerAt'],
         reportConfigurationPeriod: clock?.['Subscription.Type'],
@@ -263,6 +263,10 @@ postRegularUploadFx.failData.watch((error) => {
       error.response.data.error.Message ||
       'Не удалось создать расписание выгрузок',
   );
+});
+
+postRegularUploadFx.doneData.watch(() => {
+  message.success('Регулярная выгрузка успешно создана');
 });
 
 export const groupReportService = {

@@ -71,6 +71,7 @@ export const ClosingReasonsDictionary: { [key in EClosingReason]: string } = {
   [EClosingReason.MaintainingStopped]: 'Остановлено',
   [EClosingReason.CheckingDate]: 'Выход поверки',
   [EClosingReason.None]: 'Нет',
+  [EClosingReason.NoMagneticSeal]: 'Отсутствие пломбы',
 };
 
 export const SwitchingReasonsDictionary: { [key in ESwitchingReason]: string } =

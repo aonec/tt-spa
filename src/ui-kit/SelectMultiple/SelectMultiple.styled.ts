@@ -26,9 +26,8 @@ export const SelectMultiple = styled(AntSelect).attrs({ mode: 'multiple' })`
   }
 
   .ant-select-selection-item-remove {
-    display: flex;
-    align-items: center;
     padding-left: 4px;
+    padding-bottom: 4px;
   }
 
   * {
