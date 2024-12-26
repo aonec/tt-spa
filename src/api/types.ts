@@ -2464,6 +2464,13 @@ export interface GetHousingMeteringDeviceReadingsResponse {
   items: HousingMeteringDeviceReadingsIncludingPlacementResponse[] | null;
 }
 
+export interface GetIndividualDevicesToClose {
+  /** @format int32 */
+  expiredCheckingDateCount?: number;
+  /** @format int32 */
+  withoutReadingsCount?: number;
+}
+
 export interface GetSummaryHousingConsumptionsByResourcesResponse {
   consumptions: EResourceTypeDoubleDictionaryItem[] | null;
 }
@@ -2476,6 +2483,7 @@ export interface GroupReportConfigurationDetailsModel {
   /** @format date-time */
   nextDate?: string | null;
   reportConfigurationPeriod?: GroupReportConfigurationPeriod;
+  isActive?: boolean;
 }
 
 export interface GroupReportConfigurationDetailsRequest {
@@ -2485,6 +2493,7 @@ export interface GroupReportConfigurationDetailsRequest {
   initialDate: string;
   /** @format date-time */
   nextDate?: string | null;
+  isActive?: boolean;
   reportConfigurationPeriod: GroupReportConfigurationPeriod;
 }
 
@@ -3617,6 +3626,8 @@ export interface IndividualDevicesConstructedReportResponse {
   houseNumber: string | null;
   corpus: string | null;
   apartmentNumber: string | null;
+  /** @format int32 */
+  apartmentId: number;
   resource: EResourceType;
   serialNumber: string | null;
   model: string | null;
@@ -11012,6 +11023,24 @@ export class Api<
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesGetAllClosingList
+     * @summary MeteringDevicesRead
+     * @request GET:/api/IndividualDevices/getAllClosing
+     * @secure
+     */
+    individualDevicesGetAllClosingList: (params: RequestParams = {}) =>
+      this.request<GetIndividualDevicesToClose, ErrorApiResponse>({
+        path: `/api/IndividualDevices/getAllClosing`,
+        method: 'GET',
+        secure: true,
         format: 'json',
         ...params,
       }),
