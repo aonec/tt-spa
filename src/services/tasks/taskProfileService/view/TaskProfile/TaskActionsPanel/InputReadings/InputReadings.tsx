@@ -28,7 +28,7 @@ export const InputReadings: FC<InputReadingsProps> = ({ handleChange }) => {
       setReadings(
         devices.map((device) => {
           const readingDate =
-            device.invalidReading?.actualReadingDate || task?.creationTime;
+            device.invalidReading?.readingDate || task?.creationTime;
 
           return {
             value1: null,
