@@ -1,6 +1,8 @@
 import { FC, useMemo, useState } from 'react';
 import {
   ItemHeader,
+  Name,
+  NamesWrapper,
   PeriodWrapper,
   RangePickerSC,
   ReportName,
@@ -24,6 +26,7 @@ import {
 } from 'ui-kit/ContextMenuButton/ContextMenuButton.types';
 import dayjs from 'dayjs';
 import { Switch } from 'antd';
+import { getUserFullName } from 'utils/getUserFullName';
 
 export const RegularReportItem: FC<Props> = ({
   report,
@@ -33,6 +36,8 @@ export const RegularReportItem: FC<Props> = ({
   handleDeleteReport,
   handleChangeActivity,
   isReportUpdating,
+  contractors,
+  staffList,
 }) => {
   const [isOpen, setOpen] = useState(isFirst);
 
@@ -93,6 +98,28 @@ export const RegularReportItem: FC<Props> = ({
     [handleDeleteReport],
   );
 
+  const receivingContractors =
+    contractors?.filter((contractor) =>
+      report.reportConfigurationDetails?.contractorIds?.includes(contractor.id),
+    ) || [];
+
+  const receivingOrganizationUsers =
+    staffList?.items?.filter((organizationsUser) =>
+      report.reportConfigurationDetails?.organizationUserIds?.includes(
+        organizationsUser.id,
+      ),
+    ) || [];
+
+  const usersFullName = useMemo(() => {
+    return receivingOrganizationUsers.map((organizationUser) =>
+      getUserFullName({
+        firstname: organizationUser.firstName,
+        lastname: organizationUser.lastName,
+        middlename: organizationUser.middleName,
+      }),
+    );
+  }, [receivingOrganizationUsers]);
+
   return (
     <Wrapper>
       <ListOpeningChevron isOpen={isOpen} onClick={() => setOpen(!isOpen)} />
@@ -152,8 +179,24 @@ export const RegularReportItem: FC<Props> = ({
                 value: regularity,
               },
               {
-                key: 'Email',
-                value: report.reportConfigurationDetails?.emails,
+                key: 'Контрагенты',
+                value: (
+                  <NamesWrapper>
+                    {receivingContractors?.map((contractor) => (
+                      <div key={contractor.id}> {contractor.name} </div>
+                    ))}
+                  </NamesWrapper>
+                ),
+              },
+              {
+                key: 'Сотрудники',
+                value: (
+                  <NamesWrapper>
+                    {usersFullName.map((name) => (
+                      <Name key={name}>{name}</Name>
+                    ))}
+                  </NamesWrapper>
+                ),
               },
             ]}
           />

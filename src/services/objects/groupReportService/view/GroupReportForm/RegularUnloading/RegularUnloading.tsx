@@ -5,24 +5,25 @@ import dayjs from 'api/dayjs';
 import React, { FC, useEffect, useMemo } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
-import { Input } from 'ui-kit/Input';
 import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled';
 import { RowWrapper } from '../GroupReportForm.styled';
 import { SubsTypeRadioOptions } from './RegularUnloading.constants';
 import { SwitchWrapper, Wrapper } from './RegularUnloading.styled';
 import { RegularUnloadingProps } from './RegularUnloading.types';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
+import { getUserFullName } from 'utils/getUserFullName';
 
 export const RegularUnloading: FC<RegularUnloadingProps> = ({
   contractors,
   handleChangeContractorIds,
-  handleChangeEmail,
   handleChangeSubsType,
   handleThriggerAt,
   handleChangeIsRegular,
   values,
   errors,
   setRegularUpload,
+  staffList,
+  handleChangeOrganizationUserIds,
 }) => {
   const { isRegular } = values;
 
@@ -30,23 +31,41 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
     () =>
       contractors.map((elem) => ({
         key: String(elem.id),
-        value: String(elem.id),
+        value: elem.id,
         label: elem.title,
       })),
     [contractors],
   );
 
+  const staffListOptions: LabeledValue[] = useMemo(
+    () =>
+      staffList.map((elem) => {
+        const fullName = getUserFullName({
+          firstname: elem.firstName,
+          lastname: elem.lastName,
+          middlename: elem.middleName,
+        });
+
+        return {
+          key: String(elem.id),
+          value: elem.id,
+          label: fullName,
+        };
+      }),
+    [staffList],
+  );
+
   useEffect(() => {
     if (!isRegular) {
       handleChangeContractorIds();
-      handleChangeEmail();
+      handleChangeOrganizationUserIds();
       handleChangeSubsType();
       handleThriggerAt();
     }
   }, [
     isRegular,
     handleChangeContractorIds,
-    handleChangeEmail,
+    handleChangeOrganizationUserIds,
     handleChangeSubsType,
     handleThriggerAt,
   ]);
@@ -71,13 +90,15 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
       {isRegular && (
         <>
           <RowWrapper>
-            <FormItem label="Email">
-              <Input
-                placeholder="Введите email"
-                value={values['Subscription.Email']}
-                onChange={(e) => handleChangeEmail(e.target.value)}
+            <FormItem label="Сотрудники">
+              <SelectMultiple
+                placeholder="Выберите из списка"
+                options={staffListOptions}
+                value={values?.['Subscription.OrganizationUserIds']}
+                onChange={(ids) => {
+                  handleChangeOrganizationUserIds(ids as number[]);
+                }}
               />
-              <ErrorMessage>{errors['Subscription.Email']}</ErrorMessage>
             </FormItem>
 
             <FormItem label="Контрагенты">
@@ -86,8 +107,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
                 options={contractorsOptions}
                 value={values?.['Subscription.ContractorIds']}
                 onChange={(ids) => {
-                  console.log(ids);
-                  handleChangeContractorIds(ids as string[]);
+                  handleChangeContractorIds(ids as number[]);
                 }}
               />
             </FormItem>

@@ -44,6 +44,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
   addressesWithHouseManagements,
   houseManagements,
   setRegularUpload,
+  staffList,
 }) => {
   const { nodeResourceTypes, nodeStatuses, contractors } = reportFilters;
 
@@ -75,8 +76,6 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       });
     },
   });
-
-  console.log(values)
 
   const addressesTreeData = prepareAddressesTreeData(
     addressesWithHouseManagements,
@@ -113,11 +112,12 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
   }, [organizations, setFieldValue, values.exportType]);
 
   const handleChangeContractorIds = useCallback(
-    (ids?: string[]) => setFieldValue("['Subscription.ContractorIds']", ids),
+    (ids?: number[]) => setFieldValue("['Subscription.ContractorIds']", ids),
     [setFieldValue],
   );
-  const handleChangeEmail = useCallback(
-    (email?: string) => setFieldValue("['Subscription.Email']", email),
+  const handleChangeOrganizationUserIds = useCallback(
+    (ids?: number[]) =>
+      setFieldValue("['Subscription.OrganizationUserIds']", ids),
     [setFieldValue],
   );
   const handleChangeSubsType = useCallback(
@@ -303,20 +303,23 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
 
       <RegularUnloading
         handleChangeContractorIds={handleChangeContractorIds}
-        handleChangeEmail={handleChangeEmail}
+        handleChangeOrganizationUserIds={handleChangeOrganizationUserIds}
         handleChangeSubsType={handleChangeSubsType}
         handleThriggerAt={handleThriggerAt}
         handleChangeIsRegular={handleChangeIsRegular}
         contractors={contractors || []}
         values={{
+          'Subscription.OrganizationUserIds':
+            values['Subscription.OrganizationUserIds'],
           'Subscription.ContractorIds': values['Subscription.ContractorIds'],
-          'Subscription.Email': values['Subscription.Email'],
           'Subscription.TriggerAt': values['Subscription.TriggerAt'],
           'Subscription.Type': values['Subscription.Type'],
+
           isRegular: values.isRegular,
         }}
         errors={errors}
         setRegularUpload={setRegularUpload}
+        staffList={staffList?.items || []}
       />
     </Form>
   );

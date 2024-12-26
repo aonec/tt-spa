@@ -1672,6 +1672,7 @@ export enum EClosingReason {
   CertificateIssued = 'CertificateIssued',
   MaintainingStopped = 'MaintainingStopped',
   ByLetter = 'ByLetter',
+  NoMagneticSeal = 'NoMagneticSeal',
 }
 
 export enum EConnectionStatusType {
@@ -2477,8 +2478,8 @@ export interface GetSummaryHousingConsumptionsByResourcesResponse {
 }
 
 export interface GroupReportConfigurationDetailsModel {
-  emails?: string | null;
-  contractorIds?: string | null;
+  organizationUserIds?: number[] | null;
+  contractorIds?: number[] | null;
   /** @format date-time */
   initialDate?: string;
   /** @format date-time */
@@ -2488,12 +2489,10 @@ export interface GroupReportConfigurationDetailsModel {
 }
 
 export interface GroupReportConfigurationDetailsRequest {
-  emails: string[];
+  organizationUserIds: number[];
   contractorIds: number[];
   /** @format date-time */
   initialDate: string;
-  /** @format date-time */
-  nextDate?: string | null;
   isActive?: boolean;
   reportConfigurationPeriod: GroupReportConfigurationPeriod;
 }
@@ -2517,6 +2516,7 @@ export interface GroupReportContractorResponse {
   /** @format int32 */
   id: number;
   title: string | null;
+  email: string | null;
 }
 
 export interface GroupReportFormResponse {
