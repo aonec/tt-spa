@@ -10,6 +10,9 @@ import {
   ETaskEngineeringElement,
   EisTaskReasonType,
   EisTaskType,
+  GroupReportConfigurationPeriod,
+  ReportType,
+  ResourceType,
 } from 'api/types';
 import { DistrictColor, DistrictColorData } from 'types';
 
@@ -167,4 +170,35 @@ export const ActTypeDictionary: { [key in EActType]: string } = {
   [EActType.HomeownerAccountCertificate]: 'Справка о лицевом счете',
   [EActType.Admission]: 'Акт допуска',
   [EActType.NonAdmission]: 'Акт недопуска',
+};
+
+export const ResourcesNameDictionary: { [key in ResourceType]: string } = {
+  [ResourceType.ColdWaterSupply]: 'ХВС',
+  [ResourceType.HotWaterSupply]: 'ГВС',
+  [ResourceType.Electricity]: 'ЭЭ',
+  [ResourceType.Heat]: 'Тепло',
+  [ResourceType.None]: 'Нет',
+};
+
+export const GroupReportConfigurationPeriodDictionary: {
+  [key in GroupReportConfigurationPeriod]: string;
+} = {
+  [GroupReportConfigurationPeriod.EveryTwoWeeks]: '1 раз в 2 недели',
+  [GroupReportConfigurationPeriod.EveryMonth]: '1 раз в месяц',
+  [GroupReportConfigurationPeriod.EveryQuarter]: '1 раз в квартал',
+};
+
+export const ReportTypeDictionary: {
+  [key in ReportType]: string;
+} = {
+  [ReportType.Daily]: 'Суточная',
+  [ReportType.Hourly]: 'Часовая',
+  [ReportType.None]: 'Нет',
+  [ReportType.Monthly]: 'Месячная',
+  [ReportType.Total]: 'Общая',
+  [ReportType.Current]: 'Текущая',
+  [ReportType.TotalCurrent]: 'Текущая общая',
+  [ReportType.Events]: 'Событийная',
+  [ReportType.Other]: 'Другая',
+  [ReportType.Settings]: 'Настройки',
 };

@@ -308,7 +308,8 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
         contractors={contractors || []}
         values={{
           'Subscription.ContractorIds': values['Subscription.ContractorIds'],
-          'Subscription.Email': values['Subscription.Email'],
+          'Subscription.OrganizationUserIds':
+            values['Subscription.OrganizationUserIds'],
           'Subscription.TriggerAt': values['Subscription.TriggerAt'],
           'Subscription.Type': values['Subscription.Type'],
           isRegular: values.isRegular,
