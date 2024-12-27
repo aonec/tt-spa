@@ -1,17 +1,11 @@
-import React, { FC } from 'react';
+import { FC, useMemo } from 'react';
 import {
   AlertText,
   BillingPeriod,
-  Blue,
   Container,
   Date,
   Footer,
-  Info,
-  LeftBlock,
   PageTitle,
-  Panel,
-  PanelTitle,
-  RightBlock,
   Title,
   Wrapper,
 } from './ReportPage.styled';
@@ -20,14 +14,9 @@ import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { Alert } from 'ui-kit/Alert';
 import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
-import {
-  ChevronActiveIcon,
-  QuestionMarkCircleIcon,
-  XCircleIcon,
-} from 'ui-kit/icons';
-import { ChevronIconRight } from 'services/workingRanges/WorkingRangeTab/WorkingRangeTab.styled';
 import { Button } from 'ui-kit/Button';
-import { Skeleton } from 'antd';
+import { PanelItemData, PanelItemStatus } from './PanelItem/PanelItem.types';
+import { PanelItem } from './PanelItem';
 
 export const ReportPage: FC<Props> = ({
   closingDevices,
@@ -39,6 +28,52 @@ export const ReportPage: FC<Props> = ({
     .split(' ')
     .map((word) => capitalize(word))
     .join(' ');
+
+  const panelsList = useMemo((): PanelItemData[] => {
+    return [
+      {
+        title: 'Приборы с вышедшей датой поверки',
+        status: closingDevices?.expiredCheckingDateCount
+          ? PanelItemStatus.Error
+          : PanelItemStatus.Success,
+        info: closingDevices?.expiredCheckingDateCount
+          ? `${closingDevices?.expiredCheckingDateCount} приборов`
+          : null,
+        btnText: 'Закрыть приборы',
+        btnOnClick: () => void 0,
+        isLoadingInfo: isLoadingClosingDevices,
+        link: 'link',
+      },
+      {
+        title: 'Квартиры на паузе',
+        status: PanelItemStatus.Success,
+        info: null,
+        btnText: 'Дублировать показания',
+        btnOnClick: () => void 0,
+        isLoadingInfo: false,
+      },
+      {
+        title: 'Приборы без показаний более 6 месяцев',
+        status: closingDevices?.withoutReadingsCount
+          ? PanelItemStatus.Error
+          : PanelItemStatus.Success,
+        info: closingDevices?.withoutReadingsCount
+          ? `${closingDevices?.withoutReadingsCount} приборов`
+          : null,
+        btnText: 'Закрыть приборы',
+        btnOnClick: () => void 0,
+        isLoadingInfo: isLoadingClosingDevices,
+      },
+      {
+        title: 'Проверить разрядность приборов',
+        status: PanelItemStatus.Info,
+        info: null,
+        btnText: 'Создать задачи',
+        btnOnClick: () => void 0,
+        isLoadingInfo: false,
+      },
+    ];
+  }, [isLoadingClosingDevices, closingDevices]);
 
   return (
     <Wrapper>
@@ -56,69 +91,9 @@ export const ReportPage: FC<Props> = ({
           </AlertText>
         </Alert>
 
-        <Panel>
-          <LeftBlock>
-            {closingDevices?.expiredCheckingDateCount ? (
-              <XCircleIcon />
-            ) : (
-              <ChevronActiveIcon />
-            )}
-            <PanelTitle> Приборы с вышедшей датой поверки</PanelTitle>
-          </LeftBlock>
-          <RightBlock>
-            {isLoadingClosingDevices ? (
-              <Skeleton.Input active size="small" />
-            ) : (
-              <Info>
-                {closingDevices?.expiredCheckingDateCount || 0} приборов
-              </Info>
-            )}
-            <Blue>Закрыть приборы</Blue>
-            <ChevronIconRight />
-          </RightBlock>
-        </Panel>
-
-        <Panel>
-          <LeftBlock>
-            <XCircleIcon />
-            <PanelTitle> Квартиры на паузе</PanelTitle>
-          </LeftBlock>
-          <RightBlock>
-            <Info /> <Blue>Дублировать показания</Blue>
-          </RightBlock>
-        </Panel>
-
-        <Panel>
-          <LeftBlock>
-            {closingDevices?.withoutReadingsCount ? (
-              <XCircleIcon />
-            ) : (
-              <ChevronActiveIcon />
-            )}
-            <PanelTitle> Приборы без показаний более 6 месяцев </PanelTitle>
-          </LeftBlock>
-          <RightBlock>
-            {isLoadingClosingDevices ? (
-              <Skeleton.Input active size="small" />
-            ) : (
-              <Info>
-                ({closingDevices?.withoutReadingsCount || 0}) приборов
-              </Info>
-            )}{' '}
-            <Blue>Закрыть приборы</Blue>
-          </RightBlock>
-        </Panel>
-
-        <Panel>
-          <LeftBlock>
-            <QuestionMarkCircleIcon />
-            <PanelTitle> Проверить разрядность приборов </PanelTitle>
-          </LeftBlock>
-          <RightBlock>
-            <Info />
-            <Blue>Создать задачи</Blue>
-          </RightBlock>
-        </Panel>
+        {panelsList.map((item) => (
+          <PanelItem key={item.title} {...item} />
+        ))}
       </Container>
 
       <Footer>
