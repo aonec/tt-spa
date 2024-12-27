@@ -45,17 +45,17 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
 
   const { values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
+      city: initialValues?.city || '',
       apartment: initialValues?.apartment || '',
       corpus: initialValues?.corpus || '',
       house: initialValues?.house || '',
       question: initialValues?.question || '',
       street: initialValues?.street || '',
-      city: initialValues?.city || '',
     },
     onSubmit: (data) => {
       if (onSubmit) onSubmit(data);
     },
-    enableReinitialize: true,
+    enableReinitialize: false,
   });
 
   const preparedFields = useMemo(
