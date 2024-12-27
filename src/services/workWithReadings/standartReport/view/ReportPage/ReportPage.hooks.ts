@@ -8,7 +8,7 @@ export function usePanelsList({
 }: {
   closingDevices: GetIndividualDevicesToClose | null;
   isLoadingClosingDevices: boolean;
-}) {
+}): PanelItemData[] {
   const panelsList = useMemo((): PanelItemData[] => {
     return [
       {
