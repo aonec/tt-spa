@@ -63,3 +63,10 @@ export const DeviceTitleWrapper = styled.div`
   align-items: center;
   gap: 12px;
 `;
+
+export const StatusWrapper = styled.div`
+  margin: 0 16px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
