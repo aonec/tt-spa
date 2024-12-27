@@ -8,7 +8,6 @@ export const Wrapper = styled.div`
   align-items: center;
   border: 1px solid rgba(39, 47, 90, 0.04);
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
-  margin-top: 4px;
 `;
 
 export const LeftBlock = styled.div`

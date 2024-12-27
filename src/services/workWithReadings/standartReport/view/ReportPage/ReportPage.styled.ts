@@ -7,6 +7,9 @@ export const Wrapper = styled.div`
 
 export const Container = styled.div`
   width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
 export const Footer = styled.div`
@@ -44,12 +47,8 @@ export const Date = styled.div`
   font-size: 16px;
 `;
 
-export const PageTitle = styled.div`
+export const PanelsList = styled.div`
   display: flex;
-  align-items: center;
-  font-weight: 300;
-  font-size: 32px;
-
-  margin-top: 16px;
-  margin-bottom: 32px;
+  flex-direction: column;
+  gap: 4px;
 `;

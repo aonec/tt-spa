@@ -1,11 +1,11 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import {
   AlertText,
   BillingPeriod,
   Container,
   Date,
   Footer,
-  PageTitle,
+  PanelsList,
   Title,
   Wrapper,
 } from './ReportPage.styled';
@@ -15,8 +15,10 @@ import { capitalize } from 'lodash';
 import { Alert } from 'ui-kit/Alert';
 import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 import { Button } from 'ui-kit/Button';
-import { PanelItemData, PanelItemStatus } from './PanelItem/PanelItem.types';
 import { PanelItem } from './PanelItem';
+import { usePanelsList } from './ReportPage.hooks';
+import { PageHeader } from 'ui-kit/shared/PageHeader';
+import { GoBack } from 'ui-kit/shared/GoBack';
 
 export const ReportPage: FC<Props> = ({
   closingDevices,
@@ -29,56 +31,13 @@ export const ReportPage: FC<Props> = ({
     .map((word) => capitalize(word))
     .join(' ');
 
-  const panelsList = useMemo((): PanelItemData[] => {
-    return [
-      {
-        title: 'Приборы с вышедшей датой поверки',
-        status: closingDevices?.expiredCheckingDateCount
-          ? PanelItemStatus.Error
-          : PanelItemStatus.Success,
-        info: closingDevices?.expiredCheckingDateCount
-          ? `${closingDevices?.expiredCheckingDateCount} приборов`
-          : null,
-        btnText: 'Закрыть приборы',
-        btnOnClick: () => void 0,
-        isLoadingInfo: isLoadingClosingDevices,
-        link: 'link',
-      },
-      {
-        title: 'Квартиры на паузе',
-        status: PanelItemStatus.Success,
-        info: null,
-        btnText: 'Дублировать показания',
-        btnOnClick: () => void 0,
-        isLoadingInfo: false,
-      },
-      {
-        title: 'Приборы без показаний более 6 месяцев',
-        status: closingDevices?.withoutReadingsCount
-          ? PanelItemStatus.Error
-          : PanelItemStatus.Success,
-        info: closingDevices?.withoutReadingsCount
-          ? `${closingDevices?.withoutReadingsCount} приборов`
-          : null,
-        btnText: 'Закрыть приборы',
-        btnOnClick: () => void 0,
-        isLoadingInfo: isLoadingClosingDevices,
-      },
-      {
-        title: 'Проверить разрядность приборов',
-        status: PanelItemStatus.Info,
-        info: null,
-        btnText: 'Создать задачи',
-        btnOnClick: () => void 0,
-        isLoadingInfo: false,
-      },
-    ];
-  }, [isLoadingClosingDevices, closingDevices]);
+  const panelsList = usePanelsList({ closingDevices, isLoadingClosingDevices });
 
   return (
     <Wrapper>
       <Container>
-        <PageTitle>Стандартный отчет</PageTitle>
+        <GoBack />
+        <PageHeader isGhost title="Стандартный отчет" />
 
         <BillingPeriod>
           <Title>Расчетный период</Title>
@@ -91,9 +50,11 @@ export const ReportPage: FC<Props> = ({
           </AlertText>
         </Alert>
 
-        {panelsList.map((item) => (
-          <PanelItem key={item.title} {...item} />
-        ))}
+        <PanelsList>
+          {panelsList.map((item) => (
+            <PanelItem key={item.title} {...item} />
+          ))}
+        </PanelsList>
       </Container>
 
       <Footer>
