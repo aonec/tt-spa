@@ -68,7 +68,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             const apartmentNumber = isOperators ? (
               <LinkSc
                 target="_blank"
-                to={`/apartments/${elem.apartmentId}/commonData`}
+                to={`/meters/apartments/${elem.apartmentId}`}
               >
                 Кв. №{number}
               </LinkSc>
