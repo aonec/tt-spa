@@ -29,6 +29,7 @@ export const ReportOptionsDictionary: {
     'Отчет по выходу поверки приборов',
   [EIndividualDeviceReportOption.InvalidCheckingDates]:
     'Некорректные даты поверки приборов',
+  [EIndividualDeviceReportOption.InvalidBitDepth]: 'Отсутствие разрядности',
 };
 
 export const ResourceShortNamesDictionary: {

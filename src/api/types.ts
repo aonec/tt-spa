@@ -1779,6 +1779,7 @@ export enum EIndividualDeviceReportOption {
   ClosedDeviceOnOneOfRisers = 'ClosedDeviceOnOneOfRisers',
   DeviceCheckingDateExpiration = 'DeviceCheckingDateExpiration',
   ClosedDevices = 'ClosedDevices',
+  InvalidBitDepth = 'InvalidBitDepth',
 }
 
 export enum ELivingHouseType {
@@ -2476,8 +2477,8 @@ export interface GetSummaryHousingConsumptionsByResourcesResponse {
 }
 
 export interface GroupReportConfigurationDetailsModel {
-  emails?: string | null;
-  contractorIds?: string | null;
+  organizationUserIds?: number[] | null;
+  contractorIds?: number[] | null;
   /** @format date-time */
   initialDate?: string;
   /** @format date-time */
@@ -2487,12 +2488,10 @@ export interface GroupReportConfigurationDetailsModel {
 }
 
 export interface GroupReportConfigurationDetailsRequest {
-  emails: string[];
+  organizationUserIds: number[];
   contractorIds: number[];
   /** @format date-time */
   initialDate: string;
-  /** @format date-time */
-  nextDate?: string | null;
   isActive?: boolean;
   reportConfigurationPeriod: GroupReportConfigurationPeriod;
 }
@@ -2516,6 +2515,7 @@ export interface GroupReportContractorResponse {
   /** @format int32 */
   id: number;
   title: string | null;
+  email: string | null;
 }
 
 export interface GroupReportFormResponse {
@@ -3635,6 +3635,7 @@ export interface IndividualDevicesConstructedReportResponse {
   closedDeviceOnOneOfRisersOption: ClosedDeviceOnOneOfRisersConstructedReportResponse | null;
   deviceCheckingDateExpirationOption: DeviceCheckingDateExpirationConstructedReportResponse | null;
   closedDevicesOption: ClosedDevicesConstructedReportResponse | null;
+  invalidBitDepthOption: InvalidBitDepthConstructedReportResponse | null;
 }
 
 export interface InspectorCreateRequest {
@@ -3698,6 +3699,13 @@ export interface InspectorsConstructedReportResponse {
    */
   dayPlan: number;
   counts: number[] | null;
+}
+
+export interface InvalidBitDepthConstructedReportResponse {
+  /** @format int32 */
+  bitDepth: number | null;
+  /** @format double */
+  scaleFactor: number | null;
 }
 
 export interface InvalidCheckingDatesConstructedReportResponse {
@@ -4640,6 +4648,24 @@ export interface PollResponse {
   doneAt: string | null;
   actionType: PollActionType;
   hasFile: boolean;
+}
+
+export interface PollResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+  /** @format int32 */
+  pageNumber: number;
+  /** @format int32 */
+  pageSize: number;
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+  /** @format int32 */
+  nextPageNumber: number;
+  /** @format int32 */
+  previousPageNumber: number;
+  items: PollResponse[] | null;
 }
 
 export interface ProblemDetails {
@@ -13813,6 +13839,37 @@ export class Api<
         query: query,
         secure: true,
         format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags Reports
+     * @name ReportsIndividualDevicesReportArchivesList
+     * @summary IndividualDevicesReportCreate
+     * @request GET:/api/Reports/IndividualDevicesReportArchives
+     * @secure
+     */
+    reportsIndividualDevicesReportArchivesList: (
+      query?: {
+        /** @format int32 */
+        PageNumber?: number;
+        /** @format int32 */
+        PageSize?: number;
+        OrderBy?: OrderByRule;
+        /** @format int32 */
+        Skip?: number;
+        /** @format int32 */
+        Take?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/IndividualDevicesReportArchives`,
+        method: 'GET',
+        query: query,
+        secure: true,
         ...params,
       }),
 
