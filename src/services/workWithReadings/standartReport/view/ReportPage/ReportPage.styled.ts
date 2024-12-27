@@ -44,9 +44,11 @@ export const LeftBlock = styled.div`
 `;
 
 export const RightBlock = styled.div`
-  display: flex;
+  width: 400px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 12px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
 `;
 
 export const PanelTitle = styled.div`

@@ -1,8 +1,16 @@
-import { createDomain } from 'effector';
+import { sample } from 'effector';
+import { createGate } from 'effector-react';
+import { getAllClosingDevicesQuery } from './standartReportService.api';
 
-const domain = createDomain('standartReportService');
+const StandartReportGate = createGate();
+
+sample({
+  clock: StandartReportGate.open,
+  target: getAllClosingDevicesQuery.start,
+});
 
 export const standartReportService = {
-  inputs: {}, 
+  inputs: {},
   outputs: {},
+  gates: { StandartReportGate },
 };

@@ -20,11 +20,19 @@ import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { Alert } from 'ui-kit/Alert';
 import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
-import { QuestionMarkCircleIcon, XCircleIcon } from 'ui-kit/icons';
+import {
+  ChevronActiveIcon,
+  QuestionMarkCircleIcon,
+  XCircleIcon,
+} from 'ui-kit/icons';
 import { ChevronIconRight } from 'services/workingRanges/WorkingRangeTab/WorkingRangeTab.styled';
 import { Button } from 'ui-kit/Button';
+import { Skeleton } from 'antd';
 
-export const ReportPage: FC<Props> = () => {
+export const ReportPage: FC<Props> = ({
+  closingDevices,
+  isLoadingClosingDevices,
+}) => {
   const date = dayjs().format('MMMM YYYY');
 
   const uppercaseDate = date
@@ -50,11 +58,23 @@ export const ReportPage: FC<Props> = () => {
 
         <Panel>
           <LeftBlock>
-            <XCircleIcon />
+            {closingDevices?.expiredCheckingDateCount ? (
+              <XCircleIcon />
+            ) : (
+              <ChevronActiveIcon />
+            )}
             <PanelTitle> Приборы с вышедшей датой поверки</PanelTitle>
           </LeftBlock>
           <RightBlock>
-            <Info>7 приборов</Info> <ChevronIconRight />
+            {isLoadingClosingDevices ? (
+              <Skeleton.Input active size="small" />
+            ) : (
+              <Info>
+                {closingDevices?.expiredCheckingDateCount || 0} приборов
+              </Info>
+            )}
+            <Blue>Закрыть приборы</Blue>
+            <ChevronIconRight />
           </RightBlock>
         </Panel>
 
@@ -64,17 +84,28 @@ export const ReportPage: FC<Props> = () => {
             <PanelTitle> Квартиры на паузе</PanelTitle>
           </LeftBlock>
           <RightBlock>
-            <Info>26.10.2023</Info> <Blue>Дублировать показания</Blue>
+            <Info /> <Blue>Дублировать показания</Blue>
           </RightBlock>
         </Panel>
 
         <Panel>
           <LeftBlock>
-            <XCircleIcon />
+            {closingDevices?.withoutReadingsCount ? (
+              <XCircleIcon />
+            ) : (
+              <ChevronActiveIcon />
+            )}
             <PanelTitle> Приборы без показаний более 6 месяцев </PanelTitle>
           </LeftBlock>
           <RightBlock>
-            <Info>10 приборов</Info> <Blue>Закрыть приборы</Blue>
+            {isLoadingClosingDevices ? (
+              <Skeleton.Input active size="small" />
+            ) : (
+              <Info>
+                ({closingDevices?.withoutReadingsCount || 0}) приборов
+              </Info>
+            )}{' '}
+            <Blue>Закрыть приборы</Blue>
           </RightBlock>
         </Panel>
 
@@ -83,7 +114,10 @@ export const ReportPage: FC<Props> = () => {
             <QuestionMarkCircleIcon />
             <PanelTitle> Проверить разрядность приборов </PanelTitle>
           </LeftBlock>
-          <RightBlock></RightBlock>
+          <RightBlock>
+            <Info />
+            <Blue>Создать задачи</Blue>
+          </RightBlock>
         </Panel>
       </Container>
 
