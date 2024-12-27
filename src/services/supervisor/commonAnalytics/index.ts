@@ -1,1 +1,1 @@
-export { CommonAnalyticsContainer } from "./commonAnalyticsService.container";
+export { CommonAnalyticsContainer } from './commonAnalyticsService.container';
