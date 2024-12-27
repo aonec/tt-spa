@@ -48,9 +48,10 @@ export function usePanelsList({
         title: 'Проверить разрядность приборов',
         status: PanelItemStatus.Info,
         info: null,
-        btnText: 'Создать задачи',
+        btnText: null,
         btnOnClick: () => void 0,
         isLoadingInfo: false,
+        link: '/',
       },
     ];
   }, [isLoadingClosingDevices, closingDevices]);

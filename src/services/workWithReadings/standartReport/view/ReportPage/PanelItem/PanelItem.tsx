@@ -31,7 +31,7 @@ export const PanelItem: FC<Props> = ({
       <RightBlock>
         {isLoadingInfo && <Skeleton.Input active size="small" />}
         {!isLoadingInfo && <Info>{info}</Info>}
-        {btnText && <Blue onClick={btnOnClick}>{btnText}</Blue>}
+        <Blue onClick={btnText ? btnOnClick : void 0}>{btnText}</Blue>
         {link && <ChevronIconRight />}
       </RightBlock>
     </Wrapper>
