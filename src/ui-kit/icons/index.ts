@@ -100,6 +100,13 @@ import CheckGreenIcon from './svg/checkGreen.svg?react';
 import TrashIconGrey from './svg/trashGrey.svg?react';
 import ChevronTopActive from './svg/chevronTopActive.svg?react';
 import ChevronTopDanger from './svg/chevronTopDanger.svg?react';
+import ExportIcon from './svg/export.svg?react';
+import DownloadGrayIcon from './svg/downloadGray.svg?react';
+import DocumentBigIcon from './svg/documentBig.svg?react';
+import DeviceBigIcon from './svg/deviceBig.svg?react';
+import CheckCircleIcon from './svg/checkCircle.svg?react';
+import QuestionMarkCircleIcon from './svg/questionMarkCircle.svg?react';
+import XCircleIcon from './svg/xCircle.svg?react';
 import ResetIcon from './svg/reset.svg?react';
 import CitySmallGrayIcon from './svg/citySmallGray.svg?react';
 import IndividualDeviceSmallIcon from './svg/individualDeviceSmall.svg?react';
@@ -212,6 +219,13 @@ export {
   TrashIconGrey,
   ChevronTopActive,
   ChevronTopDanger,
+  ExportIcon,
+  DownloadGrayIcon,
+  DocumentBigIcon,
+  DeviceBigIcon,
+  CheckCircleIcon,
+  QuestionMarkCircleIcon,
+  XCircleIcon,
   ResetIcon,
   CitySmallGrayIcon,
   IndividualDeviceSmallIcon,

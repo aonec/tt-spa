@@ -5,7 +5,6 @@ import dayjs from 'api/dayjs';
 import React, { FC, useEffect, useMemo } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
-import { Input } from 'ui-kit/Input';
 import { Select } from 'ui-kit/Select';
 import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled';
 import { RowWrapper } from '../GroupReportForm.styled';
@@ -79,14 +78,6 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
       {isRegular && (
         <>
           <RowWrapper>
-            <FormItem label="Email">
-              <Input
-                placeholder="Введите email"
-                value={values['Subscription.Email']}
-                onChange={(e) => handleChangeEmail(e.target.value)}
-              />
-              <ErrorMessage>{errors['Subscription.Email']}</ErrorMessage>
-            </FormItem>
             <FormItem label="Контрагенты">
               <Select
                 placeholder="Выберите из списка"

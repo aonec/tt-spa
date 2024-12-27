@@ -11,7 +11,11 @@ export const NodeDocumentsList: FC<NodeDocumentsListProps> = ({
   const isDocsExist = documents.length !== 0;
 
   const list = documents.map((document) => (
-    <NodeDocumentsItem document={document} key={document.id} saveFile={saveFile} />
+    <NodeDocumentsItem
+      document={document}
+      key={document.id}
+      saveFile={saveFile}
+    />
   ));
 
   return (

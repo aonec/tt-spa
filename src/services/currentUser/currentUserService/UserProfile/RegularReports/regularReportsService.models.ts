@@ -75,7 +75,8 @@ sample({
         contractorIds: [
           Number(report.reportConfigurationDetails?.contractorIds),
         ],
-        emails: [report.reportConfigurationDetails?.emails],
+        organizationUserIds:
+          report.reportConfigurationDetails?.organizationUserIds,
         initialDate: report.reportConfigurationDetails?.initialDate,
         reportConfigurationPeriod:
           report.reportConfigurationDetails?.reportConfigurationPeriod,

@@ -131,7 +131,7 @@ sample({
         to: clock?.To,
       },
       reportConfigurationDetails: {
-        emails: [clock?.['Subscription.Email']],
+        organizationUserIds: clock?.['Subscription.OrganizationUserIds'],
         contractorIds: clock?.['Subscription.ContractorIds'],
         initialDate: clock?.['Subscription.TriggerAt'],
         reportConfigurationPeriod: clock?.['Subscription.Type'],
