@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   AppointmentTextWrapper,
   ContentWrapper,
@@ -49,6 +49,30 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
+  const address = apartment?.housingStock?.address?.mainAddress;
+
+  const [addressData, setAddressData] = useState<AddressSearchValues>({
+    city: address?.city || null,
+    street: address?.street || null,
+    house: address?.number || null,
+    corpus: address?.corpus || null,
+    apartment: apartment?.apartmentNumber || null,
+    question: selectedHomeownerName || null,
+  });
+
+  useEffect(() => {
+    if (!address) return;
+
+    setAddressData({
+      city: address.city,
+      street: address.street,
+      house: address.number,
+      corpus: address.corpus,
+      apartment: apartment.apartmentNumber,
+      question: selectedHomeownerName,
+    });
+  }, [address, selectedHomeownerName]);
+
   const isPaused = apartment
     ? apartment.status === EApartmentStatus.Pause
     : false;
@@ -79,8 +103,6 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
     },
     [handleSearchApartment],
   );
-
-  const address = apartment?.housingStock?.address?.mainAddress;
 
   const appointmentDate = useMemo(
     () =>
@@ -117,14 +139,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
             { fieldType: SearchFieldType.Street, templateValue: '0.7fr' },
           ]}
           handleSubmit={handleSubmit}
-          initialValues={{
-            city: address?.city || undefined,
-            street: address?.street || undefined,
-            house: address?.number || undefined,
-            corpus: address?.corpus || undefined,
-            apartment: apartment?.apartmentNumber || undefined,
-            question: selectedHomeownerName || undefined,
-          }}
+          initialValues={addressData}
           isError={!isLoadingApartment && !apartment && isApartmentFetched}
           isFocus={true}
           isCityPreselected

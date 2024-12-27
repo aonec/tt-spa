@@ -183,7 +183,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     <InputSC
       small
       placeholder="Л/С или ФИО"
-      value={values.question}
+      value={values.question || undefined}
       onChange={(e) => {
         handleChange(SearchFieldType.Question, e.target.value);
       }}

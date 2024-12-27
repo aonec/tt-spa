@@ -8,11 +8,11 @@ import {
 import { AddressSearchValues } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 
 export type GetHousingStocksRequestPayload = {
-  OrderRule?: EHousingStockOrderRule;
-  City?: string;
-  Street?: string;
-  BuildingNumber?: string;
-  Corpus?: string;
+  OrderRule?: EHousingStockOrderRule | null;
+  City?: string | null;
+  Street?: string | null;
+  BuildingNumber?: string | null;
+  Corpus?: string | null;
   HouseCategory?: EHouseCategory;
   HouseManagementId?: string;
   HeatingStationId?: string;

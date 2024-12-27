@@ -81,7 +81,7 @@ export const SearchHousingStock: FC<SearchHousingStockProps> = ({
               City: city,
               BuildingNumber: house,
               Street: street,
-              Corpus: corpus,
+              Corpus: corpus || undefined,
             });
           }}
           isError={isNothingFound}

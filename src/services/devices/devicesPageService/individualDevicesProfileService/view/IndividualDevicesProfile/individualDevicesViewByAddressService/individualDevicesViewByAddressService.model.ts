@@ -72,7 +72,7 @@ const $getHousingsByFilterRequestPayload: Store<GetHousingByFilterRequestPayload
       City: values.City,
       Street: values.Street,
       Number: values.HouseNumber,
-      Corpus: values.HouseCorpus,
+      Corpus: values.HouseCorpus || undefined,
     };
 
     return payload;

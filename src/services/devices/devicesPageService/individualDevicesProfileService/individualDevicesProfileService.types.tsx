@@ -8,10 +8,10 @@ import {
 } from 'api/types';
 
 export type SearchIndividualDevicesParams = {
-  City?: string;
-  Street?: string;
-  HouseNumber?: string;
-  HouseCorpus?: string;
+  City?: string | null;
+  Street?: string | null;
+  HouseNumber?: string | null;
+  HouseCorpus?: string | null;
   Model?: string;
   SerialNumber?: string;
   MountPlace?: string;
