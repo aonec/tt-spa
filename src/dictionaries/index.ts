@@ -32,7 +32,7 @@ export const ReportOptionsDictionary: {
     'Отчет по выходу поверки приборов',
   [EIndividualDeviceReportOption.InvalidCheckingDates]:
     'Некорректные даты поверки приборов',
-  [EIndividualDeviceReportOption.InvalidBitDepth]: 'Некорректная разрядность',
+  [EIndividualDeviceReportOption.InvalidBitDepth]: 'Отсутствие разрядности',
 };
 
 export const ResourceShortNamesDictionary: {
@@ -71,7 +71,6 @@ export const ClosingReasonsDictionary: { [key in EClosingReason]: string } = {
   [EClosingReason.MaintainingStopped]: 'Остановлено',
   [EClosingReason.CheckingDate]: 'Выход поверки',
   [EClosingReason.None]: 'Нет',
-  [EClosingReason.NoMagneticSeal]: 'Отсутствие пломбы',
 };
 
 export const SwitchingReasonsDictionary: { [key in ESwitchingReason]: string } =
@@ -194,12 +193,12 @@ export const ReportTypeDictionary: {
 } = {
   [ReportType.Daily]: 'Суточная',
   [ReportType.Hourly]: 'Часовая',
-  [ReportType.None]: '',
-  [ReportType.Monthly]: '',
-  [ReportType.Total]: '',
-  [ReportType.Current]: '',
-  [ReportType.TotalCurrent]: '',
-  [ReportType.Events]: '',
-  [ReportType.Other]: '',
-  [ReportType.Settings]: '',
+  [ReportType.None]: 'Нет',
+  [ReportType.Monthly]: 'Месячная',
+  [ReportType.Total]: 'Общая',
+  [ReportType.Current]: 'Текущая',
+  [ReportType.TotalCurrent]: 'Текущая общая',
+  [ReportType.Events]: 'Событийная',
+  [ReportType.Other]: 'Другая',
+  [ReportType.Settings]: 'Настройки',
 };
