@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { ApartmentSealProfileProps } from './ApartmentSealProfile.types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import {
@@ -88,6 +88,28 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
     return openCreateSealAppointmentModal({ apartment, appointment: null });
   }, [apartment, openCreateSealAppointmentModal, nearestAppointment]);
 
+  const [addressData, setAddressData] = useState<AddressSearchValues>({
+    city: address?.city || null,
+    street: address?.street || null,
+    house: address?.number || null,
+    corpus: address?.corpus || null,
+    apartment: apartment?.apartmentNumber || null,
+    question: selectedHomeownerName || null,
+  });
+
+  useEffect(() => {
+    if (!address) return;
+
+    setAddressData({
+      city: address.city,
+      street: address.street,
+      house: address.number,
+      corpus: address.corpus,
+      apartment: apartment.apartmentNumber,
+      question: selectedHomeownerName,
+    });
+  }, [address, selectedHomeownerName]);
+
   return (
     <>
       <GoBack path="/services/seal/select" />
@@ -103,15 +125,7 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
           { fieldType: SearchFieldType.Street, templateValue: '0.7fr' },
         ]}
         handleSubmit={handleSubmit}
-        initialValues={
-          address && {
-            city: address.city || undefined,
-            street: address.street || undefined,
-            house: address.number || undefined,
-            apartment: apartment?.apartmentNumber || undefined,
-            question: selectedHomeownerName || undefined,
-          }
-        }
+        initialValues={addressData}
         isError={!apartment && isApartmentFetched}
       />
       <WithLoader isLoading={isLoadingApartment}>

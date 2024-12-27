@@ -9,7 +9,7 @@ import { SearchIndividualDevicesParams } from '../../../individualDevicesProfile
 
 export type SearchIndividualDevicesRequestPayload =
   SearchIndividualDevicesParams & {
-    Apartment?: string;
+    Apartment?: string | null;
   };
 
 export type GetHousingByFilterRequestPayload = {

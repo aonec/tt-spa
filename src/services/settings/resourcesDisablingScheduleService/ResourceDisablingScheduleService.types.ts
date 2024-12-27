@@ -7,10 +7,10 @@ import {
 } from 'api/types';
 
 export type DisablingResourcesFilters = Partial<{
-  city: string;
-  street: string;
-  house: string;
-  corpus: string;
+  city: string | null;
+  street: string | null;
+  house: string | null;
+  corpus: string | null;
   Resource: EResourceType;
   HouseManagementId: string;
   Sender: string;
@@ -33,10 +33,10 @@ type FiltersWithoutAddress = Omit<
 >;
 
 type AddressQuery = Partial<{
-  'Address.City': string;
-  'Address.Street': string;
-  'Address.HousingStockNumber': string;
-  'Address.Corpus': string;
+  'Address.City': string | null;
+  'Address.Street': string | null;
+  'Address.HousingStockNumber': string | null;
+  'Address.Corpus': string | null;
 }>;
 
 export type DisablingResourcesQueryParams = FiltersWithoutAddress &

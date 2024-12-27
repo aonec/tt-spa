@@ -15,10 +15,10 @@ export type FetchAddressQueryType = {
 };
 
 export type FilterType = {
-  city?: string;
-  street?: string;
-  house?: string;
-  corpus?: string;
+  city?: string | null;
+  street?: string | null;
+  house?: string | null;
+  corpus?: string | null;
 };
 
 export type CheckedHousingStocksWithStreets = {

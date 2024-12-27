@@ -99,7 +99,7 @@ export const AddHouseToDistrictModal: FC<Props> = ({
                 City: data.city,
                 Street: data.street,
                 BuildingNumber: data.house,
-                Corpus: data.corpus,
+                Corpus: data.corpus || undefined,
               });
             }}
             fields={[
