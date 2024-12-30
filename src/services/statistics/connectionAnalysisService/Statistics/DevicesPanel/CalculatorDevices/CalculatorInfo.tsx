@@ -4,12 +4,13 @@ import {
   DeviceTitleWrapper,
   Model,
   SerialNumber,
+  StatusWrapper,
   Wrapper,
 } from './CalculatorInfo.styled';
 import { Props } from './CalculatorInfo.types';
 import { Link } from 'react-router-dom';
-import { DeviceStatus } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus';
 import { CalculatorIcon } from 'ui-kit/icons';
+import { StatusBar } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus/DeviceStatus.styled';
 
 export const CalculatorInfo: FC<Props> = ({ device }) => {
   const deviceInfo = (
@@ -29,7 +30,11 @@ export const CalculatorInfo: FC<Props> = ({ device }) => {
         )}
         {!device.id && deviceInfo}
       </DeviceTitleWrapper>
-      <DeviceStatus isActive={device.isConnected} />
+
+      <StatusWrapper>
+        <StatusBar isActive={device.isConnected} />
+        {device.isConnected ? 'Активен' : 'Нет соединения'}
+      </StatusWrapper>
     </Wrapper>
   );
 };

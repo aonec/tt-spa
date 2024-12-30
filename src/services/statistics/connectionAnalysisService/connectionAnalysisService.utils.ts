@@ -29,13 +29,13 @@ export const sortCalculator = (
         EConnectionStatusType.Unknown,
     };
 
-    if (!calculator.connectionInfo) {
-      sortedList.NoArchive.push(preparedCalculator);
+    if (!calculator.isConnected) {
+      sortedList.NotPolled.push(preparedCalculator);
       return;
     }
 
-    if (calculator.isConnected === false) {
-      sortedList.NotPolled.push(preparedCalculator);
+    if (!calculator.connectionInfo) {
+      sortedList.NoArchive.push(preparedCalculator);
       return;
     }
 
