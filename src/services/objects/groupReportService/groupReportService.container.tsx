@@ -12,6 +12,7 @@ import {
 } from 'services/organizations';
 import { houseManagementsService } from '../houseManagementsService';
 import { reportViewService } from 'services/reportsService/reportViewService';
+import { companyProfileService } from 'services/company/companyProfileService';
 
 const { inputs, outputs, gates } = groupReportService;
 const { GroupReportGate } = gates;
@@ -23,6 +24,10 @@ const {
 const {
   gates: { OrganizationsGate },
 } = organizationsService;
+
+const {
+  gates: { FetchingStaffGate },
+} = companyProfileService;
 
 export const GroupReportContainer = () => {
   const {
@@ -36,6 +41,7 @@ export const GroupReportContainer = () => {
     houseManagements,
     addressesWithHouseManagements,
     setRegularUpload,
+    staffList,
   } = useUnit({
     isOpen: outputs.$isOpen,
     reportFilters: outputs.$reportFilters,
@@ -48,6 +54,7 @@ export const GroupReportContainer = () => {
     addressesWithHouseManagements:
       reportViewService.outputs.$addressesWithHouseManagements,
     setRegularUpload: inputs.setRegularUpload,
+    staffList: companyProfileService.outputs.$staffList,
   });
 
   return (
@@ -56,6 +63,7 @@ export const GroupReportContainer = () => {
       <HouseManagementsGate />
       <OrganizationsGate />
       <GroupReportGate />
+      <FetchingStaffGate />
       <SendReportToEmailContainer />
       <FormModal
         title="Выгрузить групповой отчёт"
@@ -75,6 +83,7 @@ export const GroupReportContainer = () => {
                 houseManagements={houseManagements}
                 addressesWithHouseManagements={addressesWithHouseManagements}
                 setRegularUpload={setRegularUpload}
+                staffList={staffList}
               />
             )}
           </WithLoader>

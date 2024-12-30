@@ -10,6 +10,8 @@ import {
   organizationsQuery,
   organizationsService,
 } from 'services/organizations';
+import { companyProfileService } from 'services/company/companyProfileService';
+import { displayContractorsService } from 'services/contractors/displayContractorsService';
 
 const {
   inputs,
@@ -25,6 +27,14 @@ const {
   gates: { OrganizationsGate },
 } = organizationsService;
 
+const {
+  gates: { FetchingStaffGate },
+} = companyProfileService;
+
+const {
+  gates: { ContractorsGate },
+} = displayContractorsService;
+
 export const RegularReportsContainer = () => {
   const {
     reportsData,
@@ -33,6 +43,8 @@ export const RegularReportsContainer = () => {
     handleDeleteReport,
     handleChangeActivity,
     isReportUpdating,
+    staffList,
+    contractors,
   } = useUnit({
     reportsData: outputs.$reportsData,
     houseManagements: houseManagementsService.outputs.$houseManagements,
@@ -40,12 +52,16 @@ export const RegularReportsContainer = () => {
     handleDeleteReport: inputs.handleDeleteReport,
     handleChangeActivity: inputs.handleChangeActivity,
     isReportUpdating: outputs.$isReportUpdating,
+    staffList: companyProfileService.outputs.$staffList,
+    contractors: displayContractorsService.outputs.$contractors,
   });
 
   return (
     <>
       <HouseManagementsGate />
       <OrganizationsGate />
+      <FetchingStaffGate />
+      <ContractorsGate />
 
       <PageWrapper>
         <PageTitle>Регулярная выгрузка отчетов</PageTitle>
@@ -60,6 +76,8 @@ export const RegularReportsContainer = () => {
             handleDeleteReport={handleDeleteReport}
             handleChangeActivity={handleChangeActivity}
             isReportUpdating={isReportUpdating}
+            staffList={staffList}
+            contractors={contractors}
           />
         ))}
         <PageGate />

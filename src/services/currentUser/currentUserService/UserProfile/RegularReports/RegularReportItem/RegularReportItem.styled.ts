@@ -60,3 +60,11 @@ export const Resource = styled.span`
   margin-right: 10px;
   font-weight: 500;
 `;
+
+export const Name = styled.div``;
+
+export const NamesWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;

@@ -20,16 +20,11 @@ export const validationSchema = Yup.object().shape({
   DelayedEmailTarget: Yup.string(),
 
   isRegular: Yup.bool(),
-  'Subscription.Email': Yup.string().when('isRegular', {
-    is: true,
-    then: (schema) =>
-      schema.required('Это поле обязательное').email('Корректно введите Email'),
-  }),
+
   'Subscription.TriggerAt': Yup.string(),
   'Subscription.Type': Yup.mixed<GroupReportConfigurationPeriod>().oneOf(
     Object.values(GroupReportConfigurationPeriod),
   ),
-  'Subscription.ContractorIds': Yup.array(Yup.number()),
 });
 
 export const ReportFormatRadioOptions = [

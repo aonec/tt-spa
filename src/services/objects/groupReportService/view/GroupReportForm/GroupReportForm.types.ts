@@ -3,6 +3,7 @@ import {
   HouseManagementResponse,
   HouseManagementWithStreetsResponse,
   OrganizationResponsePagedList,
+  OrganizationUserListResponsePagedList,
 } from 'api/types';
 import { GroupReportRequestPayload } from '../../groupReportService.types';
 
@@ -14,6 +15,7 @@ export type GroupReportFormProps = {
   houseManagements: HouseManagementResponse[] | null;
   addressesWithHouseManagements: HouseManagementWithStreetsResponse[];
   setRegularUpload: (payload: boolean) => void;
+  staffList: OrganizationUserListResponsePagedList | null;
 };
 
 export enum ExportReportType {

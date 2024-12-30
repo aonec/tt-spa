@@ -72,9 +72,7 @@ sample({
     ({
       report: report.report,
       reportConfigurationDetails: {
-        contractorIds: [
-          Number(report.reportConfigurationDetails?.contractorIds),
-        ],
+        contractorIds: report.reportConfigurationDetails?.contractorIds,
         organizationUserIds:
           report.reportConfigurationDetails?.organizationUserIds,
         initialDate: report.reportConfigurationDetails?.initialDate,

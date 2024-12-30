@@ -1672,6 +1672,7 @@ export enum EClosingReason {
   CertificateIssued = 'CertificateIssued',
   MaintainingStopped = 'MaintainingStopped',
   ByLetter = 'ByLetter',
+  NoMagneticSeal = 'NoMagneticSeal',
 }
 
 export enum EConnectionStatusType {

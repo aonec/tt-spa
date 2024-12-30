@@ -261,6 +261,10 @@ postRegularUploadFx.failData.watch((error) => {
   );
 });
 
+postRegularUploadFx.doneData.watch(() => {
+  message.success('Регулярная выгрузка успешно создана');
+});
+
 export const groupReportService = {
   inputs: {
     openModal,
