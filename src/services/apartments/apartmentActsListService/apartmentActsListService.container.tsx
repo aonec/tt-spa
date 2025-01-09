@@ -53,6 +53,7 @@ export const ApartmentActsListContainer = () => {
     ESecuredIdentityRoleName.ManagingFirmSpectatingAdministrator,
     ESecuredIdentityRoleName.ManagingFirmExecutor,
     ESecuredIdentityRoleName.SeniorOperator,
+    ESecuredIdentityRoleName.Operator,
     ESecuredIdentityRoleName.ManagingFirmSpectator,
   ]);
 
