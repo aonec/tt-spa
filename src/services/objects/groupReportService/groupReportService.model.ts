@@ -130,13 +130,13 @@ sample({
         reportType: clock?.ReportType,
         to: clock?.To,
       },
-      reportScheduleDetails: {
-        emails: [clock?.['Subscription.Email']],
+      reportConfigurationDetails: {
+        organizationUserIds: clock?.['Subscription.OrganizationUserIds'],
         contractorIds: clock?.['Subscription.ContractorIds'],
         initialDate: clock?.['Subscription.TriggerAt'],
-        reportSchedulePeriod: clock?.['Subscription.Type'],
+        reportConfigurationPeriod: clock?.['Subscription.Type'],
       },
-    } as unknown as CreateGroupReportConfigurationRequest;
+    } as CreateGroupReportConfigurationRequest;
 
     return payload;
   },
@@ -251,6 +251,18 @@ sendByEmailFx.pending.watch((isPending) => {
 sendByEmailFx.doneData.watch(() => {
   message.destroy();
   message.success('Отчёт успешно отправлен на почту');
+});
+
+postRegularUploadFx.failData.watch((error) => {
+  return message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Не удалось создать расписание выгрузок',
+  );
+});
+
+postRegularUploadFx.doneData.watch(() => {
+  message.success('Регулярная выгрузка успешно создана');
 });
 
 export const groupReportService = {

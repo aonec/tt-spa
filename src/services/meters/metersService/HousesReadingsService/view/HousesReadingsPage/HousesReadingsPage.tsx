@@ -1,11 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   IndividualDevicesListWrapper,
   Wrapper,
 } from './HousesReadingsPage.styled';
 import { HousesReadingsPageProps } from './HousesReadingsPage.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
-import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
+import {
+  AddressSearchValues,
+  SearchFieldType,
+} from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { HousingStockInfoPanel } from './HousingStockInfoPanel';
 import { IndividualDevicesList } from './IndividualDevicesList';
@@ -29,6 +32,24 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
 }) => {
   const address = housingStock?.address?.mainAddress;
 
+  const [addressData, setAddressData] = useState<AddressSearchValues>({
+    city: address?.city || null,
+    street: address?.street || null,
+    house: address?.number || null,
+    corpus: address?.corpus || null,
+  });
+
+  useEffect(() => {
+    if (!address) return;
+
+    setAddressData({
+      city: address.city,
+      street: address.street,
+      house: address.number,
+      corpus: address.corpus,
+    });
+  }, [address]);
+
   return (
     <Wrapper>
       {Boolean(individualDevicesList.length) && <TopButton />}
@@ -40,18 +61,12 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
         ]}
         handleSubmit={(values) => {
           handleSearchHousingStock({
-            City: values.city,
-            Street: values.street,
-            BuildingNumber: values.house,
+            City: values.city || undefined,
+            Street: values.street || undefined,
+            BuildingNumber: values.house || undefined,
           });
         }}
-        initialValues={
-          address && {
-            city: address.city || undefined,
-            street: address.street || undefined,
-            house: address.number || undefined,
-          }
-        }
+        initialValues={addressData}
         isError={!housingStock && isHousingStockFetched}
         isCityPreselected
       />

@@ -53,8 +53,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
         handleChange(SearchFieldType.House, '');
         handleChange(SearchFieldType.Corpus, '');
         handleChange(SearchFieldType.Apartment, '');
-
-        handleSubmit();
+        handleChange(SearchFieldType.Question, '');
       }}
       value={values.city || undefined}
       style={{ minWidth: 180 }}
@@ -184,7 +183,7 @@ export const AddressSearch: FC<AddressSearchProps> = ({
     <InputSC
       small
       placeholder="Л/С или ФИО"
-      value={values.question}
+      value={values.question || undefined}
       onChange={(e) => {
         handleChange(SearchFieldType.Question, e.target.value);
       }}

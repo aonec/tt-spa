@@ -10,12 +10,12 @@ export enum SearchFieldType {
 }
 
 export type AddressSearchValues = {
-  city?: string;
-  street?: string;
-  house?: string;
-  corpus?: string;
-  apartment?: string;
-  question?: string;
+  city?: string | null;
+  street?: string | null;
+  house?: string | null;
+  corpus?: string | null;
+  apartment?: string | null;
+  question?: string | null;
 };
 
 export type CustomTemplateType = {

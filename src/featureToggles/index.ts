@@ -5,4 +5,5 @@ export const featureToggles = {
   districtsManage: true,
   controllersDistribution: false,
   mvitu: false,
+  workWithReadings: false,
 };

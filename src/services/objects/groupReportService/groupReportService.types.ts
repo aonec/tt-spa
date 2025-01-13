@@ -20,8 +20,8 @@ export type GroupReportRequestPayload = RegularUnloadSubscription & {
 };
 
 export type RegularUnloadSubscription = {
-  'Subscription.Email'?: string;
   'Subscription.ContractorIds'?: number[];
+  'Subscription.OrganizationUserIds'?: number[];
   'Subscription.TriggerAt'?: string;
   'Subscription.Type'?: GroupReportConfigurationPeriod;
 };

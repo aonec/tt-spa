@@ -1,8 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Wrapper } from './AccountingNodesReadings.styled';
 import { AccountingNodesReadingsProps } from './AccountingNodesReadings.types';
 import { AddressSearchContainer } from 'services/addressSearchService';
-import { SearchFieldType } from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
+import {
+  AddressSearchValues,
+  SearchFieldType,
+} from 'services/addressSearchService/view/AddressSearch/AddressSearch.types';
 import { Empty } from 'antd';
 import { TypeAddressToStart } from 'ui-kit/shared/TypeToStart';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
@@ -22,6 +25,24 @@ export const AccountingNodesReadings: FC<AccountingNodesReadingsProps> = ({
 }) => {
   const electricNodesExist = electricNodes.length !== 0;
 
+  const [addressData, setAddressData] = useState<AddressSearchValues>({
+    city: address?.city || null,
+    street: address?.street || null,
+    house: address?.number || null,
+    corpus: address?.corpus || null,
+  });
+
+  useEffect(() => {
+    if (!address) return;
+
+    setAddressData({
+      city: address.city,
+      street: address.street,
+      house: address.number,
+      corpus: address.corpus,
+    });
+  }, [address]);
+
   return (
     <>
       <AddressSearchContainer
@@ -38,17 +59,11 @@ export const AccountingNodesReadings: FC<AccountingNodesReadingsProps> = ({
               'Address.City': city,
               'Address.HousingStockNumber': house,
               'Address.Street': street,
-              'Address.Corpus': corpus,
+              'Address.Corpus': corpus || undefined,
             });
           }
         }}
-        initialValues={
-          address && {
-            city: address.city || undefined,
-            street: address.street || undefined,
-            house: address.number || undefined,
-          }
-        }
+        initialValues={addressData}
         isError={!address && isElectricNodesFetched}
         isCityPreselected
       />
