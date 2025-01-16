@@ -1,10 +1,6 @@
 import { axios } from 'api/axios';
 import queryString from 'query-string';
 import {
-<<<<<<< HEAD
-=======
-  CreateGroupReportConfigurationRequest,
->>>>>>> afac473b6 ([TT-859])
   GroupReportFormResponse,
   SendGroupReportRequest,
   CreateGroupReportConfigurationRequest,

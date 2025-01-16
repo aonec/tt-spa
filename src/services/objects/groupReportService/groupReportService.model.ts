@@ -136,11 +136,7 @@ sample({
         initialDate: clock?.['Subscription.TriggerAt'],
         reportConfigurationPeriod: clock?.['Subscription.Type'],
       },
-<<<<<<< HEAD
-    } as unknown as CreateGroupReportConfigurationRequest;
-=======
     } as CreateGroupReportConfigurationRequest;
->>>>>>> afac473b6 ([TT-859])
 
     return payload;
   },
