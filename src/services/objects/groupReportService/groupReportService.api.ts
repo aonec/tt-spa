@@ -1,9 +1,9 @@
 import { axios } from 'api/axios';
 import queryString from 'query-string';
 import {
+  CreateGroupReportConfigurationRequest,
   GroupReportFormResponse,
   SendGroupReportRequest,
-  CreateGroupReportConfigurationRequest,
 } from 'api/types';
 import { GroupReportRequestPayload } from './groupReportService.types';
 
