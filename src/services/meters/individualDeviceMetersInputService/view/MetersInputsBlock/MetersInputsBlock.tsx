@@ -36,6 +36,8 @@ import {
   getRateNum,
 } from './MetersInputsBlock.utils';
 import { getSourceIcon, getSourceName } from 'utils/sourceIcon';
+import { Dropdown } from 'antd';
+import { MenuProps } from 'antd/lib';
 
 export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   resource,
@@ -51,6 +53,8 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
   focusOnFirst = true,
 }) => {
   const [status, setStatus] = useState<MetersInputBlockStatus | null>(null);
+
+  const [isOverReadingMode, setMode] = useState(false);
 
   useEffect(() => {
     setStatus(uploadingStatus || null);
@@ -158,6 +162,11 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 
       const isLastIndex = rateNum === index + 1;
 
+      if (isOverReadingMode) {
+        uploadReading(next);
+        return;
+      }
+
       if (!isValuesChanged || !isLastIndex) {
         return next();
       }
@@ -174,6 +183,14 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     ],
   );
 
+  const items: MenuProps['items'] = [
+    {
+      label: 'Перебивка',
+      key: '1',
+      onClick: () => setMode(true),
+    },
+  ];
+
   const inputsArray = useMemo(
     () =>
       getFilledArray(rateNum, (index) => {
@@ -182,26 +199,36 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
         const readingValue = bufferedReadingValues[valueKey] || '';
 
         return (
-          <InputWrapper key={index}>
-            <Input
-              id={`${index}`}
-              type="number"
-              status={status}
-              disabled={isDisabled}
-              onKeyDown={fromEnter(() => handleTriggerInput(index))}
-              value={readingValue}
-              name={valueKey}
-              placeholder={`T${index + 1}`}
-              onFocus={handleReadingInputFocus}
-              onChange={handleReadingInputChange}
-              {...inputDataAttr}
-            />
-            {sourceIcon && (
-              <Tooltip title={sourceName}>
-                <SourceIconWrapper>{sourceIcon}</SourceIconWrapper>
-              </Tooltip>
-            )}
-          </InputWrapper>
+          <Dropdown
+            key={index}
+            menu={{ items }}
+            trigger={['contextMenu']}
+            placement="bottomLeft"
+          >
+            <InputWrapper key={index}>
+              <Input
+                id={`${index}`}
+                type="number"
+                status={status}
+                disabled={isDisabled}
+                onKeyDown={fromEnter(() => handleTriggerInput(index))}
+                value={readingValue}
+                name={valueKey}
+                placeholder={`T${index + 1}`}
+                onFocus={handleReadingInputFocus}
+                onChange={handleReadingInputChange}
+                {...inputDataAttr}
+                onContextMenu={(event) => {
+                  event.preventDefault();
+                }}
+              />
+              {sourceIcon && (
+                <Tooltip title={sourceName}>
+                  <SourceIconWrapper>{sourceIcon}</SourceIconWrapper>
+                </Tooltip>
+              )}
+            </InputWrapper>
+          </Dropdown>
         );
       }),
     [
