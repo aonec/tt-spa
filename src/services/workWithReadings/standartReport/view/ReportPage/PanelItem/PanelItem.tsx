@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import {
   Blue,
+  ChevronWrap,
   Info,
   LeftBlock,
   PanelTitle,
@@ -10,7 +11,7 @@ import {
 import { Props } from './PanelItem.types';
 import { Skeleton } from 'antd';
 import { PanelItemStatusIcon } from './PanelItem.constants';
-import { ChevronIconRight } from 'services/workingRanges/WorkingRangeTab/WorkingRangeTab.styled';
+import { ListOpeningChevron } from 'ui-kit/shared/ListOpeningChevron';
 
 export const PanelItem: FC<Props> = ({
   status,
@@ -32,7 +33,11 @@ export const PanelItem: FC<Props> = ({
         {isLoadingInfo && <Skeleton.Input active size="small" />}
         {!isLoadingInfo && <Info>{info}</Info>}
         <Blue onClick={btnText ? btnOnClick : void 0}>{btnText}</Blue>
-        {link && <ChevronIconRight />}
+        {link && (
+          <ChevronWrap to={link}>
+            <ListOpeningChevron isOpen />
+          </ChevronWrap>
+        )}
       </RightBlock>
     </Wrapper>
   );

@@ -1,6 +1,7 @@
 import { GetIndividualDevicesToClose } from 'api/types';
 import { PanelItemData, PanelItemStatus } from './PanelItem/PanelItem.types';
 import { useMemo } from 'react';
+import { ReportTemplates } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
 
 export function usePanelsList({
   closingDevices,
@@ -22,15 +23,7 @@ export function usePanelsList({
         btnText: 'Закрыть приборы',
         btnOnClick: () => void 0,
         isLoadingInfo: isLoadingClosingDevices,
-        link: 'link',
-      },
-      {
-        title: 'Квартиры на паузе',
-        status: PanelItemStatus.Success,
-        info: null,
-        btnText: 'Дублировать показания',
-        btnOnClick: () => void 0,
-        isLoadingInfo: false,
+        link: `/reports/IndividualDevices?reportTemp=${ReportTemplates.CheckingDateExpiration}`,
       },
       {
         title: 'Приборы без показаний более 6 месяцев',
@@ -43,6 +36,15 @@ export function usePanelsList({
         btnText: 'Закрыть приборы',
         btnOnClick: () => void 0,
         isLoadingInfo: isLoadingClosingDevices,
+        link: '/',
+      },
+      {
+        title: 'Квартиры на паузе',
+        status: PanelItemStatus.Success,
+        info: null,
+        btnText: 'Дублировать показания',
+        btnOnClick: () => void 0,
+        isLoadingInfo: false,
       },
       {
         title: 'Проверить разрядность приборов',
@@ -51,7 +53,7 @@ export function usePanelsList({
         btnText: null,
         btnOnClick: () => void 0,
         isLoadingInfo: false,
-        link: '/',
+        link: `/reports/IndividualDevices?reportTemp=${ReportTemplates.InvalidBitDepth}`,
       },
     ];
   }, [isLoadingClosingDevices, closingDevices]);

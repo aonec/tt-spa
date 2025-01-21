@@ -95,7 +95,7 @@ const loadEmployeeReport = createEvent<ReportPayload>();
 
 const downloadReport = createEvent();
 
-const setFiltrationValues = createEvent<ReportFiltrationFormValues>();
+const setFiltrationValues = createEvent<Partial<ReportFiltrationFormValues>>();
 
 const clearFiltrationValues = createEvent();
 
@@ -129,7 +129,7 @@ const $filtrationValues = createStore<ReportFiltrationFormValues>({
   employeeReportDate: null,
   actType: null,
 })
-  .on(setFiltrationValues, (_, values) => values)
+  .on(setFiltrationValues, (prev, values) => ({ ...prev, ...values }))
   .on(setCityFilter, (prev, city) => ({ ...prev, city }))
   .reset(ReportViewGate.close, clearFiltrationValues);
 

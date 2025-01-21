@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -37,4 +38,8 @@ export const Blue = styled.div`
 
 export const PanelTitle = styled.div`
   font-weight: 500;
+`;
+
+export const ChevronWrap = styled(Link)`
+  transform: rotate(90deg) translate(-5px);
 `;
