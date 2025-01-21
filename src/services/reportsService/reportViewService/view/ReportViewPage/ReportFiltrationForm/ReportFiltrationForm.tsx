@@ -79,6 +79,8 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
 
   const [searchParams] = useSearchParams();
 
+  console.log(values);
+
   useEffect(() => {
     const reportTemp = searchParams.get('reportTemp');
 
@@ -94,6 +96,14 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
           EResourceType.HotWaterSupply,
           EResourceType.ColdWaterSupply,
         ],
+      });
+    }
+
+    if (reportTemp === ReportTemplates.InvalidBitDepth) {
+      setFiltrationValues({
+        exportType: ExportReportType.ManagementFirm,
+        reportDatePeriod: ReportDatePeriod.AnyPeriod,
+        reportOption: EIndividualDeviceReportOption.InvalidBitDepth,
       });
     }
   }, [searchParams]);
@@ -273,7 +283,9 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
   const isHomeownersReport = reportType === ReportType.Homeowners;
 
   const isShowResourcesField = !isHomeownersReport;
-  const isShowDatePeriodPicker = !isHomeownersReport;
+  const isShowDatePeriodPicker =
+    !isHomeownersReport &&
+    values.reportOption !== EIndividualDeviceReportOption.InvalidBitDepth;
 
   const isShowActResourcesSelect = reportType === ReportType.ActsJournal;
 

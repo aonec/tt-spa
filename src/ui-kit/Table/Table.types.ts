@@ -19,7 +19,7 @@ export type TableProps<T> = {
   pagination?: Pagination;
   rowStyles?: ((rowData: T) => string) | string;
   headerStyles?: string;
-  link?: (elem: T) => string;
+  link?: (elem: T) => string | null;
   isSticky?: boolean;
   floating?: boolean;
   extraHeader?: ReactNode;

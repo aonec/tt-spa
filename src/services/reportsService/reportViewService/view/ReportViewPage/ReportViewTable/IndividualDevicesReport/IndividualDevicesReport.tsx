@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import {
   ApartmentNumber,
   ClosingDate,
@@ -41,6 +41,9 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   const isInvalidCheckingDates =
     reportOption === EIndividualDeviceReportOption.InvalidCheckingDates;
 
+  const isInvalidBitDepth =
+    reportOption === EIndividualDeviceReportOption.InvalidBitDepth;
+
   const isOperators = usePermission([
     ESecuredIdentityRoleName.Operator,
     ESecuredIdentityRoleName.SeniorOperator,
@@ -58,6 +61,13 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   return (
     <Table
       isSticky
+      link={(device) => {
+        if (isInvalidBitDepth) {
+          return `/apartments/${device.apartmentId}/testimony`;
+        }
+
+        return null;
+      }}
       columns={[
         {
           label: 'Адрес',
@@ -193,12 +203,24 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
         },
         {
           label: 'Дата следующей поверки',
-          size: '170px',
+          size: '120px',
           hidden: !isInvalidCheckingDates,
           render: (elem) =>
             dayjs(elem.invalidCheckingDatesOption?.futureCheckingDate).format(
               'DD.MM.YYYY',
             ),
+        },
+        {
+          label: 'Разрядность',
+          size: '120px',
+          hidden: !isInvalidBitDepth,
+          render: (elem) => elem.invalidBitDepthOption?.bitDepth || '—',
+        },
+        {
+          label: 'Множитель',
+          size: '120px',
+          hidden: !isInvalidBitDepth,
+          render: (elem) => elem.invalidBitDepthOption?.scaleFactor || '—',
         },
       ]}
       elements={individualDevicesReportData}
