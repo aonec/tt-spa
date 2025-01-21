@@ -111,15 +111,43 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     }
   }, [organizations, setFieldValue, values.exportType]);
 
-  const handleChangeContractorIds = useCallback(
-    (ids?: number[]) => setFieldValue("['Subscription.ContractorIds']", ids),
-    [setFieldValue],
+  const emailsWithSeparation = useMemo(() => {
+    const contractorsEmail = contractors?.map((contractor) => ({
+      email: contractor.email,
+      id: contractor.id,
+    }));
+    const staffId = staffList?.items?.map((staff) => ({
+      email: staff.email,
+      id: staff.id,
+    }));
+
+    return { contractorsEmail, staffId };
+  }, [contractors, staffList]);
+
+  const handleChangeEmail = useCallback(
+    (emailsHash: string[]) => {
+      const onlyEmails = emailsHash.map((hash) => hash.split('_')[0]);
+
+      const selectedContractorsId =
+        emailsWithSeparation.contractorsEmail
+          ?.filter(
+            (contractor) =>
+              contractor.email && onlyEmails.includes(contractor.email),
+          )
+          .map((contractor) => contractor.id) || [];
+
+      const selectedStaffId =
+        emailsWithSeparation.staffId
+          ?.filter((staff) => staff.email && onlyEmails.includes(staff.email))
+          .map((staff) => staff.id) || [];
+
+      setFieldValue("['Subscription.OrganizationUserIds']", selectedStaffId);
+      setFieldValue("['Subscription.ContractorIds']", selectedContractorsId);
+    },
+
+    [setFieldValue, emailsWithSeparation],
   );
-  const handleChangeOrganizationUserIds = useCallback(
-    (ids?: number[]) =>
-      setFieldValue("['Subscription.OrganizationUserIds']", ids),
-    [setFieldValue],
-  );
+
   const handleChangeSubsType = useCallback(
     (type?: GroupReportConfigurationPeriod) =>
       setFieldValue("['Subscription.Type']", type),
@@ -302,8 +330,6 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       <Divider type="horizontal" />
 
       <RegularUnloading
-        handleChangeContractorIds={handleChangeContractorIds}
-        handleChangeOrganizationUserIds={handleChangeOrganizationUserIds}
         handleChangeSubsType={handleChangeSubsType}
         handleThriggerAt={handleThriggerAt}
         handleChangeIsRegular={handleChangeIsRegular}
@@ -320,6 +346,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
         errors={errors}
         setRegularUpload={setRegularUpload}
         staffList={staffList?.items || []}
+        handleChangeEmail={handleChangeEmail}
       />
     </Form>
   );
