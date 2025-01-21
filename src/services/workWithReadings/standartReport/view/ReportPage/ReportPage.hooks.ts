@@ -36,7 +36,7 @@ export function usePanelsList({
         btnText: 'Закрыть приборы',
         btnOnClick: () => void 0,
         isLoadingInfo: isLoadingClosingDevices,
-        link: '/',
+        link: '/statistics/subscribersConsumption/managingFirm',
       },
       {
         title: 'Квартиры на паузе',
