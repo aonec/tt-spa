@@ -54,8 +54,6 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 }) => {
   const [status, setStatus] = useState<MetersInputBlockStatus | null>(null);
 
-  const [isOverReadingMode, setMode] = useState(false);
-
   useEffect(() => {
     setStatus(uploadingStatus || null);
   }, [uploadingStatus, sliderIndex]);
@@ -162,11 +160,6 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
 
       const isLastIndex = rateNum === index + 1;
 
-      if (isOverReadingMode) {
-        uploadReading(next);
-        return;
-      }
-
       if (!isValuesChanged || !isLastIndex) {
         return next();
       }
@@ -183,20 +176,25 @@ export const MetersInputsBlock: FC<MetersInputsBlockProps> = ({
     ],
   );
 
-  const items: MenuProps['items'] = [
-    {
-      label: 'Перебивка',
-      key: '1',
-      onClick: () => setMode(true),
-    },
-  ];
-
   const inputsArray = useMemo(
     () =>
       getFilledArray(rateNum, (index) => {
         const valueKey = getReadingValueKey(index);
 
         const readingValue = bufferedReadingValues[valueKey] || '';
+
+        const items: MenuProps['items'] = [
+          {
+            label: 'Перебивка',
+            key: '1',
+            onClick: () => {
+              const next = () => {
+                nextInput(inputIndex + index);
+              };
+              uploadReading(next);
+            },
+          },
+        ];
 
         return (
           <Dropdown
