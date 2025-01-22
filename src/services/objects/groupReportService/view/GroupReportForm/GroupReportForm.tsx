@@ -264,6 +264,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       <RowWrapper>
         <FormItem label="Ресурс">
           <SelectMultiple
+            showSearch={false}
             value={values.NodeResourceTypes}
             onChange={(value) => setFieldValue('NodeResourceTypes', value)}
             options={nodeResourceTypesOptions}
@@ -302,6 +303,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
               setFieldValue('From', From);
               setFieldValue('To', To);
             }}
+            isDisabled={values.isRegular}
           />
         </FormItem>
         <FormItem label="Детализация отчёта">
