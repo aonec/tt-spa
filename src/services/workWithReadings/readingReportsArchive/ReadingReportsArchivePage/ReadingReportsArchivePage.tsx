@@ -1,13 +1,13 @@
 import { FC } from 'react';
-import { Wrapper } from './ReadingReportsArchivePage.styled';
+import { DownloadIconSC, Wrapper } from './ReadingReportsArchivePage.styled';
 import { Props } from './ReadingReportsArchivePage.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { Table } from 'ui-kit/Table';
 import dayjs from 'dayjs';
-import { DownloadIcon } from 'ui-kit/icons';
 import { PollActionTypeLookup } from './ReadingReportsArchivePage.constansts';
 import { Pagination } from 'ui-kit/Pagination';
+import { downloadReportFile } from '../readingReportsArchiveService.api';
 
 export const ReadingReportsArchivePage: FC<Props> = ({
   individualDevicesReportArchiveData,
@@ -36,7 +36,18 @@ export const ReadingReportsArchivePage: FC<Props> = ({
           {
             label: '',
             size: '50px',
-            render: () => <DownloadIcon />,
+            render: (elem) => (
+              <DownloadIconSC
+                onClick={() => {
+                  downloadReportFile(
+                    elem.id,
+                    `${PollActionTypeLookup[elem.actionType]}_${dayjs(
+                      elem.doneAt,
+                    ).format('DD.MM.YYYY')}`,
+                  );
+                }}
+              />
+            ),
           },
         ]}
       />
