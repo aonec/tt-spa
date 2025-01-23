@@ -10,8 +10,11 @@ import {
 import { Props } from './StartPage.types';
 import { DocumentBigIcon, DownloadGrayIcon, ExportIcon } from 'ui-kit/icons';
 import { ChevronIconRight } from 'services/workingRanges/WorkingRangeTab/WorkingRangeTab.styled';
+import { useNavigate } from 'react-router-dom';
 
 export const StartPage: FC<Props> = ({ handleReportTypeModalOpen }) => {
+  const navigate = useNavigate();
+
   return (
     <Wrapper>
       <PageTitle>Работа с показаниями</PageTitle>
@@ -36,7 +39,7 @@ export const StartPage: FC<Props> = ({ handleReportTypeModalOpen }) => {
 
       <Devider />
 
-      <Panel>
+      <Panel onClick={() => navigate(`/workWithReadings/archive`)}>
         <LeftBlock>
           <DocumentBigIcon /> Архив отчетов
         </LeftBlock>

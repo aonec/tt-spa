@@ -13,6 +13,7 @@ export const PageTitle = styled.div`
 `;
 
 export const Panel = styled.div`
+  cursor: pointer;
   display: flex;
   padding: 24px;
   justify-content: space-between;
@@ -40,6 +41,6 @@ export const RightBlock = styled.div`
 `;
 
 export const Devider = styled.div`
-margin-top: 16px;
+  margin-top: 16px;
   border-top: 1px solid rgba(39, 47, 90, 0.16);
 `;
