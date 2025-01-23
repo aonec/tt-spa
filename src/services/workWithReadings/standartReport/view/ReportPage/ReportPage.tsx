@@ -25,6 +25,8 @@ export const ReportPage: FC<Props> = ({
   isLoadingClosingDevices,
   handleStartCloseDevicesByCheckingDatePoll,
   lastCloseDevicesByCheckingDatePollData,
+  lastCloseDevicesWithoutReadingsPollData,
+  lastDuplicateReadingsPollData,
 }) => {
   const date = dayjs().format('MMMM YYYY');
 
@@ -38,6 +40,8 @@ export const ReportPage: FC<Props> = ({
     isLoadingClosingDevices,
     handleStartCloseDevicesByCheckingDatePoll,
     lastCloseDevicesByCheckingDatePollData,
+    lastCloseDevicesWithoutReadingsPollData,
+    lastDuplicateReadingsPollData,
   });
 
   return (

@@ -3,6 +3,8 @@ import { ReportPage } from './view/ReportPage';
 import {
   getAllClosingDevicesQuery,
   lastCloseDevicesByCheckingDatePollQuery,
+  lastCloseDevicesWithoutReadingsPollQuery,
+  lastDuplicateReadingsPollQuery,
 } from './standartReportService.api';
 import { standartReportService } from './standartReportService.models';
 
@@ -17,6 +19,8 @@ export const StandartReportContainer = () => {
     isLoadingClosingDevices,
     handleStartCloseDevicesByCheckingDatePoll,
     lastCloseDevicesByCheckingDatePollData,
+    lastCloseDevicesWithoutReadingsPollData,
+    lastDuplicateReadingsPollData,
   } = useUnit({
     closingDevices: getAllClosingDevicesQuery.$data,
     isLoadingClosingDevices: getAllClosingDevicesQuery.$pending,
@@ -24,6 +28,9 @@ export const StandartReportContainer = () => {
       inputs.handleStartCloseDevicesByCheckingDatePoll,
     lastCloseDevicesByCheckingDatePollData:
       lastCloseDevicesByCheckingDatePollQuery.$data,
+    lastCloseDevicesWithoutReadingsPollData:
+      lastCloseDevicesWithoutReadingsPollQuery.$data,
+    lastDuplicateReadingsPollData: lastDuplicateReadingsPollQuery.$data,
   });
 
   return (
@@ -38,6 +45,10 @@ export const StandartReportContainer = () => {
         lastCloseDevicesByCheckingDatePollData={
           lastCloseDevicesByCheckingDatePollData
         }
+        lastCloseDevicesWithoutReadingsPollData={
+          lastCloseDevicesWithoutReadingsPollData
+        }
+        lastDuplicateReadingsPollData={lastDuplicateReadingsPollData}
       />
     </>
   );

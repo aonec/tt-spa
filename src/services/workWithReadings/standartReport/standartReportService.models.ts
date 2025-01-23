@@ -3,6 +3,8 @@ import { createGate } from 'effector-react';
 import {
   getAllClosingDevicesQuery,
   lastCloseDevicesByCheckingDatePollQuery,
+  lastCloseDevicesWithoutReadingsPollQuery,
+  lastDuplicateReadingsPollQuery,
   startCloseDevicesByCheckingDatePoll,
 } from './standartReportService.api';
 import { interval } from 'patronum';
@@ -19,6 +21,8 @@ sample({
   target: [
     getAllClosingDevicesQuery.start,
     lastCloseDevicesByCheckingDatePollQuery.start,
+    lastCloseDevicesWithoutReadingsPollQuery.start,
+    lastDuplicateReadingsPollQuery.start,
   ],
 });
 

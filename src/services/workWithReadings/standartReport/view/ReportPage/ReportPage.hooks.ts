@@ -8,11 +8,15 @@ export function usePanelsList({
   isLoadingClosingDevices,
   handleStartCloseDevicesByCheckingDatePoll,
   lastCloseDevicesByCheckingDatePollData,
+  lastCloseDevicesWithoutReadingsPollData,
+  lastDuplicateReadingsPollData,
 }: {
   closingDevices: GetIndividualDevicesToClose | null;
   isLoadingClosingDevices: boolean;
   handleStartCloseDevicesByCheckingDatePoll: () => void;
   lastCloseDevicesByCheckingDatePollData: PollResponse | null;
+  lastCloseDevicesWithoutReadingsPollData: PollResponse | null;
+  lastDuplicateReadingsPollData: PollResponse | null;
 }): PanelItemData[] {
   console.log(lastCloseDevicesByCheckingDatePollData);
   const panelsList = useMemo((): PanelItemData[] => {
@@ -43,7 +47,7 @@ export function usePanelsList({
         btnOnClick: () => void 0,
         isLoadingInfo: isLoadingClosingDevices,
         link: '/statistics/subscribersConsumption/managingFirm',
-        pollState: null,
+        pollState: lastCloseDevicesWithoutReadingsPollData,
       },
       {
         title: 'Квартиры на паузе',
@@ -52,7 +56,7 @@ export function usePanelsList({
         btnText: 'Дублировать показания',
         btnOnClick: () => void 0,
         isLoadingInfo: false,
-        pollState: null,
+        pollState: lastDuplicateReadingsPollData,
       },
       {
         title: 'Проверить разрядность приборов',

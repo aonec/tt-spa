@@ -42,4 +42,5 @@ export const PollStatusWrapper = styled.div<{ color: string }>`
   width: max-content;
   white-space: nowrap;
   font-weight: bold;
+  font-size: 13px;
 `;

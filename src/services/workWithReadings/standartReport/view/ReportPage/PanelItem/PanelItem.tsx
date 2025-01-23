@@ -52,7 +52,7 @@ export const PanelItem: FC<Props> = ({
         )}
         {btnText && (
           <Button
-            disabled={isLoading}
+            disabled={Boolean(btnText || isLoading)}
             type="ghost"
             size="small"
             onClick={btnOnClick}
