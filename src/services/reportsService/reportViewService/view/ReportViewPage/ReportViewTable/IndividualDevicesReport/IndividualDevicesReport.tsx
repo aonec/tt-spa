@@ -63,7 +63,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
       isSticky
       link={(device) => {
         if (isInvalidBitDepth) {
-          return `/apartments/${device.apartmentId}/testimony`;
+          return `/individualDevices/${device.invalidBitDepthOption?.deviceId}/edit`;
         }
 
         return null;
