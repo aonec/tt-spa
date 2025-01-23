@@ -9,7 +9,7 @@ const setQueryParams = createEvent<IndividualDevicesReportArchiveQueryParams>();
 
 const $queryParams = createStore<IndividualDevicesReportArchiveQueryParams>({
   PageSize: 10,
-}).on(setQueryParams, (_, params) => params);
+}).on(setQueryParams, (prev, params) => ({ ...prev, ...params }));
 
 sample({
   source: $queryParams,
@@ -18,7 +18,7 @@ sample({
 });
 
 export const readingReportsArchiveService = {
-  inputs: {},
-  outputs: {},
+  inputs: { setQueryParams },
+  outputs: { $queryParams },
   gates: { ReadingReportsArchiveGate },
 };

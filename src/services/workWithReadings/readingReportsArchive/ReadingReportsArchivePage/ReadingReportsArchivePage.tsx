@@ -7,10 +7,13 @@ import { Table } from 'ui-kit/Table';
 import dayjs from 'dayjs';
 import { DownloadIcon } from 'ui-kit/icons';
 import { PollActionTypeLookup } from './ReadingReportsArchivePage.constansts';
+import { Pagination } from 'ui-kit/Pagination';
 
 export const ReadingReportsArchivePage: FC<Props> = ({
   individualDevicesReportArchiveData,
   isLoadingIndividualDevicesReportArchive,
+  queryParams,
+  setQueryParams,
 }) => {
   return (
     <Wrapper>
@@ -36,7 +39,14 @@ export const ReadingReportsArchivePage: FC<Props> = ({
             render: () => <DownloadIcon />,
           },
         ]}
-      ></Table>
+      />
+      <Pagination
+        pageSize={queryParams.PageSize}
+        current={queryParams.PageNumber}
+        onChange={(pageNumber) => setQueryParams({ PageNumber: pageNumber })}
+        total={individualDevicesReportArchiveData?.totalItems}
+        showSizeChanger={false}
+      />
     </Wrapper>
   );
 };

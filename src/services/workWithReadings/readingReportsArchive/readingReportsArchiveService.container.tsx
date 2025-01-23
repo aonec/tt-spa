@@ -4,6 +4,8 @@ import { readingReportsArchiveService } from './readingReportsArchiveService.mod
 import { individualDevicesReportArchiveQuery } from './readingReportsArchiveService.api';
 
 const {
+  inputs,
+  outputs,
   gates: { ReadingReportsArchiveGate },
 } = readingReportsArchiveService;
 
@@ -11,11 +13,15 @@ export const ReadingReportsArchiveContainer = () => {
   const {
     individualDevicesReportArchiveData,
     isLoadingIndividualDevicesReportArchive,
+    setQueryParams,
+    queryParams,
   } = useUnit({
     individualDevicesReportArchiveData:
       individualDevicesReportArchiveQuery.$data,
     isLoadingIndividualDevicesReportArchive:
       individualDevicesReportArchiveQuery.$pending,
+    queryParams: outputs.$queryParams,
+    setQueryParams: inputs.setQueryParams,
   });
 
   return (
@@ -26,6 +32,8 @@ export const ReadingReportsArchiveContainer = () => {
         isLoadingIndividualDevicesReportArchive={
           isLoadingIndividualDevicesReportArchive
         }
+        setQueryParams={setQueryParams}
+        queryParams={queryParams}
       />
     </>
   );
