@@ -1,4 +1,4 @@
-import { GetIndividualDevicesToClose } from 'api/types';
+import { GetIndividualDevicesToClose, PollResponse } from 'api/types';
 import { PanelItemData, PanelItemStatus } from './PanelItem/PanelItem.types';
 import { useMemo } from 'react';
 import { ReportTemplates } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
@@ -6,10 +6,15 @@ import { ReportTemplates } from 'services/reportsService/reportViewService/view/
 export function usePanelsList({
   closingDevices,
   isLoadingClosingDevices,
+  handleStartCloseDevicesByCheckingDatePoll,
+  lastCloseDevicesByCheckingDatePollData,
 }: {
   closingDevices: GetIndividualDevicesToClose | null;
   isLoadingClosingDevices: boolean;
+  handleStartCloseDevicesByCheckingDatePoll: () => void;
+  lastCloseDevicesByCheckingDatePollData: PollResponse | null;
 }): PanelItemData[] {
+  console.log(lastCloseDevicesByCheckingDatePollData);
   const panelsList = useMemo((): PanelItemData[] => {
     return [
       {
@@ -20,10 +25,11 @@ export function usePanelsList({
         info: closingDevices?.expiredCheckingDateCount
           ? `${closingDevices?.expiredCheckingDateCount} приборов`
           : null,
-        btnText: 'Закрыть приборы',
-        btnOnClick: () => void 0,
+        btnText: `Закрыть приборы`,
+        btnOnClick: handleStartCloseDevicesByCheckingDatePoll,
         isLoadingInfo: isLoadingClosingDevices,
         link: `/reports/IndividualDevices?reportTemp=${ReportTemplates.CheckingDateExpiration}`,
+        pollState: lastCloseDevicesByCheckingDatePollData,
       },
       {
         title: 'Приборы без показаний более 6 месяцев',
@@ -37,6 +43,7 @@ export function usePanelsList({
         btnOnClick: () => void 0,
         isLoadingInfo: isLoadingClosingDevices,
         link: '/statistics/subscribersConsumption/managingFirm',
+        pollState: null,
       },
       {
         title: 'Квартиры на паузе',
@@ -45,6 +52,7 @@ export function usePanelsList({
         btnText: 'Дублировать показания',
         btnOnClick: () => void 0,
         isLoadingInfo: false,
+        pollState: null,
       },
       {
         title: 'Проверить разрядность приборов',
@@ -54,9 +62,14 @@ export function usePanelsList({
         btnOnClick: () => void 0,
         isLoadingInfo: false,
         link: `/reports/IndividualDevices?reportTemp=${ReportTemplates.InvalidBitDepth}`,
+        pollState: null,
       },
     ];
-  }, [isLoadingClosingDevices, closingDevices]);
+  }, [
+    isLoadingClosingDevices,
+    closingDevices,
+    lastCloseDevicesByCheckingDatePollData,
+  ]);
 
   return panelsList;
 }

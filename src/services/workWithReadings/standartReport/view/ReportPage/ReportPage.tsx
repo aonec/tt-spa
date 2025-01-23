@@ -23,6 +23,8 @@ import { GoBack } from 'ui-kit/shared/GoBack';
 export const ReportPage: FC<Props> = ({
   closingDevices,
   isLoadingClosingDevices,
+  handleStartCloseDevicesByCheckingDatePoll,
+  lastCloseDevicesByCheckingDatePollData,
 }) => {
   const date = dayjs().format('MMMM YYYY');
 
@@ -31,7 +33,12 @@ export const ReportPage: FC<Props> = ({
     .map((word) => capitalize(word))
     .join(' ');
 
-  const panelsList = usePanelsList({ closingDevices, isLoadingClosingDevices });
+  const panelsList = usePanelsList({
+    closingDevices,
+    isLoadingClosingDevices,
+    handleStartCloseDevicesByCheckingDatePoll,
+    lastCloseDevicesByCheckingDatePollData,
+  });
 
   return (
     <Wrapper>

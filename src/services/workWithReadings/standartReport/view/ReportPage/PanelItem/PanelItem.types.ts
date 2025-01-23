@@ -1,3 +1,5 @@
+import { PollResponse } from 'api/types';
+
 export enum PanelItemStatus {
   Error = 'Error',
   Success = 'Success',
@@ -12,6 +14,7 @@ export type Props = {
   btnOnClick: () => void | null;
   isLoadingInfo: boolean;
   link?: string;
+  pollState: PollResponse | null;
 };
 
 export type PanelItemData = Props;
