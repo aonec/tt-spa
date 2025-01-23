@@ -18,6 +18,8 @@ import { Button } from 'ui-kit/Button';
 import { LinkChevron } from 'ui-kit/shared/ListOpeningChevron/ListOpeningChevron';
 import { EPollState } from 'api/types';
 import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
 
 export const PanelItem: FC<Props> = ({
   status,
@@ -44,9 +46,11 @@ export const PanelItem: FC<Props> = ({
         {isLoadingInfo && <Skeleton.Input active size="small" />}
         {!isLoadingInfo && <Info>{info}</Info>}
         {pollState ? (
-          <PollStatusWrapper color={PollStateColorLookup[pollState.status]}>
-            {PollStateTextLookup[pollState.status]}
-          </PollStatusWrapper>
+          <Tooltip title={dayjs(pollState.doneAt).format('DD.MM.YYYY HH:mm')}>
+            <PollStatusWrapper color={PollStateColorLookup[pollState.status]}>
+              {PollStateTextLookup[pollState.status]}
+            </PollStatusWrapper>
+          </Tooltip>
         ) : (
           <div />
         )}

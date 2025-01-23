@@ -18,7 +18,6 @@ export function usePanelsList({
   lastCloseDevicesWithoutReadingsPollData: PollResponse | null;
   lastDuplicateReadingsPollData: PollResponse | null;
 }): PanelItemData[] {
-  console.log(lastCloseDevicesByCheckingDatePollData);
   const panelsList = useMemo((): PanelItemData[] => {
     return [
       {

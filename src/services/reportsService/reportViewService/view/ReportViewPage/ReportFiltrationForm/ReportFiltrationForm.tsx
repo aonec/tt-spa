@@ -79,8 +79,6 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
 
   const [searchParams] = useSearchParams();
 
-  console.log(values);
-
   useEffect(() => {
     const reportTemp = searchParams.get('reportTemp');
 

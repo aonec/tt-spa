@@ -15,6 +15,8 @@ export const getAllClosingDevicesQuery = createQuery<
 
 // pending -> running -> done | error
 
+// ---- CloseDevicesByCheckingDate ----
+
 export const startCloseDevicesByCheckingDatePoll = createQuery({
   handler: (): Promise<PollResponse> =>
     axios.post('IndividualDevices/CloseDevicesByCheckingDate', null, {
@@ -22,7 +24,10 @@ export const startCloseDevicesByCheckingDatePoll = createQuery({
     }),
 });
 
-export const lastCloseDevicesByCheckingDatePollQuery = createQuery({
+export const lastCloseDevicesByCheckingDatePollQuery = createQuery<
+  [{ isInitial?: boolean } | void],
+  PollResponse
+>({
   handler: (): Promise<PollResponse> =>
     axios.post('IndividualDevices/CloseDevicesByCheckingDate', null, {
       params: {
@@ -31,7 +36,19 @@ export const lastCloseDevicesByCheckingDatePollQuery = createQuery({
     }),
 });
 
-export const lastCloseDevicesWithoutReadingsPollQuery = createQuery({
+// ---- CloseDevicesWithoutReadings ----
+
+export const startCloseDevicesWithoutReadingsPoll = createQuery({
+  handler: (): Promise<PollResponse> =>
+    axios.post('IndividualDevices/CloseDevicesWithoutReadings', null, {
+      params: { Command: PollCommand.Create },
+    }),
+});
+
+export const lastCloseDevicesWithoutReadingsPollQuery = createQuery<
+  [{ isInitial?: boolean } | void],
+  PollResponse
+>({
   handler: (): Promise<PollResponse> =>
     axios.post('IndividualDevices/CloseDevicesWithoutReadings', null, {
       params: {
@@ -40,7 +57,19 @@ export const lastCloseDevicesWithoutReadingsPollQuery = createQuery({
     }),
 });
 
-export const lastDuplicateReadingsPollQuery = createQuery({
+// ---- DuplicateReadings ----
+
+export const startDuplicateReadingsPoll = createQuery({
+  handler: (): Promise<PollResponse> =>
+    axios.post('Apartments/DuplicateReadings', null, {
+      params: { Command: PollCommand.Create },
+    }),
+});
+
+export const lastDuplicateReadingsPollQuery = createQuery<
+  [{ isInitial?: boolean } | void],
+  PollResponse
+>({
   handler: (): Promise<PollResponse> =>
     axios.post('Apartments/DuplicateReadings', null, {
       params: {
