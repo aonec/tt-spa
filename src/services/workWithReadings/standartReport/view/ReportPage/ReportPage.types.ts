@@ -5,6 +5,8 @@ export type Props = {
   isLoadingClosingDevices: boolean;
   handleStartCloseDevicesByCheckingDatePoll: () => void;
   lastCloseDevicesByCheckingDatePollData: PollResponse | null;
+  handleStartCloseDevicesWithoutReadingsPoll: () => void;
   lastCloseDevicesWithoutReadingsPollData: PollResponse | null;
+  handleStartDuplicateReadingsPoll: () => void;
   lastDuplicateReadingsPollData: PollResponse | null;
 };

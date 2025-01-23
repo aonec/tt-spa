@@ -1,23 +1,18 @@
-import { GetIndividualDevicesToClose, PollResponse } from 'api/types';
 import { PanelItemData, PanelItemStatus } from './PanelItem/PanelItem.types';
 import { useMemo } from 'react';
 import { ReportTemplates } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
+import { Props } from './ReportPage.types';
 
 export function usePanelsList({
   closingDevices,
   isLoadingClosingDevices,
   handleStartCloseDevicesByCheckingDatePoll,
   lastCloseDevicesByCheckingDatePollData,
+  handleStartCloseDevicesWithoutReadingsPoll,
   lastCloseDevicesWithoutReadingsPollData,
+  handleStartDuplicateReadingsPoll,
   lastDuplicateReadingsPollData,
-}: {
-  closingDevices: GetIndividualDevicesToClose | null;
-  isLoadingClosingDevices: boolean;
-  handleStartCloseDevicesByCheckingDatePoll: () => void;
-  lastCloseDevicesByCheckingDatePollData: PollResponse | null;
-  lastCloseDevicesWithoutReadingsPollData: PollResponse | null;
-  lastDuplicateReadingsPollData: PollResponse | null;
-}): PanelItemData[] {
+}: Props): PanelItemData[] {
   const panelsList = useMemo((): PanelItemData[] => {
     return [
       {
@@ -43,7 +38,7 @@ export function usePanelsList({
           ? `${closingDevices?.withoutReadingsCount} приборов`
           : null,
         btnText: 'Закрыть приборы',
-        btnOnClick: () => void 0,
+        btnOnClick: handleStartCloseDevicesWithoutReadingsPoll,
         isLoadingInfo: isLoadingClosingDevices,
         link: '/statistics/subscribersConsumption/managingFirm',
         pollState: lastCloseDevicesWithoutReadingsPollData,
@@ -53,7 +48,7 @@ export function usePanelsList({
         status: PanelItemStatus.Success,
         info: null,
         btnText: 'Дублировать показания',
-        btnOnClick: () => void 0,
+        btnOnClick: handleStartDuplicateReadingsPoll,
         isLoadingInfo: false,
         pollState: lastDuplicateReadingsPollData,
       },
@@ -62,7 +57,7 @@ export function usePanelsList({
         status: PanelItemStatus.Info,
         info: null,
         btnText: null,
-        btnOnClick: () => void 0,
+        btnOnClick: () => null,
         isLoadingInfo: false,
         link: `/reports/IndividualDevices?reportTemp=${ReportTemplates.InvalidBitDepth}`,
         pollState: null,

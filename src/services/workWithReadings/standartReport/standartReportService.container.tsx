@@ -19,7 +19,9 @@ export const StandartReportContainer = () => {
     isLoadingClosingDevices,
     handleStartCloseDevicesByCheckingDatePoll,
     lastCloseDevicesByCheckingDatePollData,
+    handleStartCloseDevicesWithoutReadingsPoll,
     lastCloseDevicesWithoutReadingsPollData,
+    handleStartDuplicateReadingsPoll,
     lastDuplicateReadingsPollData,
   } = useUnit({
     closingDevices: getAllClosingDevicesQuery.$data,
@@ -28,8 +30,11 @@ export const StandartReportContainer = () => {
       inputs.handleStartCloseDevicesByCheckingDatePoll,
     lastCloseDevicesByCheckingDatePollData:
       lastCloseDevicesByCheckingDatePollQuery.$data,
+    handleStartCloseDevicesWithoutReadingsPoll:
+      inputs.handleStartCloseDevicesWithoutReadingsPoll,
     lastCloseDevicesWithoutReadingsPollData:
       lastCloseDevicesWithoutReadingsPollQuery.$data,
+    handleStartDuplicateReadingsPoll: inputs.handleStartDuplicateReadingsPoll,
     lastDuplicateReadingsPollData: lastDuplicateReadingsPollQuery.$data,
   });
 
@@ -45,9 +50,13 @@ export const StandartReportContainer = () => {
         lastCloseDevicesByCheckingDatePollData={
           lastCloseDevicesByCheckingDatePollData
         }
+        handleStartCloseDevicesWithoutReadingsPoll={
+          handleStartCloseDevicesWithoutReadingsPoll
+        }
         lastCloseDevicesWithoutReadingsPollData={
           lastCloseDevicesWithoutReadingsPollData
         }
+        handleStartDuplicateReadingsPoll={handleStartDuplicateReadingsPoll}
         lastDuplicateReadingsPollData={lastDuplicateReadingsPollData}
       />
     </>
