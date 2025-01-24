@@ -111,25 +111,12 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     }
   }, [organizations, setFieldValue, values.exportType]);
 
-  const emailsWithSeparation = useMemo(() => {
-    const contractorsEmail = contractors?.map((contractor) => ({
-      email: contractor.email,
-      id: contractor.id,
-    }));
-    const staffId = staffList?.items?.map((staff) => ({
-      email: staff.email,
-      id: staff.id,
-    }));
-
-    return { contractorsEmail, staffId };
-  }, [contractors, staffList]);
-
   const handleChangeEmail = useCallback(
     (emailsHash: string[]) => {
       const onlyEmails = emailsHash.map((hash) => hash.split('_')[0]);
 
       const selectedContractorsId =
-        emailsWithSeparation.contractorsEmail
+        contractors
           ?.filter(
             (contractor) =>
               contractor.email && onlyEmails.includes(contractor.email),
@@ -137,7 +124,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
           .map((contractor) => contractor.id) || [];
 
       const selectedStaffId =
-        emailsWithSeparation.staffId
+        staffList?.items
           ?.filter((staff) => staff.email && onlyEmails.includes(staff.email))
           .map((staff) => staff.id) || [];
 
@@ -145,7 +132,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       setFieldValue("['Subscription.ContractorIds']", selectedContractorsId);
     },
 
-    [setFieldValue, emailsWithSeparation],
+    [setFieldValue, contractors, staffList],
   );
 
   const handleChangeSubsType = useCallback(
