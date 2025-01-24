@@ -46,7 +46,12 @@ export const PanelItem: FC<Props> = ({
         {isLoadingInfo && <Skeleton.Input active size="small" />}
         {!isLoadingInfo && <Info>{info}</Info>}
         {pollState ? (
-          <Tooltip title={dayjs(pollState.doneAt).format('DD.MM.YYYY HH:mm')}>
+          <Tooltip
+            title={
+              pollState.doneAt &&
+              dayjs(pollState.doneAt).format('DD.MM.YYYY HH:mm')
+            }
+          >
             <PollStatusWrapper color={PollStateColorLookup[pollState.status]}>
               {PollStateTextLookup[pollState.status]}
             </PollStatusWrapper>
@@ -56,7 +61,7 @@ export const PanelItem: FC<Props> = ({
         )}
         {btnText && (
           <Button
-            disabled={Boolean(btnText || isLoading)}
+            disabled={isLoading}
             type="ghost"
             size="small"
             onClick={btnOnClick}
