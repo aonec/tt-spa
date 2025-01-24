@@ -1,7 +1,7 @@
 import { PanelItemData, PanelItemStatus } from './PanelItem/PanelItem.types';
 import { useMemo } from 'react';
 import { ReportTemplates } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
-import { Props } from './ReportPage.types';
+import { ActionsHookProps } from './ReportPage.types';
 
 export function usePanelsList({
   closingDevices,
@@ -12,7 +12,7 @@ export function usePanelsList({
   lastCloseDevicesWithoutReadingsPollData,
   handleStartDuplicateReadingsPoll,
   lastDuplicateReadingsPollData,
-}: Props): PanelItemData[] {
+}: ActionsHookProps): PanelItemData[] {
   const panelsList = useMemo((): PanelItemData[] => {
     return [
       {

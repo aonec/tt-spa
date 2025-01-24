@@ -7,6 +7,8 @@ import {
   lastDuplicateReadingsPollQuery,
 } from './standartReportService.api';
 import { standartReportService } from './standartReportService.models';
+import { ExportStandartReportContainer } from './exportStandartReport';
+import { exportStandartReportService } from './exportStandartReport/exportStandartReportService.models';
 
 const {
   inputs,
@@ -23,6 +25,7 @@ export const StandartReportContainer = () => {
     lastCloseDevicesWithoutReadingsPollData,
     handleStartDuplicateReadingsPoll,
     lastDuplicateReadingsPollData,
+    handleExport,
   } = useUnit({
     closingDevices: getAllClosingDevicesQuery.$data,
     isLoadingClosingDevices: getAllClosingDevicesQuery.$pending,
@@ -36,11 +39,13 @@ export const StandartReportContainer = () => {
       lastCloseDevicesWithoutReadingsPollQuery.$data,
     handleStartDuplicateReadingsPoll: inputs.handleStartDuplicateReadingsPoll,
     lastDuplicateReadingsPollData: lastDuplicateReadingsPollQuery.$data,
+    handleExport: exportStandartReportService.inputs.openModal,
   });
 
   return (
     <>
       <StandartReportGate />
+      <ExportStandartReportContainer />
       <ReportPage
         closingDevices={closingDevices}
         isLoadingClosingDevices={isLoadingClosingDevices}
@@ -58,6 +63,7 @@ export const StandartReportContainer = () => {
         }
         handleStartDuplicateReadingsPoll={handleStartDuplicateReadingsPoll}
         lastDuplicateReadingsPollData={lastDuplicateReadingsPollData}
+        handleExport={handleExport}
       />
     </>
   );
