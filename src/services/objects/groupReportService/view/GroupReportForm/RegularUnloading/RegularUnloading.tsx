@@ -129,7 +129,6 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
               ))}
             </SelectExpandable>
           </FormItem>
-          сз
           <RowWrapper>
             <FormItem label="Дата следующей выгрузки отчёта">
               <DatePicker
