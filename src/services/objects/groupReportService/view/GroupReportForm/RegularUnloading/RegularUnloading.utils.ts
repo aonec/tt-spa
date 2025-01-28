@@ -9,10 +9,10 @@ export function autocompleteUsersWithEmail(
     return users;
   }
 
-  return sorUserBySimilarity(search, users);
+  return sortUserBySimilarity(search, users);
 }
 
-function sorUserBySimilarity(search: string, users: UserWithEmail[]) {
+function sortUserBySimilarity(search: string, users: UserWithEmail[]) {
   return users.sort((aUser, bUser) => {
     const aReasonWithResource = `${aUser.email} ${aUser.name}`;
     const bReasonWithResource = `${bUser.email} ${bUser.name}`;

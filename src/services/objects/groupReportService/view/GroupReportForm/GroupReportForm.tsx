@@ -113,7 +113,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
 
   const handleChangeEmail = useCallback(
     (emailsHash: string[]) => {
-      const onlyEmails = emailsHash.map((hash) => hash.split('_')[0]);
+      const onlyEmails = emailsHash.map((hash) => hash.split('@@')[0]);
 
       const selectedContractorsId =
         contractors

@@ -88,7 +88,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
               </TopWrapper>
             </OptionItemWrapper>
           ),
-          value: `${user.email}_${user.name}`,
+          value: `${user.email}@@${user.name}`,
           key: user.email,
         };
       }),
