@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import {
   Info,
   LeftBlock,
@@ -7,7 +7,7 @@ import {
   RightBlock,
   Wrapper,
 } from './PanelItem.styled';
-import { Props } from './PanelItem.types';
+import { PanelItemStatus, Props } from './PanelItem.types';
 import { Skeleton } from 'antd';
 import {
   PanelItemStatusIcon,
@@ -16,10 +16,34 @@ import {
 } from './PanelItem.constants';
 import { Button } from 'ui-kit/Button';
 import { LinkChevron } from 'ui-kit/shared/ListOpeningChevron/ListOpeningChevron';
-import { EPollState } from 'api/types';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
+
+const LeftBlockContainer = ({
+  status,
+  isLoading,
+  title,
+}: {
+  status: PanelItemStatus;
+  isLoading: boolean;
+  title: string;
+}) => {
+  const icon = useMemo(() => {
+    if (isLoading) {
+      return PanelItemStatusIcon.Info;
+    }
+
+    return PanelItemStatusIcon[status];
+  }, [isLoading, status]);
+
+  return (
+    <LeftBlock>
+      {icon}
+      <PanelTitle>{title}</PanelTitle>
+    </LeftBlock>
+  );
+};
 
 export const PanelItem: FC<Props> = ({
   status,
@@ -31,40 +55,51 @@ export const PanelItem: FC<Props> = ({
   link,
   pollState,
 }) => {
-  const isLoading =
-    pollState?.status === EPollState.Running ||
-    pollState?.status === EPollState.Pending;
+  const infoBlock = useMemo(() => {
+    if (isLoadingInfo) {
+      return <Skeleton.Input active size="small" />;
+    }
+
+    return <Info>{info}</Info>;
+  }, [isLoadingInfo, info]);
+
+  const statusText = useMemo(() => {
+    if (pollState) {
+      return (
+        <Tooltip title={dayjs(pollState.doneAt).format('DD.MM.YYYY HH:mm')}>
+          <PollStatusWrapper color={PollStateColorLookup[pollState.status]}>
+            {PollStateTextLookup[pollState.status]}
+          </PollStatusWrapper>
+        </Tooltip>
+      );
+    }
+
+    return <div />;
+  }, [pollState]);
+
+  const button = useMemo(() => {
+    if (btnText) {
+      return (
+        <Button disabled type="ghost" size="small" onClick={btnOnClick}>
+          {btnText}
+        </Button>
+      );
+    }
+
+    return <div />;
+  }, []);
 
   return (
     <Wrapper>
-      <LeftBlock>
-        {!isLoadingInfo && PanelItemStatusIcon[status]}
-        {isLoadingInfo && PanelItemStatusIcon.Info}
-        <PanelTitle>{title}</PanelTitle>
-      </LeftBlock>
+      <LeftBlockContainer
+        status={status}
+        isLoading={isLoadingInfo}
+        title={title}
+      />
       <RightBlock>
-        {isLoadingInfo && <Skeleton.Input active size="small" />}
-        {!isLoadingInfo && <Info>{info}</Info>}
-        {pollState ? (
-          <Tooltip title={dayjs(pollState.doneAt).format('DD.MM.YYYY HH:mm')}>
-            <PollStatusWrapper color={PollStateColorLookup[pollState.status]}>
-              {PollStateTextLookup[pollState.status]}
-            </PollStatusWrapper>
-          </Tooltip>
-        ) : (
-          <div />
-        )}
-        {btnText && (
-          <Button
-            disabled={Boolean(btnText || isLoading)}
-            type="ghost"
-            size="small"
-            onClick={btnOnClick}
-          >
-            {btnText}
-          </Button>
-        )}
-        {!btnText && <div />}
+        {infoBlock}
+        {statusText}
+        {button}
         {link && (
           <Link to={link}>
             <LinkChevron />
