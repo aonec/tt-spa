@@ -41,6 +41,9 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   const isInvalidCheckingDates =
     reportOption === EIndividualDeviceReportOption.InvalidCheckingDates;
 
+  const isInvalidBitDepth =
+    reportOption === EIndividualDeviceReportOption.InvalidBitDepth;
+
   const isOperators = usePermission([
     ESecuredIdentityRoleName.Operator,
     ESecuredIdentityRoleName.SeniorOperator,
@@ -199,6 +202,20 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             dayjs(elem.invalidCheckingDatesOption?.futureCheckingDate).format(
               'DD.MM.YYYY',
             ),
+        },
+        {
+          label: 'Разрядность',
+          size: '110px',
+          hidden: !isInvalidBitDepth,
+          render: (elem) =>
+            elem.invalidBitDepthOption?.bitDepth || 'Нет данных',
+        },
+        {
+          label: 'Множитель',
+          size: '110px',
+          hidden: !isInvalidBitDepth,
+          render: (elem) =>
+            elem.invalidBitDepthOption?.scaleFactor || 'Нет данных',
         },
       ]}
       elements={individualDevicesReportData}
