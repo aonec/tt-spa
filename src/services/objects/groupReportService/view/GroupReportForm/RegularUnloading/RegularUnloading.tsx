@@ -1,21 +1,28 @@
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Switch } from 'antd';
-import { LabeledValue } from 'antd/lib/select';
 import dayjs from 'api/dayjs';
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { FormItem } from 'ui-kit/FormItem';
 import { RadioGroupSC } from '../GroupReportDatesSelect/GroupReportDatesSelect.styled';
 import { RowWrapper } from '../GroupReportForm.styled';
 import { SubsTypeRadioOptions } from './RegularUnloading.constants';
-import { SwitchWrapper, Wrapper } from './RegularUnloading.styled';
+import {
+  OptionItemWrapper,
+  SelectExpandable,
+  SwitchWrapper,
+  TopWrapper,
+  UserNameWrapper,
+  Wrapper,
+} from './RegularUnloading.styled';
 import { RegularUnloadingProps } from './RegularUnloading.types';
-import { SelectMultiple } from 'ui-kit/SelectMultiple';
 import { getUserFullName } from 'utils/getUserFullName';
+import { Select } from 'ui-kit/Select';
+import { ArrowRightLongIconDim } from 'services/tasks/addTaskFromDispatcherService/view/AddTaskModal/AddTaskForm/AddTaskForm.styled';
+import { autocompleteUsersWithEmail } from './RegularUnloading.utils';
 
 export const RegularUnloading: FC<RegularUnloadingProps> = ({
   contractors,
-  handleChangeContractorIds,
   handleChangeSubsType,
   handleThriggerAt,
   handleChangeIsRegular,
@@ -23,21 +30,22 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
   errors,
   setRegularUpload,
   staffList,
-  handleChangeOrganizationUserIds,
+  handleChangeEmail,
 }) => {
   const { isRegular } = values;
 
-  const contractorsOptions: LabeledValue[] = useMemo(
+  const contractorsOptions = useMemo(
     () =>
       contractors.map((elem) => ({
         key: String(elem.id),
         value: elem.id,
-        label: elem.title,
+        name: elem.title,
+        email: elem.email,
       })),
     [contractors],
   );
 
-  const staffListOptions: LabeledValue[] = useMemo(
+  const staffListOptions = useMemo(
     () =>
       staffList.map((elem) => {
         const fullName = getUserFullName({
@@ -49,26 +57,43 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
         return {
           key: String(elem.id),
           value: elem.id,
-          label: fullName,
+          name: fullName,
+          email: elem.email,
         };
       }),
     [staffList],
   );
 
+  const users = [...contractorsOptions, ...staffListOptions];
+
   useEffect(() => {
     if (!isRegular) {
-      handleChangeContractorIds();
-      handleChangeOrganizationUserIds();
       handleChangeSubsType();
       handleThriggerAt();
     }
-  }, [
-    isRegular,
-    handleChangeContractorIds,
-    handleChangeOrganizationUserIds,
-    handleChangeSubsType,
-    handleThriggerAt,
-  ]);
+  }, [isRegular, handleChangeSubsType, handleThriggerAt]);
+
+  const [userSearch, setUserSearch] = useState<string>('');
+
+  const taskReasonOptions = useMemo(
+    () =>
+      autocompleteUsersWithEmail(userSearch, users).map((user) => {
+        return {
+          label: (
+            <OptionItemWrapper>
+              <TopWrapper>
+                {user.email}
+                <ArrowRightLongIconDim />
+                <UserNameWrapper>{user.name}</UserNameWrapper>
+              </TopWrapper>
+            </OptionItemWrapper>
+          ),
+          value: `${user.email}@@${user.name}`,
+          key: user.email,
+        };
+      }),
+    [users],
+  );
 
   return (
     <Wrapper>
@@ -89,29 +114,21 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
       </SwitchWrapper>
       {isRegular && (
         <>
-          <RowWrapper>
-            <FormItem label="Сотрудники">
-              <SelectMultiple
-                placeholder="Выберите из списка"
-                options={staffListOptions}
-                value={values?.['Subscription.OrganizationUserIds']}
-                onChange={(ids) => {
-                  handleChangeOrganizationUserIds(ids as number[]);
-                }}
-              />
-            </FormItem>
-
-            <FormItem label="Контрагенты">
-              <SelectMultiple
-                placeholder="Выберите из списка"
-                options={contractorsOptions}
-                value={values?.['Subscription.ContractorIds']}
-                onChange={(ids) => {
-                  handleChangeContractorIds(ids as number[]);
-                }}
-              />
-            </FormItem>
-          </RowWrapper>
+          <FormItem label="Email">
+            <SelectExpandable
+              mode="multiple"
+              onChange={(search) => handleChangeEmail(search as string[])}
+              searchValue={userSearch}
+              onSearch={(search) => setUserSearch(search as string)}
+              onSelect={() => setUserSearch('')}
+            >
+              {taskReasonOptions.map((elem) => (
+                <Select.Option value={elem.value} key={elem.key}>
+                  {elem.label}
+                </Select.Option>
+              ))}
+            </SelectExpandable>
+          </FormItem>
           <RowWrapper>
             <FormItem label="Дата следующей выгрузки отчёта">
               <DatePicker
