@@ -130,7 +130,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
               <ErrorMessage>{errors['Subscription.TriggerAt']}</ErrorMessage>
             </FormItem>
           </RowWrapper>
-          <FormItem label="Период">
+          <FormItem label="Регулярность">
             <RadioGroupSC
               options={SubsTypeRadioOptions}
               onChange={(e) => handleChangeSubsType(e.target.value)}
