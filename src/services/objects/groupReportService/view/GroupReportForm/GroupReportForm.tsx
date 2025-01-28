@@ -111,15 +111,30 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
     }
   }, [organizations, setFieldValue, values.exportType]);
 
-  const handleChangeContractorIds = useCallback(
-    (ids?: number[]) => setFieldValue("['Subscription.ContractorIds']", ids),
-    [setFieldValue],
+  const handleChangeEmail = useCallback(
+    (emailsHash: string[]) => {
+      const onlyEmails = emailsHash.map((hash) => hash.split('@@')[0]);
+
+      const selectedContractorsId =
+        contractors
+          ?.filter(
+            (contractor) =>
+              contractor.email && onlyEmails.includes(contractor.email),
+          )
+          .map((contractor) => contractor.id) || [];
+
+      const selectedStaffId =
+        staffList?.items
+          ?.filter((staff) => staff.email && onlyEmails.includes(staff.email))
+          .map((staff) => staff.id) || [];
+
+      setFieldValue("['Subscription.OrganizationUserIds']", selectedStaffId);
+      setFieldValue("['Subscription.ContractorIds']", selectedContractorsId);
+    },
+
+    [setFieldValue, contractors, staffList],
   );
-  const handleChangeOrganizationUserIds = useCallback(
-    (ids?: number[]) =>
-      setFieldValue("['Subscription.OrganizationUserIds']", ids),
-    [setFieldValue],
-  );
+
   const handleChangeSubsType = useCallback(
     (type?: GroupReportConfigurationPeriod) =>
       setFieldValue("['Subscription.Type']", type),
@@ -236,6 +251,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       <RowWrapper>
         <FormItem label="Ресурс">
           <SelectMultiple
+            showSearch={false}
             value={values.NodeResourceTypes}
             onChange={(value) => setFieldValue('NodeResourceTypes', value)}
             options={nodeResourceTypesOptions}
@@ -274,6 +290,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
               setFieldValue('From', From);
               setFieldValue('To', To);
             }}
+            isDisabled={values.isRegular}
           />
         </FormItem>
         <FormItem label="Детализация отчёта">
@@ -302,8 +319,6 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
       <Divider type="horizontal" />
 
       <RegularUnloading
-        handleChangeContractorIds={handleChangeContractorIds}
-        handleChangeOrganizationUserIds={handleChangeOrganizationUserIds}
         handleChangeSubsType={handleChangeSubsType}
         handleThriggerAt={handleThriggerAt}
         handleChangeIsRegular={handleChangeIsRegular}
@@ -320,6 +335,7 @@ export const GroupReportForm: FC<GroupReportFormProps> = ({
         errors={errors}
         setRegularUpload={setRegularUpload}
         staffList={staffList?.items || []}
+        handleChangeEmail={handleChangeEmail}
       />
     </Form>
   );

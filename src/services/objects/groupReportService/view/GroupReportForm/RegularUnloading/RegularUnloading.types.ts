@@ -6,8 +6,6 @@ import {
 import { RegularUnloadSubscription } from 'services/objects/groupReportService/groupReportService.types';
 
 export type RegularUnloadingProps = {
-  handleChangeOrganizationUserIds: (ids?: number[]) => void;
-  handleChangeContractorIds: (ids?: number[]) => void;
   handleThriggerAt: (date?: string) => void;
   handleChangeIsRegular: (isRegular: boolean) => void;
   contractors: GroupReportContractorResponse[];
@@ -16,6 +14,7 @@ export type RegularUnloadingProps = {
   handleChangeSubsType: (value?: GroupReportConfigurationPeriod) => void;
   setRegularUpload: (payload: boolean) => void;
   staffList: OrganizationUserListResponse[];
+  handleChangeEmail: (emailsHash: string[]) => void;
 };
 
 type RegularUnloadingErrors = {
@@ -23,4 +22,11 @@ type RegularUnloadingErrors = {
   'Subscription.ContractorIds'?: string;
   'Subscription.TriggerAt'?: string;
   'Subscription.Type'?: string;
+};
+
+export type UserWithEmail = {
+  key: string;
+  value: number;
+  name: string | null;
+  email: string | null;
 };
