@@ -23,6 +23,12 @@ import { GoBack } from 'ui-kit/shared/GoBack';
 export const ReportPage: FC<Props> = ({
   closingDevices,
   isLoadingClosingDevices,
+  handleStartCloseDevicesByCheckingDatePoll,
+  lastCloseDevicesByCheckingDatePollData,
+  handleStartCloseDevicesWithoutReadingsPoll,
+  lastCloseDevicesWithoutReadingsPollData,
+  handleStartDuplicateReadingsPoll,
+  lastDuplicateReadingsPollData,
 }) => {
   const date = dayjs().format('MMMM YYYY');
 
@@ -31,7 +37,16 @@ export const ReportPage: FC<Props> = ({
     .map((word) => capitalize(word))
     .join(' ');
 
-  const panelsList = usePanelsList({ closingDevices, isLoadingClosingDevices });
+  const panelsList = usePanelsList({
+    closingDevices,
+    isLoadingClosingDevices,
+    handleStartCloseDevicesByCheckingDatePoll,
+    lastCloseDevicesByCheckingDatePollData,
+    handleStartCloseDevicesWithoutReadingsPoll,
+    lastCloseDevicesWithoutReadingsPollData,
+    handleStartDuplicateReadingsPoll,
+    lastDuplicateReadingsPollData,
+  });
 
   return (
     <Wrapper>
@@ -58,9 +73,7 @@ export const ReportPage: FC<Props> = ({
       </Container>
 
       <Footer>
-        <Button size="small" disabled>
-          Экспортировать
-        </Button>
+        <Button size="small">Экспортировать</Button>
         <Button size="small" type="ghost">
           Отправить на email
         </Button>

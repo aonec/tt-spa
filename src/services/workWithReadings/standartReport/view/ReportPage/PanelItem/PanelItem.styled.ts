@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr;
+  display: flex;
+  /* grid-template-columns: 1fr 1fr; */
+  align-items: center;
+  justify-content: space-between;
   padding: 24px;
   justify-content: space-between;
   align-items: center;
@@ -17,9 +19,9 @@ export const LeftBlock = styled.div`
 `;
 
 export const RightBlock = styled.div`
-  width: 400px;
+  width: 500px;
   display: grid;
-  grid-template-columns: 1fr 1fr 12px;
+  grid-template-columns: 1fr 1fr 1.5fr 20px;
   align-items: center;
   justify-content: flex-end;
 `;
@@ -28,13 +30,17 @@ export const Info = styled.div`
   font-weight: 300;
 `;
 
-export const Blue = styled.div`
-  color: rgba(24, 158, 233, 1);
-  font-weight: 500;
-
-  cursor: pointer;
-`;
-
 export const PanelTitle = styled.div`
   font-weight: 500;
+`;
+
+export const PollStatusWrapper = styled.div<{ color: string }>`
+  background: ${({ color }) => color};
+  padding: 4px 12px;
+  border-radius: 20px;
+  color: white;
+  width: max-content;
+  white-space: nowrap;
+  font-weight: bold;
+  font-size: 13px;
 `;

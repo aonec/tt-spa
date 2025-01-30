@@ -11,6 +11,7 @@ import {
   EmployeeReportDatePeriodType,
   EmployeeReportType,
   ReportFiltrationFormProps,
+  ReportTemplates,
 } from './ReportFiltrationForm.types';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
@@ -25,6 +26,7 @@ import {
   EActResourceType,
   EActType,
   EIndividualDeviceReportOption,
+  EResourceType,
 } from 'api/types';
 import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import {
@@ -50,6 +52,7 @@ import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { TreeSelect } from 'ui-kit/TreeSelect';
 import { DatePicker } from 'ui-kit/DatePicker';
 import { ExportReportTypeTranslatesLookup } from 'services/reportsService/reportViewService/reportViewService.constants';
+import { useSearchParams } from 'react-router-dom';
 
 const { gates, inputs } = reportViewService;
 const { HouseManagementsGate } = gates;
@@ -73,6 +76,35 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
         setFiltrationValues(values);
       },
     });
+
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const reportTemp = searchParams.get('reportTemp');
+
+    if (!reportTemp) return;
+
+    if (reportTemp === ReportTemplates.CheckingDateExpiration) {
+      setFiltrationValues({
+        exportType: ExportReportType.ManagementFirm,
+        reportDatePeriod: ReportDatePeriod.ExpiresInNextMonth,
+        reportOption:
+          EIndividualDeviceReportOption.DeviceCheckingDateExpiration,
+        resources: [
+          EResourceType.HotWaterSupply,
+          EResourceType.ColdWaterSupply,
+        ],
+      });
+    }
+
+    if (reportTemp === ReportTemplates.InvalidBitDepth) {
+      setFiltrationValues({
+        exportType: ExportReportType.ManagementFirm,
+        reportDatePeriod: ReportDatePeriod.AnyPeriod,
+        reportOption: EIndividualDeviceReportOption.InvalidBitDepth,
+      });
+    }
+  }, [searchParams]);
 
   const isSubmitButtonActive = useMemo(() => {
     const isAddressSelected = Boolean(
@@ -228,12 +260,6 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                   !values.employeeReportType ||
                   !values.employeeReportDatePeriodType
                 }
-                // disabledDate={(selectableDate) => {
-                //   const selectableYear = selectableDate.year();
-                //   const currentYear = dayjs().year();
-
-                //   return selectableYear > currentYear;
-                // }}
               />
             )}
             {isCallCenterReport && (
@@ -244,12 +270,6 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
                   setFieldValue('from', dates?.[0]);
                   setFieldValue('to', dates?.[1]);
                 }}
-                // disabledDate={(selectableDate) => {
-                //   const selectableYear = selectableDate.year();
-                //   const currentYear = dayjs().year();
-
-                //   return selectableYear > currentYear;
-                // }}
               />
             )}
           </FormItem>
@@ -261,7 +281,9 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
   const isHomeownersReport = reportType === ReportType.Homeowners;
 
   const isShowResourcesField = !isHomeownersReport;
-  const isShowDatePeriodPicker = !isHomeownersReport;
+  const isShowDatePeriodPicker =
+    !isHomeownersReport &&
+    values.reportOption !== EIndividualDeviceReportOption.InvalidBitDepth;
 
   const isShowActResourcesSelect = reportType === ReportType.ActsJournal;
 
@@ -511,12 +533,6 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
               <PeriodPickerWrapprer>
                 <RangePicker
                   small
-                  // disabledDate={(selectableDate) => {
-                  //   const selectableYear = selectableDate.year();
-                  //   const currentYear = dayjs().year();
-
-                  //   return selectableYear > currentYear;
-                  // }}
                   disabled={
                     values.reportDatePeriod !== ReportDatePeriod.AnyPeriod ||
                     isClosedDeviceOnOneOfRisers

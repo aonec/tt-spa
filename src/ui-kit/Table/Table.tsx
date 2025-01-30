@@ -62,9 +62,11 @@ export function Table<T>({
         </TableElement>
       ));
 
-      if (link) {
+      const linkPath = (link && link(elem)) || null;
+
+      if (linkPath) {
         return (
-          <RowLink to={link(elem)} temp={temp} css={rowStyles}>
+          <RowLink to={linkPath} temp={temp} css={rowStyles}>
             {columns}
           </RowLink>
         );

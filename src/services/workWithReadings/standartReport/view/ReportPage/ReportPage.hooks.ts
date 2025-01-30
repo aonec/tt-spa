@@ -1,14 +1,18 @@
-import { GetIndividualDevicesToClose } from 'api/types';
 import { PanelItemData, PanelItemStatus } from './PanelItem/PanelItem.types';
 import { useMemo } from 'react';
+import { ReportTemplates } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
+import { Props } from './ReportPage.types';
 
 export function usePanelsList({
   closingDevices,
   isLoadingClosingDevices,
-}: {
-  closingDevices: GetIndividualDevicesToClose | null;
-  isLoadingClosingDevices: boolean;
-}): PanelItemData[] {
+  handleStartCloseDevicesByCheckingDatePoll,
+  lastCloseDevicesByCheckingDatePollData,
+  handleStartCloseDevicesWithoutReadingsPoll,
+  lastCloseDevicesWithoutReadingsPollData,
+  handleStartDuplicateReadingsPoll,
+  lastDuplicateReadingsPollData,
+}: Props): PanelItemData[] {
   const panelsList = useMemo((): PanelItemData[] => {
     return [
       {
@@ -19,18 +23,11 @@ export function usePanelsList({
         info: closingDevices?.expiredCheckingDateCount
           ? `${closingDevices?.expiredCheckingDateCount} приборов`
           : null,
-        btnText: 'Закрыть приборы',
-        btnOnClick: () => void 0,
+        btnText: `Закрыть приборы`,
+        btnOnClick: handleStartCloseDevicesByCheckingDatePoll,
         isLoadingInfo: isLoadingClosingDevices,
-        link: 'link',
-      },
-      {
-        title: 'Квартиры на паузе',
-        status: PanelItemStatus.Success,
-        info: null,
-        btnText: 'Дублировать показания',
-        btnOnClick: () => void 0,
-        isLoadingInfo: false,
+        link: `/reports/IndividualDevices?reportTemp=${ReportTemplates.CheckingDateExpiration}`,
+        pollState: lastCloseDevicesByCheckingDatePollData,
       },
       {
         title: 'Приборы без показаний более 6 месяцев',
@@ -41,20 +38,36 @@ export function usePanelsList({
           ? `${closingDevices?.withoutReadingsCount} приборов`
           : null,
         btnText: 'Закрыть приборы',
-        btnOnClick: () => void 0,
+        btnOnClick: handleStartCloseDevicesWithoutReadingsPoll,
         isLoadingInfo: isLoadingClosingDevices,
+        link: '/statistics/subscribersConsumption/managingFirm',
+        pollState: lastCloseDevicesWithoutReadingsPollData,
+      },
+      {
+        title: 'Квартиры на паузе',
+        status: PanelItemStatus.Success,
+        info: null,
+        btnText: 'Дублировать показания',
+        btnOnClick: handleStartDuplicateReadingsPoll,
+        isLoadingInfo: false,
+        pollState: lastDuplicateReadingsPollData,
       },
       {
         title: 'Проверить разрядность приборов',
         status: PanelItemStatus.Info,
         info: null,
         btnText: null,
-        btnOnClick: () => void 0,
+        btnOnClick: () => null,
         isLoadingInfo: false,
-        link: '/',
+        link: `/reports/IndividualDevices?reportTemp=${ReportTemplates.InvalidBitDepth}`,
+        pollState: null,
       },
     ];
-  }, [isLoadingClosingDevices, closingDevices]);
+  }, [
+    isLoadingClosingDevices,
+    closingDevices,
+    lastCloseDevicesByCheckingDatePollData,
+  ]);
 
   return panelsList;
 }

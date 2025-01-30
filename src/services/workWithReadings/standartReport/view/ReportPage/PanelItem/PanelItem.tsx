@@ -1,16 +1,49 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import {
-  Blue,
   Info,
   LeftBlock,
   PanelTitle,
+  PollStatusWrapper,
   RightBlock,
   Wrapper,
 } from './PanelItem.styled';
-import { Props } from './PanelItem.types';
+import { PanelItemStatus, Props } from './PanelItem.types';
 import { Skeleton } from 'antd';
-import { PanelItemStatusIcon } from './PanelItem.constants';
-import { ChevronIconRight } from 'services/workingRanges/WorkingRangeTab/WorkingRangeTab.styled';
+import {
+  PanelItemStatusIcon,
+  PollStateColorLookup,
+  PollStateTextLookup,
+} from './PanelItem.constants';
+import { Button } from 'ui-kit/Button';
+import { LinkChevron } from 'ui-kit/shared/ListOpeningChevron/ListOpeningChevron';
+import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
+
+const LeftBlockContainer = ({
+  status,
+  isLoading,
+  title,
+}: {
+  status: PanelItemStatus;
+  isLoading: boolean;
+  title: string;
+}) => {
+  const icon = useMemo(() => {
+    if (isLoading) {
+      return PanelItemStatusIcon.Info;
+    }
+
+    return PanelItemStatusIcon[status];
+  }, [isLoading, status]);
+
+  return (
+    <LeftBlock>
+      {icon}
+      <PanelTitle>{title}</PanelTitle>
+    </LeftBlock>
+  );
+};
 
 export const PanelItem: FC<Props> = ({
   status,
@@ -20,19 +53,58 @@ export const PanelItem: FC<Props> = ({
   btnOnClick,
   isLoadingInfo,
   link,
+  pollState,
 }) => {
+  const infoBlock = useMemo(() => {
+    if (isLoadingInfo) {
+      return <Skeleton.Input active size="small" />;
+    }
+
+    return <Info>{info}</Info>;
+  }, [isLoadingInfo, info]);
+
+  const statusText = useMemo(() => {
+    if (pollState) {
+      return (
+        <Tooltip title={dayjs(pollState.doneAt).format('DD.MM.YYYY HH:mm')}>
+          <PollStatusWrapper color={PollStateColorLookup[pollState.status]}>
+            {PollStateTextLookup[pollState.status]}
+          </PollStatusWrapper>
+        </Tooltip>
+      );
+    }
+
+    return <div />;
+  }, [pollState]);
+
+  const button = useMemo(() => {
+    if (btnText) {
+      return (
+        <Button disabled type="ghost" size="small" onClick={btnOnClick}>
+          {btnText}
+        </Button>
+      );
+    }
+
+    return <div />;
+  }, []);
+
   return (
     <Wrapper>
-      <LeftBlock>
-        {!isLoadingInfo && PanelItemStatusIcon[status]}
-        {isLoadingInfo && PanelItemStatusIcon.Info}
-        <PanelTitle> {title} </PanelTitle>
-      </LeftBlock>
+      <LeftBlockContainer
+        status={status}
+        isLoading={isLoadingInfo}
+        title={title}
+      />
       <RightBlock>
-        {isLoadingInfo && <Skeleton.Input active size="small" />}
-        {!isLoadingInfo && <Info>{info}</Info>}
-        <Blue onClick={btnText ? btnOnClick : void 0}>{btnText}</Blue>
-        {link && <ChevronIconRight />}
+        {infoBlock}
+        {statusText}
+        {button}
+        {link && (
+          <Link to={link}>
+            <LinkChevron />
+          </Link>
+        )}
       </RightBlock>
     </Wrapper>
   );

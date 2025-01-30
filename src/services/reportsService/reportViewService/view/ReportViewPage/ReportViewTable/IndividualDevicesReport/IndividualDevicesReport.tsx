@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import {
   ApartmentNumber,
   ClosingDate,
@@ -61,6 +61,13 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   return (
     <Table
       isSticky
+      link={(device) => {
+        if (isInvalidBitDepth) {
+          return `/individualDevices/${device.invalidBitDepthOption?.deviceId}/edit`;
+        }
+
+        return null;
+      }}
       columns={[
         {
           label: 'Адрес',
@@ -196,7 +203,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
         },
         {
           label: 'Дата следующей поверки',
-          size: '170px',
+          size: '120px',
           hidden: !isInvalidCheckingDates,
           render: (elem) =>
             dayjs(elem.invalidCheckingDatesOption?.futureCheckingDate).format(
