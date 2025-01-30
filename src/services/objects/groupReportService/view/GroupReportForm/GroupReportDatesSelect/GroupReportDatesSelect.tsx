@@ -1,9 +1,6 @@
 import dayjs from 'api/dayjs';
 import React, { FC, useCallback, useState } from 'react';
-import {
-  GroupReportRangeLookup,
-  GroupReportRangeOptions,
-} from './GroupReportDatesSelect.constants';
+import { GroupReportRangeOptions } from './GroupReportDatesSelect.constants';
 import {
   DatePickerWrapper,
   RadioGroupSC,
@@ -14,16 +11,10 @@ import { RangePicker } from 'ui-kit/RangePicker';
 export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
   value,
   setValue,
+  isDisabled,
 }) => {
   const [currentRange, setCurrentRange] = useState<GroupReportRangeOptions>(
     GroupReportRangeOptions.ThisMonth,
-  );
-
-  const radioOptions = Object.entries(GroupReportRangeLookup).map(
-    ([value, label]) => ({
-      value,
-      label,
-    }),
   );
 
   const handleRangeTypeChange = useCallback(
@@ -47,18 +38,35 @@ export const GroupReportDatesSelect: FC<GroupReportDatesSelectProps> = ({
   return (
     <div>
       <RadioGroupSC
-        options={radioOptions}
         value={currentRange}
         onChange={(e) => {
           setCurrentRange(e.target.value);
           handleRangeTypeChange(e.target.value);
         }}
+        options={[
+          {
+            value: GroupReportRangeOptions.ThisMonth,
+            label: 'С начала месяца',
+          },
+          {
+            value: GroupReportRangeOptions.LastMonth,
+            label: 'За прошлый месяц',
+          },
+          {
+            value: GroupReportRangeOptions.CustomRange,
+            label: 'Произвольный период',
+            disabled: isDisabled,
+          },
+        ]}
       />
+
       <DatePickerWrapper>
         <label>Выберите дату</label>
         <RangePicker
           small
-          disabled={currentRange !== GroupReportRangeOptions.CustomRange}
+          disabled={
+            currentRange !== GroupReportRangeOptions.CustomRange || isDisabled
+          }
           disabledDate={(date) => {
             const currentDay = dayjs().startOf('day');
             const diff = currentDay.diff(date.startOf('day'));

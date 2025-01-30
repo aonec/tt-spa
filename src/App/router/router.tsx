@@ -76,6 +76,7 @@ import { createRunnerService } from 'services/reportsService/createRunnerService
 import { CurrentAnalyticsContainer } from 'services/supervisor/currentAnalytics';
 import { CommonAnalyticsContainer } from 'services/supervisor/commonAnalytics';
 import { usePermission } from 'hooks/usePermission';
+import { ReadingReportsArchiveContainer } from 'services/workWithReadings/readingReportsArchive';
 
 const {
   gates: { CurrentUserGate },
@@ -390,6 +391,10 @@ export const useRoutes = (
         {
           path: '/workWithReadings/standart',
           element: <StandartReportContainer />,
+        },
+        {
+          path: '/workWithReadings/archive',
+          element: <ReadingReportsArchiveContainer />,
         },
         {
           path: '/buildings/:searchType?',
