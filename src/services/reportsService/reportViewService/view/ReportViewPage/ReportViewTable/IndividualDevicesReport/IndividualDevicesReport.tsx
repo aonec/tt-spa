@@ -212,15 +212,17 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
         },
         {
           label: 'Разрядность',
-          size: '120px',
+          size: '110px',
           hidden: !isInvalidBitDepth,
-          render: (elem) => elem.invalidBitDepthOption?.bitDepth || '—',
+          render: (elem) =>
+            elem.invalidBitDepthOption?.bitDepth || 'Нет данных',
         },
         {
           label: 'Множитель',
-          size: '120px',
+          size: '110px',
           hidden: !isInvalidBitDepth,
-          render: (elem) => elem.invalidBitDepthOption?.scaleFactor || '—',
+          render: (elem) =>
+            elem.invalidBitDepthOption?.scaleFactor || 'Нет данных',
         },
       ]}
       elements={individualDevicesReportData}
