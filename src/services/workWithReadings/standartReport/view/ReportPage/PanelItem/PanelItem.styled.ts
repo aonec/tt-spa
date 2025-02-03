@@ -19,9 +19,9 @@ export const LeftBlock = styled.div`
 `;
 
 export const RightBlock = styled.div`
-  width: 500px;
+  width: 550px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1.5fr 20px;
+  grid-template-columns: 1fr 1.5fr 1.5fr 20px;
   align-items: center;
   justify-content: flex-end;
 `;

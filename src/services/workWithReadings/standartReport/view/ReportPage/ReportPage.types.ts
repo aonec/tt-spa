@@ -9,4 +9,7 @@ export type Props = {
   lastCloseDevicesWithoutReadingsPollData: PollResponse | null;
   handleStartDuplicateReadingsPoll: () => void;
   lastDuplicateReadingsPollData: PollResponse | null;
+  handleExport: () => void;
 };
+
+export type ActionsHookProps = Omit<Props, 'handleExport'>;

@@ -29,6 +29,7 @@ export const ReportPage: FC<Props> = ({
   lastCloseDevicesWithoutReadingsPollData,
   handleStartDuplicateReadingsPoll,
   lastDuplicateReadingsPollData,
+  handleExport,
 }) => {
   const date = dayjs().format('MMMM YYYY');
 
@@ -73,7 +74,9 @@ export const ReportPage: FC<Props> = ({
       </Container>
 
       <Footer>
-        <Button size="small">Экспортировать</Button>
+        <Button size="small" onClick={handleExport}>
+          Экспортировать
+        </Button>
         <Button size="small" type="ghost">
           Отправить на email
         </Button>
