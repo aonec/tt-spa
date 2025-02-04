@@ -6,8 +6,4 @@ export const SubsTypeRadioOptions = [
     label: '1 раз в 2 недели',
   },
   { value: GroupReportConfigurationPeriod.EveryMonth, label: '1 раз в месяц' },
-  {
-    value: GroupReportConfigurationPeriod.EveryQuarter,
-    label: '1 раз в квартал',
-  },
 ];
