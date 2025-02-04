@@ -166,7 +166,9 @@ export const RegularReportItem: FC<Props> = ({
               },
               {
                 key: 'Дата следующей отправки',
-                value: report.reportConfigurationDetails?.nextDate,
+                value: dayjs(
+                  report.reportConfigurationDetails?.nextDate,
+                ).format('YYYY-MM-DD'),
               },
 
               {
