@@ -3,7 +3,6 @@ import {
   ItemHeader,
   Name,
   NamesWrapper,
-  PeriodWrapper,
   RangePickerSC,
   ReportName,
   Resource,
@@ -70,10 +69,9 @@ export const RegularReportItem: FC<Props> = ({
     );
   }, [report]);
 
-  const regularity = report.reportConfigurationDetails
-    ?.reportConfigurationPeriod
+  const regularity = report.reportConfigurationDetails?.sendingPeriodType
     ? GroupReportConfigurationPeriodDictionary[
-        report.reportConfigurationDetails?.reportConfigurationPeriod
+        report.reportConfigurationDetails?.sendingPeriodType
       ]
     : 'Не найдено';
 
@@ -159,25 +157,32 @@ export const RegularReportItem: FC<Props> = ({
                 value: nodeStatus,
               },
               {
-                key: 'Период и детализация',
-                value: (
-                  <PeriodWrapper>
-                    <RangePickerSC
-                      disabled
-                      small
-                      value={[
-                        dayjs(report.report?.from),
-                        dayjs(report.report?.to),
-                      ]}
-                    />
-                    | {reportType}
-                  </PeriodWrapper>
-                ),
+                key: 'Детализация',
+                value: reportType,
               },
               {
                 key: 'Регулярность',
                 value: regularity,
               },
+              {
+                key: 'Дата следующей отправки',
+                value: report.reportConfigurationDetails?.nextDate,
+              },
+
+              {
+                key: 'Период отчета',
+                value: (
+                  <RangePickerSC
+                    disabled
+                    small
+                    value={[
+                      dayjs(report.report?.from),
+                      dayjs(report.report?.to),
+                    ]}
+                  />
+                ),
+              },
+
               {
                 key: 'Контрагенты',
                 value: (

@@ -76,8 +76,7 @@ sample({
         organizationUserIds:
           report.reportConfigurationDetails?.organizationUserIds,
         initialDate: report.reportConfigurationDetails?.initialDate,
-        reportConfigurationPeriod:
-          report.reportConfigurationDetails?.reportConfigurationPeriod,
+        sendingPeriodType: report.reportConfigurationDetails?.sendingPeriodType,
         nextDate: report.reportConfigurationDetails?.nextDate,
         isActive: !report.reportConfigurationDetails?.isActive,
       },
