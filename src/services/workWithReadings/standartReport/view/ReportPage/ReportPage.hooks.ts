@@ -2,6 +2,7 @@ import { PanelItemData, PanelItemStatus } from './PanelItem/PanelItem.types';
 import { useMemo } from 'react';
 import { ReportTemplates } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
 import { ActionsHookProps } from './ReportPage.types';
+import { EPollState } from 'api/types';
 
 export function usePanelsList({
   closingDevices,
@@ -25,7 +26,10 @@ export function usePanelsList({
           : null,
         btnText: `Закрыть приборы`,
         btnOnClick: handleStartCloseDevicesByCheckingDatePoll,
-        isLoadingInfo: isLoadingClosingDevices,
+        isLoadingInfo:
+          lastCloseDevicesByCheckingDatePollData?.status ===
+            EPollState.Pending ||
+          lastCloseDevicesByCheckingDatePollData?.status === EPollState.Running,
         link: `/reports/IndividualDevices?reportTemp=${ReportTemplates.CheckingDateExpiration}`,
         pollState: lastCloseDevicesByCheckingDatePollData,
       },
@@ -39,7 +43,11 @@ export function usePanelsList({
           : null,
         btnText: 'Закрыть приборы',
         btnOnClick: handleStartCloseDevicesWithoutReadingsPoll,
-        isLoadingInfo: isLoadingClosingDevices,
+        isLoadingInfo:
+          lastCloseDevicesWithoutReadingsPollData?.status ===
+            EPollState.Pending ||
+          lastCloseDevicesWithoutReadingsPollData?.status ===
+            EPollState.Running,
         link: '/statistics/subscribersConsumption/managingFirm',
         pollState: lastCloseDevicesWithoutReadingsPollData,
       },
@@ -49,7 +57,9 @@ export function usePanelsList({
         info: null,
         btnText: 'Дублировать показания',
         btnOnClick: handleStartDuplicateReadingsPoll,
-        isLoadingInfo: false,
+        isLoadingInfo:
+          lastDuplicateReadingsPollData?.status === EPollState.Pending ||
+          lastDuplicateReadingsPollData?.status === EPollState.Running,
         pollState: lastDuplicateReadingsPollData,
       },
       {

@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import {
-  AlertText,
   BillingPeriod,
   Container,
   Date,
@@ -12,8 +11,6 @@ import {
 import { Props } from './ReportPage.types';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
-import { Alert } from 'ui-kit/Alert';
-import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 import { Button } from 'ui-kit/Button';
 import { PanelItem } from './PanelItem';
 import { usePanelsList } from './ReportPage.hooks';
@@ -60,12 +57,6 @@ export const ReportPage: FC<Props> = ({
           <Date>{uppercaseDate}</Date>
         </BillingPeriod>
 
-        <Alert centered type={AlertType.danger} icon={AlertIconType.warning}>
-          <AlertText>
-            В выгрузке присутствуют приборы с вышедшей датой поверки
-          </AlertText>
-        </Alert>
-
         <PanelsList>
           {panelsList.map((item) => (
             <PanelItem key={item.title} {...item} />
@@ -76,9 +67,6 @@ export const ReportPage: FC<Props> = ({
       <Footer>
         <Button size="small" onClick={handleExport}>
           Экспортировать
-        </Button>
-        <Button size="small" type="ghost">
-          Отправить на email
         </Button>
       </Footer>
     </Wrapper>

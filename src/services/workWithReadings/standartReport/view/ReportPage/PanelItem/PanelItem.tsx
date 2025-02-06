@@ -80,7 +80,12 @@ export const PanelItem: FC<Props> = ({
   const button = useMemo(() => {
     if (btnText) {
       return (
-        <Button disabled type="ghost" size="small" onClick={btnOnClick}>
+        <Button
+          disabled={isLoadingInfo}
+          type="ghost"
+          size="small"
+          onClick={btnOnClick}
+        >
           {btnText}
         </Button>
       );
