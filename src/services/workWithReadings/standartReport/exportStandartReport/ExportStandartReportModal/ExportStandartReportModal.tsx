@@ -13,15 +13,28 @@ import {
   PollStateColorLookup,
   PollStateTextLookup,
 } from '../../view/ReportPage/PanelItem/PanelItem.constants';
-import { EPollState } from 'api/types';
+import { EPollState, PollActionType, PollResponse } from 'api/types';
 import Panel from './panel.svg?react';
 import { Wrapper } from './ExportStandartReportModal.styled';
+
+const mock: PollResponse = {
+  id: 6,
+  createdAt: '2024-01-26T10:49:11.761536Z',
+  userId: 8734205,
+  organizationId: 8734155,
+  status: EPollState.Done,
+  runningAt: '2024-01-26T10:49:14.999355Z',
+  doneAt: '2024-01-26T10:49:24.247693Z',
+  actionType: PollActionType.IndividualExport,
+  hasFile: true,
+  errorMessage: null,
+};
 
 export const ExportStandartReportModal: FC<Props> = ({
   isModalOpen,
   closeModal,
   handleStartExport,
-  lastPollState,
+  lastPollState = mock,
 }) => {
   const date = dayjs().format('MMMM YYYY');
 

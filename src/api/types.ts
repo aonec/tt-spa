@@ -2471,6 +2471,8 @@ export interface GetIndividualDevicesToClose {
   expiredCheckingDateCount?: number;
   /** @format int32 */
   withoutReadingsCount?: number;
+  /** @format int32 */
+  apartmentsOnPauseCount?: number;
 }
 
 export interface GetSummaryHousingConsumptionsByResourcesResponse {
@@ -2484,7 +2486,8 @@ export interface GroupReportConfigurationDetailsModel {
   initialDate?: string;
   /** @format date-time */
   nextDate?: string | null;
-  reportConfigurationPeriod?: GroupReportConfigurationPeriod;
+  sendingPeriodType?: GroupReportConfigurationSendingPeriodType;
+  reportPeriodType?: GroupReportConfigurationReportPeriodType;
   isActive?: boolean;
 }
 
@@ -2494,10 +2497,15 @@ export interface GroupReportConfigurationDetailsRequest {
   /** @format date-time */
   initialDate: string;
   isActive?: boolean;
-  reportConfigurationPeriod: GroupReportConfigurationPeriod;
+  sendingPeriodType: GroupReportConfigurationSendingPeriodType;
 }
 
-export enum GroupReportConfigurationPeriod {
+export enum GroupReportConfigurationReportPeriodType {
+  StartMonth = 'StartMonth',
+  LastMonth = 'LastMonth',
+}
+
+export enum GroupReportConfigurationSendingPeriodType {
   EveryTwoWeeks = 'EveryTwoWeeks',
   EveryMonth = 'EveryMonth',
   EveryQuarter = 'EveryQuarter',
@@ -4651,6 +4659,7 @@ export interface PollResponse {
   doneAt: string | null;
   actionType: PollActionType;
   hasFile: boolean;
+  errorMessage: string | null;
 }
 
 export interface PollResponsePagedList {

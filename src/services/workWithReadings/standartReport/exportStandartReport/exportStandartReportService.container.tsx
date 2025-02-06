@@ -6,14 +6,12 @@ import { lastIndividualDevicesExportPollQuery } from './exportStandartReportServ
 const { inputs, outputs } = exportStandartReportService;
 
 export const ExportStandartReportContainer = () => {
-  const { isModalOpen, closeModal, handleStartExport, lastPollState } = useUnit(
-    {
-      isModalOpen: outputs.$isModalOpen,
-      closeModal: inputs.closeModal,
-      handleStartExport: inputs.handleStartIndividualDevicesExportPoll,
-      lastPollState: lastIndividualDevicesExportPollQuery.$data,
-    },
-  );
+  const { isModalOpen, closeModal, handleStartExport } = useUnit({
+    isModalOpen: outputs.$isModalOpen,
+    closeModal: inputs.closeModal,
+    handleStartExport: inputs.handleStartIndividualDevicesExportPoll,
+    lastPollState: lastIndividualDevicesExportPollQuery.$data,
+  });
 
   return (
     <>
@@ -21,7 +19,7 @@ export const ExportStandartReportContainer = () => {
         isModalOpen={isModalOpen}
         closeModal={closeModal}
         handleStartExport={handleStartExport}
-        lastPollState={lastPollState}
+        lastPollState={null}
       />
     </>
   );
