@@ -29,7 +29,9 @@ export function usePanelsList({
         isLoadingInfo:
           lastCloseDevicesByCheckingDatePollData?.status ===
             EPollState.Pending ||
-          lastCloseDevicesByCheckingDatePollData?.status === EPollState.Running,
+          lastCloseDevicesByCheckingDatePollData?.status ===
+            EPollState.Running ||
+          isLoadingClosingDevices,
         link: `/reports/IndividualDevices?reportTemp=${ReportTemplates.CheckingDateExpiration}`,
         pollState: lastCloseDevicesByCheckingDatePollData,
       },
@@ -47,19 +49,21 @@ export function usePanelsList({
           lastCloseDevicesWithoutReadingsPollData?.status ===
             EPollState.Pending ||
           lastCloseDevicesWithoutReadingsPollData?.status ===
-            EPollState.Running,
+            EPollState.Running ||
+          isLoadingClosingDevices,
         link: '/statistics/subscribersConsumption/managingFirm',
         pollState: lastCloseDevicesWithoutReadingsPollData,
       },
       {
         title: 'Квартиры на паузе',
         status: PanelItemStatus.Success,
-        info: null,
+        info: `${closingDevices?.apartmentsOnPauseCount} квартир`,
         btnText: 'Дублировать показания',
         btnOnClick: handleStartDuplicateReadingsPoll,
         isLoadingInfo:
           lastDuplicateReadingsPollData?.status === EPollState.Pending ||
-          lastDuplicateReadingsPollData?.status === EPollState.Running,
+          lastDuplicateReadingsPollData?.status === EPollState.Running ||
+          isLoadingClosingDevices,
         pollState: lastDuplicateReadingsPollData,
       },
       {
@@ -74,9 +78,14 @@ export function usePanelsList({
       },
     ];
   }, [
-    isLoadingClosingDevices,
     closingDevices,
+    isLoadingClosingDevices,
+    handleStartCloseDevicesByCheckingDatePoll,
     lastCloseDevicesByCheckingDatePollData,
+    handleStartCloseDevicesWithoutReadingsPoll,
+    lastCloseDevicesWithoutReadingsPollData,
+    handleStartDuplicateReadingsPoll,
+    lastDuplicateReadingsPollData,
   ]);
 
   return panelsList;

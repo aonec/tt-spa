@@ -17,9 +17,12 @@ import { EPollState } from 'api/types';
 import Panel from './panel.svg?react';
 import {
   ExportDateTime,
+  ExportResultDateTime,
+  ExportResultTitle,
   FileBlock,
   FileBlockTitle,
   Header,
+  LastPollBlock,
   Wrapper,
 } from './ExportStandartReportModal.styled';
 import { Button } from 'ui-kit/Button';
@@ -63,16 +66,7 @@ export const ExportStandartReportModal: FC<Props> = ({
       formId="readings-export"
       visible={isModalOpen}
       title={
-        <Header>
-          {isLoading ? 'Отчет загружается' : 'Экспорт показаний'}
-          {lastPollState && (
-            <PollStatusWrapper
-              color={PollStateColorLookup[lastPollState.status]}
-            >
-              {PollStateTextLookup[lastPollState.status]}
-            </PollStatusWrapper>
-          )}
-        </Header>
+        <Header>{isLoading ? 'Отчет загружается' : 'Экспорт показаний'}</Header>
       }
       onCancel={closeModal}
       submitBtnText="Экспортировать"
@@ -93,30 +87,53 @@ export const ExportStandartReportModal: FC<Props> = ({
               <Date>{uppercaseDate}</Date>
             </BillingPeriod>
           )}
-          {isLoading && <Panel />}
-          {lastPollState?.hasFile && (
-            <FileBlock>
-              <FileBlockTitle>
-                <DocumentIcon />
-                Стандартный отчет
-              </FileBlockTitle>{' '}
-              <ExportDateTime>
-                {dayjs(lastPollState.doneAt).format('DD.MM.YYYY HH:mm')}
-              </ExportDateTime>
-              <Button
-                icon={<DownloadIconSC />}
-                size="small"
-                type="ghost"
-                onClick={handleDownload}
+          {isLoading && (
+            <>
+              <Panel />
+              <PollStatusWrapper
+                color={PollStateColorLookup[lastPollState.status]}
               >
-                Скачать
-              </Button>
-            </FileBlock>
+                {PollStateTextLookup[lastPollState.status]}
+              </PollStatusWrapper>
+            </>
           )}
-          {lastPollState?.errorMessage && (
-            <Alert icon={AlertIconType.warning} type={AlertType.danger}>
-              {lastPollState?.errorMessage}
-            </Alert>
+
+          {lastPollState && !isLoading && (
+            <LastPollBlock color={PollStateColorLookup[lastPollState.status]}>
+              <ExportResultTitle>Результат экспорта:</ExportResultTitle>
+              <ExportResultDateTime>
+                <PollStatusWrapper
+                  color={PollStateColorLookup[lastPollState.status]}
+                >
+                  {PollStateTextLookup[lastPollState.status]}
+                </PollStatusWrapper>
+                {dayjs(lastPollState.doneAt).format('DD.MM.YYYY HH:mm')}
+              </ExportResultDateTime>
+              {lastPollState?.errorMessage && (
+                <Alert icon={AlertIconType.warning} type={AlertType.danger}>
+                  {lastPollState?.errorMessage}
+                </Alert>
+              )}
+              {lastPollState?.hasFile && (
+                <FileBlock>
+                  <FileBlockTitle>
+                    <DocumentIcon />
+                    Стандартный отчет
+                  </FileBlockTitle>{' '}
+                  <ExportDateTime>
+                    {dayjs(lastPollState.doneAt).format('DD.MM.YYYY HH:mm')}
+                  </ExportDateTime>
+                  <Button
+                    icon={<DownloadIconSC />}
+                    size="small"
+                    type="ghost"
+                    onClick={handleDownload}
+                  >
+                    Скачать
+                  </Button>
+                </FileBlock>
+              )}
+            </LastPollBlock>
           )}
         </Wrapper>
       }
