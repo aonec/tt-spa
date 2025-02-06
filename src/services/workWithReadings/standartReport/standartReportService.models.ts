@@ -14,7 +14,7 @@ import { EPollState } from 'api/types';
 
 const StandartReportGate = createGate();
 
-const POLL_TIMEOUT = 5000;
+const POLL_TIMEOUT = 2000;
 
 sample({
   clock: StandartReportGate.open,

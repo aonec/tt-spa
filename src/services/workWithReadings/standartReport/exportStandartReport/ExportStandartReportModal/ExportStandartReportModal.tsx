@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useCallback } from 'react';
 import { Props } from './ExportStandartReportModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import {
@@ -13,28 +13,28 @@ import {
   PollStateColorLookup,
   PollStateTextLookup,
 } from '../../view/ReportPage/PanelItem/PanelItem.constants';
-import { EPollState, PollActionType, PollResponse } from 'api/types';
+import { EPollState } from 'api/types';
 import Panel from './panel.svg?react';
-import { Wrapper } from './ExportStandartReportModal.styled';
-
-const mock: PollResponse = {
-  id: 6,
-  createdAt: '2024-01-26T10:49:11.761536Z',
-  userId: 8734205,
-  organizationId: 8734155,
-  status: EPollState.Done,
-  runningAt: '2024-01-26T10:49:14.999355Z',
-  doneAt: '2024-01-26T10:49:24.247693Z',
-  actionType: PollActionType.IndividualExport,
-  hasFile: true,
-  errorMessage: null,
-};
+import {
+  ExportDateTime,
+  FileBlock,
+  FileBlockTitle,
+  Header,
+  Wrapper,
+} from './ExportStandartReportModal.styled';
+import { Button } from 'ui-kit/Button';
+import { DownloadIconSC } from 'ui-kit/DocumentsService/view/DocumentsList/DocumentItem/DocumentItem.styled';
+import { DocumentIcon } from 'ui-kit/icons';
+import { PollActionTypeLookup } from 'services/workWithReadings/readingReportsArchive/ReadingReportsArchivePage/ReadingReportsArchivePage.constansts';
+import { downloadReportFile } from 'services/workWithReadings/readingReportsArchive/readingReportsArchiveService.api';
+import { Alert } from 'ui-kit/Alert';
+import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 
 export const ExportStandartReportModal: FC<Props> = ({
   isModalOpen,
   closeModal,
   handleStartExport,
-  lastPollState = mock,
+  lastPollState,
 }) => {
   const date = dayjs().format('MMMM YYYY');
 
@@ -47,13 +47,36 @@ export const ExportStandartReportModal: FC<Props> = ({
     lastPollState?.status === EPollState.Pending ||
     lastPollState?.status === EPollState.Running;
 
+  const handleDownload = useCallback(() => {
+    if (!lastPollState || !lastPollState.hasFile) return;
+
+    downloadReportFile(
+      lastPollState.id,
+      `${PollActionTypeLookup[lastPollState.actionType]}_${dayjs(
+        lastPollState.doneAt,
+      ).format('DD.MM.YYYY')}`,
+    );
+  }, []);
+
   return (
     <FormModal
       formId="readings-export"
       visible={isModalOpen}
-      title={isLoading ? 'Отчет загружается' : 'Экспорт показаний'}
+      title={
+        <Header>
+          {isLoading ? 'Отчет загружается' : 'Экспорт показаний'}
+          {lastPollState && (
+            <PollStatusWrapper
+              color={PollStateColorLookup[lastPollState.status]}
+            >
+              {PollStateTextLookup[lastPollState.status]}
+            </PollStatusWrapper>
+          )}
+        </Header>
+      }
       onCancel={closeModal}
       submitBtnText="Экспортировать"
+      loading={isLoading}
       onSubmit={() =>
         handleStartExport({
           Year: Number(dayjs().format('YYYY')),
@@ -71,12 +94,29 @@ export const ExportStandartReportModal: FC<Props> = ({
             </BillingPeriod>
           )}
           {isLoading && <Panel />}
-          {lastPollState && (
-            <PollStatusWrapper
-              color={PollStateColorLookup[lastPollState.status]}
-            >
-              {PollStateTextLookup[lastPollState.status]}
-            </PollStatusWrapper>
+          {lastPollState?.hasFile && (
+            <FileBlock>
+              <FileBlockTitle>
+                <DocumentIcon />
+                Стандартный отчет
+              </FileBlockTitle>{' '}
+              <ExportDateTime>
+                {dayjs(lastPollState.doneAt).format('DD.MM.YYYY HH:mm')}
+              </ExportDateTime>
+              <Button
+                icon={<DownloadIconSC />}
+                size="small"
+                type="ghost"
+                onClick={handleDownload}
+              >
+                Скачать
+              </Button>
+            </FileBlock>
+          )}
+          {lastPollState?.errorMessage && (
+            <Alert icon={AlertIconType.warning} type={AlertType.danger}>
+              {lastPollState?.errorMessage}
+            </Alert>
           )}
         </Wrapper>
       }
