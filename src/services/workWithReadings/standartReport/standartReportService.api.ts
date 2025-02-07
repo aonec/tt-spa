@@ -2,9 +2,12 @@ import { createQuery } from '@farfetched/core';
 import { axios } from 'api/axios';
 import {
   GetIndividualDevicesToClose,
+  HouseManagementWithStreetsResponse,
+  OrganizationResponsePagedList,
   PollCommand,
   PollResponse,
 } from 'api/types';
+import { CloseDevicesWithoutReadingsQuery } from './standartReportService.types';
 
 export const getAllClosingDevicesQuery = createQuery<
   [],
@@ -38,10 +41,13 @@ export const lastCloseDevicesByCheckingDatePollQuery = createQuery<
 
 // ---- CloseDevicesWithoutReadings ----
 
-export const startCloseDevicesWithoutReadingsPoll = createQuery({
-  handler: (): Promise<PollResponse> =>
+export const startCloseDevicesWithoutReadingsPoll = createQuery<
+  [CloseDevicesWithoutReadingsQuery],
+  PollResponse
+>({
+  handler: (payload): Promise<PollResponse> =>
     axios.post('IndividualDevices/CloseDevicesWithoutReadings', null, {
-      params: { Command: PollCommand.Create },
+      params: { Command: PollCommand.Create, ...payload },
     }),
 });
 
@@ -76,4 +82,18 @@ export const lastDuplicateReadingsPollQuery = createQuery<
         Command: PollCommand.GetLast,
       },
     }),
+});
+
+// ---- form params ----
+
+export const organizationsQuery = createQuery<
+  [],
+  OrganizationResponsePagedList
+>({ handler: () => axios.get('Organizations') });
+
+export const addressesWithHouseManagementsQuery = createQuery({
+  handler: (): Promise<HouseManagementWithStreetsResponse[]> =>
+    axios.get(
+      'Buildings/ExistingStreetsWithBuildingNumbersWithHouseManagement',
+    ),
 });

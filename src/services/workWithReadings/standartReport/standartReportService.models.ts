@@ -1,10 +1,12 @@
 import { createEvent, merge, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
+  addressesWithHouseManagementsQuery,
   getAllClosingDevicesQuery,
   lastCloseDevicesByCheckingDatePollQuery,
   lastCloseDevicesWithoutReadingsPollQuery,
   lastDuplicateReadingsPollQuery,
+  organizationsQuery,
   startCloseDevicesByCheckingDatePoll,
   startCloseDevicesWithoutReadingsPoll,
   startDuplicateReadingsPoll,
@@ -15,6 +17,11 @@ import { EPollState } from 'api/types';
 const StandartReportGate = createGate();
 
 const POLL_TIMEOUT = 2000;
+
+sample({
+  clock: StandartReportGate.open,
+  target: [organizationsQuery.start, addressesWithHouseManagementsQuery.start],
+});
 
 sample({
   clock: StandartReportGate.open,
@@ -33,8 +40,9 @@ sample({
     lastCloseDevicesWithoutReadingsPollQuery.finished.success,
     lastDuplicateReadingsPollQuery.finished.success,
   ],
-  filter: ({ result }) =>
-    result.status === EPollState.Error || result.status === EPollState.Done,
+  filter: ({ result, params }) =>
+    (result.status === EPollState.Error || result.status === EPollState.Done) &&
+    !params?.isInitial,
   target: getAllClosingDevicesQuery.start,
 });
 

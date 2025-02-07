@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import {
   BillingPeriod,
   Container,
@@ -16,6 +16,7 @@ import { PanelItem } from './PanelItem';
 import { usePanelsList } from './ReportPage.hooks';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { GoBack } from 'ui-kit/shared/GoBack';
+import { CloseDevicesWithReadingsParamsModal } from './CloseDevicesWithReadingsParamsModal';
 
 export const ReportPage: FC<Props> = ({
   closingDevices,
@@ -27,7 +28,12 @@ export const ReportPage: FC<Props> = ({
   handleStartDuplicateReadingsPoll,
   lastDuplicateReadingsPollData,
   handleExport,
+  organizations,
+  houseManagements,
 }) => {
+  const [isCheckingDatePollModalOpen, setIsCheckingDatePollModalOpen] =
+    useState(false);
+
   const date = dayjs().format('MMMM YYYY');
 
   const uppercaseDate = date
@@ -35,12 +41,16 @@ export const ReportPage: FC<Props> = ({
     .map((word) => capitalize(word))
     .join(' ');
 
+  const handleOpenCheckingDatePollModal = () => {
+    setIsCheckingDatePollModalOpen(true);
+  };
+
   const panelsList = usePanelsList({
     closingDevices,
     isLoadingClosingDevices,
     handleStartCloseDevicesByCheckingDatePoll,
     lastCloseDevicesByCheckingDatePollData,
-    handleStartCloseDevicesWithoutReadingsPoll,
+    handleStartCloseDevicesWithoutReadingsPoll: handleOpenCheckingDatePollModal,
     lastCloseDevicesWithoutReadingsPollData,
     handleStartDuplicateReadingsPoll,
     lastDuplicateReadingsPollData,
@@ -69,6 +79,14 @@ export const ReportPage: FC<Props> = ({
           Экспортировать
         </Button>
       </Footer>
+
+      <CloseDevicesWithReadingsParamsModal
+        isOpen={isCheckingDatePollModalOpen}
+        handleClose={() => setIsCheckingDatePollModalOpen(false)}
+        onSubmit={handleStartCloseDevicesWithoutReadingsPoll}
+        organizations={organizations}
+        houseManagements={houseManagements}
+      />
     </Wrapper>
   );
 };
