@@ -8,6 +8,7 @@ import {
   PollResponse,
 } from 'api/types';
 import { CloseDevicesWithoutReadingsQuery } from './standartReportService.types';
+import { stringify } from 'query-string';
 
 export const getAllClosingDevicesQuery = createQuery<
   [],
@@ -48,6 +49,7 @@ export const startCloseDevicesWithoutReadingsPoll = createQuery<
   handler: (payload): Promise<PollResponse> =>
     axios.post('IndividualDevices/CloseDevicesWithoutReadings', null, {
       params: { Command: PollCommand.Create, ...payload },
+      paramsSerializer: (params) => stringify(params),
     }),
 });
 

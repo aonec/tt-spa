@@ -1,21 +1,58 @@
-import { FC, useState } from 'react';
-import { Wrapper } from './CloseDevicesWithReadingsParamsModal.styled';
+import { FC, useEffect, useMemo, useState } from 'react';
+import {
+  FormWrapper,
+  Wrapper,
+} from './CloseDevicesWithReadingsParamsModal.styled';
 import { Props } from './CloseDevicesWithReadingsParamsModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { Radio } from 'antd';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { SelectMultiple } from 'ui-kit/SelectMultiple';
+import { useFormik } from 'formik';
+import { CloseDevicesWithoutReadingsQuery } from 'services/workWithReadings/standartReport/standartReportService.types';
+
+const MONTHS_WITHOUT_READINGS = [3, 4, 6];
 
 export const CloseDevicesWithReadingsParamsModal: FC<Props> = ({
   isOpen,
   handleClose,
   houseManagements,
   organizations,
+  onSubmit,
 }) => {
   const [view, setView] = useState<'houseManagement' | 'managementFirm'>(
     'houseManagement',
   );
+
+  const { values, setFieldValue, resetForm, handleSubmit } = useFormik({
+    initialValues: {
+      ExceptedHmIds: [],
+      HmIds: [],
+      ManagementFirmIds: [],
+      MonthsToCloseDevice: 6,
+    } as CloseDevicesWithoutReadingsQuery,
+    onSubmit: (data) => {
+      onSubmit(data);
+      handleClose();
+    },
+  });
+
+  const isAllowSubmit = useMemo(() => {
+    if (!values.MonthsToCloseDevice) return false;
+
+    if (view === 'houseManagement') {
+      return Boolean(values.HmIds?.length);
+    }
+
+    if (view === 'managementFirm') {
+      return Boolean(values.ManagementFirmIds?.length);
+    }
+  }, [values, view]);
+
+  useEffect(() => {
+    if (!isOpen) resetForm();
+  }, [isOpen]);
 
   return (
     <FormModal
@@ -24,9 +61,28 @@ export const CloseDevicesWithReadingsParamsModal: FC<Props> = ({
       visible={isOpen}
       submitButtonType="danger"
       submitBtnText="Закрыть приборы"
-      disabled
+      disabled={!isAllowSubmit}
+      onSubmit={handleSubmit}
       form={
         <Wrapper>
+          <FormWrapper>
+            <FormItem label="Кол-во месяцев без показаний">
+              <Select
+                placeholder="Выберите"
+                value={values.MonthsToCloseDevice}
+                onChange={(value) =>
+                  setFieldValue('MonthsToCloseDevice', value)
+                }
+              >
+                {MONTHS_WITHOUT_READINGS.map((elem) => (
+                  <Select.Option key={elem} value={elem}>
+                    {elem}
+                  </Select.Option>
+                ))}
+              </Select>
+            </FormItem>
+          </FormWrapper>
+
           <Radio.Group
             value={view}
             onChange={(e) => setView(e.target.value)}
@@ -37,9 +93,14 @@ export const CloseDevicesWithReadingsParamsModal: FC<Props> = ({
           />
 
           {view === 'houseManagement' && (
-            <>
+            <FormWrapper>
               <FormItem label="Домоуправления">
-                <SelectMultiple mode="multiple" placeholder="Выберите">
+                <SelectMultiple
+                  mode="multiple"
+                  placeholder="Выберите"
+                  value={values.HmIds}
+                  onChange={(value) => setFieldValue('HmIds', value)}
+                >
                   {houseManagements?.map((elem) => (
                     <Select.Option key={elem.id} value={elem.id}>
                       {elem.name}
@@ -47,13 +108,20 @@ export const CloseDevicesWithReadingsParamsModal: FC<Props> = ({
                   ))}
                 </SelectMultiple>
               </FormItem>
-            </>
+            </FormWrapper>
           )}
 
           {view === 'managementFirm' && (
-            <>
+            <FormWrapper>
               <FormItem label="УК">
-                <SelectMultiple mode="multiple" placeholder="Выберите">
+                <SelectMultiple
+                  mode="multiple"
+                  placeholder="Выберите"
+                  value={values.ManagementFirmIds}
+                  onChange={(value) =>
+                    setFieldValue('ManagementFirmIds', value)
+                  }
+                >
                   {organizations?.items?.map((elem) => (
                     <Select.Option key={elem.id} value={elem.id}>
                       {elem.name}
@@ -63,7 +131,12 @@ export const CloseDevicesWithReadingsParamsModal: FC<Props> = ({
               </FormItem>
 
               <FormItem label="Исключить домоуправления">
-                <SelectMultiple mode="multiple" placeholder="Выберите">
+                <SelectMultiple
+                  mode="multiple"
+                  placeholder="Выберите"
+                  value={values.ExceptedHmIds}
+                  onChange={(value) => setFieldValue('ExceptedHmIds', value)}
+                >
                   {houseManagements?.map((elem) => (
                     <Select.Option key={elem.id} value={elem.id}>
                       {elem.name}
@@ -71,7 +144,7 @@ export const CloseDevicesWithReadingsParamsModal: FC<Props> = ({
                   ))}
                 </SelectMultiple>
               </FormItem>
-            </>
+            </FormWrapper>
           )}
         </Wrapper>
       }

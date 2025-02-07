@@ -14,5 +14,5 @@ export type CloseDevicesWithoutReadingsQuery = {
    * Кол-во месяцев без показаний от текущего
    * @format int32
    */
-  MonthsToCloseDevice?: number;
+  MonthsToCloseDevice?: number | null;
 };
