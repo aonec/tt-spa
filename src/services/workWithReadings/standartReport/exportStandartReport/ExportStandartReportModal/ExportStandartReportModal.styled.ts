@@ -21,10 +21,10 @@ export const LastPollBlock = styled.div<{ color: string }>`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 12px;
+  /* padding: 12px; */
   border-radius: 4px;
-  border: 1px solid ${({ color }) => color}88;
-  background: ${({ color }) => color}11;
+  /* border: 1px solid ${({ color }) => color}88; */
+  /* background: ${({ color }) => color}11; */
 `;
 
 export const FileBlockTitle = styled.div`
@@ -55,4 +55,9 @@ export const ExportResultDateTime = styled.div`
   align-items: center;
   gap: 12px;
   font-weight: 500;
+`;
+
+export const BlockDevider = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
 `;

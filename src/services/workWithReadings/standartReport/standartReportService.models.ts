@@ -13,6 +13,7 @@ import {
 } from './standartReportService.api';
 import { interval } from 'patronum';
 import { EPollState } from 'api/types';
+import { message } from 'antd';
 
 const StandartReportGate = createGate();
 
@@ -44,6 +45,14 @@ sample({
     (result.status === EPollState.Error || result.status === EPollState.Done) &&
     !params?.isInitial,
   target: getAllClosingDevicesQuery.start,
+});
+
+merge([
+  startCloseDevicesByCheckingDatePoll.start,
+  startCloseDevicesWithoutReadingsPoll.start,
+  startDuplicateReadingsPoll.start,
+]).watch(() => {
+  message.loading('Запуск процесса', 2);
 });
 
 // ---- CloseDevicesByCheckingDate ----

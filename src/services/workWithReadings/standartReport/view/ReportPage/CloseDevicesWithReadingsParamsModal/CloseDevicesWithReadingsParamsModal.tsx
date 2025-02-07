@@ -12,7 +12,7 @@ import { SelectMultiple } from 'ui-kit/SelectMultiple';
 import { useFormik } from 'formik';
 import { CloseDevicesWithoutReadingsQuery } from 'services/workWithReadings/standartReport/standartReportService.types';
 
-const MONTHS_WITHOUT_READINGS = [3, 4, 6];
+const MONTHS_WITHOUT_READINGS = [3, 6];
 
 export const CloseDevicesWithReadingsParamsModal: FC<Props> = ({
   isOpen,

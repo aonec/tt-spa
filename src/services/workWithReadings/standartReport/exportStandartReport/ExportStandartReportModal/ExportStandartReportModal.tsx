@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { Props } from './ExportStandartReportModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import {
@@ -16,9 +16,9 @@ import {
 import { EPollState } from 'api/types';
 import Panel from './panel.svg?react';
 import {
+  BlockDevider,
   ExportDateTime,
   ExportResultDateTime,
-  ExportResultTitle,
   FileBlock,
   FileBlockTitle,
   Header,
@@ -32,14 +32,25 @@ import { PollActionTypeLookup } from 'services/workWithReadings/readingReportsAr
 import { downloadReportFile } from 'services/workWithReadings/readingReportsArchive/readingReportsArchiveService.api';
 import { Alert } from 'ui-kit/Alert';
 import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
+import { SpaceLine } from 'ui-kit/SpaceLine';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
+import { FormItem } from 'ui-kit/FormItem';
+import { SelectMultiple } from 'ui-kit/SelectMultiple';
+import { message, Select } from 'antd';
 
 export const ExportStandartReportModal: FC<Props> = ({
   isModalOpen,
   closeModal,
   handleStartExport,
   lastPollState,
+  isLoadingPollState,
+  organizations,
 }) => {
   const date = dayjs().format('MMMM YYYY');
+
+  const [selectedManagementFirms, setSelectedManagementFirms] = useState<
+    number[]
+  >([]);
 
   const uppercaseDate = date
     .split(' ')
@@ -59,7 +70,7 @@ export const ExportStandartReportModal: FC<Props> = ({
         lastPollState.doneAt,
       ).format('DD.MM.YYYY')}`,
     );
-  }, []);
+  }, [lastPollState]);
 
   return (
     <FormModal
@@ -71,22 +82,42 @@ export const ExportStandartReportModal: FC<Props> = ({
       onCancel={closeModal}
       submitBtnText="Экспортировать"
       loading={isLoading}
-      onSubmit={() =>
+      onSubmit={() => {
         handleStartExport({
           Year: Number(dayjs().format('YYYY')),
           Month: Number(dayjs().format('MM')),
-          ManagementFirmIds: [4],
-        })
-      }
+          ManagementFirmIds: selectedManagementFirms,
+        });
+
+        message.loading('Запуск экспорта', 2);
+      }}
       customFooter={isLoading ? <></> : void 0}
       form={
         <Wrapper>
           {!isLoading && (
-            <BillingPeriod>
-              <Title>Расчетный период</Title>
-              <Date>{uppercaseDate}</Date>
-            </BillingPeriod>
+            <BlockDevider>
+              <BillingPeriod>
+                <Title>Расчетный период</Title>
+                <Date>{uppercaseDate}</Date>
+              </BillingPeriod>
+              <FormItem label="УК">
+                <SelectMultiple
+                  placeholder="Выберите"
+                  value={selectedManagementFirms}
+                  onChange={(value) =>
+                    setSelectedManagementFirms(value as number[])
+                  }
+                >
+                  {organizations?.items?.map((elem) => (
+                    <Select.Option key={elem.id} value={elem.id}>
+                      {elem.name}
+                    </Select.Option>
+                  ))}
+                </SelectMultiple>
+              </FormItem>
+            </BlockDevider>
           )}
+
           {isLoading && (
             <>
               <Panel />
@@ -98,9 +129,12 @@ export const ExportStandartReportModal: FC<Props> = ({
             </>
           )}
 
-          {lastPollState && !isLoading && (
+          <WithLoader isLoading={isLoadingPollState && !isLoading} />
+
+          {lastPollState && !isLoading && !isLoadingPollState && (
             <LastPollBlock color={PollStateColorLookup[lastPollState.status]}>
-              <ExportResultTitle>Результат экспорта:</ExportResultTitle>
+              <SpaceLine />
+              <Title>Результат экспорта:</Title>
               <ExportResultDateTime>
                 <PollStatusWrapper
                   color={PollStateColorLookup[lastPollState.status]}
