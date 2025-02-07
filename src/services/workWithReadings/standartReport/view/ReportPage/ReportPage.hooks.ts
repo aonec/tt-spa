@@ -2,7 +2,6 @@ import { PanelItemData, PanelItemStatus } from './PanelItem/PanelItem.types';
 import { useMemo } from 'react';
 import { ReportTemplates } from 'services/reportsService/reportViewService/view/ReportViewPage/ReportFiltrationForm/ReportFiltrationForm.types';
 import { ActionsHookProps } from './ReportPage.types';
-import { EPollState } from 'api/types';
 
 export function usePanelsList({
   closingDevices,
@@ -26,12 +25,7 @@ export function usePanelsList({
           : null,
         btnText: `Закрыть приборы`,
         btnOnClick: handleStartCloseDevicesByCheckingDatePoll,
-        isLoadingInfo:
-          lastCloseDevicesByCheckingDatePollData?.status ===
-            EPollState.Pending ||
-          lastCloseDevicesByCheckingDatePollData?.status ===
-            EPollState.Running ||
-          isLoadingClosingDevices,
+        isLoadingInfo: isLoadingClosingDevices,
         link: `/reports/IndividualDevices?reportTemp=${ReportTemplates.CheckingDateExpiration}`,
         pollState: lastCloseDevicesByCheckingDatePollData,
       },
@@ -45,12 +39,7 @@ export function usePanelsList({
           : null,
         btnText: 'Закрыть приборы',
         btnOnClick: handleStartCloseDevicesWithoutReadingsPoll,
-        isLoadingInfo:
-          lastCloseDevicesWithoutReadingsPollData?.status ===
-            EPollState.Pending ||
-          lastCloseDevicesWithoutReadingsPollData?.status ===
-            EPollState.Running ||
-          isLoadingClosingDevices,
+        isLoadingInfo: isLoadingClosingDevices,
         link: '/statistics/subscribersConsumption/managingFirm',
         pollState: lastCloseDevicesWithoutReadingsPollData,
       },
@@ -60,10 +49,7 @@ export function usePanelsList({
         info: `${closingDevices?.apartmentsOnPauseCount} квартир`,
         btnText: 'Дублировать показания',
         btnOnClick: handleStartDuplicateReadingsPoll,
-        isLoadingInfo:
-          lastDuplicateReadingsPollData?.status === EPollState.Pending ||
-          lastDuplicateReadingsPollData?.status === EPollState.Running ||
-          isLoadingClosingDevices,
+        isLoadingInfo: isLoadingClosingDevices,
         pollState: lastDuplicateReadingsPollData,
       },
       {

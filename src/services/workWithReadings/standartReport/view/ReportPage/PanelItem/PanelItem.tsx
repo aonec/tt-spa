@@ -19,6 +19,7 @@ import { LinkChevron } from 'ui-kit/shared/ListOpeningChevron/ListOpeningChevron
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
+import { EPollState } from 'api/types';
 
 const LeftBlockContainer = ({
   status,
@@ -81,7 +82,10 @@ export const PanelItem: FC<Props> = ({
     if (btnText) {
       return (
         <Button
-          disabled={isLoadingInfo}
+          disabled={
+            pollState?.status === EPollState.Pending ||
+            pollState?.status === EPollState.Running
+          }
           type="ghost"
           size="small"
           onClick={btnOnClick}
@@ -92,7 +96,7 @@ export const PanelItem: FC<Props> = ({
     }
 
     return <div />;
-  }, []);
+  }, [pollState, btnText, btnOnClick]);
 
   return (
     <Wrapper>

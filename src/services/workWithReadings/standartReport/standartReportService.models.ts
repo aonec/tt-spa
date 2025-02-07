@@ -27,6 +27,17 @@ sample({
   ],
 });
 
+sample({
+  clock: [
+    lastCloseDevicesByCheckingDatePollQuery.finished.success,
+    lastCloseDevicesWithoutReadingsPollQuery.finished.success,
+    lastDuplicateReadingsPollQuery.finished.success,
+  ],
+  filter: ({ result }) =>
+    result.status === EPollState.Error || result.status === EPollState.Done,
+  target: getAllClosingDevicesQuery.start,
+});
+
 // ---- CloseDevicesByCheckingDate ----
 
 const handleStartCloseDevicesByCheckingDatePoll =
