@@ -211,6 +211,11 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             ),
         },
         {
+          label: 'Последнее показание',
+          size: '110px',
+          render: (elem) => elem.apartmentId || 'Нет данных',
+        },
+        {
           label: 'Разрядность',
           size: '110px',
           hidden: !isInvalidBitDepth,
