@@ -3,6 +3,7 @@ import {
   ItemHeader,
   Name,
   NamesWrapper,
+  Period,
   RangePickerSC,
   ReportName,
   Resource,
@@ -15,6 +16,7 @@ import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 import { ListOpeningChevron } from 'ui-kit/shared/ListOpeningChevron';
 import {
   GroupReportConfigurationPeriodDictionary,
+  GroupReportConfigurationReportPeriodTypeDictionary,
   NodeStatusTextDictionary,
   ReportTypeDictionary,
   ResourcesNameDictionary,
@@ -72,6 +74,12 @@ export const RegularReportItem: FC<Props> = ({
   const regularity = report.reportConfigurationDetails?.sendingPeriodType
     ? GroupReportConfigurationPeriodDictionary[
         report.reportConfigurationDetails?.sendingPeriodType
+      ]
+    : 'Не найдено';
+
+  const reportPeriodType = report.reportConfigurationDetails?.reportPeriodType
+    ? GroupReportConfigurationReportPeriodTypeDictionary[
+        report.reportConfigurationDetails?.reportPeriodType
       ]
     : 'Не найдено';
 
@@ -157,48 +165,44 @@ export const RegularReportItem: FC<Props> = ({
                 value: nodeStatus,
               },
               {
-                key: 'Детализация',
-                value: reportType,
+                key: 'Период и детализация',
+                value: (
+                  <Period>
+                    {reportPeriodType} | {reportType}
+                  </Period>
+                ),
               },
               {
                 key: 'Регулярность',
                 value: regularity,
               },
               {
-                key: 'Дата следующей отправки',
-                value: dayjs(
-                  report.reportConfigurationDetails?.nextDate,
-                ).format('YYYY-MM-DD'),
-              },
-
-              {
-                key: 'Период отчета',
+                key: 'Дата следующей отправки и период',
                 value: (
-                  <RangePickerSC
-                    disabled
-                    small
-                    value={[
-                      dayjs(report.report?.from),
-                      dayjs(report.report?.to),
-                    ]}
-                  />
+                  <Period>
+                    {dayjs(report.reportConfigurationDetails?.nextDate).format(
+                      'DD.MM.YYYY',
+                    )}
+                    <RangePickerSC
+                      disabled
+                      small
+                      value={[
+                        dayjs(report.report?.from),
+                        dayjs(report.report?.to),
+                      ]}
+                      format={{ format: 'DD.MM.YYYY' }}
+                    />
+                  </Period>
                 ),
               },
 
               {
-                key: 'Контрагенты',
+                key: 'Получатели',
                 value: (
                   <NamesWrapper>
                     {receivingContractors?.map((contractor) => (
                       <div key={contractor.id}> {contractor.name} </div>
                     ))}
-                  </NamesWrapper>
-                ),
-              },
-              {
-                key: 'Сотрудники',
-                value: (
-                  <NamesWrapper>
                     {usersFullName.map((name) => (
                       <Name key={name}>{name}</Name>
                     ))}
