@@ -11,6 +11,7 @@ import { Props } from './CalculatorInfo.types';
 import { Link } from 'react-router-dom';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { StatusBar } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus/DeviceStatus.styled';
+import { getBuildingAddress } from 'utils/getBuildingAddress';
 
 export const CalculatorInfo: FC<Props> = ({ device }) => {
   const deviceInfo = (
@@ -35,6 +36,8 @@ export const CalculatorInfo: FC<Props> = ({ device }) => {
         <StatusBar isActive={device.isConnected} />
         {device.isConnected ? 'Активен' : 'Нет соединения'}
       </StatusWrapper>
+
+      {getBuildingAddress(device.address)}
     </Wrapper>
   );
 };
