@@ -23,6 +23,7 @@ export const Footer = styled.div`
   padding-top: 16px;
 
   position: absolute;
+  bottom: 0px;
   left: 0;
   width: calc(100% + 24px);
 
