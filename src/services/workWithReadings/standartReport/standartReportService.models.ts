@@ -1,20 +1,28 @@
 import { createEvent, merge, sample } from 'effector';
 import { createGate } from 'effector-react';
 import {
+  addressesWithHouseManagementsQuery,
   getAllClosingDevicesQuery,
   lastCloseDevicesByCheckingDatePollQuery,
   lastCloseDevicesWithoutReadingsPollQuery,
   lastDuplicateReadingsPollQuery,
+  organizationsQuery,
   startCloseDevicesByCheckingDatePoll,
   startCloseDevicesWithoutReadingsPoll,
   startDuplicateReadingsPoll,
 } from './standartReportService.api';
 import { interval } from 'patronum';
 import { EPollState } from 'api/types';
+import { message } from 'antd';
 
 const StandartReportGate = createGate();
 
-const POLL_TIMEOUT = 5000;
+const POLL_TIMEOUT = 2000;
+
+sample({
+  clock: StandartReportGate.open,
+  target: [organizationsQuery.start, addressesWithHouseManagementsQuery.start],
+});
 
 sample({
   clock: StandartReportGate.open,
@@ -25,6 +33,26 @@ sample({
     lastCloseDevicesWithoutReadingsPollQuery.start,
     lastDuplicateReadingsPollQuery.start,
   ],
+});
+
+sample({
+  clock: [
+    lastCloseDevicesByCheckingDatePollQuery.finished.success,
+    lastCloseDevicesWithoutReadingsPollQuery.finished.success,
+    lastDuplicateReadingsPollQuery.finished.success,
+  ],
+  filter: ({ result, params }) =>
+    (result.status === EPollState.Error || result.status === EPollState.Done) &&
+    !params?.isInitial,
+  target: getAllClosingDevicesQuery.start,
+});
+
+merge([
+  startCloseDevicesByCheckingDatePoll.start,
+  startCloseDevicesWithoutReadingsPoll.start,
+  startDuplicateReadingsPoll.start,
+]).watch(() => {
+  message.loading('Запуск процесса', 2);
 });
 
 // ---- CloseDevicesByCheckingDate ----

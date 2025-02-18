@@ -10,7 +10,7 @@ import {
   ETaskEngineeringElement,
   EisTaskReasonType,
   EisTaskType,
-  GroupReportConfigurationPeriod,
+  GroupReportConfigurationSendingPeriodType,
   ReportType,
   ResourceType,
 } from 'api/types';
@@ -182,11 +182,11 @@ export const ResourcesNameDictionary: { [key in ResourceType]: string } = {
 };
 
 export const GroupReportConfigurationPeriodDictionary: {
-  [key in GroupReportConfigurationPeriod]: string;
+  [key in GroupReportConfigurationSendingPeriodType]: string;
 } = {
-  [GroupReportConfigurationPeriod.EveryTwoWeeks]: '1 раз в 2 недели',
-  [GroupReportConfigurationPeriod.EveryMonth]: '1 раз в месяц',
-  [GroupReportConfigurationPeriod.EveryQuarter]: '1 раз в квартал',
+  [GroupReportConfigurationSendingPeriodType.EveryTwoWeeks]: '1 раз в 2 недели',
+  [GroupReportConfigurationSendingPeriodType.EveryMonth]: '1 раз в месяц',
+  [GroupReportConfigurationSendingPeriodType.EveryQuarter]: '1 раз в квартал',
 };
 
 export const ReportTypeDictionary: {

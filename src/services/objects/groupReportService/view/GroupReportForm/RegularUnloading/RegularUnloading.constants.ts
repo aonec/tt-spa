@@ -1,9 +1,12 @@
-import { GroupReportConfigurationPeriod } from 'api/types';
+import { GroupReportConfigurationSendingPeriodType } from 'api/types';
 
 export const SubsTypeRadioOptions = [
   {
-    value: GroupReportConfigurationPeriod.EveryTwoWeeks,
+    value: GroupReportConfigurationSendingPeriodType.EveryTwoWeeks,
     label: '1 раз в 2 недели',
   },
-  { value: GroupReportConfigurationPeriod.EveryMonth, label: '1 раз в месяц' },
+  {
+    value: GroupReportConfigurationSendingPeriodType.EveryMonth,
+    label: '1 раз в месяц',
+  },
 ];

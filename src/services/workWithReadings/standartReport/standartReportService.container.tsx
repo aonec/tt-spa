@@ -1,10 +1,12 @@
 import { useUnit } from 'effector-react';
 import { ReportPage } from './view/ReportPage';
 import {
+  addressesWithHouseManagementsQuery,
   getAllClosingDevicesQuery,
   lastCloseDevicesByCheckingDatePollQuery,
   lastCloseDevicesWithoutReadingsPollQuery,
   lastDuplicateReadingsPollQuery,
+  organizationsQuery,
 } from './standartReportService.api';
 import { standartReportService } from './standartReportService.models';
 import { ExportStandartReportContainer } from './exportStandartReport';
@@ -26,6 +28,8 @@ export const StandartReportContainer = () => {
     handleStartDuplicateReadingsPoll,
     lastDuplicateReadingsPollData,
     handleExport,
+    organizations,
+    houseManagements,
   } = useUnit({
     closingDevices: getAllClosingDevicesQuery.$data,
     isLoadingClosingDevices: getAllClosingDevicesQuery.$pending,
@@ -40,6 +44,8 @@ export const StandartReportContainer = () => {
     handleStartDuplicateReadingsPoll: inputs.handleStartDuplicateReadingsPoll,
     lastDuplicateReadingsPollData: lastDuplicateReadingsPollQuery.$data,
     handleExport: exportStandartReportService.inputs.openModal,
+    organizations: organizationsQuery.$data,
+    houseManagements: addressesWithHouseManagementsQuery.$data,
   });
 
   return (
@@ -64,6 +70,8 @@ export const StandartReportContainer = () => {
         handleStartDuplicateReadingsPoll={handleStartDuplicateReadingsPoll}
         lastDuplicateReadingsPollData={lastDuplicateReadingsPollData}
         handleExport={handleExport}
+        organizations={organizations}
+        houseManagements={houseManagements}
       />
     </>
   );
