@@ -24,6 +24,7 @@ import { developmentSettingsService } from 'services/developmentSettings/develop
 import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 import { Button } from 'ui-kit/Button';
 import { TasksSummary } from '../TasksSummary';
+import { TasksControls } from './TasksControls';
 
 export const TasksProfile: FC<TasksProfileProps> = ({
   handleExportTasksList,
@@ -166,6 +167,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
                 housingManagments={housingManagments}
                 perpetrators={perpetrators}
               />
+              <TasksControls />
             </ContentWrapper>
           </FiltrationWrapper>
           <ContentWrapper>
