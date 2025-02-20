@@ -56,6 +56,7 @@ const setAddress = createEvent<{
 }>();
 const toggleTaskCheckbox = createEvent<number>();
 const setSelectedTasks = createEvent<number[]>();
+const refetchTasks = createEvent();
 
 const getApartmentFx = createEffect<FiltersGatePayload, ApartmentResponse>(
   fetchApartment,
@@ -179,6 +180,12 @@ sample({
   target: startSearchTasks,
 });
 
+sample({
+  clock: refetchTasks,
+  source: $searchState,
+  target: searchTasksFx,
+});
+
 const $tasksPagedData = createStore<TasksPagedList | null>(null).on(
   searchTasksFx.doneData,
   (_, tasksPaged) => tasksPaged,
@@ -239,6 +246,7 @@ export const tasksProfileService = {
     handleOpenAddTaskModal: addTaskFromDispatcherService.inputs.handleOpenModal,
     toggleTaskCheckbox,
     setSelectedTasks,
+    refetchTasks,
   },
   outputs: {
     $taskTypes,
