@@ -8,8 +8,7 @@ import { cancellableUrl } from 'services/cancelRequestService/cancelRequestServi
 import { cancelRequestService } from 'services/cancelRequestService';
 import { isUndefined } from 'lodash/fp';
 
-export const isDevMode = false;
-// import.meta.env.VITE_DEV_SETTINGS !== 'DISABLED' || true;
+export const isDevMode = true;
 
 let refreshPromise: null | Promise<unknown> = null;
 const clearPromise = () => (refreshPromise = null);
