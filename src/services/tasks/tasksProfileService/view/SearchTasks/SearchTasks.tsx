@@ -138,6 +138,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       handleClear={clearAllFilters}
       handleClose={closeExtendedSearch}
       handleOpen={openExtendedSearch}
+      isPaddingSearch={false}
       extendedSearchContent={
         <>
           {isArchived && (

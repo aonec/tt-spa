@@ -23,8 +23,13 @@ import {
 } from './TasksListItem.styled';
 import { TasksListItemProps } from './TasksListItem.types';
 import { EmergencyPanel } from './EmergencyPanel';
+import { Checkbox } from 'antd';
 
-export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
+export const TasksListItem: FC<TasksListItemProps> = ({
+  task,
+  isSelected,
+  toggleTaskCheckbox,
+}) => {
   const {
     currentStage,
     name,
@@ -84,6 +89,15 @@ export const TasksListItem: FC<TasksListItemProps> = ({ task }) => {
         <TaskItemWrapper isEmergency={isEmergency}>
           <NameRowWrapper>
             <TaskNameWrapper className="task-item-title">
+              {toggleTaskCheckbox && (
+                <Checkbox
+                  checked={isSelected}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleTaskCheckbox();
+                  }}
+                />
+              )}
               {preparedTaskTitle}
               {isEmergency && <EmergencyPanel />}
             </TaskNameWrapper>

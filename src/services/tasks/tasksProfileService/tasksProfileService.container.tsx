@@ -51,6 +51,9 @@ export const TasksProfileContainer = () => {
     setTasksPageSegment,
     handleOpenAddTaskModal,
     tasksSummaryData,
+    selectedTasks,
+    toggleTaskCheckbox,
+    setSelectedTasks,
   } = useUnit({
     taskTypes: outputs.$taskTypes,
     housingManagments: outputs.$housingManagments,
@@ -74,6 +77,9 @@ export const TasksProfileContainer = () => {
     setTasksPageSegment: inputs.setTasksPageSegment,
     handleOpenAddTaskModal: inputs.handleOpenAddTaskModal,
     tasksSummaryData: outputs.$tasksSummaryData,
+    selectedTasks: outputs.$selectedTasks,
+    toggleTaskCheckbox: inputs.toggleTaskCheckbox,
+    setSelectedTasks: inputs.setSelectedTasks,
   });
 
   const isSpectator = usePermission([
@@ -189,6 +195,9 @@ export const TasksProfileContainer = () => {
         isPermissionToAddTask={isPermissionToAddTask}
         tasksSummaryData={tasksSummaryData}
         isPermissionToShowSummary={isPermissionToShowSummary}
+        selectedTasks={selectedTasks}
+        toggleTaskCheckbox={toggleTaskCheckbox}
+        setSelectedTasks={setSelectedTasks}
       />
     </>
   );

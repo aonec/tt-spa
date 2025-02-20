@@ -2,18 +2,41 @@ import { FC } from 'react';
 import { ManageButtonsWrapper, Wrapper } from './TasksControls.styled';
 import { Props } from './TasksControls.types';
 import { Button, Checkbox } from 'antd';
-import { CloseBlueIcon } from 'ui-kit/icons';
-import { ArrowRepeat } from 'react-bootstrap-icons';
+import { ArrowRepeat, XLg } from 'react-bootstrap-icons';
 
-export const TasksControls: FC<Props> = () => {
+export const TasksControls: FC<Props> = ({
+  selectedTasks,
+  setSelectedTasks,
+  tasks,
+}) => {
+  const isAllChecked =
+    selectedTasks.length === tasks.length && tasks.length > 0;
+
   return (
     <Wrapper>
-      <Checkbox>Выбрать все</Checkbox>
+      <Checkbox
+        checked={isAllChecked}
+        onChange={(e) => {
+          const isChecked = e.target.checked;
+
+          if (isChecked) {
+            setSelectedTasks(tasks.map((task) => task.id));
+          } else {
+            setSelectedTasks([]);
+          }
+        }}
+      >
+        Выбрать все
+      </Checkbox>
       <ManageButtonsWrapper>
-        <Button type="link" icon={<ArrowRepeat />}>
+        <Button
+          disabled={!selectedTasks.length}
+          type="link"
+          icon={<ArrowRepeat />}
+        >
           Передать задачу
         </Button>
-        <Button type="link" icon={<CloseBlueIcon />}>
+        <Button disabled={!selectedTasks.length} type="link" icon={<XLg />}>
           Закрыть задачу
         </Button>
       </ManageButtonsWrapper>

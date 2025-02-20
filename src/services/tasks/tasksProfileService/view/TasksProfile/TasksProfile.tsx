@@ -50,6 +50,9 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   isPermissionToAddTask,
   tasksSummaryData,
   isPermissionToShowSummary,
+  selectedTasks,
+  toggleTaskCheckbox,
+  setSelectedTasks,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
@@ -68,7 +71,16 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     ? `Наблюдаемые (${observingTasksCount})`
     : 'Наблюдаемые';
 
-  const tasksList = useMemo(() => <TasksList tasks={tasks} />, [tasks]);
+  const tasksList = useMemo(
+    () => (
+      <TasksList
+        tasks={tasks}
+        selectedTasks={selectedTasks}
+        toggleTaskCheckbox={toggleTaskCheckbox}
+      />
+    ),
+    [tasks, selectedTasks, toggleTaskCheckbox],
+  );
 
   useEffect(() => {
     if (isSpectator && grouptype === TaskGroupingFilter.Executing) {
@@ -167,7 +179,11 @@ export const TasksProfile: FC<TasksProfileProps> = ({
                 housingManagments={housingManagments}
                 perpetrators={perpetrators}
               />
-              <TasksControls />
+              <TasksControls
+                selectedTasks={selectedTasks}
+                setSelectedTasks={setSelectedTasks}
+                tasks={tasks}
+              />
             </ContentWrapper>
           </FiltrationWrapper>
           <ContentWrapper>
@@ -189,6 +205,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
             </WithLoader>
             {!isLoading && Boolean(tasks?.length) && (
               <PaginationSC
+                disabled={Boolean(selectedTasks.length)}
                 defaultCurrent={1}
                 onChange={changePageNumber}
                 pageSize={20}

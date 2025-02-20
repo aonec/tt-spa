@@ -35,6 +35,9 @@ export type TasksProfileProps = {
   isPermissionToAddTask: boolean;
   tasksSummaryData: TasksSummaryData;
   isPermissionToShowSummary: boolean;
+  selectedTasks: number[];
+  toggleTaskCheckbox: (payload: number) => void;
+  setSelectedTasks: (payload: number[]) => void;
 };
 
 export type TasksPageSegment = 'list' | 'map';
