@@ -86,6 +86,20 @@ export const TasksProfileContainer = () => {
     handleCloseTasks: closeTasksService.inputs.openModal,
   });
 
+  const isAllowControlMode = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.SeniorOperator,
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+  ]);
+
+  const isControlMode = useMemo(() => {
+    return (
+      (grouptype === TaskGroupingFilter.Observing ||
+        grouptype === TaskGroupingFilter.Executing) &&
+      isAllowControlMode
+    );
+  }, [grouptype, isAllowControlMode]);
+
   useEffect(() => {
     setSelectedTasks([]);
   }, [grouptype, setSelectedTasks]);
@@ -209,6 +223,7 @@ export const TasksProfileContainer = () => {
         toggleTaskCheckbox={toggleTaskCheckbox}
         setSelectedTasks={setSelectedTasks}
         handleCloseTasks={handleCloseTasks}
+        isControlMode={isControlMode}
       />
     </>
   );

@@ -4,4 +4,5 @@ export type TasksListProps = {
   tasks: TaskType[];
   selectedTasks?: number[];
   toggleTaskCheckbox?: (payload: number) => void;
+  isControlMode?: boolean;
 };

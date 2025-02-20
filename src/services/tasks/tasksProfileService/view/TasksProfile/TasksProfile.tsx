@@ -54,6 +54,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   toggleTaskCheckbox,
   setSelectedTasks,
   handleCloseTasks,
+  isControlMode,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
@@ -78,9 +79,10 @@ export const TasksProfile: FC<TasksProfileProps> = ({
         tasks={tasks}
         selectedTasks={selectedTasks}
         toggleTaskCheckbox={toggleTaskCheckbox}
+        isControlMode={isControlMode}
       />
     ),
-    [tasks, selectedTasks, toggleTaskCheckbox],
+    [tasks, selectedTasks, toggleTaskCheckbox, isControlMode],
   );
 
   useEffect(() => {
@@ -179,13 +181,16 @@ export const TasksProfile: FC<TasksProfileProps> = ({
                 changeFiltersByGroupType={changeFiltersByGroupType}
                 housingManagments={housingManagments}
                 perpetrators={perpetrators}
+                isControlMode={isControlMode}
               />
-              <TasksControls
-                selectedTasks={selectedTasks}
-                setSelectedTasks={setSelectedTasks}
-                tasks={tasks}
-                handleCloseTasks={handleCloseTasks}
-              />
+              {isControlMode && (
+                <TasksControls
+                  selectedTasks={selectedTasks}
+                  setSelectedTasks={setSelectedTasks}
+                  tasks={tasks}
+                  handleCloseTasks={handleCloseTasks}
+                />
+              )}
             </ContentWrapper>
           </FiltrationWrapper>
           <ContentWrapper>
@@ -207,7 +212,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
             </WithLoader>
             {!isLoading && Boolean(tasks?.length) && (
               <PaginationSC
-                disabled={Boolean(selectedTasks.length)}
+                disabled={Boolean(selectedTasks.length) && !isControlMode}
                 defaultCurrent={1}
                 onChange={changePageNumber}
                 pageSize={20}

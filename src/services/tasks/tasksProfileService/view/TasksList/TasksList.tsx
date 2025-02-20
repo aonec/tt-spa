@@ -6,6 +6,7 @@ export const TasksList: FC<TasksListProps> = ({
   tasks,
   toggleTaskCheckbox,
   selectedTasks,
+  isControlMode,
 }) => {
   return (
     <div>
@@ -17,6 +18,7 @@ export const TasksList: FC<TasksListProps> = ({
           toggleTaskCheckbox={
             toggleTaskCheckbox && (() => toggleTaskCheckbox(task.id))
           }
+          isControlMode={isControlMode}
         />
       ))}
     </div>

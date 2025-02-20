@@ -79,7 +79,7 @@ export const CloseTasksContainer = () => {
                     label: '',
                     size: '120px',
                     render: (elem) => (
-                      <NavLink target="_blank" to={`/tasks/${elem.id}`}>
+                      <NavLink target="_blank" to={`/tasks/profile/${elem.id}`}>
                         <Button type="link">Перейти</Button>
                       </NavLink>
                     ),

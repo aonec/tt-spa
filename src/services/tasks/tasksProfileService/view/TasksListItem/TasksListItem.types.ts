@@ -6,6 +6,7 @@ export type TasksListItemProps = {
   task: TaskType;
   isSelected?: boolean;
   toggleTaskCheckbox?: () => void;
+  isControlMode?: boolean;
 };
 
 export type TaskType = TaskListResponse & {

@@ -29,6 +29,7 @@ export const TasksListItem: FC<TasksListItemProps> = ({
   task,
   isSelected,
   toggleTaskCheckbox,
+  isControlMode,
 }) => {
   const {
     currentStage,
@@ -89,7 +90,7 @@ export const TasksListItem: FC<TasksListItemProps> = ({
         <TaskItemWrapper isEmergency={isEmergency}>
           <NameRowWrapper>
             <TaskNameWrapper className="task-item-title">
-              {toggleTaskCheckbox && (
+              {toggleTaskCheckbox && isControlMode && (
                 <Checkbox
                   checked={isSelected}
                   onClick={(e) => {
