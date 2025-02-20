@@ -53,6 +53,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   selectedTasks,
   toggleTaskCheckbox,
   setSelectedTasks,
+  handleCloseTasks,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
@@ -183,6 +184,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
                 selectedTasks={selectedTasks}
                 setSelectedTasks={setSelectedTasks}
                 tasks={tasks}
+                handleCloseTasks={handleCloseTasks}
               />
             </ContentWrapper>
           </FiltrationWrapper>

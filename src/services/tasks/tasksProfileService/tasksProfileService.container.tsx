@@ -18,6 +18,8 @@ import {
 } from '../addTaskFromDispatcherService';
 import { usePermission } from 'hooks/usePermission';
 import { exportTasksListService } from '../exportTasksListService';
+import { CloseTasksContainer } from './closeTasks';
+import { closeTasksService } from './closeTasks/closeTasksService.models';
 
 const { inputs, outputs, gates } = tasksProfileService;
 const { InitialGate } = gates;
@@ -54,6 +56,7 @@ export const TasksProfileContainer = () => {
     selectedTasks,
     toggleTaskCheckbox,
     setSelectedTasks,
+    handleCloseTasks,
   } = useUnit({
     taskTypes: outputs.$taskTypes,
     housingManagments: outputs.$housingManagments,
@@ -80,7 +83,12 @@ export const TasksProfileContainer = () => {
     selectedTasks: outputs.$selectedTasks,
     toggleTaskCheckbox: inputs.toggleTaskCheckbox,
     setSelectedTasks: inputs.setSelectedTasks,
+    handleCloseTasks: closeTasksService.inputs.openModal,
   });
+
+  useEffect(() => {
+    setSelectedTasks([]);
+  }, [grouptype, setSelectedTasks]);
 
   const isSpectator = usePermission([
     ESecuredIdentityRoleName.ManagingFirmSpectator,
@@ -170,6 +178,8 @@ export const TasksProfileContainer = () => {
       <InitialGate />
       <TaskTypesGate />
 
+      <CloseTasksContainer />
+
       {isPermissionToAddTask && <AddTaskFromDispatcherContainer />}
       <TasksProfile
         handleExportTasksList={() => handleExportTasksList()}
@@ -198,6 +208,7 @@ export const TasksProfileContainer = () => {
         selectedTasks={selectedTasks}
         toggleTaskCheckbox={toggleTaskCheckbox}
         setSelectedTasks={setSelectedTasks}
+        handleCloseTasks={handleCloseTasks}
       />
     </>
   );

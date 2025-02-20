@@ -909,6 +909,10 @@ export interface CloseIndividualDeviceRequest {
   documentsIds?: number[] | null;
 }
 
+export interface CloseTasksRequest {
+  taskIds?: number[] | null;
+}
+
 export interface ClosedDeviceOnOneOfRisersConstructedReportResponse {
   status: EConstructedReportDeviceStatus;
   /** @format date-time */
@@ -2166,6 +2170,7 @@ export enum ESwitchingReason {
 export enum ETaskClosingStatus {
   Properly = 'Properly',
   Interrupted = 'Interrupted',
+  Forced = 'Forced',
 }
 
 export interface ETaskClosingStatusNullableStringDictionaryItem {
@@ -3226,6 +3231,32 @@ export interface HousingStockWithTasksResponse {
   tasks: TaskShortResponse[] | null;
 }
 
+export enum IPStatus {
+  Success = 'Success',
+  DestinationNetworkUnreachable = 'DestinationNetworkUnreachable',
+  DestinationHostUnreachable = 'DestinationHostUnreachable',
+  DestinationProtocolUnreachable = 'DestinationProtocolUnreachable',
+  DestinationPortUnreachable = 'DestinationPortUnreachable',
+  NoResources = 'NoResources',
+  BadOption = 'BadOption',
+  HardwareError = 'HardwareError',
+  PacketTooBig = 'PacketTooBig',
+  TimedOut = 'TimedOut',
+  BadRoute = 'BadRoute',
+  TtlExpired = 'TtlExpired',
+  TtlReassemblyTimeExceeded = 'TtlReassemblyTimeExceeded',
+  ParameterProblem = 'ParameterProblem',
+  SourceQuench = 'SourceQuench',
+  BadDestination = 'BadDestination',
+  DestinationUnreachable = 'DestinationUnreachable',
+  TimeExceeded = 'TimeExceeded',
+  BadHeader = 'BadHeader',
+  UnrecognizedNextHeader = 'UnrecognizedNextHeader',
+  IcmpError = 'IcmpError',
+  DestinationScopeMismatch = 'DestinationScopeMismatch',
+  Unknown = 'Unknown',
+}
+
 export interface IndividualDeviceConsumption {
   /** @format double */
   consumption?: number;
@@ -3640,6 +3671,7 @@ export interface IndividualDevicesConstructedReportResponse {
   resource: EResourceType;
   serialNumber: string | null;
   model: string | null;
+  lastReading: IndividualDeviceReadingsSlimResponse | null;
   invalidCheckingDatesOption: InvalidCheckingDatesConstructedReportResponse | null;
   closedDeviceOnOneOfRisersOption: ClosedDeviceOnOneOfRisersConstructedReportResponse | null;
   deviceCheckingDateExpirationOption: DeviceCheckingDateExpirationConstructedReportResponse | null;
@@ -4433,6 +4465,11 @@ export interface OrganizationUserWorkingStatusResponse {
   endDate: string | null;
 }
 
+export interface PingDeviceResponse {
+  status: IPStatus;
+  description: string | null;
+}
+
 export interface PipeHousingMeteringDeviceConnectionResponse {
   hub: PipeHousingMeteringDeviceHubConnectionResponse | null;
   /** @format int32 */
@@ -4688,6 +4725,12 @@ export interface ProblemDetails {
   detail?: string | null;
   instance?: string | null;
   [key: string]: any;
+}
+
+export interface ReassignTasksRequest {
+  taskIds?: number[] | null;
+  /** @format int32 */
+  newPerpetratorId?: number;
 }
 
 export interface RefreshResponse {
@@ -5208,6 +5251,13 @@ export interface SwitchMagneticSealRequest {
   /** @format date-time */
   magneticSealInstallationDate?: string | null;
   magneticSealTypeName?: string | null;
+}
+
+export interface TaskCloseStatusModel {
+  /** @format int32 */
+  id?: number;
+  isSuccess?: boolean;
+  errorDescription?: string | null;
 }
 
 export interface TaskCommentRequest {
@@ -7861,6 +7911,27 @@ export class Api<
     calculatorsFiltersList: (params: RequestParams = {}) =>
       this.request<CalculatorFilterResponse, ErrorApiResponse>({
         path: `/api/Calculators/filters`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
+     *
+     * @tags Calculators
+     * @name CalculatorsPingdeviceDetail
+     * @summary MeteringDevicesRead
+     * @request GET:/api/Calculators/pingdevice/{deviceId}
+     * @secure
+     */
+    calculatorsPingdeviceDetail: (
+      deviceId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<PingDeviceResponse, ErrorApiResponse>({
+        path: `/api/Calculators/pingdevice/${deviceId}`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -12800,6 +12871,28 @@ export class Api<
       }),
 
     /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags OrganizationUsers
+     * @name OrganizationUsersReassignTasksCreate
+     * @summary TaskAssign
+     * @request POST:/api/OrganizationUsers/ReassignTasks
+     * @secure
+     */
+    organizationUsersReassignTasksCreate: (
+      data: ReassignTasksRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/OrganizationUsers/ReassignTasks`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
      *
      * @tags OrganizationUsers
@@ -14892,7 +14985,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Диспетчер УК</li>
      *
      * @tags Tasks
      * @name TasksCloseCreate
@@ -14905,6 +14998,29 @@ export class Api<
         path: `/api/Tasks/${taskId}/close`,
         method: 'POST',
         secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Диспетчер УК</li>
+     *
+     * @tags Tasks
+     * @name TasksCloseAllCreate
+     * @summary TaskDelete
+     * @request POST:/api/Tasks/CloseAll
+     * @secure
+     */
+    tasksCloseAllCreate: (
+      data: CloseTasksRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<TaskCloseStatusModel[], ErrorApiResponse>({
+        path: `/api/Tasks/CloseAll`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),

@@ -8,6 +8,7 @@ export const TasksControls: FC<Props> = ({
   selectedTasks,
   setSelectedTasks,
   tasks,
+  handleCloseTasks,
 }) => {
   const isAllChecked =
     selectedTasks.length === tasks.length && tasks.length > 0;
@@ -34,10 +35,15 @@ export const TasksControls: FC<Props> = ({
           type="link"
           icon={<ArrowRepeat />}
         >
-          Передать задачу
+          Передать задачи
         </Button>
-        <Button disabled={!selectedTasks.length} type="link" icon={<XLg />}>
-          Закрыть задачу
+        <Button
+          onClick={handleCloseTasks}
+          disabled={!selectedTasks.length}
+          type="link"
+          icon={<XLg />}
+        >
+          Закрыть задачи
         </Button>
       </ManageButtonsWrapper>
     </Wrapper>

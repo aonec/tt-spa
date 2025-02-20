@@ -38,6 +38,7 @@ export type TasksProfileProps = {
   selectedTasks: number[];
   toggleTaskCheckbox: (payload: number) => void;
   setSelectedTasks: (payload: number[]) => void;
+  handleCloseTasks: () => void;
 };
 
 export type TasksPageSegment = 'list' | 'map';

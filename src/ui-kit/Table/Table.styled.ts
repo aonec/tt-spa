@@ -122,7 +122,7 @@ export const Header = styled.div<{
 
 const RowStyle = css<{ temp: string; css?: string }>`
   width: max-content;
-  height: 50px;
+  min-height: 50px;
   display: grid;
   grid-gap: 16px;
   align-items: center;
@@ -149,9 +149,11 @@ export const PaginationWrapper = styled.div`
 `;
 
 export const TableElement = styled.div<{ css?: string }>`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  /* overflow: hidden; */
+  /* white-space: wrap; */
+  /* text-overflow: ellipsis; */
+  width: 100%;
+  padding: 12px 0;
   padding-left: 16px;
   height: 100%;
   display: flex;
