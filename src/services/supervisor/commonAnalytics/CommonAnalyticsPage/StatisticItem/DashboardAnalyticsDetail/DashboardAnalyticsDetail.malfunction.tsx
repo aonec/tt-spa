@@ -27,7 +27,7 @@ export const DashboardMalfunctionAnalyticsDetail: FC<
         </div>
         <div>
           <NotClosedTaskCount isPositive={data.expiredTasksCount! > 0}>
-            {data.totalTasksCount}
+            {data.expiredTasksCount}
           </NotClosedTaskCount>{' '}
           / {data.totalTasksCount}
         </div>
