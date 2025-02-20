@@ -20,6 +20,8 @@ import { usePermission } from 'hooks/usePermission';
 import { exportTasksListService } from '../exportTasksListService';
 import { CloseTasksContainer } from './closeTasks';
 import { closeTasksService } from './closeTasks/closeTasksService.models';
+import { ReassignTasksContainer } from './reassignTasks';
+import { reassignTasksService } from './reassignTasks/reassignTasksService.models';
 
 const { inputs, outputs, gates } = tasksProfileService;
 const { InitialGate } = gates;
@@ -57,6 +59,7 @@ export const TasksProfileContainer = () => {
     toggleTaskCheckbox,
     setSelectedTasks,
     handleCloseTasks,
+    handleReassignTasks,
   } = useUnit({
     taskTypes: outputs.$taskTypes,
     housingManagments: outputs.$housingManagments,
@@ -84,6 +87,7 @@ export const TasksProfileContainer = () => {
     toggleTaskCheckbox: inputs.toggleTaskCheckbox,
     setSelectedTasks: inputs.setSelectedTasks,
     handleCloseTasks: closeTasksService.inputs.openModal,
+    handleReassignTasks: reassignTasksService.inputs.openModal,
   });
 
   const isAllowControlMode = usePermission([
@@ -193,6 +197,7 @@ export const TasksProfileContainer = () => {
       <TaskTypesGate />
 
       <CloseTasksContainer />
+      <ReassignTasksContainer />
 
       {isPermissionToAddTask && <AddTaskFromDispatcherContainer />}
       <TasksProfile
@@ -224,6 +229,7 @@ export const TasksProfileContainer = () => {
         setSelectedTasks={setSelectedTasks}
         handleCloseTasks={handleCloseTasks}
         isControlMode={isControlMode}
+        handleReassignTasks={handleReassignTasks}
       />
     </>
   );

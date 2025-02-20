@@ -55,6 +55,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   setSelectedTasks,
   handleCloseTasks,
   isControlMode,
+  handleReassignTasks,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
@@ -189,6 +190,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
                   setSelectedTasks={setSelectedTasks}
                   tasks={tasks}
                   handleCloseTasks={handleCloseTasks}
+                  handleReassignTasks={handleReassignTasks}
                 />
               )}
             </ContentWrapper>

@@ -39,6 +39,7 @@ export type TasksProfileProps = {
   toggleTaskCheckbox: (payload: number) => void;
   setSelectedTasks: (payload: number[]) => void;
   handleCloseTasks: () => void;
+  handleReassignTasks: () => void;
   isControlMode: boolean;
 };
 

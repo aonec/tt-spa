@@ -9,6 +9,7 @@ export const TasksControls: FC<Props> = ({
   setSelectedTasks,
   tasks,
   handleCloseTasks,
+  handleReassignTasks,
 }) => {
   const isAllChecked =
     selectedTasks.length === tasks.length && tasks.length > 0;
@@ -31,6 +32,7 @@ export const TasksControls: FC<Props> = ({
       </Checkbox>
       <ManageButtonsWrapper>
         <Button
+          onClick={handleReassignTasks}
           disabled={!selectedTasks.length}
           type="link"
           icon={<ArrowRepeat />}

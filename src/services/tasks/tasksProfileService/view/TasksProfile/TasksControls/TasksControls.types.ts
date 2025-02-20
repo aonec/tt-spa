@@ -5,4 +5,5 @@ export type Props = {
   setSelectedTasks: (payload: number[]) => void;
   tasks: TaskType[];
   handleCloseTasks: () => void;
+  handleReassignTasks: () => void;
 };
