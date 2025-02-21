@@ -4659,6 +4659,7 @@ export interface PollResponse {
   doneAt: string | null;
   actionType: PollActionType;
   hasFile: boolean;
+  errorMessage: string | null;
 }
 
 export interface PollResponsePagedList {

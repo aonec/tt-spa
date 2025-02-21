@@ -12,6 +12,8 @@ import {
 } from 'services/organizations';
 import { companyProfileService } from 'services/company/companyProfileService';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
+import { useMemo } from 'react';
+import _ from 'lodash';
 
 const {
   inputs,
@@ -56,6 +58,14 @@ export const RegularReportsContainer = () => {
     contractors: displayContractorsService.outputs.$contractors,
   });
 
+  const revertedReportsData = useMemo(() => {
+    return _.orderBy(
+      reportsData,
+      (item) => item.reportConfigurationDetails?.initialDate,
+      'desc',
+    );
+  }, [reportsData]);
+
   return (
     <>
       <HouseManagementsGate />
@@ -66,11 +76,11 @@ export const RegularReportsContainer = () => {
       <PageWrapper>
         <PageTitle>Регулярная выгрузка отчетов</PageTitle>
 
-        {reportsData?.map((report) => (
+        {revertedReportsData?.map((report) => (
           <RegularReportItem
             key={report.id}
             report={report}
-            isFirst={reportsData.indexOf(report) === 0}
+            isFirst={revertedReportsData.indexOf(report) === 0}
             houseManagements={houseManagements}
             organizations={organizations}
             handleDeleteReport={handleDeleteReport}

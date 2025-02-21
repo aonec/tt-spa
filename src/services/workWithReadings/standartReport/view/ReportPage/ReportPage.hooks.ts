@@ -46,10 +46,10 @@ export function usePanelsList({
       {
         title: 'Квартиры на паузе',
         status: PanelItemStatus.Success,
-        info: null,
+        info: `${closingDevices?.apartmentsOnPauseCount} квартир`,
         btnText: 'Дублировать показания',
         btnOnClick: handleStartDuplicateReadingsPoll,
-        isLoadingInfo: false,
+        isLoadingInfo: isLoadingClosingDevices,
         pollState: lastDuplicateReadingsPollData,
       },
       {
@@ -64,9 +64,14 @@ export function usePanelsList({
       },
     ];
   }, [
-    isLoadingClosingDevices,
     closingDevices,
+    isLoadingClosingDevices,
+    handleStartCloseDevicesByCheckingDatePoll,
     lastCloseDevicesByCheckingDatePollData,
+    handleStartCloseDevicesWithoutReadingsPoll,
+    lastCloseDevicesWithoutReadingsPollData,
+    handleStartDuplicateReadingsPoll,
+    lastDuplicateReadingsPollData,
   ]);
 
   return panelsList;
