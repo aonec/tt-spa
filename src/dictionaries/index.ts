@@ -10,6 +10,7 @@ import {
   ETaskEngineeringElement,
   EisTaskReasonType,
   EisTaskType,
+  GroupReportConfigurationReportPeriodType,
   GroupReportConfigurationSendingPeriodType,
   ReportType,
   ResourceType,
@@ -179,6 +180,13 @@ export const ResourcesNameDictionary: { [key in ResourceType]: string } = {
   [ResourceType.Electricity]: 'ЭЭ',
   [ResourceType.Heat]: 'Тепло',
   [ResourceType.None]: 'Нет',
+};
+
+export const GroupReportConfigurationReportPeriodTypeDictionary: {
+  [key in GroupReportConfigurationReportPeriodType]: string;
+} = {
+  [GroupReportConfigurationReportPeriodType.LastMonth]: 'За прошлый месяц',
+  [GroupReportConfigurationReportPeriodType.StartMonth]: 'С начала месяца',
 };
 
 export const GroupReportConfigurationPeriodDictionary: {

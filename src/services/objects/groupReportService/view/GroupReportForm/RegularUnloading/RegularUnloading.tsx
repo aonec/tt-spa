@@ -143,6 +143,9 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
                 }
                 allowClear={false}
                 format={'DD.MM.YYYY'}
+                disabledDate={(current) => {
+                  return current && current < dayjs().startOf('day');
+                }}
               />
               <ErrorMessage>{errors['Subscription.TriggerAt']}</ErrorMessage>
             </FormItem>
