@@ -19,6 +19,7 @@ import {
 } from 'ui-kit/icons';
 import { PanelTitleDictionary } from '../Statistics.constants';
 import { ConnectionStatuses } from '../../connectionAnalysisService.types';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 
 export const DevicesPanel: FC<Props> = ({ panelTitle, calculators }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,6 +53,16 @@ export const DevicesPanel: FC<Props> = ({ panelTitle, calculators }) => {
           <DevicesAmount>
             {devicesCount} {devicesCountText}
           </DevicesAmount>
+          <ContextMenuButton
+            size="small"
+            menuButtons={[
+              {
+                title: 'Выгрузить список',
+                onClick: () => {},
+              },
+            ]}
+          />
+
           <ListOpeningChevron isOpen={isOpen} />
         </RighContentWrapper>
       </InfoWrapper>
