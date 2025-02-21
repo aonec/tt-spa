@@ -35,7 +35,7 @@ export const DashboardMalfunctionAnalyticsDetail: FC<
       <ProgressSC
         percent={(data.expiredTasksCount! / data.totalTasksCount!) * 100}
         showInfo={false}
-        strokeColor={'#272F5A'}
+        strokeColor={'#39437b'}
         size={['100%', 3]}
       />
       <AnalyticsDetailWrapper>
