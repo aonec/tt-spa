@@ -12,6 +12,7 @@ import {
 import { currentAnalyticsService } from './currentAnalyticsService.models';
 import { getItemArray } from './currentAnalyticsService.utils';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { TaskTypesGate } from 'services/tasks/taskTypesService/taskTypesService.model';
 
 const {
   inputs,
@@ -59,6 +60,7 @@ export const CurrentAnalyticsContainer = () => {
   return (
     <>
       <ExistingCitiesGate />
+      <TaskTypesGate />
       <CurrentAnalyticsGate />
       <CurrentAnalyticsPage
         dashboardSummary={dashboardSummary}
