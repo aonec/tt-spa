@@ -5,6 +5,9 @@ import {
   FullAddressWrapper,
   LinkSc,
   PhoneNumber,
+  ReadingDate,
+  ReadingValue,
+  ReadingWrapper,
   ResourceWrapper,
 } from './IndividualDevicesReport.styled';
 import { IndividualDevicesReportProps } from './IndividualDevicesReport.types';
@@ -135,6 +138,24 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             ).format('DD.MM.YYYY'),
         },
         {
+          label: 'Последнее показание',
+          size: '170px',
+          render: (elem) => (
+            <ReadingWrapper>
+              <ReadingValue>
+                <div>{elem.lastReading?.value1}</div>
+                <div> {elem.lastReading?.value2}</div>
+              </ReadingValue>
+              <ReadingDate>
+                {dayjs(elem.lastReading?.actualReadingDate).format(
+                  'DD.MM.YYYY',
+                )}
+              </ReadingDate>
+            </ReadingWrapper>
+          ),
+          hidden: !isDeviceCheckingDateExpirationOption,
+        },
+        {
           label: 'Номер телефона',
           size: '400px',
           hidden: !isDeviceCheckingDateExpirationOption,
@@ -163,6 +184,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           render: (elem) =>
             dayjs(elem.closedDevicesOption?.checkingDate).format('DD.MM.YYYY'),
         },
+
         {
           label: 'Статус',
           size: '300px',
@@ -209,11 +231,6 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             dayjs(elem.invalidCheckingDatesOption?.futureCheckingDate).format(
               'DD.MM.YYYY',
             ),
-        },
-        {
-          label: 'Последнее показание',
-          size: '110px',
-          render: (elem) => elem.apartmentId || 'Нет данных',
         },
         {
           label: 'Разрядность',
