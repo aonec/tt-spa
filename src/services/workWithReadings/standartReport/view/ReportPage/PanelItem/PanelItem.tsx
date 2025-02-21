@@ -19,6 +19,7 @@ import { LinkChevron } from 'ui-kit/shared/ListOpeningChevron/ListOpeningChevron
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
+import { EPollState } from 'api/types';
 
 const LeftBlockContainer = ({
   status,
@@ -80,14 +81,22 @@ export const PanelItem: FC<Props> = ({
   const button = useMemo(() => {
     if (btnText) {
       return (
-        <Button disabled type="ghost" size="small" onClick={btnOnClick}>
+        <Button
+          disabled={
+            pollState?.status === EPollState.Pending ||
+            pollState?.status === EPollState.Running
+          }
+          type="ghost"
+          size="small"
+          onClick={btnOnClick}
+        >
           {btnText}
         </Button>
       );
     }
 
     return <div />;
-  }, []);
+  }, [pollState, btnText, btnOnClick]);
 
   return (
     <Wrapper>

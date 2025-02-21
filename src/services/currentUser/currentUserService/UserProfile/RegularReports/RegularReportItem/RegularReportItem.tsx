@@ -70,10 +70,9 @@ export const RegularReportItem: FC<Props> = ({
     );
   }, [report]);
 
-  const regularity = report.reportConfigurationDetails
-    ?.reportConfigurationPeriod
+  const regularity = report.reportConfigurationDetails?.sendingPeriodType
     ? GroupReportConfigurationPeriodDictionary[
-        report.reportConfigurationDetails?.reportConfigurationPeriod
+        report.reportConfigurationDetails?.sendingPeriodType
       ]
     : 'Не найдено';
 

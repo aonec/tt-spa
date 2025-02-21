@@ -1,6 +1,5 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import {
-  AlertText,
   BillingPeriod,
   Container,
   Date,
@@ -12,13 +11,12 @@ import {
 import { Props } from './ReportPage.types';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
-import { Alert } from 'ui-kit/Alert';
-import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 import { Button } from 'ui-kit/Button';
 import { PanelItem } from './PanelItem';
 import { usePanelsList } from './ReportPage.hooks';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
 import { GoBack } from 'ui-kit/shared/GoBack';
+import { CloseDevicesWithReadingsParamsModal } from './CloseDevicesWithReadingsParamsModal';
 
 export const ReportPage: FC<Props> = ({
   closingDevices,
@@ -30,7 +28,12 @@ export const ReportPage: FC<Props> = ({
   handleStartDuplicateReadingsPoll,
   lastDuplicateReadingsPollData,
   handleExport,
+  organizations,
+  houseManagements,
 }) => {
+  const [isCheckingDatePollModalOpen, setIsCheckingDatePollModalOpen] =
+    useState(false);
+
   const date = dayjs().format('MMMM YYYY');
 
   const uppercaseDate = date
@@ -38,12 +41,16 @@ export const ReportPage: FC<Props> = ({
     .map((word) => capitalize(word))
     .join(' ');
 
+  const handleOpenCheckingDatePollModal = () => {
+    setIsCheckingDatePollModalOpen(true);
+  };
+
   const panelsList = usePanelsList({
     closingDevices,
     isLoadingClosingDevices,
     handleStartCloseDevicesByCheckingDatePoll,
     lastCloseDevicesByCheckingDatePollData,
-    handleStartCloseDevicesWithoutReadingsPoll,
+    handleStartCloseDevicesWithoutReadingsPoll: handleOpenCheckingDatePollModal,
     lastCloseDevicesWithoutReadingsPollData,
     handleStartDuplicateReadingsPoll,
     lastDuplicateReadingsPollData,
@@ -60,12 +67,6 @@ export const ReportPage: FC<Props> = ({
           <Date>{uppercaseDate}</Date>
         </BillingPeriod>
 
-        <Alert centered type={AlertType.danger} icon={AlertIconType.warning}>
-          <AlertText>
-            В выгрузке присутствуют приборы с вышедшей датой поверки
-          </AlertText>
-        </Alert>
-
         <PanelsList>
           {panelsList.map((item) => (
             <PanelItem key={item.title} {...item} />
@@ -77,10 +78,15 @@ export const ReportPage: FC<Props> = ({
         <Button size="small" onClick={handleExport}>
           Экспортировать
         </Button>
-        <Button size="small" type="ghost">
-          Отправить на email
-        </Button>
       </Footer>
+
+      <CloseDevicesWithReadingsParamsModal
+        isOpen={isCheckingDatePollModalOpen}
+        handleClose={() => setIsCheckingDatePollModalOpen(false)}
+        onSubmit={handleStartCloseDevicesWithoutReadingsPoll}
+        organizations={organizations}
+        houseManagements={houseManagements}
+      />
     </Wrapper>
   );
 };

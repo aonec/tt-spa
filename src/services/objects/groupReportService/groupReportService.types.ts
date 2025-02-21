@@ -3,7 +3,7 @@ import {
   EReportFormat,
   EReportType,
   EResourceType,
-  GroupReportConfigurationPeriod,
+  GroupReportConfigurationSendingPeriodType,
 } from 'api/types';
 
 export type GroupReportRequestPayload = RegularUnloadSubscription & {
@@ -23,5 +23,5 @@ export type RegularUnloadSubscription = {
   'Subscription.ContractorIds'?: number[];
   'Subscription.OrganizationUserIds'?: number[];
   'Subscription.TriggerAt'?: string;
-  'Subscription.Type'?: GroupReportConfigurationPeriod;
+  'Subscription.Type'?: GroupReportConfigurationSendingPeriodType;
 };

@@ -36,6 +36,12 @@ sample({
 });
 
 sample({
+  clock: openModal,
+  fn: () => ({ isInitial: true }),
+  target: lastIndividualDevicesExportPollQuery.start,
+});
+
+sample({
   clock: lastIndividualDevicesExportPollQuery.finished.success,
   filter: ({ result }) =>
     result.status === EPollState.Error || result.status === EPollState.Done,

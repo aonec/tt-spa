@@ -1,7 +1,7 @@
 import {
   EReportType,
   EResourceType,
-  GroupReportConfigurationPeriod,
+  GroupReportConfigurationSendingPeriodType,
 } from 'api/types';
 import * as Yup from 'yup';
 
@@ -22,9 +22,10 @@ export const validationSchema = Yup.object().shape({
   isRegular: Yup.bool(),
 
   'Subscription.TriggerAt': Yup.string(),
-  'Subscription.Type': Yup.mixed<GroupReportConfigurationPeriod>().oneOf(
-    Object.values(GroupReportConfigurationPeriod),
-  ),
+  'Subscription.Type':
+    Yup.mixed<GroupReportConfigurationSendingPeriodType>().oneOf(
+      Object.values(GroupReportConfigurationSendingPeriodType),
+    ),
 });
 
 export const ReportFormatRadioOptions = [
