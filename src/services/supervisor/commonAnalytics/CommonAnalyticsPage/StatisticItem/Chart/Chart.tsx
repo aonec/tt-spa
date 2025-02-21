@@ -54,10 +54,9 @@ export const Chart: FC<Props> = ({ chart }) => {
           <VictoryTooltip
             flyoutWidth={40}
             cornerRadius={2}
-            style={{ color: '#fff' }}
+            style={{ stroke: '#fff' }}
             flyoutStyle={{
-              fill: '#fff',
-              stroke: 'rgba(24, 158, 233, 1)',
+              fill: ' rgb(39, 47, 90)',
             }}
           />
         }
