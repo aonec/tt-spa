@@ -78,6 +78,7 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
   const taskReasonOptions = useMemo(
     () =>
       autocompleteUsersWithEmail(userSearch, users).map((user) => {
+        const optionValue = `${user.email}@@${user.name}`;
         return {
           label: (
             <OptionItemWrapper>
@@ -88,11 +89,11 @@ export const RegularUnloading: FC<RegularUnloadingProps> = ({
               </TopWrapper>
             </OptionItemWrapper>
           ),
-          value: `${user.email}@@${user.name}`,
-          key: user.email,
+          value: optionValue,
+          key: optionValue,
         };
       }),
-    [users],
+    [users, userSearch],
   );
 
   return (
