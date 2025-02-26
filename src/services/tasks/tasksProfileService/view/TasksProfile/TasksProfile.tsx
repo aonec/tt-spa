@@ -214,7 +214,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
             </WithLoader>
             {!isLoading && Boolean(tasks?.length) && (
               <PaginationSC
-                disabled={Boolean(selectedTasks.length) && !isControlMode}
+                disabled={Boolean(selectedTasks.length) && isControlMode}
                 defaultCurrent={1}
                 onChange={changePageNumber}
                 pageSize={20}
