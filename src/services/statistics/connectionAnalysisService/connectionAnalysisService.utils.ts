@@ -28,6 +28,7 @@ export const sortCalculator = (
         calculator.connectionInfo?.connectionStatus ||
         EConnectionStatusType.Unknown,
       address: calculator.address,
+      connectionInfo: calculator.connectionInfo,
     };
 
     if (!calculator.isConnected) {
