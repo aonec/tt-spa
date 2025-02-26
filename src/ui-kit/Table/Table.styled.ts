@@ -149,9 +149,6 @@ export const PaginationWrapper = styled.div`
 `;
 
 export const TableElement = styled.div<{ css?: string }>`
-  /* overflow: hidden; */
-  /* white-space: wrap; */
-  /* text-overflow: ellipsis; */
   width: 100%;
   padding: 12px 0;
   padding-left: 16px;
