@@ -23,6 +23,7 @@ import {
 } from './ExtendedSearchForm.types';
 import { Segmented } from 'ui-kit/Segmented';
 import {
+  CheckboxSC,
   SegmentedContainer,
   StyledContainerThreeItems,
   StyledContainerTwoItems,
@@ -87,8 +88,8 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           corpus: values['Address.Corpus'],
         }}
         customTemplate={[
-          { fieldType: SearchFieldType.City, templateValue: '300px' },
-          { fieldType: SearchFieldType.Street, templateValue: '300px' },
+          { fieldType: SearchFieldType.City, templateValue: '333px' },
+          { fieldType: SearchFieldType.Street, templateValue: '333px' },
           { fieldType: SearchFieldType.House, templateValue: '1fr' },
           { fieldType: SearchFieldType.Corpus, templateValue: '1fr' },
         ]}
@@ -110,38 +111,30 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           </Select>
         </FormItem>
 
-        <FormItem label="Коммерческий учет показателей прибора">
+        <FormItem label="Статус Узла">
           <Select
             small
-            placeholder="Выберите из списка"
-            value={values.RegistrationType}
-            onChange={(value) => {
-              setFieldValue('RegistrationType', value);
-              setFieldValue('CommercialStatus', '');
-            }}
+            id="NodeStatus"
+            placeholder="Любой статус"
+            value={values.CommercialStatus}
+            onChange={(value) => setFieldValue('CommercialStatus', value)}
           >
-            <Option value="">Все</Option>
-            <Option value={ENodeRegistrationType.Commercial}>
-              Прибор на коммерческом учете
-            </Option>
-            <Option value={ENodeRegistrationType.Technical}>
-              Прибор не на коммерческом учете
-            </Option>
+            <Option value="">Любой статус</Option>
+            <Option value="NotRegistered">Не на коммерческом учете</Option>
+            {values.RegistrationType !== ENodeRegistrationType.Technical && (
+              <Option value="Registered">Сдан на коммерческий учет</Option>
+            )}
+            <Option value="OnReview">На утверждении</Option>
+            <Option value="Prepared">Подговлен к сдаче</Option>
           </Select>
         </FormItem>
 
-        <FormItem label="Марка прибора">
-          <AutoComplete
-            small
-            value={values['DevicesFilter.Model']}
-            placeholder="Начните вводить марку прибора"
-            onChange={(value) => {
-              setFieldValue("['DevicesFilter.Model']", value);
-              handleFetchModels(value as string);
-            }}
-            options={calculatorsModels.map((elem) => ({ value: elem })) || []}
-          />
-        </FormItem>
+        <CheckboxSC
+          checked={true}
+          onChange={(e) => setFieldValue('isMainOnApartment', e.target.checked)}
+        >
+          Узлы с ошибкой в конфигурации
+        </CheckboxSC>
       </StyledContainerThreeItems>
       <StyledContainerThreeItems>
         <FormItem label="Диаметр трубы, мм">
@@ -160,6 +153,20 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
             onChange={handleChangeRange}
           />
         </FormItem>
+
+        <FormItem label="Марка прибора">
+          <AutoComplete
+            small
+            value={values['DevicesFilter.Model']}
+            placeholder="Начните вводить марку прибора"
+            onChange={(value) => {
+              setFieldValue("['DevicesFilter.Model']", value);
+              handleFetchModels(value as string);
+            }}
+            options={calculatorsModels.map((elem) => ({ value: elem })) || []}
+          />
+        </FormItem>
+
         <FormItem label="Период действия акта допуска">
           <ConfigProvider>
             <RangePicker
@@ -272,21 +279,23 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
           </Select>
         </FormItem>
 
-        <FormItem label="Статус Узла">
+        <FormItem label="Коммерческий учет показателей прибора">
           <Select
             small
-            id="NodeStatus"
-            placeholder="Любой статус"
-            value={values.CommercialStatus}
-            onChange={(value) => setFieldValue('CommercialStatus', value)}
+            placeholder="Выберите из списка"
+            value={values.RegistrationType}
+            onChange={(value) => {
+              setFieldValue('RegistrationType', value);
+              setFieldValue('CommercialStatus', '');
+            }}
           >
-            <Option value="">Любой статус</Option>
-            <Option value="NotRegistered">Не на коммерческом учете</Option>
-            {values.RegistrationType !== ENodeRegistrationType.Technical && (
-              <Option value="Registered">Сдан на коммерческий учет</Option>
-            )}
-            <Option value="OnReview">На утверждении</Option>
-            <Option value="Prepared">Подговлен к сдаче</Option>
+            <Option value="">Все</Option>
+            <Option value={ENodeRegistrationType.Commercial}>
+              Прибор на коммерческом учете
+            </Option>
+            <Option value={ENodeRegistrationType.Technical}>
+              Прибор не на коммерческом учете
+            </Option>
           </Select>
         </FormItem>
 
