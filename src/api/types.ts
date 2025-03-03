@@ -1584,6 +1584,7 @@ export interface DeviceCheckingDateExpirationConstructedReportResponse {
   lastCheckingDate: string;
   /** @format date-time */
   futureCheckingDate: string;
+  lastReading: IndividualDeviceReadingsSlimResponse | null;
   homeownerPhoneNumbers: string[] | null;
   /** @deprecated */
   homeownerPhoneNumber: string | null;
@@ -3700,7 +3701,6 @@ export interface IndividualDevicesConstructedReportResponse {
   resource: EResourceType;
   serialNumber: string | null;
   model: string | null;
-  lastReading: IndividualDeviceReadingsSlimResponse | null;
   invalidCheckingDatesOption: InvalidCheckingDatesConstructedReportResponse | null;
   closedDeviceOnOneOfRisersOption: ClosedDeviceOnOneOfRisersConstructedReportResponse | null;
   deviceCheckingDateExpirationOption: DeviceCheckingDateExpirationConstructedReportResponse | null;
