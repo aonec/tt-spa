@@ -75,13 +75,16 @@ const getTaskXPos = (payload: GetTaskXPosPayload) => {
   }
 
   if (reportType === 'hourly') {
-    return (
-      Math.round(dayjs(currentData).diff(dayjs(minDate), 'minutes') / 60) + 1
+    const hourlyX = Math.round(
+      dayjs(currentData).diff(dayjs(minDate), 'minutes') / 60,
     );
+
+    return hourlyX;
   }
-  return (
-    dayjs(currentData).utc(true).diff(dayjs(minDate).startOf('day'), 'day') + 1
-  );
+  const dailyX =
+    dayjs(currentData).utc(true).diff(dayjs(minDate).startOf('day'), 'day') + 1;
+
+  return dailyX;
 };
 
 export const getPreparedTaskData = ({
