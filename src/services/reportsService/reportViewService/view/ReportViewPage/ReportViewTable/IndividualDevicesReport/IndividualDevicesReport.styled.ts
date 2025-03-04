@@ -50,6 +50,7 @@ export const ReadingValue = styled.div`
   display: flex;
   flex-direction: column;
   line-height: 16px;
+  align-items: center;
 `;
 
 export const ReadingDate = styled.div`

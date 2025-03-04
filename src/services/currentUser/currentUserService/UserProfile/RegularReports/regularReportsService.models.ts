@@ -103,8 +103,10 @@ updateGroupReportConfigurationFx.failData.watch((error) => {
 
 const $isReportUpdating = updateGroupReportConfigurationFx.pending;
 
+const $isLoading = getGroupReportConfigurationsFx.pending;
+
 export const regularReportsService = {
   inputs: { handleDeleteReport, handleChangeActivity },
-  outputs: { $reportsData, $isReportUpdating },
+  outputs: { $reportsData, $isReportUpdating, $isLoading },
   gates: { PageGate },
 };
