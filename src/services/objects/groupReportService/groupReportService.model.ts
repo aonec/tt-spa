@@ -134,7 +134,6 @@ sample({
         organizationUserIds: clock?.['Subscription.OrganizationUserIds'],
         contractorIds: clock?.['Subscription.ContractorIds'],
         initialDate: clock?.['Subscription.TriggerAt'],
-        reportConfigurationPeriod: clock?.['Subscription.Type'],
         sendingPeriodType: clock?.['Subscription.Type'],
       },
     } as CreateGroupReportConfigurationRequest;

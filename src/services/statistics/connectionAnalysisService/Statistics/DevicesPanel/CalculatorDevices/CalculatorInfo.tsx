@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { CalculatorIcon } from 'ui-kit/icons';
 import { StatusBar } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus/DeviceStatus.styled';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
+import dayjs from 'dayjs';
 
 export const CalculatorInfo: FC<Props> = ({ device }) => {
   const deviceInfo = (
@@ -31,6 +32,15 @@ export const CalculatorInfo: FC<Props> = ({ device }) => {
         )}
         {!device.id && deviceInfo}
       </DeviceTitleWrapper>
+
+      <div>
+        {(device.connectionInfo?.lastHourlyArchiveTime ||
+          device.connectionInfo?.lastDailyArchiveTime) &&
+          dayjs(
+            device.connectionInfo?.lastHourlyArchiveTime ||
+              device.connectionInfo?.lastDailyArchiveTime,
+          ).format('DD.MM.YYYY HH:mm')}
+      </div>
 
       <StatusWrapper>
         <StatusBar isActive={device.isConnected} />

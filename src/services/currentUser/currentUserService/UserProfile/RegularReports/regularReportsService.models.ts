@@ -76,11 +76,9 @@ sample({
         organizationUserIds:
           report.reportConfigurationDetails?.organizationUserIds,
         initialDate: report.reportConfigurationDetails?.initialDate,
-        reportConfigurationPeriod:
-          report.reportConfigurationDetails?.sendingPeriodType,
+        sendingPeriodType: report.reportConfigurationDetails?.sendingPeriodType,
         nextDate: report.reportConfigurationDetails?.nextDate,
         isActive: !report.reportConfigurationDetails?.isActive,
-        sendingPeriodType: report.reportConfigurationDetails?.sendingPeriodType,
       },
       id: report.id,
     } as UpdateGroupReportConfigurationRequest),
@@ -105,8 +103,10 @@ updateGroupReportConfigurationFx.failData.watch((error) => {
 
 const $isReportUpdating = updateGroupReportConfigurationFx.pending;
 
+const $isLoading = getGroupReportConfigurationsFx.pending;
+
 export const regularReportsService = {
   inputs: { handleDeleteReport, handleChangeActivity },
-  outputs: { $reportsData, $isReportUpdating },
+  outputs: { $reportsData, $isReportUpdating, $isLoading },
   gates: { PageGate },
 };
