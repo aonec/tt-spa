@@ -675,6 +675,35 @@ export interface CalculatorConnectionInfoResponse {
   lastHourlyArchiveTime: string | null;
 }
 
+export interface CalculatorConnectionStatisticsResponse {
+  address: BuildingShortResponse | null;
+  /** @format int32 */
+  id: number;
+  model: string | null;
+  serialNumber: string | null;
+  isConnected: boolean | null;
+  connection: MeteringDeviceConnection | null;
+  connectionInfo: CalculatorConnectionInfoResponse | null;
+}
+
+export interface CalculatorConnectionStatisticsResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+  /** @format int32 */
+  pageNumber: number;
+  /** @format int32 */
+  pageSize: number;
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+  /** @format int32 */
+  nextPageNumber: number;
+  /** @format int32 */
+  previousPageNumber: number;
+  items: CalculatorConnectionStatisticsResponse[] | null;
+}
+
 export interface CalculatorFilterResponse {
   nodeStatuses:
     | ENodeCommercialAccountStatusNullableStringDictionaryItem[]
@@ -683,6 +712,11 @@ export interface CalculatorFilterResponse {
   resourceTypes: EResourceTypeNullableStringDictionaryItem[] | null;
   cities: string[] | null;
   streets: string[] | null;
+}
+
+export interface CalculatorGroupedByConnectionResponse {
+  connectionGroup: ECalculatorConnectionGroupingType;
+  calculatorConnectionStatisticsList: CalculatorConnectionStatisticsResponsePagedList | null;
 }
 
 export interface CalculatorInfoListResponse {
@@ -1555,6 +1589,7 @@ export interface DeviceCheckingDateExpirationConstructedReportResponse {
   lastCheckingDate: string;
   /** @format date-time */
   futureCheckingDate: string;
+  lastReading: IndividualDeviceReadingsSlimResponse | null;
   homeownerPhoneNumbers: string[] | null;
   /** @deprecated */
   homeownerPhoneNumber: string | null;
@@ -1649,6 +1684,13 @@ export enum EApartmentStatus {
   Ok = 'Ok',
   Debtor = 'Debtor',
   Pause = 'Pause',
+}
+
+export enum ECalculatorConnectionGroupingType {
+  Success = 'Success',
+  NotPolling = 'NotPolling',
+  Error = 'Error',
+  NoArchives = 'NoArchives',
 }
 
 export enum ECalculatorOrderRule {
@@ -3671,7 +3713,6 @@ export interface IndividualDevicesConstructedReportResponse {
   resource: EResourceType;
   serialNumber: string | null;
   model: string | null;
-  lastReading: IndividualDeviceReadingsSlimResponse | null;
   invalidCheckingDatesOption: InvalidCheckingDatesConstructedReportResponse | null;
   closedDeviceOnOneOfRisersOption: ClosedDeviceOnOneOfRisersConstructedReportResponse | null;
   deviceCheckingDateExpirationOption: DeviceCheckingDateExpirationConstructedReportResponse | null;
@@ -7667,6 +7708,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroup?: ECalculatorConnectionGroupingType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -7723,6 +7765,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroup?: ECalculatorConnectionGroupingType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -7933,6 +7976,120 @@ export class Api<
       this.request<PingDeviceResponse, ErrorApiResponse>({
         path: `/api/Calculators/pingdevice/${deviceId}`,
         method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
+     *
+     * @tags CalculatorsStatistics
+     * @name CalculatorsStatisticsList
+     * @summary MeteringDevicesRead
+     * @request GET:/api/CalculatorsStatistics
+     * @secure
+     */
+    calculatorsStatisticsList: (
+      query?: {
+        filterPipeDiameters?: number[];
+        filterExpiresCheckingDateAt?: EExpiresDateAt;
+        filterExpiresAdmissionActDateAt?: EExpiresDateAt;
+        filterResource?: EResourceType;
+        filterModel?: string;
+        /** @format date-time */
+        filterCommercialDateRangeFrom?: string;
+        /** @format date-time */
+        filterCommercialDateRangeTo?: string;
+        filterAddressCity?: string;
+        filterAddressStreet?: string;
+        filterAddressHousingStockNumber?: string;
+        filterAddressCorpus?: string;
+        filterAddressHouseCategory?: EHouseCategory;
+        /**
+         * @deprecated
+         * @format int32
+         */
+        filterHousingStockId?: number;
+        filterNodeStatus?: ENodeCommercialAccountStatus;
+        filterNodeRegistrationType?: ENodeRegistrationType;
+        filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroup?: ECalculatorConnectionGroupingType;
+        Question?: string;
+        OrderRule?: ECalculatorOrderRule;
+        IsConnected?: boolean;
+        CountTasks?: boolean;
+        IsClosed?: boolean;
+        FileName?: string;
+        /** @format int32 */
+        PageNumber?: number;
+        /** @format int32 */
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<CalculatorGroupedByConnectionResponse[], ErrorApiResponse>({
+        path: `/api/CalculatorsStatistics`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
+     *
+     * @tags CalculatorsStatistics
+     * @name CalculatorsStatisticsExportList
+     * @summary MeteringDevicesRead
+     * @request GET:/api/CalculatorsStatistics/export
+     * @secure
+     */
+    calculatorsStatisticsExportList: (
+      query?: {
+        filterPipeDiameters?: number[];
+        filterExpiresCheckingDateAt?: EExpiresDateAt;
+        filterExpiresAdmissionActDateAt?: EExpiresDateAt;
+        filterResource?: EResourceType;
+        filterModel?: string;
+        /** @format date-time */
+        filterCommercialDateRangeFrom?: string;
+        /** @format date-time */
+        filterCommercialDateRangeTo?: string;
+        filterAddressCity?: string;
+        filterAddressStreet?: string;
+        filterAddressHousingStockNumber?: string;
+        filterAddressCorpus?: string;
+        filterAddressHouseCategory?: EHouseCategory;
+        /**
+         * @deprecated
+         * @format int32
+         */
+        filterHousingStockId?: number;
+        filterNodeStatus?: ENodeCommercialAccountStatus;
+        filterNodeRegistrationType?: ENodeRegistrationType;
+        filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroup?: ECalculatorConnectionGroupingType;
+        Question?: string;
+        OrderRule?: ECalculatorOrderRule;
+        IsConnected?: boolean;
+        CountTasks?: boolean;
+        IsClosed?: boolean;
+        FileName?: string;
+        /** @format int32 */
+        PageNumber?: number;
+        /** @format int32 */
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/CalculatorsStatistics/export`,
+        method: 'GET',
+        query: query,
         secure: true,
         format: 'json',
         ...params,
@@ -13902,6 +14059,7 @@ export class Api<
      *
      * @tags Reports
      * @name ReportsDevicesWithLastReadingReportList
+     * @summary Выгрузка показаний ИПУ в формате отчета для Вахитова 14
      * @request GET:/api/Reports/DevicesWithLastReadingReport
      * @secure
      */
