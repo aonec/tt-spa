@@ -676,13 +676,13 @@ export interface CalculatorConnectionInfoResponse {
 }
 
 export interface CalculatorConnectionStatisticsResponse {
+  address: BuildingShortResponse | null;
   /** @format int32 */
   id: number;
   model: string | null;
   serialNumber: string | null;
   isConnected: boolean | null;
   connection: MeteringDeviceConnection | null;
-  address: BuildingShortResponse | null;
   connectionInfo: CalculatorConnectionInfoResponse | null;
 }
 
@@ -712,6 +712,11 @@ export interface CalculatorFilterResponse {
   resourceTypes: EResourceTypeNullableStringDictionaryItem[] | null;
   cities: string[] | null;
   streets: string[] | null;
+}
+
+export interface CalculatorGroupedByConnectionResponse {
+  connectionGroup: ECalculatorConnectionGroupingType;
+  calculatorConnectionStatisticsList: CalculatorConnectionStatisticsResponsePagedList | null;
 }
 
 export interface CalculatorInfoListResponse {
@@ -1679,6 +1684,13 @@ export enum EApartmentStatus {
   Ok = 'Ok',
   Debtor = 'Debtor',
   Pause = 'Pause',
+}
+
+export enum ECalculatorConnectionGroupingType {
+  Success = 'Success',
+  NotPolling = 'NotPolling',
+  Error = 'Error',
+  NoArchives = 'NoArchives',
 }
 
 export enum ECalculatorOrderRule {
@@ -7696,6 +7708,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroup?: ECalculatorConnectionGroupingType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -7752,6 +7765,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroup?: ECalculatorConnectionGroupingType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -8000,6 +8014,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroup?: ECalculatorConnectionGroupingType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -8014,10 +8029,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        CalculatorConnectionStatisticsResponsePagedList,
-        ErrorApiResponse
-      >({
+      this.request<CalculatorGroupedByConnectionResponse[], ErrorApiResponse>({
         path: `/api/CalculatorsStatistics`,
         method: 'GET',
         query: query,
@@ -8059,6 +8071,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroup?: ECalculatorConnectionGroupingType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -14046,6 +14059,7 @@ export class Api<
      *
      * @tags Reports
      * @name ReportsDevicesWithLastReadingReportList
+     * @summary Выгрузка показаний ИПУ в формате отчета для Вахитова 14
      * @request GET:/api/Reports/DevicesWithLastReadingReport
      * @secure
      */

@@ -116,6 +116,8 @@ import MagnifierIcon from './svg/magnifier.svg?react';
 import StopOrangeIcon from './svg/stopOrange.svg?react';
 import OtherSourceIcon from './svg/otherSource.svg?react';
 import ChevronActiveIcon from './svg/chevronActive.svg?react';
+import CloseBlueIcon from './svg/closeBlue.svg?react';
+import ReloadBlueIcon from './svg/reloadBlue.svg?react';
 
 export {
   FinishIcon,
@@ -236,4 +238,6 @@ export {
   StopOrangeIcon,
   OtherSourceIcon,
   ChevronActiveIcon,
+  CloseBlueIcon,
+  ReloadBlueIcon,
 };

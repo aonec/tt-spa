@@ -54,6 +54,9 @@ const setAddress = createEvent<{
   resource?: EResourceType;
   taskType?: EManagingFirmTaskFilterType;
 }>();
+const toggleTaskCheckbox = createEvent<number>();
+const setSelectedTasks = createEvent<number[]>();
+const refetchTasks = createEvent();
 
 const getApartmentFx = createEffect<FiltersGatePayload, ApartmentResponse>(
   fetchApartment,
@@ -109,6 +112,17 @@ const $searchState = createStore<GetTasksListRequestPayload>({
   .on(changePageNumber, (filters, PageNumber) => ({ ...filters, PageNumber }))
   .reset(clearFilters);
 
+const $selectedTasks = createStore<number[]>([])
+  .on(toggleTaskCheckbox, (prev, id) => {
+    if (prev.includes(id)) {
+      return prev.filter((item) => item !== id);
+    }
+
+    return [...prev, id];
+  })
+  .on(setSelectedTasks, (_, arr) => arr)
+  .reset(clearFilters);
+
 const startSearchTasks = createEvent();
 const searchTasksFx = createEffect<
   GetTasksListRequestPayload | null,
@@ -126,10 +140,13 @@ sample({
   source: {
     searchState: $searchState,
     isTaskProfileOpen: taskProfileService.outputs.$isTaskProfileOpen,
+    selectedTasks: $selectedTasks,
   },
   clock: searchTasksTrigger,
-  filter: ({ isTaskProfileOpen, searchState }) =>
-    !isTaskProfileOpen && Boolean(searchState.GroupType),
+  filter: ({ isTaskProfileOpen, searchState, selectedTasks }) =>
+    !isTaskProfileOpen &&
+    Boolean(searchState.GroupType) &&
+    !selectedTasks.length,
   fn: ({ searchState }) => {
     const filteredData = _.omitBy(searchState, _.isNil);
     const filteredDataByNull = _.omitBy(
@@ -161,6 +178,12 @@ sample({
   clock: $searchState,
   filter: (isOpen) => Boolean(isOpen),
   target: startSearchTasks,
+});
+
+sample({
+  clock: refetchTasks,
+  source: $searchState,
+  target: searchTasksFx,
 });
 
 const $tasksPagedData = createStore<TasksPagedList | null>(null).on(
@@ -221,6 +244,9 @@ export const tasksProfileService = {
     clearAddress,
     setTasksPageSegment,
     handleOpenAddTaskModal: addTaskFromDispatcherService.inputs.handleOpenModal,
+    toggleTaskCheckbox,
+    setSelectedTasks,
+    refetchTasks,
   },
   outputs: {
     $taskTypes,
@@ -235,6 +261,7 @@ export const tasksProfileService = {
     $tasksPageSegment,
     $existingCities: addressSearchService.outputs.$existingCities,
     $tasksSummaryData,
+    $selectedTasks,
   },
   gates: {
     TasksIsOpen,
