@@ -1,5 +1,8 @@
 import { axios } from 'api/axios';
-import { CalculatorListResponsePagedList } from 'api/types';
+import { CalculatorsSortedListApi } from './connectionAnalysisService.types';
 
-export const getCalculators = (): Promise<CalculatorListResponsePagedList> =>
-  axios.get('Calculators');
+export const getCalculators = (): Promise<CalculatorsSortedListApi> =>
+  axios.get('CalculatorsStatistics');
+
+export const downloadCalculators = (): Promise<CalculatorsSortedListApi> =>
+  axios.get('CalculatorsStatistics/export');

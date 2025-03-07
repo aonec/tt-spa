@@ -13,18 +13,19 @@ import { CalculatorInfo } from './CalculatorDevices';
 import { getDevicesCountText } from 'services/nodes/createNodeService/view/CreateNodePage/ConnectedDevices/CommunicationPipeListItem/CommunicationPipeListItem.utils';
 import {
   CheckGreenIcon,
+  DownloadBlueIcon,
+  DownloadIcon,
   MagnifierIcon,
   StopOrangeIcon,
   WarningIcon,
 } from 'ui-kit/icons';
 import { PanelTitleDictionary } from '../Statistics.constants';
 import { ConnectionStatuses } from '../../connectionAnalysisService.types';
-import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 
 export const DevicesPanel: FC<Props> = ({ panelTitle, calculators }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const devicesCount = calculators.length;
+  const devicesCount = calculators?.items?.length || 0;
 
   const devicesCountText = getDevicesCountText(devicesCount);
 
@@ -32,13 +33,13 @@ export const DevicesPanel: FC<Props> = ({ panelTitle, calculators }) => {
     if (panelTitle === ConnectionStatuses.Success) {
       return <CheckGreenIcon />;
     }
-    if (panelTitle === ConnectionStatuses.NotPolled) {
+    if (panelTitle === ConnectionStatuses.NotPolling) {
       return <StopOrangeIcon />;
     }
-    if (panelTitle === ConnectionStatuses.WithError) {
+    if (panelTitle === ConnectionStatuses.Error) {
       return <WarningIcon />;
     }
-    if (panelTitle === ConnectionStatuses.NoArchive) {
+    if (panelTitle === ConnectionStatuses.NoArchives) {
       return <MagnifierIcon />;
     }
   }, [panelTitle]);
@@ -53,21 +54,15 @@ export const DevicesPanel: FC<Props> = ({ panelTitle, calculators }) => {
           <DevicesAmount>
             {devicesCount} {devicesCountText}
           </DevicesAmount>
-          <ContextMenuButton
-            size="small"
-            menuButtons={[
-              {
-                title: 'Выгрузить список',
-                onClick: () => {},
-              },
-            ]}
-          />
+
+          <DownloadIcon />
+          <DownloadBlueIcon />
 
           <ListOpeningChevron isOpen={isOpen} />
         </RighContentWrapper>
       </InfoWrapper>
       {isOpen &&
-        calculators.map((device) => (
+        calculators?.items?.map((device) => (
           <CalculatorInfo device={device} key={device.id} />
         ))}
     </Wrapper>

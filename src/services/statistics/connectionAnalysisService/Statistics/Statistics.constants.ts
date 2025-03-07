@@ -4,7 +4,7 @@ export const PanelTitleDictionary: {
   [key in ConnectionStatuses]: string;
 } = {
   [ConnectionStatuses.Success]: 'В норме',
-  [ConnectionStatuses.NotPolled]: 'Не опрашивается',
-  [ConnectionStatuses.WithError]: 'С ошибкой',
-  [ConnectionStatuses.NoArchive]: 'Нет архивов',
+  [ConnectionStatuses.NotPolling]: 'Не опрашивается',
+  [ConnectionStatuses.Error]: 'С ошибкой',
+  [ConnectionStatuses.NoArchives]: 'Нет архивов',
 };

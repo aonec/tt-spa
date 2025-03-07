@@ -1,24 +1,20 @@
 import { createEffect, createStore, sample } from 'effector';
 import { getCalculators } from './connectionAnalysisService.api';
-import { CalculatorListResponsePagedList } from 'api/types';
 import { createGate } from 'effector-react';
-import { sortCalculator } from './connectionAnalysisService.utils';
-import { CalculatorsSortedList } from './connectionAnalysisService.types';
+import { CalculatorsSortedListApi } from './connectionAnalysisService.types';
 
 const PageGate = createGate();
 
-const getCalculatorsFx = createEffect<void, CalculatorListResponsePagedList>(
+const getCalculatorsFx = createEffect<void, CalculatorsSortedListApi>(
   getCalculators,
 );
 
 const $isLoading = getCalculatorsFx.pending;
 
-const $calculatorsSortedList = createStore<CalculatorsSortedList | null>(
+const $calculatorsSortedList = createStore<CalculatorsSortedListApi | null>(
   null,
 ).on(getCalculatorsFx.doneData, (_, data) => {
-  const list = data.items;
-  if (!list) return null;
-  return sortCalculator(list);
+  return data;
 });
 
 sample({

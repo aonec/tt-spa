@@ -33,7 +33,7 @@ export const CalculatorInfo: FC<Props> = ({ device }) => {
       </DeviceTitleWrapper>
 
       <StatusWrapper>
-        <StatusBar isActive={device.isConnected} />
+        <StatusBar isActive={device.isConnected || false} />
         {device.isConnected ? 'Активен' : 'Нет соединения'}
       </StatusWrapper>
 

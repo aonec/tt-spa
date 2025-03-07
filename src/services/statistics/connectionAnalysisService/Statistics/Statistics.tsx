@@ -13,7 +13,11 @@ export const Statistics: FC<Props> = ({ calculatorsSortedList, isLoading }) => {
           {Object.values(ConnectionStatuses).map((connectionStatus) => (
             <DevicesPanel
               panelTitle={connectionStatus}
-              calculators={calculatorsSortedList[connectionStatus]}
+              calculators={
+                calculatorsSortedList.find(
+                  (elem) => elem.connectionGroupType === connectionStatus,
+                )?.calculatorConnectionStatisticsList || null
+              }
               key={connectionStatus}
             />
           ))}
