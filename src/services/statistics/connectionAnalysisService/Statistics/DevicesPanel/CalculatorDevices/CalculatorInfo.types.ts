@@ -2,4 +2,5 @@ import { CalculatorAnalysisType } from 'services/statistics/connectionAnalysisSe
 
 export type Props = {
   device: CalculatorAnalysisType;
+  handlePing: (payload: number) => void;
 };

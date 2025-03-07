@@ -6,4 +6,5 @@ import {
 export type Props = {
   panelTitle: ConnectionStatuses;
   calculators: CalculatorAnalysisType[];
+  handlePing: (payload: number) => void;
 };

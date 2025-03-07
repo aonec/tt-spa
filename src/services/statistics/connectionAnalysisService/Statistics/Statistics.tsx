@@ -5,7 +5,11 @@ import { DevicesPanel } from './DevicesPanel';
 import { ConnectionStatuses } from '../connectionAnalysisService.types';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 
-export const Statistics: FC<Props> = ({ calculatorsSortedList, isLoading }) => {
+export const Statistics: FC<Props> = ({
+  calculatorsSortedList,
+  isLoading,
+  handlePing,
+}) => {
   return (
     <WithLoader isLoading={isLoading}>
       {calculatorsSortedList && (
@@ -15,6 +19,7 @@ export const Statistics: FC<Props> = ({ calculatorsSortedList, isLoading }) => {
               panelTitle={connectionStatus}
               calculators={calculatorsSortedList[connectionStatus]}
               key={connectionStatus}
+              handlePing={handlePing}
             />
           ))}
         </Wrapper>

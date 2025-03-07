@@ -15,7 +15,7 @@ import { getBuildingAddress } from 'utils/getBuildingAddress';
 import dayjs from 'dayjs';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 
-export const CalculatorInfo: FC<Props> = ({ device }) => {
+export const CalculatorInfo: FC<Props> = ({ device, handlePing }) => {
   const deviceInfo = (
     <DeviceInfoWrapper>
       <Model>{device.model}</Model>
@@ -55,7 +55,7 @@ export const CalculatorInfo: FC<Props> = ({ device }) => {
         menuButtons={[
           {
             title: 'Опросить вычислитель',
-            onClick: () => {},
+            onClick: () => handlePing(device.id),
           },
         ]}
       />

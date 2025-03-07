@@ -20,7 +20,11 @@ import {
 import { PanelTitleDictionary } from '../Statistics.constants';
 import { ConnectionStatuses } from '../../connectionAnalysisService.types';
 
-export const DevicesPanel: FC<Props> = ({ panelTitle, calculators }) => {
+export const DevicesPanel: FC<Props> = ({
+  panelTitle,
+  calculators,
+  handlePing,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const devicesCount = calculators.length;
@@ -57,7 +61,11 @@ export const DevicesPanel: FC<Props> = ({ panelTitle, calculators }) => {
       </InfoWrapper>
       {isOpen &&
         calculators.map((device) => (
-          <CalculatorInfo device={device} key={device.id} />
+          <CalculatorInfo
+            device={device}
+            key={device.id}
+            handlePing={handlePing}
+          />
         ))}
     </Wrapper>
   );
