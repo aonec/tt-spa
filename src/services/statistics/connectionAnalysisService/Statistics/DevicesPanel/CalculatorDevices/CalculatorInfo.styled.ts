@@ -4,12 +4,13 @@ import { PencilIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
   height: 52px;
-  padding: 16px;
+  padding: 0 16px;
   display: grid;
-  grid-template-columns: 1.2fr 0.7fr 0.8fr 1fr;
+  grid-template-columns: 1.2fr 0.7fr 0.8fr 1fr 35px;
   border-top: 1px solid #e1e1e1;
   color: #272f5ab2;
   font-weight: 500;
+  align-items: center;
 `;
 
 export const InfoWrapper = styled.div`
