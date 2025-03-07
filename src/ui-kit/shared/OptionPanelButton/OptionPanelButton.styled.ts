@@ -19,6 +19,8 @@ export const Wrapper = styled.div<{ isActive: boolean }>`
   justify-content: space-between;
   cursor: pointer;
 
+  box-shadow: 0px 0px 8px 0px #00000026;
+
   ${({ isActive }) => isActive && panelActiveCSS}
 
   transition: 0.2s;
