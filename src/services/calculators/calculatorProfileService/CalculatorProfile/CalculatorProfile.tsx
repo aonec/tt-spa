@@ -90,33 +90,29 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           {
             key: 'Дата поверки прибора',
             value: calculator?.lastCheckingDate
-              ? dayjs(calculator.lastCheckingDate)
-                  .subtract(3, 'h')
-                  .format('DD.MM.YYYY HH:mm')
+              ? dayjs(calculator.lastCheckingDate).format('DD.MM.YYYY HH:mm')
               : null,
           },
           {
             key: 'Дата следующей поверки прибора',
             value: calculator?.futureCheckingDate
-              ? dayjs(calculator.futureCheckingDate)
-                  .subtract(3, 'h')
-                  .format('DD.MM.YYYY HH:mm')
+              ? dayjs(calculator.futureCheckingDate).format('DD.MM.YYYY HH:mm')
               : null,
           },
           {
             key: 'Суточный архив',
             value: calculator?.connectionInfo?.lastDailyArchiveTime
-              ? dayjs(calculator.connectionInfo.lastDailyArchiveTime)
-                  .subtract(3, 'h')
-                  .format('DD.MM.YYYY HH:mm')
+              ? dayjs(calculator.connectionInfo.lastDailyArchiveTime).format(
+                  'DD.MM.YYYY HH:mm',
+                )
               : null,
           },
           {
             key: 'Часовой архив',
             value: calculator?.connectionInfo?.lastHourlyArchiveTime
-              ? dayjs(calculator.connectionInfo.lastHourlyArchiveTime)
-                  .subtract(3, 'h')
-                  .format('DD.MM.YYYY HH:mm')
+              ? dayjs(calculator.connectionInfo.lastHourlyArchiveTime).format(
+                  'DD.MM.YYYY HH:mm',
+                )
               : null,
           },
         ]}
