@@ -1,7 +1,9 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import {
   DevicesAmount,
+  DownloadIconSC,
   InfoWrapper,
+  LoadingBlueIconSC,
   RighContentWrapper,
   Title,
   TitleWrapper,
@@ -13,16 +15,20 @@ import { CalculatorInfo } from './CalculatorDevices';
 import { getDevicesCountText } from 'services/nodes/createNodeService/view/CreateNodePage/ConnectedDevices/CommunicationPipeListItem/CommunicationPipeListItem.utils';
 import {
   CheckGreenIcon,
-  DownloadBlueIcon,
-  DownloadIcon,
   MagnifierIcon,
   StopOrangeIcon,
   WarningIcon,
 } from 'ui-kit/icons';
 import { PanelTitleDictionary } from '../Statistics.constants';
-import { ConnectionStatuses } from '../../connectionAnalysisService.types';
+import { Tooltip } from 'ui-kit/shared/Tooltip';
+import { ECalculatorConnectionGroupType } from 'api/types';
 
-export const DevicesPanel: FC<Props> = ({ panelTitle, calculators }) => {
+export const DevicesPanel: FC<Props> = ({
+  panelTitle,
+  calculators,
+  handleDownload,
+  isDownloading,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const devicesCount = calculators?.items?.length || 0;
@@ -30,19 +36,28 @@ export const DevicesPanel: FC<Props> = ({ panelTitle, calculators }) => {
   const devicesCountText = getDevicesCountText(devicesCount);
 
   const panelIcon = useMemo(() => {
-    if (panelTitle === ConnectionStatuses.Success) {
+    if (panelTitle === ECalculatorConnectionGroupType.Success) {
       return <CheckGreenIcon />;
     }
-    if (panelTitle === ConnectionStatuses.NotPolling) {
+    if (panelTitle === ECalculatorConnectionGroupType.NotPolling) {
       return <StopOrangeIcon />;
     }
-    if (panelTitle === ConnectionStatuses.Error) {
+    if (panelTitle === ECalculatorConnectionGroupType.Error) {
       return <WarningIcon />;
     }
-    if (panelTitle === ConnectionStatuses.NoArchives) {
+    if (panelTitle === ECalculatorConnectionGroupType.NoArchives) {
       return <MagnifierIcon />;
     }
   }, [panelTitle]);
+
+  const [downloadType, setType] =
+    useState<ECalculatorConnectionGroupType | null>(null);
+
+  useEffect(() => {
+    if (!isDownloading) {
+      setType(null);
+    }
+  }, [isDownloading]);
 
   return (
     <Wrapper onClick={() => setIsOpen((prev) => !prev)}>
@@ -55,8 +70,21 @@ export const DevicesPanel: FC<Props> = ({ panelTitle, calculators }) => {
             {devicesCount} {devicesCountText}
           </DevicesAmount>
 
-          <DownloadIcon />
-          <DownloadBlueIcon />
+          {downloadType !== panelTitle && (
+            <Tooltip title="Выгрузить список приборов">
+              <DownloadIconSC
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleDownload({
+                    name: PanelTitleDictionary[panelTitle],
+                    filterConnectionGroupType: panelTitle,
+                  });
+                  setType(panelTitle);
+                }}
+              />
+            </Tooltip>
+          )}
+          {downloadType === panelTitle && <LoadingBlueIconSC />}
 
           <ListOpeningChevron isOpen={isOpen} />
         </RighContentWrapper>

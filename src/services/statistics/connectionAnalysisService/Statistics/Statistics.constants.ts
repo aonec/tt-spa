@@ -1,10 +1,10 @@
-import { ConnectionStatuses } from '../connectionAnalysisService.types';
+import { ECalculatorConnectionGroupType } from 'api/types';
 
 export const PanelTitleDictionary: {
-  [key in ConnectionStatuses]: string;
+  [key in ECalculatorConnectionGroupType]: string;
 } = {
-  [ConnectionStatuses.Success]: 'В норме',
-  [ConnectionStatuses.NotPolling]: 'Не опрашивается',
-  [ConnectionStatuses.Error]: 'С ошибкой',
-  [ConnectionStatuses.NoArchives]: 'Нет архивов',
+  [ECalculatorConnectionGroupType.Success]: 'В норме',
+  [ECalculatorConnectionGroupType.NotPolling]: 'Не опрашивается',
+  [ECalculatorConnectionGroupType.Error]: 'С ошибкой',
+  [ECalculatorConnectionGroupType.NoArchives]: 'Нет архивов',
 };
