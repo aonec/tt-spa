@@ -37,8 +37,6 @@ const $dashboardFilters = createStore<DashboardQueryParams>({
   }))
   .reset(resetDashboardFilters);
 
-sample({ clock: CommonAnalyticsGate.close, target: resetDashboardFilters });
-
 sample({
   source: $dashboardFilters,
   clock: CommonAnalyticsGate.open,

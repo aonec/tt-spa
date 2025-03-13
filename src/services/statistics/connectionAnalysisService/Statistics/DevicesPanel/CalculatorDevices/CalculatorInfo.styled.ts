@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   height: 52px;
   padding: 16px;
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
+  grid-template-columns: 1.2fr 0.7fr 0.8fr 1fr;
   border-top: 1px solid #e1e1e1;
   color: #272f5ab2;
   font-weight: 500;

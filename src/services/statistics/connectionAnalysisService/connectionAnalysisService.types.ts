@@ -1,4 +1,8 @@
-import { EConnectionStatusType } from 'api/types';
+import {
+  BuildingShortResponse,
+  CalculatorConnectionInfoResponse,
+  EConnectionStatusType,
+} from 'api/types';
 
 export type CalculatorAnalysisType = {
   id: number;
@@ -6,7 +10,10 @@ export type CalculatorAnalysisType = {
   serialNumber: string;
   isConnected: boolean;
   connectionStatus: EConnectionStatusType;
+  address: BuildingShortResponse | null;
+  connectionInfo: CalculatorConnectionInfoResponse | null;
 };
+
 export type CalculatorsSortedList = {
   Success: CalculatorAnalysisType[];
   NotPolled: CalculatorAnalysisType[];

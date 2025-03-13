@@ -12,7 +12,7 @@ export type ReportFiltrationFormProps = {
   addressesWithHouseManagements: HouseManagementWithStreetsResponse[];
   filtrationValues: ReportFiltrationFormValues;
   formId: string;
-  setFiltrationValues: (payload: ReportFiltrationFormValues) => void;
+  setFiltrationValues: (payload: Partial<ReportFiltrationFormValues>) => void;
   reportType: ReportType;
   organizations: OrganizationResponsePagedList | null;
   setSubmitButtonDisable: (payload: boolean) => void;
@@ -33,4 +33,9 @@ export enum EmployeeReportType {
 export enum EmployeeReportDatePeriodType {
   Month = 'Month',
   Year = 'Year',
+}
+
+export enum ReportTemplates {
+  CheckingDateExpiration = 'СheckingDateExpiration',
+  InvalidBitDepth = 'InvalidBitDepth',
 }

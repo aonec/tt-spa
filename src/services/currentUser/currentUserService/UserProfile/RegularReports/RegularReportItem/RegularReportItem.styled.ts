@@ -66,5 +66,11 @@ export const Name = styled.div``;
 export const NamesWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 6px;
+`;
+
+export const Period = styled.div`
+  display: flex;
+  align-items: center;
   gap: 12px;
 `;

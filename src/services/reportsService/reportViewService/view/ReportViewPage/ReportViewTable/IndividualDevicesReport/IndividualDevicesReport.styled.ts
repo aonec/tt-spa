@@ -40,3 +40,20 @@ export const FullAddressWrapper = styled.div`
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
+
+export const ReadingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const ReadingValue = styled.div`
+  display: flex;
+  flex-direction: column;
+  line-height: 16px;
+  align-items: center;
+`;
+
+export const ReadingDate = styled.div`
+  font-size: 12px;
+  color: rgba(39, 47, 90, 0.7);
+`;

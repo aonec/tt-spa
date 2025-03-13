@@ -20,3 +20,8 @@ export const ChevronSC = styled(ChevronIcon)<{ isOpen: boolean }>`
   transition: 0.2s;
   transform: rotate(${({ isOpen }) => (isOpen ? '90' : '-90')}deg);
 `;
+
+export const LinkChevronSC = styled(ChevronIcon)`
+  transition: 0.2s;
+  transform: rotate(180deg);
+`;
