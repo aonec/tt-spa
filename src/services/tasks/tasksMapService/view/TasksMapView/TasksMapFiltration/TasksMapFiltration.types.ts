@@ -19,4 +19,5 @@ export type TasksMapFiltrationProps = {
   handleClickTask: (taskId: number) => void;
   clearTask: () => void;
   organizationUsers: OrganizationUserListResponse[];
+  housingStocksWithTasks: BuildingWithTasksResponse[];
 };

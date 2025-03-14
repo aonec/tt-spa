@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { ChevronUp } from 'react-bootstrap-icons';
 import { SearchIcon } from 'ui-kit/icons';
 import {
@@ -29,6 +29,8 @@ import { HousingStockTasks } from './HousingStockTasks';
 import { Select } from 'ui-kit/Select';
 import { HideExtendedSearchButton } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
 import { FilterButtonForMap } from 'ui-kit/shared/filterButton/FIlterButton';
+import { BaseOptionType, DefaultOptionType } from 'antd/lib/select';
+import { useAutocomplete } from './TasksMapFiltration.utils';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   taskTypes,
@@ -43,8 +45,10 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   isLoadingTask,
   clearTask,
   organizationUsers,
+  housingStocksWithTasks,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState('');
 
   const { values, setFieldValue, handleSubmit, resetForm } = useFormik({
     initialValues: filtrationValues,
@@ -65,6 +69,17 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
     title: ResourceMapNamesDictionary[resource],
   }));
 
+  const searchResult = useMemo(
+    () => useAutocomplete(search, housingStocksWithTasks, 10),
+    [search, housingStocksWithTasks],
+  );
+
+  const searchOptions = useMemo((): (DefaultOptionType | BaseOptionType)[] => {
+    if (!searchResult) return [];
+
+    return searchResult.options;
+  }, [searchResult]);
+
   return (
     <Wrapper>
       {!isOpen && (
@@ -80,10 +95,12 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
               ].some(Boolean)}
             />
             <SearchInput
+              options={searchOptions}
+              value={search}
+              onSearch={setSearch}
               small
-              placeholder="Введите номер задачи или адрес"
-              prefix={<SearchIcon />}
-              disabled
+              placeholder="Введите адрес"
+              suffixIcon={<SearchIcon />}
             />
           </FilterHeader>
           {selectedHousingStock && (
