@@ -14,6 +14,7 @@ import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { ItemPanelsSelect } from 'ui-kit/shared/ItemPanelsSelect';
 import {
+  BuildingWithTasksResponse,
   EResourceType,
   EStageTimeStatus,
   ETaskEngineeringElement,
@@ -46,6 +47,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   clearTask,
   organizationUsers,
   housingStocksWithTasks,
+  handleSelectObject,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -101,6 +103,10 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
               small
               placeholder="Введите адрес"
               suffixIcon={<SearchIcon />}
+              onSelect={(_, object) => {
+                handleSelectObject(object as BuildingWithTasksResponse);
+              }}
+              allowClear
             />
           </FilterHeader>
           {selectedHousingStock && (

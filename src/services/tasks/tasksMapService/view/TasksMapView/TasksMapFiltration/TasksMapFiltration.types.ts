@@ -20,4 +20,5 @@ export type TasksMapFiltrationProps = {
   clearTask: () => void;
   organizationUsers: OrganizationUserListResponse[];
   housingStocksWithTasks: BuildingWithTasksResponse[];
+  handleSelectObject: (payload: BuildingWithTasksResponse) => void;
 };

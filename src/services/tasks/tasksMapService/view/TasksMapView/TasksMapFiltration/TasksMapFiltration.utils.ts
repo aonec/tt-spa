@@ -1,5 +1,5 @@
 import { BuildingWithTasksResponse } from 'api/types';
-import { countSimilarityPoints } from 'utils/countSimilarityPoints';
+import { countSimilarityPointsByAddress } from 'utils/countSimilarityPoints';
 import { getBuildingItemAddressString } from 'utils/getBuildingAddress';
 
 export function useAutocomplete(
@@ -7,15 +7,13 @@ export function useAutocomplete(
   addresses: BuildingWithTasksResponse[],
   amount: number = 1,
 ) {
-  if (search === null) {
-    return null;
-  }
+  if (!search) return null;
 
   const sortedAddress = sortAddressBySimilarity(search, addresses);
 
   return {
-    bestMatch: sortedAddress[0],
-    options: search ? sortedAddress.slice(0, amount) : [],
+    bestMatch: sortedAddress[0] || null,
+    options: sortedAddress.slice(0, amount),
   };
 }
 
@@ -24,21 +22,21 @@ export function sortAddressBySimilarity(
   addresses: BuildingWithTasksResponse[],
 ) {
   return addresses
-    .sort((a, b) => {
-      const aPoints = countSimilarityPoints(
-        addressSearch,
-        getBuildingItemAddressString(a.building?.address?.mainAddress),
+    .map((item) => {
+      const addressString = getBuildingItemAddressString(
+        item.building?.address?.mainAddress,
       );
-      const bPoints = countSimilarityPoints(
+      const similarity = countSimilarityPointsByAddress(
         addressSearch,
-        getBuildingItemAddressString(b.building?.address?.mainAddress),
+        addressString,
       );
-
-      return bPoints - aPoints;
+      return {
+        ...item,
+        similarity,
+        label: addressString,
+        value: item.building?.id || null,
+      };
     })
-    .map(({ building }) => ({
-      label: getBuildingItemAddressString(building?.address?.mainAddress),
-      building: building,
-      value: building?.id || null,
-    }));
+    .filter((item) => item.similarity > 0) // Убираем нерелевантные результаты
+    .sort((a, b) => b.similarity - a.similarity);
 }
