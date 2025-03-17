@@ -4,6 +4,9 @@ import { Timer } from 'ui-kit/shared/Timer/Timer.types';
 
 export type TasksListItemProps = {
   task: TaskType;
+  isSelected?: boolean;
+  toggleTaskCheckbox?: () => void;
+  isControlMode?: boolean;
 };
 
 export type TaskType = TaskListResponse & {

@@ -24,6 +24,7 @@ import { developmentSettingsService } from 'services/developmentSettings/develop
 import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 import { Button } from 'ui-kit/Button';
 import { TasksSummary } from '../TasksSummary';
+import { TasksControls } from './TasksControls';
 
 export const TasksProfile: FC<TasksProfileProps> = ({
   handleExportTasksList,
@@ -49,6 +50,12 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   isPermissionToAddTask,
   tasksSummaryData,
   isPermissionToShowSummary,
+  selectedTasks,
+  toggleTaskCheckbox,
+  setSelectedTasks,
+  handleCloseTasks,
+  isControlMode,
+  handleReassignTasks,
 }) => {
   const { featureToggles } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
@@ -67,7 +74,17 @@ export const TasksProfile: FC<TasksProfileProps> = ({
     ? `Наблюдаемые (${observingTasksCount})`
     : 'Наблюдаемые';
 
-  const tasksList = useMemo(() => <TasksList tasks={tasks} />, [tasks]);
+  const tasksList = useMemo(
+    () => (
+      <TasksList
+        tasks={tasks}
+        selectedTasks={selectedTasks}
+        toggleTaskCheckbox={toggleTaskCheckbox}
+        isControlMode={isControlMode}
+      />
+    ),
+    [tasks, selectedTasks, toggleTaskCheckbox, isControlMode],
+  );
 
   useEffect(() => {
     if (isSpectator && grouptype === TaskGroupingFilter.Executing) {
@@ -165,7 +182,17 @@ export const TasksProfile: FC<TasksProfileProps> = ({
                 changeFiltersByGroupType={changeFiltersByGroupType}
                 housingManagments={housingManagments}
                 perpetrators={perpetrators}
+                isControlMode={isControlMode}
               />
+              {isControlMode && (
+                <TasksControls
+                  selectedTasks={selectedTasks}
+                  setSelectedTasks={setSelectedTasks}
+                  tasks={tasks}
+                  handleCloseTasks={handleCloseTasks}
+                  handleReassignTasks={handleReassignTasks}
+                />
+              )}
             </ContentWrapper>
           </FiltrationWrapper>
           <ContentWrapper>
@@ -187,6 +214,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
             </WithLoader>
             {!isLoading && Boolean(tasks?.length) && (
               <PaginationSC
+                disabled={Boolean(selectedTasks.length) && isControlMode}
                 defaultCurrent={1}
                 onChange={changePageNumber}
                 pageSize={20}

@@ -1,1 +1,1 @@
-export { WorkWithReadingsContainer } from "./workWithReadingsService.container";
+export { WorkWithReadingsContainer } from './workWithReadingsService.container';

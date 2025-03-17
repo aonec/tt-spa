@@ -7971,11 +7971,20 @@ export class Api<
      */
     calculatorsPingdeviceDetail: (
       deviceId: number,
+      query?: {
+        /**
+         * Время на опрос устройства(ms)
+         * @format int32
+         * @default 3000
+         */
+        timeout?: number;
+      },
       params: RequestParams = {},
     ) =>
       this.request<PingDeviceResponse, ErrorApiResponse>({
         path: `/api/Calculators/pingdevice/${deviceId}`,
         method: 'GET',
+        query: query,
         secure: true,
         format: 'json',
         ...params,
@@ -12153,6 +12162,7 @@ export class Api<
         /** @format int32 */
         CalculatorId?: number;
         IsConnected?: boolean;
+        HasInvalidConfiguration?: boolean;
         /** @format int32 */
         BuildingId?: number;
         addressCity?: string;

@@ -2,6 +2,7 @@ import {
   BuildingShortResponse,
   CalculatorConnectionStatisticsResponsePagedList,
   ECalculatorConnectionGroupType,
+  CalculatorConnectionInfoResponse,
   EConnectionStatusType,
 } from 'api/types';
 
@@ -12,6 +13,7 @@ export type CalculatorAnalysisType = {
   isConnected: boolean;
   connectionStatus: EConnectionStatusType;
   address: BuildingShortResponse | null;
+  connectionInfo: CalculatorConnectionInfoResponse | null;
 };
 
 export type CalculatorsSortedListApi = {

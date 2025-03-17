@@ -27,10 +27,10 @@ export const StatisticWrapper = styled.div`
 export const GroupWrapper = styled.div`
   display: flex;
   align-items: center;
+  gap: 12px;
 `;
 
 export const TextWrapper = styled.div`
-  margin-left: 16px;
   font-size: 16px;
   font-weight: 500;
   color: #272f5a;

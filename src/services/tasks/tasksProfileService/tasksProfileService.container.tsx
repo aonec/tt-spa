@@ -18,6 +18,10 @@ import {
 } from '../addTaskFromDispatcherService';
 import { usePermission } from 'hooks/usePermission';
 import { exportTasksListService } from '../exportTasksListService';
+import { CloseTasksContainer } from './closeTasks';
+import { closeTasksService } from './closeTasks/closeTasksService.models';
+import { ReassignTasksContainer } from './reassignTasks';
+import { reassignTasksService } from './reassignTasks/reassignTasksService.models';
 
 const { inputs, outputs, gates } = tasksProfileService;
 const { InitialGate } = gates;
@@ -51,6 +55,11 @@ export const TasksProfileContainer = () => {
     setTasksPageSegment,
     handleOpenAddTaskModal,
     tasksSummaryData,
+    selectedTasks,
+    toggleTaskCheckbox,
+    setSelectedTasks,
+    handleCloseTasks,
+    handleReassignTasks,
   } = useUnit({
     taskTypes: outputs.$taskTypes,
     housingManagments: outputs.$housingManagments,
@@ -74,7 +83,30 @@ export const TasksProfileContainer = () => {
     setTasksPageSegment: inputs.setTasksPageSegment,
     handleOpenAddTaskModal: inputs.handleOpenAddTaskModal,
     tasksSummaryData: outputs.$tasksSummaryData,
+    selectedTasks: outputs.$selectedTasks,
+    toggleTaskCheckbox: inputs.toggleTaskCheckbox,
+    setSelectedTasks: inputs.setSelectedTasks,
+    handleCloseTasks: closeTasksService.inputs.openModal,
+    handleReassignTasks: reassignTasksService.inputs.openModal,
   });
+
+  const isAllowControlMode = usePermission([
+    ESecuredIdentityRoleName.Administrator,
+    ESecuredIdentityRoleName.SeniorOperator,
+    ESecuredIdentityRoleName.ManagingFirmDispatcher,
+  ]);
+
+  const isControlMode = useMemo(() => {
+    return (
+      (grouptype === TaskGroupingFilter.Observing ||
+        grouptype === TaskGroupingFilter.Executing) &&
+      isAllowControlMode
+    );
+  }, [grouptype, isAllowControlMode]);
+
+  useEffect(() => {
+    setSelectedTasks([]);
+  }, [grouptype, setSelectedTasks]);
 
   const isSpectator = usePermission([
     ESecuredIdentityRoleName.ManagingFirmSpectator,
@@ -164,6 +196,9 @@ export const TasksProfileContainer = () => {
       <InitialGate />
       <TaskTypesGate />
 
+      <CloseTasksContainer />
+      <ReassignTasksContainer />
+
       {isPermissionToAddTask && <AddTaskFromDispatcherContainer />}
       <TasksProfile
         handleExportTasksList={() => handleExportTasksList()}
@@ -189,6 +224,12 @@ export const TasksProfileContainer = () => {
         isPermissionToAddTask={isPermissionToAddTask}
         tasksSummaryData={tasksSummaryData}
         isPermissionToShowSummary={isPermissionToShowSummary}
+        selectedTasks={selectedTasks}
+        toggleTaskCheckbox={toggleTaskCheckbox}
+        setSelectedTasks={setSelectedTasks}
+        handleCloseTasks={handleCloseTasks}
+        isControlMode={isControlMode}
+        handleReassignTasks={handleReassignTasks}
       />
     </>
   );
