@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { DownloadIcon, LoadingBlueIcon } from 'ui-kit/icons';
+import { Pagination } from 'ui-kit/Pagination';
 
 export const Wrapper = styled.div`
   min-height: 64px;
@@ -61,4 +62,8 @@ export const DownloadIconSC = styled(DownloadIcon)`
 
 export const LoadingBlueIconSC = styled(LoadingBlueIcon)`
   margin-left: 2px;
+`;
+
+export const PaginationSC = styled(Pagination)`
+  padding: 10px;
 `;

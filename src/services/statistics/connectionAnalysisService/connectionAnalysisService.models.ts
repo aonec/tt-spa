@@ -15,9 +15,12 @@ const PageGate = createGate();
 
 const handleDownload = createEvent<DownloadParams>();
 
-const getCalculatorsFx = createEffect<void, CalculatorsSortedListApi>(
-  getCalculators,
-);
+const setPageNumber = createEvent<number>();
+
+const getCalculatorsFx = createEffect<
+  { pageNumber: number },
+  CalculatorsSortedListApi
+>(getCalculators);
 
 const downloadCalculatorsFx = createEffect<
   DownloadParams,
@@ -35,8 +38,20 @@ const $calculatorsSortedList = createStore<CalculatorsSortedListApi | null>(
   return data;
 });
 
+const $pageNumber = createStore<number>(1).on(
+  setPageNumber,
+  (_, pageNumber) => pageNumber,
+);
+
 sample({
   clock: PageGate.open,
+  fn: () => ({ pageNumber: 1 }),
+  target: getCalculatorsFx,
+});
+
+sample({
+  clock: setPageNumber,
+  fn: (pageNumber) => ({ pageNumber }),
   target: getCalculatorsFx,
 });
 
@@ -53,7 +68,7 @@ downloadCalculatorsFx.failData.watch(async (error) => {
 });
 
 export const connectionAnalysisService = {
-  inputs: { handleDownload },
-  outputs: { $calculatorsSortedList, $isLoading, $isDownloading },
+  inputs: { handleDownload, setPageNumber },
+  outputs: { $calculatorsSortedList, $isLoading, $isDownloading, $pageNumber },
   gates: { PageGate },
 };

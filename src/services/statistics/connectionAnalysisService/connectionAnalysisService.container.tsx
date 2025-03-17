@@ -7,13 +7,21 @@ const { outputs, gates, inputs } = connectionAnalysisService;
 const { PageGate } = gates;
 
 export const ConnectionAnalysisContainer = () => {
-  const { calculatorsSortedList, isLoading, handleDownload, isDownloading } =
-    useUnit({
-      calculatorsSortedList: outputs.$calculatorsSortedList,
-      isLoading: outputs.$isLoading,
-      handleDownload: inputs.handleDownload,
-      isDownloading: outputs.$isDownloading,
-    });
+  const {
+    calculatorsSortedList,
+    isLoading,
+    handleDownload,
+    isDownloading,
+    pageNumber,
+    setPageNumber,
+  } = useUnit({
+    calculatorsSortedList: outputs.$calculatorsSortedList,
+    isLoading: outputs.$isLoading,
+    handleDownload: inputs.handleDownload,
+    isDownloading: outputs.$isDownloading,
+    setPageNumber: inputs.setPageNumber,
+    pageNumber: outputs.$pageNumber,
+  });
 
   return (
     <>
@@ -23,6 +31,8 @@ export const ConnectionAnalysisContainer = () => {
         isLoading={isLoading}
         handleDownload={handleDownload}
         isDownloading={isDownloading}
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
       />
     </>
   );

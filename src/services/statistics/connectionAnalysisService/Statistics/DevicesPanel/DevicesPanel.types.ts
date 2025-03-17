@@ -9,4 +9,6 @@ export type Props = {
   calculators: CalculatorConnectionStatisticsResponsePagedList | null;
   handleDownload: (payload: DownloadParams) => void;
   isDownloading: boolean;
+  pageNumber: number;
+  setPageNumber: (payload: number) => void;
 };

@@ -8,4 +8,6 @@ export type Props = {
   isLoading: boolean;
   handleDownload: (payload: DownloadParams) => void;
   isDownloading: boolean;
+  pageNumber: number;
+  setPageNumber: (payload: number) => void;
 };
