@@ -676,13 +676,13 @@ export interface CalculatorConnectionInfoResponse {
 }
 
 export interface CalculatorConnectionStatisticsResponse {
+  address: BuildingShortResponse | null;
   /** @format int32 */
   id: number;
   model: string | null;
   serialNumber: string | null;
   isConnected: boolean | null;
   connection: MeteringDeviceConnection | null;
-  address: BuildingShortResponse | null;
   connectionInfo: CalculatorConnectionInfoResponse | null;
 }
 
@@ -712,6 +712,11 @@ export interface CalculatorFilterResponse {
   resourceTypes: EResourceTypeNullableStringDictionaryItem[] | null;
   cities: string[] | null;
   streets: string[] | null;
+}
+
+export interface CalculatorGroupedByConnectionResponse {
+  connectionGroupType: ECalculatorConnectionGroupType;
+  calculatorConnectionStatisticsList: CalculatorConnectionStatisticsResponsePagedList | null;
 }
 
 export interface CalculatorInfoListResponse {
@@ -1584,6 +1589,7 @@ export interface DeviceCheckingDateExpirationConstructedReportResponse {
   lastCheckingDate: string;
   /** @format date-time */
   futureCheckingDate: string;
+  lastReading: IndividualDeviceReadingsSlimResponse | null;
   homeownerPhoneNumbers: string[] | null;
   /** @deprecated */
   homeownerPhoneNumber: string | null;
@@ -1678,6 +1684,13 @@ export enum EApartmentStatus {
   Ok = 'Ok',
   Debtor = 'Debtor',
   Pause = 'Pause',
+}
+
+export enum ECalculatorConnectionGroupType {
+  Success = 'Success',
+  NotPolling = 'NotPolling',
+  Error = 'Error',
+  NoArchives = 'NoArchives',
 }
 
 export enum ECalculatorOrderRule {
@@ -3700,7 +3713,6 @@ export interface IndividualDevicesConstructedReportResponse {
   resource: EResourceType;
   serialNumber: string | null;
   model: string | null;
-  lastReading: IndividualDeviceReadingsSlimResponse | null;
   invalidCheckingDatesOption: InvalidCheckingDatesConstructedReportResponse | null;
   closedDeviceOnOneOfRisersOption: ClosedDeviceOnOneOfRisersConstructedReportResponse | null;
   deviceCheckingDateExpirationOption: DeviceCheckingDateExpirationConstructedReportResponse | null;
@@ -7696,6 +7708,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroupType?: ECalculatorConnectionGroupType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -7752,6 +7765,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroupType?: ECalculatorConnectionGroupType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -7957,11 +7971,20 @@ export class Api<
      */
     calculatorsPingdeviceDetail: (
       deviceId: number,
+      query?: {
+        /**
+         * Время на опрос устройства(ms)
+         * @format int32
+         * @default 3000
+         */
+        timeout?: number;
+      },
       params: RequestParams = {},
     ) =>
       this.request<PingDeviceResponse, ErrorApiResponse>({
         path: `/api/Calculators/pingdevice/${deviceId}`,
         method: 'GET',
+        query: query,
         secure: true,
         format: 'json',
         ...params,
@@ -8000,6 +8023,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroupType?: ECalculatorConnectionGroupType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -8014,10 +8038,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        CalculatorConnectionStatisticsResponsePagedList,
-        ErrorApiResponse
-      >({
+      this.request<CalculatorGroupedByConnectionResponse[], ErrorApiResponse>({
         path: `/api/CalculatorsStatistics`,
         method: 'GET',
         query: query,
@@ -8059,6 +8080,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroupType?: ECalculatorConnectionGroupType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -12140,6 +12162,7 @@ export class Api<
         /** @format int32 */
         CalculatorId?: number;
         IsConnected?: boolean;
+        HasInvalidConfiguration?: boolean;
         /** @format int32 */
         BuildingId?: number;
         addressCity?: string;
@@ -14046,6 +14069,7 @@ export class Api<
      *
      * @tags Reports
      * @name ReportsDevicesWithLastReadingReportList
+     * @summary Выгрузка показаний ИПУ в формате отчета для Вахитова 14
      * @request GET:/api/Reports/DevicesWithLastReadingReport
      * @secure
      */

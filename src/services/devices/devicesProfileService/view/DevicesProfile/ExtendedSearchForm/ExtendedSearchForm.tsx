@@ -130,8 +130,10 @@ export const ExtendedSearchForm: FC<ExtendedSearchFormProps> = ({
         </FormItem>
 
         <CheckboxSC
-          checked={true}
-          onChange={(e) => setFieldValue('isMainOnApartment', e.target.checked)}
+          checked={values.HasInvalidConfiguration}
+          onChange={(event) =>
+            setFieldValue('HasInvalidConfiguration', event.target.checked)
+          }
         >
           Узлы с ошибкой в конфигурации
         </CheckboxSC>

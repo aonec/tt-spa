@@ -143,13 +143,18 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           render: (elem) => (
             <ReadingWrapper>
               <ReadingValue>
-                <div>{elem.lastReading?.value1}</div>
-                <div> {elem.lastReading?.value2}</div>
+                <div>
+                  {elem.deviceCheckingDateExpirationOption?.lastReading?.value1}
+                </div>
+                <div>
+                  {elem.deviceCheckingDateExpirationOption?.lastReading?.value2}
+                </div>
               </ReadingValue>
               <ReadingDate>
-                {dayjs(elem.lastReading?.actualReadingDate).format(
-                  'DD.MM.YYYY',
-                )}
+                {dayjs(
+                  elem.deviceCheckingDateExpirationOption?.lastReading
+                    ?.actualReadingDate,
+                ).format('DD.MM.YYYY')}
               </ReadingDate>
             </ReadingWrapper>
           ),
