@@ -32,6 +32,8 @@ import { HideExtendedSearchButton } from 'ui-kit/ExtendedSearch/ExtendedSearch.s
 import { FilterButtonForMap } from 'ui-kit/shared/filterButton/FIlterButton';
 import { BaseOptionType, DefaultOptionType } from 'antd/lib/select';
 import { useAutocomplete } from './TasksMapFiltration.utils';
+import { useUnit } from 'effector-react';
+import { tasksMapService } from 'services/tasks/tasksMapService';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   taskTypes,
@@ -59,6 +61,10 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
       applyFilters(values);
     },
   });
+
+  const handleSetCoordinates = useUnit(
+    tasksMapService.inputs.handleSetCoordinates,
+  );
 
   const baseResourceOptions = [
     EResourceType.ColdWaterSupply,
@@ -104,7 +110,18 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
               placeholder="Введите адрес"
               suffixIcon={<SearchIcon />}
               onSelect={(_, object) => {
-                handleSelectObject(object as BuildingWithTasksResponse);
+                const building = object as BuildingWithTasksResponse;
+
+                handleSelectObject(building);
+
+                const coordinates = building.building?.coordinates;
+
+                if (coordinates) {
+                  handleSetCoordinates([
+                    coordinates.latitude,
+                    coordinates.longitude,
+                  ]);
+                }
               }}
               allowClear
             />
