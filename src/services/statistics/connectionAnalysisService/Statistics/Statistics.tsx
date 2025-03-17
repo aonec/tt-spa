@@ -8,6 +8,7 @@ import { ECalculatorConnectionGroupType } from 'api/types';
 export const Statistics: FC<Props> = ({
   calculatorsSortedList,
   isLoading,
+  handlePing,
   handleDownload,
   isDownloading,
 }) => {
@@ -27,6 +28,7 @@ export const Statistics: FC<Props> = ({
                 key={connectionStatus}
                 handleDownload={handleDownload}
                 isDownloading={isDownloading}
+                handlePing={handlePing}
               />
             ),
           )}
