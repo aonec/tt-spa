@@ -19,7 +19,6 @@ export const getBuildingAddress = (
 };
 
 export const getBuildingAddressString = (address?: BuildingAddress | null) => {
-  console.log(address);
   if (!address) {
     return '';
   }
