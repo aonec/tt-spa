@@ -1,24 +1,38 @@
-import { createEffect, createStore, sample } from 'effector';
-import { getCalculators } from './connectionAnalysisService.api';
-import { CalculatorListResponsePagedList } from 'api/types';
+import { createEffect, createEvent, createStore, sample } from 'effector';
+import {
+  downloadCalculators,
+  getCalculators,
+} from './connectionAnalysisService.api';
 import { createGate } from 'effector-react';
-import { sortCalculator } from './connectionAnalysisService.utils';
-import { CalculatorsSortedList } from './connectionAnalysisService.types';
+import {
+  CalculatorsSortedListApi,
+  DownloadParams,
+} from './connectionAnalysisService.types';
+import { BlobResponseErrorType } from 'types';
+import { message } from 'antd';
 
 const PageGate = createGate();
 
-const getCalculatorsFx = createEffect<void, CalculatorListResponsePagedList>(
+const handleDownload = createEvent<DownloadParams>();
+
+const getCalculatorsFx = createEffect<void, CalculatorsSortedListApi>(
   getCalculators,
 );
 
+const downloadCalculatorsFx = createEffect<
+  DownloadParams,
+  void,
+  BlobResponseErrorType
+>(downloadCalculators);
+
 const $isLoading = getCalculatorsFx.pending;
 
-const $calculatorsSortedList = createStore<CalculatorsSortedList | null>(
+const $isDownloading = downloadCalculatorsFx.pending;
+
+const $calculatorsSortedList = createStore<CalculatorsSortedListApi | null>(
   null,
 ).on(getCalculatorsFx.doneData, (_, data) => {
-  const list = data.items;
-  if (!list) return null;
-  return sortCalculator(list);
+  return data;
 });
 
 sample({
@@ -26,8 +40,20 @@ sample({
   target: getCalculatorsFx,
 });
 
+sample({
+  clock: handleDownload,
+  target: downloadCalculatorsFx,
+});
+
+downloadCalculatorsFx.failData.watch(async (error) => {
+  const jsonData = await error.response.data.text();
+  const errObject = JSON.parse(jsonData);
+
+  return message.error(errObject.error.Message || errObject.error.Text);
+});
+
 export const connectionAnalysisService = {
-  inputs: {},
-  outputs: { $calculatorsSortedList, $isLoading },
+  inputs: { handleDownload },
+  outputs: { $calculatorsSortedList, $isLoading, $isDownloading },
   gates: { PageGate },
 };

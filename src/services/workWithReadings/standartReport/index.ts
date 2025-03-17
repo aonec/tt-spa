@@ -1,1 +1,1 @@
-export { StandartReportContainer } from "./standartReportService.container";
+export { StandartReportContainer } from './standartReportService.container';
