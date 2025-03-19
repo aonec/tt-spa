@@ -12,6 +12,7 @@ import {
   EisTaskType,
   GroupReportConfigurationReportPeriodType,
   GroupReportConfigurationSendingPeriodType,
+  ManagingFirmTaskType,
   ReportType,
   ResourceType,
 } from 'api/types';
@@ -210,4 +211,29 @@ export const ReportTypeDictionary: {
   [ReportType.Events]: 'Событийная',
   [ReportType.Other]: 'Другая',
   [ReportType.Settings]: 'Настройки',
+};
+
+export const MalfunctionTypeDictionary: {
+  [key in ManagingFirmTaskType]: string;
+} = {
+  [ManagingFirmTaskType.CalculatorLackOfConnection]:
+    'Отсутствие подключения с прибором',
+  [ManagingFirmTaskType.CalculatorMalfunction]: 'Неполадки с вычислителем',
+  [ManagingFirmTaskType.CalculatorMalfunctionNonCommercial]: '',
+  [ManagingFirmTaskType.CurrentApplication]: '',
+  [ManagingFirmTaskType.CurrentApplicationUnassigned]: '',
+  [ManagingFirmTaskType.EmergencyApplication]: '',
+  [ManagingFirmTaskType.EmergencyApplicationUnassigned]: '',
+  [ManagingFirmTaskType.HousingDeviceMalfunction]: 'Неполадки с ОДПУ',
+  [ManagingFirmTaskType.HousingDeviceMalfunctionNonCommercial]: '',
+  [ManagingFirmTaskType.IndividualDeviceCheck]: '',
+  [ManagingFirmTaskType.IndividualDeviceCheckNoReadings]: '',
+  [ManagingFirmTaskType.IndividualDeviceReadingsCheck]: '',
+  [ManagingFirmTaskType.MeasurementErrorCommercial]:
+    'Превышение погрешности измерения',
+  [ManagingFirmTaskType.MeasurementErrorNonCommercial]: '',
+  [ManagingFirmTaskType.PipeRupture]: '',
+  [ManagingFirmTaskType.ResourceDisconnecting]: '',
+  [ManagingFirmTaskType.RiserNoReadings]: '',
+  [ManagingFirmTaskType.TemperatureNormativeDeviation]: '',
 };

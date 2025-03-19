@@ -1,59 +1,46 @@
-import { DashboardChartModel } from 'api/types';
+import {
+  DashboardMalfunctionDetailChartItemModel,
+  DashboardResourceDetailChartItemModel,
+} from 'api/types';
 import dayjs from 'dayjs';
 import { EDateRange } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/AnalyticsSearch/AnalyticsSearch.types';
 import { ChartType } from './StatisticItem.types';
 
 export function prepareChartData(
-  data: DashboardChartModel[],
+  data: DashboardResourceDetailChartItemModel[] &
+    DashboardMalfunctionDetailChartItemModel[],
   selectValue: EDateRange,
 ): ChartType[] {
   if (selectValue === EDateRange.Week) {
-    if (Number(data?.length) > 9) {
-      return data?.map((chart) => ({
-        x: dayjs(chart.date).format('DD'),
-        y: chart.value || 0,
-        label: chart.value || 0,
-      }));
-    } else {
-      return data?.map((chart) => ({
+    return data?.map((chart) => ({
+      x: dayjs(chart.date)
+        .format('DD MMMM')
+        .replace(/(\d+)\s([а-яА-Я]{3})[а-яА-Я]*/u, '$1 $2'),
+
+      y: chart.value || 0,
+      label: chart.value || 0,
+      details: chart.details,
+    }));
+  }
+
+  if (selectValue === EDateRange.Month) {
+    return data?.map((chart) => {
+      return {
         x: dayjs(chart.date)
           .format('DD MMMM')
           .replace(/(\d+)\s([а-яА-Я]{3})[а-яА-Я]*/u, '$1 $2'),
 
         y: chart.value || 0,
         label: chart.value || 0,
-      }));
-    }
-  }
-
-  if (selectValue === EDateRange.Month) {
-    // Группировка по неделям
-    const weeklyData: { [key: string]: DashboardChartModel[] } = {};
-
-    data.forEach((item) => {
-      if (item.date) {
-        const weekNumber = dayjs(item.date).format('ww');
-        const weekKey = `${weekNumber} неделя`;
-
-        if (!weeklyData[weekKey]) {
-          weeklyData[weekKey] = [];
-        }
-        weeklyData[weekKey].push(item);
-      }
-    });
-
-    // Преобразуем сгруппированные данные по неделям
-    return Object.entries(weeklyData).map(([weekKey, items]) => {
-      const totalValue = items.reduce(
-        (sum, item) => sum + (item.value || 0),
-        0,
-      );
-
-      return { x: weekKey, y: totalValue, label: totalValue };
+        details: chart.details,
+      };
     });
   } else if (selectValue === EDateRange.Quarter) {
     // Группировка по месяцам
-    const monthlyData: { [key: string]: DashboardChartModel[] } = {};
+    const monthlyData: {
+      [key: string]: DashboardResourceDetailChartItemModel[] &
+        DashboardMalfunctionDetailChartItemModel[];
+    } = {};
 
     data.forEach((item) => {
       if (item.date) {
@@ -81,5 +68,6 @@ export function prepareChartData(
     x: dayjs(chart.date).format('DD'),
     y: chart.value || 0,
     label: chart.value || 0,
+    details: chart.details,
   }));
 }
