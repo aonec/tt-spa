@@ -1,0 +1,28 @@
+<svg width="736" height="320" viewBox="0 0 736 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="736" height="320" rx="16" fill="#F3F5F6"/>
+<rect x="510.5" y="81.5" width="165" height="172" rx="7.5" fill="white"/>
+<rect x="510.5" y="81.5" width="165" height="172" rx="7.5" stroke="#189EE9"/>
+<rect x="526" y="97" width="134" height="16" rx="4" fill="white"/>
+<rect x="526" y="119" width="110" height="16" rx="4" fill="white"/>
+<rect x="526" y="141" width="134" height="97" rx="4" fill="white"/>
+<rect x="60" y="54" width="200" height="70" rx="8" fill="#DCDEE4" fill-opacity="0.5"/>
+<rect x="76" y="70" width="168" height="16" rx="4" fill="white"/>
+<rect x="76" y="92" width="110" height="16" rx="4" fill="white"/>
+<rect x="494.5" y="65.5" width="165" height="204" rx="7.5" fill="white"/>
+<rect x="494.5" y="65.5" width="165" height="204" rx="7.5" stroke="#189EE9"/>
+<rect x="510" y="81" width="134" height="16" rx="4" fill="white"/>
+<rect x="510" y="103" width="110" height="16" rx="4" fill="white"/>
+<rect x="510" y="125" width="134" height="129" rx="4" fill="white"/>
+<rect x="478.5" y="54.5" width="165" height="227" rx="7.5" fill="white"/>
+<rect x="478.5" y="54.5" width="165" height="227" rx="7.5" stroke="#189EE9"/>
+<rect x="494" y="70" width="134" height="16" rx="4" fill="#189EE9" fill-opacity="0.16"/>
+<rect x="494" y="92" width="110" height="16" rx="4" fill="#189EE9" fill-opacity="0.16"/>
+<rect x="494" y="114" width="134" height="152" rx="4" fill="#189EE9" fill-opacity="0.16"/>
+<rect x="60" y="133" width="200" height="70" rx="8" fill="#DCDEE4" fill-opacity="0.5"/>
+<rect x="76" y="149" width="83" height="16" rx="4" fill="white"/>
+<rect x="76" y="171" width="145" height="16" rx="4" fill="white"/>
+<rect x="60" y="212" width="200" height="70" rx="8" fill="#DCDEE4" fill-opacity="0.5"/>
+<rect x="76" y="228" width="110" height="16" rx="4" fill="white"/>
+<rect x="76" y="250" width="168" height="16" rx="4" fill="white"/>
+<path d="M314 168C313.448 168 313 168.448 313 169C313 169.552 313.448 170 314 170V168ZM423.707 169.707C424.098 169.317 424.098 168.683 423.707 168.293L417.343 161.929C416.953 161.538 416.319 161.538 415.929 161.929C415.538 162.319 415.538 162.953 415.929 163.343L421.586 169L415.929 174.657C415.538 175.047 415.538 175.681 415.929 176.071C416.319 176.462 416.953 176.462 417.343 176.071L423.707 169.707ZM314 170H315.946V168H314V170ZM319.839 170H323.732V168H319.839V170ZM327.625 170H331.518V168H327.625V170ZM335.411 170H339.304V168H335.411V170ZM343.196 170H347.089V168H343.196V170ZM350.982 170H354.875V168H350.982V170ZM358.768 170H362.661V168H358.768V170ZM366.554 170H370.446V168H366.554V170ZM374.339 170H378.232V168H374.339V170ZM382.125 170H386.018V168H382.125V170ZM389.911 170H393.804V168H389.911V170ZM397.696 170H401.589V168H397.696V170ZM405.482 170H409.375V168H405.482V170ZM413.268 170H417.161V168H413.268V170ZM421.054 170H423V168H421.054V170Z" fill="#189EE9"/>
+</svg>

@@ -12,6 +12,10 @@ import {
 } from 'services/organizations';
 import { companyProfileService } from 'services/company/companyProfileService';
 import { displayContractorsService } from 'services/contractors/displayContractorsService';
+import { useMemo } from 'react';
+import _ from 'lodash';
+import { Empty } from 'antd';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 const {
   inputs,
@@ -45,6 +49,7 @@ export const RegularReportsContainer = () => {
     isReportUpdating,
     staffList,
     contractors,
+    isLoading,
   } = useUnit({
     reportsData: outputs.$reportsData,
     houseManagements: houseManagementsService.outputs.$houseManagements,
@@ -54,7 +59,18 @@ export const RegularReportsContainer = () => {
     isReportUpdating: outputs.$isReportUpdating,
     staffList: companyProfileService.outputs.$staffList,
     contractors: displayContractorsService.outputs.$contractors,
+    isLoading: outputs.$isLoading,
   });
+
+  const revertedReportsData = useMemo(() => {
+    return _.orderBy(
+      reportsData,
+      (item) => item.reportConfigurationDetails?.initialDate,
+      'desc',
+    );
+  }, [reportsData]);
+
+  const isListEmpty = !revertedReportsData.length;
 
   return (
     <>
@@ -66,20 +82,23 @@ export const RegularReportsContainer = () => {
       <PageWrapper>
         <PageTitle>Регулярная выгрузка отчетов</PageTitle>
 
-        {reportsData?.map((report) => (
-          <RegularReportItem
-            key={report.id}
-            report={report}
-            isFirst={reportsData.indexOf(report) === 0}
-            houseManagements={houseManagements}
-            organizations={organizations}
-            handleDeleteReport={handleDeleteReport}
-            handleChangeActivity={handleChangeActivity}
-            isReportUpdating={isReportUpdating}
-            staffList={staffList}
-            contractors={contractors}
-          />
-        ))}
+        <WithLoader isLoading={isLoading}>
+          {isListEmpty && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
+          {revertedReportsData?.map((report) => (
+            <RegularReportItem
+              key={report.id}
+              report={report}
+              isFirst={revertedReportsData.indexOf(report) === 0}
+              houseManagements={houseManagements}
+              organizations={organizations}
+              handleDeleteReport={handleDeleteReport}
+              handleChangeActivity={handleChangeActivity}
+              isReportUpdating={isReportUpdating}
+              staffList={staffList}
+              contractors={contractors}
+            />
+          ))}
+        </WithLoader>
         <PageGate />
       </PageWrapper>
     </>

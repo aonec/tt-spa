@@ -675,6 +675,35 @@ export interface CalculatorConnectionInfoResponse {
   lastHourlyArchiveTime: string | null;
 }
 
+export interface CalculatorConnectionStatisticsResponse {
+  address: BuildingShortResponse | null;
+  /** @format int32 */
+  id: number;
+  model: string | null;
+  serialNumber: string | null;
+  isConnected: boolean | null;
+  connection: MeteringDeviceConnection | null;
+  connectionInfo: CalculatorConnectionInfoResponse | null;
+}
+
+export interface CalculatorConnectionStatisticsResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+  /** @format int32 */
+  pageNumber: number;
+  /** @format int32 */
+  pageSize: number;
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+  /** @format int32 */
+  nextPageNumber: number;
+  /** @format int32 */
+  previousPageNumber: number;
+  items: CalculatorConnectionStatisticsResponse[] | null;
+}
+
 export interface CalculatorFilterResponse {
   nodeStatuses:
     | ENodeCommercialAccountStatusNullableStringDictionaryItem[]
@@ -683,6 +712,11 @@ export interface CalculatorFilterResponse {
   resourceTypes: EResourceTypeNullableStringDictionaryItem[] | null;
   cities: string[] | null;
   streets: string[] | null;
+}
+
+export interface CalculatorGroupedByConnectionResponse {
+  connectionGroupType: ECalculatorConnectionGroupType;
+  calculatorConnectionStatisticsList: CalculatorConnectionStatisticsResponsePagedList | null;
 }
 
 export interface CalculatorInfoListResponse {
@@ -907,6 +941,10 @@ export interface CloseIndividualDeviceRequest {
   closingYear?: number | null;
   closingReason?: EClosingReason | null;
   documentsIds?: number[] | null;
+}
+
+export interface CloseTasksRequest {
+  taskIds?: number[] | null;
 }
 
 export interface ClosedDeviceOnOneOfRisersConstructedReportResponse {
@@ -1366,13 +1404,6 @@ export interface DashboardBaseTaskItemModel {
   expiredTasksCount?: number;
 }
 
-export interface DashboardChartModel {
-  /** @format date-time */
-  date?: string;
-  /** @format int32 */
-  value?: number;
-}
-
 export interface DashboardFilterParameters {
   /** @format date-time */
   from?: string | null;
@@ -1388,11 +1419,43 @@ export interface DashboardFilterParameters {
   isTest?: boolean;
 }
 
+export interface DashboardMalfunctionChartItemModel {
+  /** @format int32 */
+  totalTasksCount?: number;
+  /** @format int32 */
+  expiredTasksCount?: number;
+  malfunctionType?: ManagingFirmTaskType;
+}
+
+export interface DashboardMalfunctionDetailChartItemModel {
+  /** @format date-time */
+  date?: string;
+  /** @format int32 */
+  value?: number;
+  details?: DashboardMalfunctionChartItemModel[] | null;
+}
+
 export interface DashboardNavigationBreadCrumbs {
   city?: string | null;
   managingFirmName?: string | null;
   /** @format int32 */
   managingFirmId?: number | null;
+}
+
+export interface DashboardResourceChartItemModel {
+  /** @format int32 */
+  totalTasksCount?: number;
+  /** @format int32 */
+  expiredTasksCount?: number;
+  resourceType?: ResourceType;
+}
+
+export interface DashboardResourceDetailChartItemModel {
+  /** @format date-time */
+  date?: string;
+  /** @format int32 */
+  value?: number;
+  details?: DashboardResourceChartItemModel[] | null;
 }
 
 export interface DashboardServiceQualityDetailsModel {
@@ -1465,7 +1528,7 @@ export interface DashboardTaskMalfunctionModel {
   /** @format int32 */
   expiredTasksCount?: number;
   details?: DashboardTaskMalfunctionDetailsModel[] | null;
-  chart?: DashboardChartModel[] | null;
+  chart?: DashboardMalfunctionDetailChartItemModel[] | null;
 }
 
 export interface DashboardTaskMalfunctionResponse {
@@ -1477,7 +1540,7 @@ export interface DashboardTaskMalfunctionResponse {
   /** @format int32 */
   expiredTasksCount: number;
   details: DashboardTaskMalfunctionDetailsModel[] | null;
-  chart: DashboardChartModel[] | null;
+  chart: DashboardMalfunctionDetailChartItemModel[] | null;
 }
 
 export interface DashboardTaskQualityResponse {
@@ -1513,7 +1576,7 @@ export interface DashboardTaskResourceModel {
   /** @format int32 */
   expiredTasksCount?: number;
   details?: DashboardTaskResourceDetailsModel[] | null;
-  chart?: DashboardChartModel[] | null;
+  chart?: DashboardResourceDetailChartItemModel[] | null;
 }
 
 export interface DashboardTaskResourceResponse {
@@ -1525,7 +1588,7 @@ export interface DashboardTaskResourceResponse {
   /** @format int32 */
   expiredTasksCount: number;
   details: DashboardTaskResourceDetailsModel[] | null;
-  chart: DashboardChartModel[] | null;
+  chart: DashboardResourceDetailChartItemModel[] | null;
 }
 
 export interface DataAfterSplittingHomeownerAccountResponse {
@@ -1551,6 +1614,7 @@ export interface DeviceCheckingDateExpirationConstructedReportResponse {
   lastCheckingDate: string;
   /** @format date-time */
   futureCheckingDate: string;
+  lastReading: IndividualDeviceReadingsSlimResponse | null;
   homeownerPhoneNumbers: string[] | null;
   /** @deprecated */
   homeownerPhoneNumber: string | null;
@@ -1645,6 +1709,13 @@ export enum EApartmentStatus {
   Ok = 'Ok',
   Debtor = 'Debtor',
   Pause = 'Pause',
+}
+
+export enum ECalculatorConnectionGroupType {
+  Success = 'Success',
+  NotPolling = 'NotPolling',
+  Error = 'Error',
+  NoArchives = 'NoArchives',
 }
 
 export enum ECalculatorOrderRule {
@@ -2166,6 +2237,7 @@ export enum ESwitchingReason {
 export enum ETaskClosingStatus {
   Properly = 'Properly',
   Interrupted = 'Interrupted',
+  Forced = 'Forced',
 }
 
 export interface ETaskClosingStatusNullableStringDictionaryItem {
@@ -2471,6 +2543,8 @@ export interface GetIndividualDevicesToClose {
   expiredCheckingDateCount?: number;
   /** @format int32 */
   withoutReadingsCount?: number;
+  /** @format int32 */
+  apartmentsOnPauseCount?: number;
 }
 
 export interface GetSummaryHousingConsumptionsByResourcesResponse {
@@ -2484,7 +2558,8 @@ export interface GroupReportConfigurationDetailsModel {
   initialDate?: string;
   /** @format date-time */
   nextDate?: string | null;
-  reportConfigurationPeriod?: GroupReportConfigurationPeriod;
+  sendingPeriodType?: GroupReportConfigurationSendingPeriodType;
+  reportPeriodType?: GroupReportConfigurationReportPeriodType;
   isActive?: boolean;
 }
 
@@ -2494,10 +2569,15 @@ export interface GroupReportConfigurationDetailsRequest {
   /** @format date-time */
   initialDate: string;
   isActive?: boolean;
-  reportConfigurationPeriod: GroupReportConfigurationPeriod;
+  sendingPeriodType: GroupReportConfigurationSendingPeriodType;
 }
 
-export enum GroupReportConfigurationPeriod {
+export enum GroupReportConfigurationReportPeriodType {
+  StartMonth = 'StartMonth',
+  LastMonth = 'LastMonth',
+}
+
+export enum GroupReportConfigurationSendingPeriodType {
   EveryTwoWeeks = 'EveryTwoWeeks',
   EveryMonth = 'EveryMonth',
   EveryQuarter = 'EveryQuarter',
@@ -3218,6 +3298,32 @@ export interface HousingStockWithTasksResponse {
   tasks: TaskShortResponse[] | null;
 }
 
+export enum IPStatus {
+  Success = 'Success',
+  DestinationNetworkUnreachable = 'DestinationNetworkUnreachable',
+  DestinationHostUnreachable = 'DestinationHostUnreachable',
+  DestinationProtocolUnreachable = 'DestinationProtocolUnreachable',
+  DestinationPortUnreachable = 'DestinationPortUnreachable',
+  NoResources = 'NoResources',
+  BadOption = 'BadOption',
+  HardwareError = 'HardwareError',
+  PacketTooBig = 'PacketTooBig',
+  TimedOut = 'TimedOut',
+  BadRoute = 'BadRoute',
+  TtlExpired = 'TtlExpired',
+  TtlReassemblyTimeExceeded = 'TtlReassemblyTimeExceeded',
+  ParameterProblem = 'ParameterProblem',
+  SourceQuench = 'SourceQuench',
+  BadDestination = 'BadDestination',
+  DestinationUnreachable = 'DestinationUnreachable',
+  TimeExceeded = 'TimeExceeded',
+  BadHeader = 'BadHeader',
+  UnrecognizedNextHeader = 'UnrecognizedNextHeader',
+  IcmpError = 'IcmpError',
+  DestinationScopeMismatch = 'DestinationScopeMismatch',
+  Unknown = 'Unknown',
+}
+
 export interface IndividualDeviceConsumption {
   /** @format double */
   consumption?: number;
@@ -3703,6 +3809,8 @@ export interface InspectorsConstructedReportResponse {
 }
 
 export interface InvalidBitDepthConstructedReportResponse {
+  /** @format int32 */
+  deviceId: number;
   /** @format int32 */
   bitDepth: number | null;
   /** @format double */
@@ -4423,6 +4531,11 @@ export interface OrganizationUserWorkingStatusResponse {
   endDate: string | null;
 }
 
+export interface PingDeviceResponse {
+  status: IPStatus;
+  description: string | null;
+}
+
 export interface PipeHousingMeteringDeviceConnectionResponse {
   hub: PipeHousingMeteringDeviceHubConnectionResponse | null;
   /** @format int32 */
@@ -4649,6 +4762,7 @@ export interface PollResponse {
   doneAt: string | null;
   actionType: PollActionType;
   hasFile: boolean;
+  errorMessage: string | null;
 }
 
 export interface PollResponsePagedList {
@@ -4677,6 +4791,12 @@ export interface ProblemDetails {
   detail?: string | null;
   instance?: string | null;
   [key: string]: any;
+}
+
+export interface ReassignTasksRequest {
+  taskIds?: number[] | null;
+  /** @format int32 */
+  newPerpetratorId?: number;
 }
 
 export interface RefreshResponse {
@@ -4860,11 +4980,11 @@ export interface ResourceDisconnectingUpdateRequest {
 }
 
 export enum ResourceType {
-  None = 'None',
   Heat = 'Heat',
   HotWaterSupply = 'HotWaterSupply',
   ColdWaterSupply = 'ColdWaterSupply',
   Electricity = 'Electricity',
+  None = 'None',
 }
 
 export interface SendGroupReportRequest {
@@ -5197,6 +5317,13 @@ export interface SwitchMagneticSealRequest {
   /** @format date-time */
   magneticSealInstallationDate?: string | null;
   magneticSealTypeName?: string | null;
+}
+
+export interface TaskCloseStatusModel {
+  /** @format int32 */
+  id?: number;
+  isSuccess?: boolean;
+  errorDescription?: string | null;
 }
 
 export interface TaskCommentRequest {
@@ -7606,6 +7733,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroupType?: ECalculatorConnectionGroupType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -7662,6 +7790,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroupType?: ECalculatorConnectionGroupType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -7851,6 +7980,150 @@ export class Api<
       this.request<CalculatorFilterResponse, ErrorApiResponse>({
         path: `/api/Calculators/filters`,
         method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
+     *
+     * @tags Calculators
+     * @name CalculatorsPingdeviceDetail
+     * @summary MeteringDevicesRead
+     * @request GET:/api/Calculators/pingdevice/{deviceId}
+     * @secure
+     */
+    calculatorsPingdeviceDetail: (
+      deviceId: number,
+      query?: {
+        /**
+         * Время на опрос устройства(ms)
+         * @format int32
+         * @default 3000
+         */
+        timeout?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PingDeviceResponse, ErrorApiResponse>({
+        path: `/api/Calculators/pingdevice/${deviceId}`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
+     *
+     * @tags CalculatorsStatistics
+     * @name CalculatorsStatisticsList
+     * @summary MeteringDevicesRead
+     * @request GET:/api/CalculatorsStatistics
+     * @secure
+     */
+    calculatorsStatisticsList: (
+      query?: {
+        filterPipeDiameters?: number[];
+        filterExpiresCheckingDateAt?: EExpiresDateAt;
+        filterExpiresAdmissionActDateAt?: EExpiresDateAt;
+        filterResource?: EResourceType;
+        filterModel?: string;
+        /** @format date-time */
+        filterCommercialDateRangeFrom?: string;
+        /** @format date-time */
+        filterCommercialDateRangeTo?: string;
+        filterAddressCity?: string;
+        filterAddressStreet?: string;
+        filterAddressHousingStockNumber?: string;
+        filterAddressCorpus?: string;
+        filterAddressHouseCategory?: EHouseCategory;
+        /**
+         * @deprecated
+         * @format int32
+         */
+        filterHousingStockId?: number;
+        filterNodeStatus?: ENodeCommercialAccountStatus;
+        filterNodeRegistrationType?: ENodeRegistrationType;
+        filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroupType?: ECalculatorConnectionGroupType;
+        Question?: string;
+        OrderRule?: ECalculatorOrderRule;
+        IsConnected?: boolean;
+        CountTasks?: boolean;
+        IsClosed?: boolean;
+        FileName?: string;
+        /** @format int32 */
+        PageNumber?: number;
+        /** @format int32 */
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<CalculatorGroupedByConnectionResponse[], ErrorApiResponse>({
+        path: `/api/CalculatorsStatistics`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Исполнитель УК</li><li>Старший оператор</li><li>Оператор</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li><li>Контролёр</li><li>Супервайзер</li>
+     *
+     * @tags CalculatorsStatistics
+     * @name CalculatorsStatisticsExportList
+     * @summary MeteringDevicesRead
+     * @request GET:/api/CalculatorsStatistics/export
+     * @secure
+     */
+    calculatorsStatisticsExportList: (
+      query?: {
+        filterPipeDiameters?: number[];
+        filterExpiresCheckingDateAt?: EExpiresDateAt;
+        filterExpiresAdmissionActDateAt?: EExpiresDateAt;
+        filterResource?: EResourceType;
+        filterModel?: string;
+        /** @format date-time */
+        filterCommercialDateRangeFrom?: string;
+        /** @format date-time */
+        filterCommercialDateRangeTo?: string;
+        filterAddressCity?: string;
+        filterAddressStreet?: string;
+        filterAddressHousingStockNumber?: string;
+        filterAddressCorpus?: string;
+        filterAddressHouseCategory?: EHouseCategory;
+        /**
+         * @deprecated
+         * @format int32
+         */
+        filterHousingStockId?: number;
+        filterNodeStatus?: ENodeCommercialAccountStatus;
+        filterNodeRegistrationType?: ENodeRegistrationType;
+        filterConnectionStatus?: EConnectionStatusType;
+        filterConnectionGroupType?: ECalculatorConnectionGroupType;
+        Question?: string;
+        OrderRule?: ECalculatorOrderRule;
+        IsConnected?: boolean;
+        CountTasks?: boolean;
+        IsClosed?: boolean;
+        FileName?: string;
+        /** @format int32 */
+        PageNumber?: number;
+        /** @format int32 */
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/CalculatorsStatistics/export`,
+        method: 'GET',
+        query: query,
         secure: true,
         format: 'json',
         ...params,
@@ -11914,6 +12187,7 @@ export class Api<
         /** @format int32 */
         CalculatorId?: number;
         IsConnected?: boolean;
+        HasInvalidConfiguration?: boolean;
         /** @format int32 */
         BuildingId?: number;
         addressCity?: string;
@@ -12785,6 +13059,28 @@ export class Api<
         query: query,
         secure: true,
         format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Диспетчер УК</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags OrganizationUsers
+     * @name OrganizationUsersReassignTasksCreate
+     * @summary TaskAssign
+     * @request POST:/api/OrganizationUsers/ReassignTasks
+     * @secure
+     */
+    organizationUsersReassignTasksCreate: (
+      data: ReassignTasksRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/OrganizationUsers/ReassignTasks`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
@@ -13798,6 +14094,7 @@ export class Api<
      *
      * @tags Reports
      * @name ReportsDevicesWithLastReadingReportList
+     * @summary Выгрузка показаний ИПУ в формате отчета для Вахитова 14
      * @request GET:/api/Reports/DevicesWithLastReadingReport
      * @secure
      */
@@ -14881,7 +15178,7 @@ export class Api<
       }),
 
     /**
-     * @description Роли:<li>Диспетчер УК</li>
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Диспетчер УК</li>
      *
      * @tags Tasks
      * @name TasksCloseCreate
@@ -14894,6 +15191,29 @@ export class Api<
         path: `/api/Tasks/${taskId}/close`,
         method: 'POST',
         secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Диспетчер УК</li>
+     *
+     * @tags Tasks
+     * @name TasksCloseAllCreate
+     * @summary TaskDelete
+     * @request POST:/api/Tasks/CloseAll
+     * @secure
+     */
+    tasksCloseAllCreate: (
+      data: CloseTasksRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<TaskCloseStatusModel[], ErrorApiResponse>({
+        path: `/api/Tasks/CloseAll`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),

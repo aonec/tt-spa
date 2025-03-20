@@ -10,7 +10,9 @@ import {
   ETaskEngineeringElement,
   EisTaskReasonType,
   EisTaskType,
-  GroupReportConfigurationPeriod,
+  GroupReportConfigurationReportPeriodType,
+  GroupReportConfigurationSendingPeriodType,
+  ManagingFirmTaskType,
   ReportType,
   ResourceType,
 } from 'api/types';
@@ -181,12 +183,19 @@ export const ResourcesNameDictionary: { [key in ResourceType]: string } = {
   [ResourceType.None]: 'Нет',
 };
 
-export const GroupReportConfigurationPeriodDictionary: {
-  [key in GroupReportConfigurationPeriod]: string;
+export const GroupReportConfigurationReportPeriodTypeDictionary: {
+  [key in GroupReportConfigurationReportPeriodType]: string;
 } = {
-  [GroupReportConfigurationPeriod.EveryTwoWeeks]: '1 раз в 2 недели',
-  [GroupReportConfigurationPeriod.EveryMonth]: '1 раз в месяц',
-  [GroupReportConfigurationPeriod.EveryQuarter]: '1 раз в квартал',
+  [GroupReportConfigurationReportPeriodType.LastMonth]: 'За прошлый месяц',
+  [GroupReportConfigurationReportPeriodType.StartMonth]: 'С начала месяца',
+};
+
+export const GroupReportConfigurationPeriodDictionary: {
+  [key in GroupReportConfigurationSendingPeriodType]: string;
+} = {
+  [GroupReportConfigurationSendingPeriodType.EveryTwoWeeks]: '1 раз в 2 недели',
+  [GroupReportConfigurationSendingPeriodType.EveryMonth]: '1 раз в месяц',
+  [GroupReportConfigurationSendingPeriodType.EveryQuarter]: '1 раз в квартал',
 };
 
 export const ReportTypeDictionary: {
@@ -202,4 +211,29 @@ export const ReportTypeDictionary: {
   [ReportType.Events]: 'Событийная',
   [ReportType.Other]: 'Другая',
   [ReportType.Settings]: 'Настройки',
+};
+
+export const MalfunctionTypeDictionary: {
+  [key in ManagingFirmTaskType]: string;
+} = {
+  [ManagingFirmTaskType.CalculatorLackOfConnection]:
+    'Отсутствие подключения с прибором',
+  [ManagingFirmTaskType.CalculatorMalfunction]: 'Неполадки с вычислителем',
+  [ManagingFirmTaskType.CalculatorMalfunctionNonCommercial]: '',
+  [ManagingFirmTaskType.CurrentApplication]: '',
+  [ManagingFirmTaskType.CurrentApplicationUnassigned]: '',
+  [ManagingFirmTaskType.EmergencyApplication]: '',
+  [ManagingFirmTaskType.EmergencyApplicationUnassigned]: '',
+  [ManagingFirmTaskType.HousingDeviceMalfunction]: 'Неполадки с ОДПУ',
+  [ManagingFirmTaskType.HousingDeviceMalfunctionNonCommercial]: '',
+  [ManagingFirmTaskType.IndividualDeviceCheck]: '',
+  [ManagingFirmTaskType.IndividualDeviceCheckNoReadings]: '',
+  [ManagingFirmTaskType.IndividualDeviceReadingsCheck]: '',
+  [ManagingFirmTaskType.MeasurementErrorCommercial]:
+    'Превышение погрешности измерения',
+  [ManagingFirmTaskType.MeasurementErrorNonCommercial]: '',
+  [ManagingFirmTaskType.PipeRupture]: '',
+  [ManagingFirmTaskType.ResourceDisconnecting]: '',
+  [ManagingFirmTaskType.RiserNoReadings]: '',
+  [ManagingFirmTaskType.TemperatureNormativeDeviation]: '',
 };

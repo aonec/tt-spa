@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { DownloadIcon, LoadingBlueIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
   min-height: 64px;
@@ -48,4 +49,16 @@ export const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+`;
+
+export const DownloadIconSC = styled(DownloadIcon)`
+  margin-left: 6px;
+  &:hover path {
+    fill: rgba(24, 158, 233, 1);
+    transition: 0.2s;
+  }
+`;
+
+export const LoadingBlueIconSC = styled(LoadingBlueIcon)`
+  margin-left: 2px;
 `;

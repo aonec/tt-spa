@@ -19,7 +19,7 @@ export const OtherTaskQualityDetailStatistic: FC<
       <ProgressSC
         percent={(item.expiredTasksCount! / item.totalTasksCount!) * 100}
         showInfo={false}
-        strokeColor={'#272F5A'}
+        strokeColor={'#39437b'}
         size={['100%', 3]}
       />
     </DetailButton>

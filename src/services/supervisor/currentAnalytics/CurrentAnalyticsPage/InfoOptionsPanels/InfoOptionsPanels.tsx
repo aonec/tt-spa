@@ -37,13 +37,13 @@ export const InfoOptionsPanels: FC<Props> = ({
         percent: dashboardSummary?.dashboardMalfunctionsPercentage,
         type: DashboardDataType.MalfunctionsCount,
       },
-      {
-        title: 'Время на задачу',
-        value: dashboardSummary?.dashboardAverageCompletionTime,
-        percent: dashboardSummary?.dashboardAverageCompletionTimePercentage,
-        unit: 'мин',
-        type: DashboardDataType.AverageCompletionTime,
-      },
+      // {
+      //   title: 'Время на задачу',
+      //   value: dashboardSummary?.dashboardAverageCompletionTime,
+      //   percent: dashboardSummary?.dashboardAverageCompletionTimePercentage,
+      //   unit: 'мин',
+      //   type: DashboardDataType.AverageCompletionTime,
+      // },
       {
         title: 'Качество услуг',
         value: dashboardSummary?.dashboardServiceQualityCount,

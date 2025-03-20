@@ -70,10 +70,13 @@ import { useUnit } from 'effector-react';
 import { tokensService } from 'api/tokensService';
 import { UserProfileContainer } from 'services/currentUser/currentUserService/currentUserService.container';
 import { CurrentUserEditServiceContainer } from 'services/currentUser/currentUserEditService';
+import { WorkWithReadingsContainer } from 'services/workWithReadings';
+import { StandartReportContainer } from 'services/workWithReadings/standartReport';
 import { createRunnerService } from 'services/reportsService/createRunnerService/createRunnerService.models';
 import { CurrentAnalyticsContainer } from 'services/supervisor/currentAnalytics';
 import { CommonAnalyticsContainer } from 'services/supervisor/commonAnalytics';
 import { usePermission } from 'hooks/usePermission';
+import { ReadingReportsArchiveContainer } from 'services/workWithReadings/readingReportsArchive';
 
 const {
   gates: { CurrentUserGate },
@@ -380,6 +383,18 @@ export const useRoutes = (
         {
           path: '/apartments/:apartmentId/:tabSection?',
           element: <ApartmentProfileContainer />,
+        },
+        {
+          path: '/workWithReadings',
+          element: <WorkWithReadingsContainer />,
+        },
+        {
+          path: '/workWithReadings/standart',
+          element: <StandartReportContainer />,
+        },
+        {
+          path: '/workWithReadings/archive',
+          element: <ReadingReportsArchiveContainer />,
         },
         {
           path: '/buildings/:searchType?',

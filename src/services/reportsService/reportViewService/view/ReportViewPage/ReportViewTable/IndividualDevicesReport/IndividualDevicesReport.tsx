@@ -1,10 +1,13 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import {
   ApartmentNumber,
   ClosingDate,
   FullAddressWrapper,
   LinkSc,
   PhoneNumber,
+  ReadingDate,
+  ReadingValue,
+  ReadingWrapper,
   ResourceWrapper,
 } from './IndividualDevicesReport.styled';
 import { IndividualDevicesReportProps } from './IndividualDevicesReport.types';
@@ -41,6 +44,9 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   const isInvalidCheckingDates =
     reportOption === EIndividualDeviceReportOption.InvalidCheckingDates;
 
+  const isInvalidBitDepth =
+    reportOption === EIndividualDeviceReportOption.InvalidBitDepth;
+
   const isOperators = usePermission([
     ESecuredIdentityRoleName.Operator,
     ESecuredIdentityRoleName.SeniorOperator,
@@ -58,6 +64,13 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   return (
     <Table
       isSticky
+      link={(device) => {
+        if (isInvalidBitDepth) {
+          return `/individualDevices/${device.invalidBitDepthOption?.deviceId}/edit`;
+        }
+
+        return null;
+      }}
       columns={[
         {
           label: 'Адрес',
@@ -125,6 +138,30 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             ).format('DD.MM.YYYY'),
         },
         {
+          label: 'Последнее показание',
+          size: '170px',
+          render: (elem) => (
+            <ReadingWrapper>
+              <ReadingValue>
+                <div>
+                  {elem.deviceCheckingDateExpirationOption?.lastReading
+                    ?.value1 || '-'}
+                </div>
+                <div>
+                  {elem.deviceCheckingDateExpirationOption?.lastReading?.value2}
+                </div>
+              </ReadingValue>
+              <ReadingDate>
+                {dayjs(
+                  elem.deviceCheckingDateExpirationOption?.lastReading
+                    ?.actualReadingDate,
+                ).format('DD.MM.YYYY')}
+              </ReadingDate>
+            </ReadingWrapper>
+          ),
+          hidden: !isDeviceCheckingDateExpirationOption,
+        },
+        {
           label: 'Номер телефона',
           size: '400px',
           hidden: !isDeviceCheckingDateExpirationOption,
@@ -153,6 +190,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           render: (elem) =>
             dayjs(elem.closedDevicesOption?.checkingDate).format('DD.MM.YYYY'),
         },
+
         {
           label: 'Статус',
           size: '300px',
@@ -193,12 +231,26 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
         },
         {
           label: 'Дата следующей поверки',
-          size: '170px',
+          size: '120px',
           hidden: !isInvalidCheckingDates,
           render: (elem) =>
             dayjs(elem.invalidCheckingDatesOption?.futureCheckingDate).format(
               'DD.MM.YYYY',
             ),
+        },
+        {
+          label: 'Разрядность',
+          size: '110px',
+          hidden: !isInvalidBitDepth,
+          render: (elem) =>
+            elem.invalidBitDepthOption?.bitDepth || 'Нет данных',
+        },
+        {
+          label: 'Множитель',
+          size: '110px',
+          hidden: !isInvalidBitDepth,
+          render: (elem) =>
+            elem.invalidBitDepthOption?.scaleFactor || 'Нет данных',
         },
       ]}
       elements={individualDevicesReportData}

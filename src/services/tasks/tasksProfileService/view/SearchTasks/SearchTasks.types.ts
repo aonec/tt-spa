@@ -17,4 +17,5 @@ export type SearchTasksProps = {
   changeFiltersByGroupType: (payload: TaskGroupingFilter) => TaskGroupingFilter;
   housingManagments: GuidStringDictionaryItem[] | null;
   perpetrators: OrganizationUserListResponse[] | null;
+  isControlMode: boolean;
 };

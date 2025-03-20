@@ -1,9 +1,13 @@
 import {
-  CalculatorAnalysisType,
-  ConnectionStatuses,
-} from '../../connectionAnalysisService.types';
+  CalculatorConnectionStatisticsResponsePagedList,
+  ECalculatorConnectionGroupType,
+} from 'api/types';
+import { DownloadParams } from '../../connectionAnalysisService.types';
 
 export type Props = {
-  panelTitle: ConnectionStatuses;
-  calculators: CalculatorAnalysisType[];
+  panelTitle: ECalculatorConnectionGroupType;
+  calculators: CalculatorConnectionStatisticsResponsePagedList | null;
+  handleDownload: (payload: DownloadParams) => void;
+  isDownloading: boolean;
+  handlePing: (payload: number) => void;
 };

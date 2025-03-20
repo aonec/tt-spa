@@ -92,7 +92,7 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
               }}
             />
           </FormItem>
-          <FormItem label="Причина зыкрытия" style={{ width: '100%' }}>
+          <FormItem label="Причина закрытия" style={{ width: '100%' }}>
             <Select
               placeholder="Выберите причину закрытия"
               value={values.closingReason || undefined}

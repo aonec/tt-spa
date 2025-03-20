@@ -19,7 +19,7 @@ export type ReportViewPageProps = {
   houseManagements: HouseManagementResponse[] | null;
   addressesWithHouseManagements: HouseManagementWithStreetsResponse[];
   filtrationValues: ReportFiltrationFormValues;
-  setFiltrationValues: (payload: ReportFiltrationFormValues) => void;
+  setFiltrationValues: (payload: Partial<ReportFiltrationFormValues>) => void;
   isLoadingReport: boolean;
   individualDevicesReportData:
     | IndividualDevicesConstructedReportResponse[]
