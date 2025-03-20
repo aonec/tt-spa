@@ -66,7 +66,7 @@ export const Chart: FC<Props> = ({ chart, type, currentDashboardType }) => {
         cornerRadius={2}
         labelComponent={
           <VictoryTooltip
-            style={{ fill: 'rgba(39, 47, 90, 1)' }}
+            style={{ fill: 'none' }}
             flyoutComponent={
               <TooltipComponent currentDashboardType={currentDashboardType} />
             }

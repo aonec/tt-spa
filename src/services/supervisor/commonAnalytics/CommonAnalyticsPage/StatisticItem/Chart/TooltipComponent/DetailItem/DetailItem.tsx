@@ -11,8 +11,8 @@ import {
   DashboardResourceChartItemModel,
 } from 'api/types';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
-import { MalfunctionIcon } from '../../../DashboardAnalyticsDetail/MalfunctionIcon';
 import { MalfunctionTypeDictionary } from 'dictionaries';
+import { MalfunctionWhiteIcons } from '../../../DashboardAnalyticsDetail/MalfunctionIcon/MalfunctionIcon.constants';
 
 export const DetailItem: FC<Props> = ({ detail }) => {
   const isExpired = Boolean(detail?.expiredTasksCount);
@@ -24,9 +24,11 @@ export const DetailItem: FC<Props> = ({ detail }) => {
       />
     ) : (
       <MalfunctionWrapper>
-        <MalfunctionIcon
-          type={(detail as DashboardMalfunctionChartItemModel).malfunctionType!}
-        />
+        {
+          MalfunctionWhiteIcons[
+            (detail as DashboardMalfunctionChartItemModel).malfunctionType!
+          ]
+        }
         {
           MalfunctionTypeDictionary[
             (detail as DashboardMalfunctionChartItemModel).malfunctionType!

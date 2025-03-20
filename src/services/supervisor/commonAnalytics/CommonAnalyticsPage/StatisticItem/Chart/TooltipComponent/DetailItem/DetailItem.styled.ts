@@ -6,8 +6,9 @@ export const Wrapper = styled.div`
   align-items: center;
   white-space: nowrap;
   background-color: rgba(65, 74, 117, 1);
-  padding: 2px 6px;
+  padding: 4px 6px;
   border-radius: 6px;
+  width: fit-content;
 `;
 
 export const Expired = styled.div<{ isExpired: boolean }>`
