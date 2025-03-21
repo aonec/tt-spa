@@ -2,7 +2,7 @@ import { BuildingWithTasksResponse } from 'api/types';
 import { countSimilarityPointsByAddress } from 'utils/countSimilarityPoints';
 import { getBuildingItemAddressString } from 'utils/getBuildingAddress';
 
-export function useAutocomplete(
+export function getAutocompleteOptions(
   search: string | null,
   addresses: BuildingWithTasksResponse[],
   amount: number = 1,

@@ -31,7 +31,7 @@ import { Select } from 'ui-kit/Select';
 import { HideExtendedSearchButton } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
 import { FilterButtonForMap } from 'ui-kit/shared/filterButton/FIlterButton';
 import { BaseOptionType, DefaultOptionType } from 'antd/lib/select';
-import { useAutocomplete } from './TasksMapFiltration.utils';
+import { getAutocompleteOptions } from './TasksMapFiltration.utils';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   taskTypes,
@@ -72,7 +72,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   }));
 
   const searchResult = useMemo(
-    () => useAutocomplete(search, housingStocksWithTasks, 10),
+    () => getAutocompleteOptions(search, housingStocksWithTasks, 10),
     [search, housingStocksWithTasks],
   );
 
