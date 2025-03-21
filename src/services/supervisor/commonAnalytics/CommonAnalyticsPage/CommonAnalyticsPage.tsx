@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useMemo } from 'react';
 import { Wrapper } from './CommonAnalyticsPage.styled';
 import { Props } from './CommonAnalyticsPage.types';
 import { PageHeader } from 'ui-kit/shared/PageHeader';
@@ -6,7 +6,6 @@ import { AnalyticsSearch } from 'services/supervisor/currentAnalytics/CurrentAna
 import { InfoOptionsPanels } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/InfoOptionsPanels';
 import { StatisticItem } from './StatisticItem';
 import { EmptyStatisticItem } from './EmptyStatisticItem';
-import { EDateRange } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/AnalyticsSearch/AnalyticsSearch.types';
 
 export const CommonAnalyticsPage: FC<Props> = ({
   dashboardFilters,
@@ -19,13 +18,15 @@ export const CommonAnalyticsPage: FC<Props> = ({
   isLoadingSummary,
   analyticsData,
   organizations,
+  dateRangeType,
+  setDateRangeType,
 }) => {
   const isEmpty = useMemo(
     () => !analyticsData || !analyticsData.length || isLoading,
     [analyticsData, isLoading],
   );
 
-  const [selectValue, setValue] = useState(EDateRange.Week);
+  // const [selectValue, setValue] = useState(EDateRange.Week);
 
   return (
     <Wrapper>
@@ -35,8 +36,8 @@ export const CommonAnalyticsPage: FC<Props> = ({
         dashboardFilters={dashboardFilters}
         setDashboardFilters={setDashboardFilters}
         resetDashboardFilters={resetDashboardFilters}
-        selectValue={selectValue}
-        setValue={setValue}
+        selectValue={dateRangeType}
+        setValue={setDateRangeType}
         organizationsList={organizations}
       />
       <InfoOptionsPanels
@@ -51,7 +52,7 @@ export const CommonAnalyticsPage: FC<Props> = ({
           <StatisticItem
             key={analyticsData.title}
             data={analyticsData}
-            selectValue={selectValue}
+            selectValue={dateRangeType}
             currentDashboardType={currentDashboardType}
           />
         ))}

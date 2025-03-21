@@ -4,6 +4,7 @@ import {
   DashboardTaskResourceResponse,
   OrganizationResponsePagedList,
 } from 'api/types';
+import { EDateRange } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/AnalyticsSearch/AnalyticsSearch.types';
 import {
   DashboardDataType,
   DashboardQueryParams,
@@ -23,4 +24,6 @@ export type Props = {
     | DashboardTaskMalfunctionResponse[]
     | null;
   organizations: OrganizationResponsePagedList | null;
+  dateRangeType: EDateRange;
+  setDateRangeType: (payload: EDateRange) => void;
 };
