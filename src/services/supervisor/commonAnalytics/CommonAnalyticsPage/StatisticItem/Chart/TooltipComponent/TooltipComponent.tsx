@@ -8,6 +8,13 @@ import {
 } from './TooltipComponent.styled';
 import { DetailItem } from './DetailItem';
 import { DashboardDataType } from 'services/supervisor/currentAnalytics/currentAnalyticsService.types';
+import { getCountText } from 'utils/getCountText';
+import {
+  malfunctionsDictionary,
+  pipeRupturesDictionary,
+  resourceDisconnectsDictionary,
+  tasksCountDictionary,
+} from './TooltipComponent.constants';
 
 export const TooltipComponent: FC<Props> = ({
   x,
@@ -24,16 +31,16 @@ export const TooltipComponent: FC<Props> = ({
       return 'время выполнения';
     }
     if (currentDashboardType === DashboardDataType.MalfunctionsCount) {
-      return 'неисправностей';
+      return getCountText(datum?.label || 0, malfunctionsDictionary);
     }
     if (currentDashboardType === DashboardDataType.PipeRupturesCount) {
-      return 'порывов';
+      return getCountText(datum?.label || 0, pipeRupturesDictionary);
     }
     if (currentDashboardType === DashboardDataType.ResourceDisconnectsCount) {
-      return 'отключений';
+      return getCountText(datum?.label || 0, resourceDisconnectsDictionary);
     }
     if (currentDashboardType === DashboardDataType.TasksCount) {
-      return 'задач';
+      return getCountText(datum?.label || 0, tasksCountDictionary);
     }
   }, [currentDashboardType]);
 
