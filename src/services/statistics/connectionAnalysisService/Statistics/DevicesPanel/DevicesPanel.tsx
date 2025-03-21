@@ -4,6 +4,7 @@ import {
   DownloadIconSC,
   InfoWrapper,
   LoadingBlueIconSC,
+  PaginationSC,
   RighContentWrapper,
   Title,
   TitleWrapper,
@@ -29,10 +30,12 @@ export const DevicesPanel: FC<Props> = ({
   handlePing,
   handleDownload,
   isDownloading,
+  pageNumber,
+  setPageNumber,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const devicesCount = calculators?.items?.length || 0;
+  const devicesCount = calculators?.totalItems || 0;
 
   const devicesCountText = getDevicesCountText(devicesCount);
 
@@ -98,6 +101,18 @@ export const DevicesPanel: FC<Props> = ({
             handlePing={handlePing}
           />
         ))}
+      {isOpen && (
+        <PaginationSC
+          pageSize={100}
+          total={devicesCount}
+          current={pageNumber}
+          onChange={(event) => {
+            setPageNumber(event);
+            setIsOpen((prev) => !prev);
+          }}
+          showSizeChanger={false}
+        />
+      )}
     </Wrapper>
   );
 };

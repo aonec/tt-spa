@@ -5,8 +5,12 @@ import {
 } from './connectionAnalysisService.types';
 import { downloadURI } from 'utils/downloadByURL';
 
-export const getCalculators = (): Promise<CalculatorsSortedListApi> =>
-  axios.get('CalculatorsStatistics');
+export const getCalculators = (payload: {
+  pageNumber: number;
+}): Promise<CalculatorsSortedListApi> =>
+  axios.get('CalculatorsStatistics', {
+    params: { pageSize: 100, pageNumber: payload.pageNumber },
+  });
 
 export const downloadCalculators = async ({
   filterConnectionGroupType,
