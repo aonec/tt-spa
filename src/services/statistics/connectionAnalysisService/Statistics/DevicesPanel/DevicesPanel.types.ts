@@ -11,4 +11,5 @@ export type Props = {
   isDownloading: boolean;
   pageNumber: number;
   setPageNumber: (payload: number) => void;
+  handlePing: (payload: number) => void;
 };

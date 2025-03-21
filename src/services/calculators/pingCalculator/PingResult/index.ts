@@ -1,0 +1,1 @@
+export { PingResult } from './PingResult';

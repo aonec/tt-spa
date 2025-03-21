@@ -27,6 +27,7 @@ import { ECalculatorConnectionGroupType } from 'api/types';
 export const DevicesPanel: FC<Props> = ({
   panelTitle,
   calculators,
+  handlePing,
   handleDownload,
   isDownloading,
   pageNumber,
@@ -94,7 +95,11 @@ export const DevicesPanel: FC<Props> = ({
       </InfoWrapper>
       {isOpen &&
         calculators?.items?.map((device) => (
-          <CalculatorInfo device={device} key={device.id} />
+          <CalculatorInfo
+            device={device}
+            key={device.id}
+            handlePing={handlePing}
+          />
         ))}
       {isOpen && (
         <PaginationSC
