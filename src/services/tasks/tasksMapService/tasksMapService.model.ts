@@ -26,6 +26,8 @@ const handleClickTask = createEvent<number>();
 
 const clearTask = createEvent();
 
+const handleSetCoordinates = createEvent<[number, number]>();
+
 const fetchHousingStocksWithTasksFx = createEffect<
   GetHousingStocksWithTasksRequestPayload,
   BuildingWithTasksResponse[]
@@ -91,6 +93,7 @@ export const tasksMapService = {
     clearSelectedHousingStock,
     handleClickTask,
     clearTask,
+    handleSetCoordinates,
   },
   outputs: {
     $taskTypes,
