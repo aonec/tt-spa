@@ -3,6 +3,7 @@ import {
   calculatorQuery,
   pingCalculatorQuery,
 } from './pingCalculatorService.api';
+import { message } from 'antd';
 
 const openModal = createEvent<number>();
 const closeModal = createEvent();
@@ -23,6 +24,10 @@ sample({
   clock: closeModal,
   target: [calculatorQuery.reset, pingCalculatorQuery.reset],
 });
+
+pingCalculatorQuery.finished.failure.watch(() =>
+  message.error('Ошибка опроса'),
+);
 
 export const pingCalculatorService = {
   inputs: { openModal, closeModal },
