@@ -30,7 +30,6 @@ import { HousingStockTasks } from './HousingStockTasks';
 import { Select } from 'ui-kit/Select';
 import { HideExtendedSearchButton } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
 import { FilterButtonForMap } from 'ui-kit/shared/filterButton/FIlterButton';
-import { BaseOptionType, DefaultOptionType } from 'antd/lib/select';
 import { getAutocompleteOptions } from './TasksMapFiltration.utils';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
@@ -76,11 +75,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
     [search, housingStocksWithTasks],
   );
 
-  const searchOptions = useMemo((): (DefaultOptionType | BaseOptionType)[] => {
-    if (!searchResult) return [];
-
-    return searchResult.options;
-  }, [searchResult]);
+  const searchOptions = searchResult?.options ?? [];
 
   return (
     <Wrapper>
