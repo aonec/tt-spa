@@ -89,8 +89,6 @@ export function prepareChartData(
     });
   }
 
-  console.log('tyt');
-
   return data?.map((chart) => ({
     x: dayjs(chart.date).format('DD'),
     y: chart.value || 0,

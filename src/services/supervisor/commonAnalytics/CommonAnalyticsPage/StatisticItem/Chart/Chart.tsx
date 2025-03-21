@@ -20,8 +20,6 @@ export const Chart: FC<Props> = ({ chart, type, currentDashboardType }) => {
     return getMax(chart);
   }, [chart]);
 
-  console.log(type);
-
   return (
     <VictoryChart
       domainPadding={{ x: 40 }}
