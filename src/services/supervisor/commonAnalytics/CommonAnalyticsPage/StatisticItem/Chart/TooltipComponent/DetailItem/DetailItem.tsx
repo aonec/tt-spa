@@ -21,6 +21,7 @@ export const DetailItem: FC<Props> = ({ detail }) => {
     'resourceType' in detail ? (
       <ResourceInfo
         resource={(detail as DashboardResourceChartItemModel).resourceType!}
+        style={{ width: '8px' }}
       />
     ) : (
       <MalfunctionWrapper>

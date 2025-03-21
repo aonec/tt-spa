@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { Wrapper } from './Statistics.styled';
 import { Props } from './Statistics.types';
 import { DevicesPanel } from './DevicesPanel';
-import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { ECalculatorConnectionGroupType } from 'api/types';
+import { WithLoader } from 'ui-kit/shared/WithLoader';
 
 export const Statistics: FC<Props> = ({
   calculatorsSortedList,
@@ -11,6 +11,8 @@ export const Statistics: FC<Props> = ({
   handlePing,
   handleDownload,
   isDownloading,
+  pageNumber,
+  setPageNumber,
 }) => {
   return (
     <WithLoader isLoading={isLoading}>
@@ -29,6 +31,8 @@ export const Statistics: FC<Props> = ({
                 handleDownload={handleDownload}
                 isDownloading={isDownloading}
                 handlePing={handlePing}
+                pageNumber={pageNumber}
+                setPageNumber={setPageNumber}
               />
             ),
           )}

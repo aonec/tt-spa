@@ -23,7 +23,7 @@ export const TooltipBlock = styled.div<{ value: number }>`
   border-radius: 4px;
   border: 0;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 10px;
 
   transform: ${({ value }) =>
     value >= 0 ? 'translate(-15%, -100%)' : 'translate(-15%, 35%)'};
@@ -31,7 +31,7 @@ export const TooltipBlock = styled.div<{ value: number }>`
 
 export const Quantity = styled.div`
   margin-bottom: 8px;
-  font-size: 16px;
+  font-size: 14px;
 `;
 
 export const DetailsBlock = styled.div`
