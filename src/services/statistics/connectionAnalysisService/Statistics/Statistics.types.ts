@@ -1,6 +1,7 @@
 import {
   CalculatorsSortedListApi,
   DownloadParams,
+  PageNumberStoreType,
 } from '../connectionAnalysisService.types';
 
 export type Props = {
@@ -9,6 +10,8 @@ export type Props = {
   handlePing: (payload: number) => void;
   handleDownload: (payload: DownloadParams) => void;
   isDownloading: boolean;
-  pageNumber: number;
-  setPageNumber: (payload: number) => void;
+  pageNumbers: PageNumberStoreType;
+  setPageNumber: (
+    payload: Record<'Success' | 'NotPolling' | 'Error' | 'NoArchives', number>,
+  ) => void;
 };

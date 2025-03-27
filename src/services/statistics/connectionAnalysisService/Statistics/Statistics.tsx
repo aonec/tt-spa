@@ -11,11 +11,15 @@ export const Statistics: FC<Props> = ({
   handlePing,
   handleDownload,
   isDownloading,
-  pageNumber,
+  pageNumbers,
   setPageNumber,
 }) => {
+  const isRealLoader = isLoading && !calculatorsSortedList;
+
+  console.log(calculatorsSortedList);
+
   return (
-    <WithLoader isLoading={isLoading}>
+    <WithLoader isLoading={isRealLoader}>
       {calculatorsSortedList && (
         <Wrapper>
           {Object.values(ECalculatorConnectionGroupType).map(
@@ -23,7 +27,7 @@ export const Statistics: FC<Props> = ({
               <DevicesPanel
                 panelTitle={connectionStatus}
                 calculators={
-                  calculatorsSortedList.find(
+                  calculatorsSortedList?.find(
                     (elem) => elem.connectionGroupType === connectionStatus,
                   )?.calculatorConnectionStatisticsList || null
                 }
@@ -31,7 +35,7 @@ export const Statistics: FC<Props> = ({
                 handleDownload={handleDownload}
                 isDownloading={isDownloading}
                 handlePing={handlePing}
-                pageNumber={pageNumber}
+                pageNumbers={pageNumbers}
                 setPageNumber={setPageNumber}
               />
             ),
