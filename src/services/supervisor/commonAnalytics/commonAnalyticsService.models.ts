@@ -17,11 +17,14 @@ import {
   DashboardTaskResourceResponse,
 } from 'api/types';
 import { getItemArray } from '../currentAnalytics/currentAnalyticsService.utils';
+import { EDateRange } from '../currentAnalytics/CurrentAnalyticsPage/AnalyticsSearch/AnalyticsSearch.types';
 
 const CommonAnalyticsGate = createGate();
 const setCurrentDashboardType = createEvent<DashboardDataType>();
 const setDashboardFilters = createEvent<DashboardQueryParams>();
 const resetDashboardFilters = createEvent();
+
+const setDateRangeType = createEvent<EDateRange>();
 
 const $currentDashboardType = createStore<DashboardDataType>(
   DashboardDataType.PipeRupturesCount,
@@ -36,8 +39,6 @@ const $dashboardFilters = createStore<DashboardQueryParams>({
     ...data,
   }))
   .reset(resetDashboardFilters);
-
-sample({ clock: CommonAnalyticsGate.close, target: resetDashboardFilters });
 
 sample({
   source: $dashboardFilters,
@@ -63,6 +64,10 @@ const $dashboardParams = combine(
   $currentDashboardType,
   (params, dashboardType) => ({ ...params, dashboardType }),
 );
+
+const $dateRangeType = createStore<EDateRange>(EDateRange.Week)
+  .on(setDateRangeType, (_, type) => type)
+  .reset(resetDashboardFilters);
 
 split({
   source: $dashboardParams,
@@ -95,12 +100,14 @@ export const commonAnalyticsService = {
     setDashboardFilters,
     resetDashboardFilters,
     setCurrentDashboardType,
+    setDateRangeType,
   },
   outputs: {
     $dashboardFilters,
     $currentDashboardType,
     $isLoading,
     $analyticsData,
+    $dateRangeType,
   },
   gates: { CommonAnalyticsGate },
 };

@@ -6,5 +6,5 @@ export const Wrap = styled.div`
 `;
 
 export const Name = styled.div`
-  margin-left: 10px;
+  margin-left: 6px;
 `;

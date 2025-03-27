@@ -1,5 +1,7 @@
 import {
   BuildingShortResponse,
+  CalculatorConnectionStatisticsResponsePagedList,
+  ECalculatorConnectionGroupType,
   CalculatorConnectionInfoResponse,
   EConnectionStatusType,
 } from 'api/types';
@@ -14,16 +16,12 @@ export type CalculatorAnalysisType = {
   connectionInfo: CalculatorConnectionInfoResponse | null;
 };
 
-export type CalculatorsSortedList = {
-  Success: CalculatorAnalysisType[];
-  NotPolled: CalculatorAnalysisType[];
-  WithError: CalculatorAnalysisType[];
-  NoArchive: CalculatorAnalysisType[];
-};
+export type CalculatorsSortedListApi = {
+  connectionGroupType: ECalculatorConnectionGroupType;
+  calculatorConnectionStatisticsList: CalculatorConnectionStatisticsResponsePagedList;
+}[];
 
-export enum ConnectionStatuses {
-  Success = 'Success',
-  NotPolled = 'NotPolled',
-  WithError = 'WithError',
-  NoArchive = 'NoArchive',
-}
+export type DownloadParams = {
+  name: string;
+  filterConnectionGroupType: ECalculatorConnectionGroupType;
+};

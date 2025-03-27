@@ -144,7 +144,8 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
             <ReadingWrapper>
               <ReadingValue>
                 <div>
-                  {elem.deviceCheckingDateExpirationOption?.lastReading?.value1}
+                  {elem.deviceCheckingDateExpirationOption?.lastReading
+                    ?.value1 || '-'}
                 </div>
                 <div>
                   {elem.deviceCheckingDateExpirationOption?.lastReading?.value2}

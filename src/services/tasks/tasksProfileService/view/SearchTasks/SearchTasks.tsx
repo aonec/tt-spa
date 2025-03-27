@@ -38,6 +38,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
   changeFiltersByGroupType,
   housingManagments,
   perpetrators,
+  isControlMode,
 }) => {
   const { values, handleSubmit, setFieldValue, resetForm } =
     useFormik<GetTasksListRequestPayload>({
@@ -138,6 +139,7 @@ export const SearchTasks: FC<SearchTasksProps> = ({
       handleClear={clearAllFilters}
       handleClose={closeExtendedSearch}
       handleOpen={openExtendedSearch}
+      isPaddingSearch={!isControlMode}
       extendedSearchContent={
         <>
           {isArchived && (

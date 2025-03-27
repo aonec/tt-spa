@@ -5,7 +5,7 @@ export const ConnectionTypeDictionary: {
   [key in CalculatorConnectionType]: string;
 } = {
   [CalculatorConnectionType.Connected]: 'Есть подключение',
-  [CalculatorConnectionType.NoConnection]: 'Отстуствует',
+  [CalculatorConnectionType.NoConnection]: 'Отсутствует',
 };
 
 export const validationSchema = Yup.object().shape({
