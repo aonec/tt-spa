@@ -2,7 +2,6 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { AutoComplete as AutoCompleteAntD, Form } from 'antd';
 import dayjs from 'api/dayjs';
 import {
-  ArrowRightLongIconDim,
   ContainerWithOutline,
   DatePickerSc,
   GridContainer,
@@ -10,19 +9,13 @@ import {
   GridContainerAsymmetricRight,
   GridContainerAsymmetricThreeColumn,
   GridContainerExpandable,
-  OptionItemWrapper,
   ResourceDisconnectionAlertWrapper,
   ResourceDisconnectionDate,
-  ResourseTypeWrapper,
   SearchIconSc,
   SelectCaret,
-  SelectExpandable,
   TextareaSC,
   TimePickerLarge,
   TimePickerMedium,
-  TopWrapper,
-  WorkTitle,
-  WorkTitleWrapper,
 } from './AddTaskForm.styled';
 import { AddTask, AddTaskFormProps } from './AddTaskForm.types';
 import { useFormik } from 'formik';
@@ -34,15 +27,10 @@ import {
   EisTaskType,
   ResourceDisconnectingTypeResponse,
 } from 'api/types';
-import {
-  ResourceShortNamesDictionary,
-  TaskReasonTypeDictionary,
-  TaskTypeDictionary,
-} from 'dictionaries';
+import { ResourceShortNamesDictionary, TaskTypeDictionary } from 'dictionaries';
 import {
   autocompleteAddress,
   autocompleteApartNumber,
-  autocompleteReason,
   filterData,
 } from './AddTaskForm.utils';
 import { Alert } from 'ui-kit/Alert';
@@ -54,6 +42,7 @@ import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
 import { DatePicker } from 'ui-kit/DatePicker';
+import { Reason } from './form_items';
 
 const {
   gates: { PageGate },
@@ -133,35 +122,40 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
     [values.sourceId, initialSource?.id],
   );
 
-  const selectedSource = useMemo(() => {
-    return ERPSources.find((source) => source.id === values.sourceId);
+  const {
+    isSourceNumberRequired,
+    isSubscriberRequired,
+    isSubscriberAndSourceNumberRequired,
+    isOnlySubscriberRequired,
+    isOnlySourceNumberRequired,
+    isNoAdditionalFieldsRequired,
+  } = useMemo(() => {
+    const selectedSource = ERPSources.find(
+      (source) => source.id === values.sourceId,
+    );
+
+    const isSourceNumberRequired = Boolean(
+      selectedSource?.isSourceNumberRequired,
+    );
+    const isSubscriberRequired = Boolean(selectedSource?.isSubscriberRequired);
+    const isSubscriberAndSourceNumberRequired =
+      isSubscriberRequired && isSourceNumberRequired;
+    const isOnlySubscriberRequired =
+      isSubscriberRequired && !isSourceNumberRequired;
+    const isOnlySourceNumberRequired =
+      !isSubscriberRequired && isSourceNumberRequired;
+    const isNoAdditionalFieldsRequired =
+      !isSubscriberRequired && !isSourceNumberRequired;
+
+    return {
+      isSourceNumberRequired,
+      isSubscriberRequired,
+      isSubscriberAndSourceNumberRequired,
+      isOnlySubscriberRequired,
+      isOnlySourceNumberRequired,
+      isNoAdditionalFieldsRequired,
+    };
   }, [ERPSources, values.sourceId]);
-
-  const isSourceNumberRequired = useMemo(
-    () => Boolean(selectedSource?.isSourceNumberRequired),
-    [selectedSource],
-  );
-  const isSubscriberRequired = useMemo(
-    () => Boolean(selectedSource?.isSubscriberRequired),
-    [selectedSource],
-  );
-
-  const isSubscriberAndSourceNumberRequired = [
-    isSubscriberRequired,
-    isSourceNumberRequired,
-  ].every(Boolean);
-  const isOnlySubscriberRequired = [
-    isSubscriberRequired,
-    !isSourceNumberRequired,
-  ].every(Boolean);
-  const isOnlySourceNumberRequired = [
-    !isSubscriberRequired,
-    isSourceNumberRequired,
-  ].every(Boolean);
-  const isNoAdditionalFieldsRequired = [
-    !isSubscriberRequired,
-    !isSourceNumberRequired,
-  ].every(Boolean);
 
   const next = useSwitchInputOnEnter(dataKey, false, false);
 
@@ -203,32 +197,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
         preparedForOptionsAddresses || [],
       ),
     [values.addressSearch, preparedForOptionsAddresses],
-  );
-
-  const taskReasonOptions = useMemo(
-    () =>
-      autocompleteReason(values.taskReasonSearch, taskReasons).map(
-        (taskReason) => {
-          return {
-            label: (
-              <OptionItemWrapper>
-                <TopWrapper>
-                  <ResourseTypeWrapper>
-                    {TaskReasonTypeDictionary[taskReason.type]}
-                  </ResourseTypeWrapper>
-                  <ArrowRightLongIconDim />
-                  <WorkTitleWrapper>
-                    <WorkTitle>{taskReason.name}</WorkTitle>
-                  </WorkTitleWrapper>
-                </TopWrapper>
-              </OptionItemWrapper>
-            ),
-            value: `${taskReason.orderNumber}_${taskReason.name}`,
-            key: taskReason.orderNumber,
-          };
-        },
-      ),
-    [values.taskReasonSearch, taskReasons],
   );
 
   const taskTypeOptions = useMemo(() => {
@@ -585,77 +553,24 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
           ))}
 
         <ContainerWithOutline>
-          <FormItem label="Причина обращения">
-            <SelectExpandable
-              showSearch
-              allowClear
-              filterOption={false}
-              virtual
-              placeholder="Начните вводить"
-              value={values.taskReasonOrderNumber}
-              onClear={() => {
-                setFieldValue('taskReasonSearch', null);
-                setFieldValue('taskReasonOrderNumber', null);
-              }}
-              onSearch={(value) => {
-                setFieldValue('taskReasonSearch', value);
-              }}
-              onSelect={(value) => {
-                const valueString = value as string;
-
-                const name = valueString.split('_')[1];
-
-                setFieldValue('taskReasonOrderNumber', valueString);
-                setFieldValue('taskReasonSearch', name);
-                setFieldValue('executorId', null);
-                handleSelectTaskReason(name);
-
-                handleSearchExecutor();
-
-                setReasonOpen(false);
-                if (isNoAdditionalFieldsRequired) {
-                  next(3);
-                }
-                if (isOnlySourceNumberRequired) {
-                  next(4);
-                }
-                if (isOnlySubscriberRequired) {
-                  next(5);
-                }
-                if (isSubscriberAndSourceNumberRequired) {
-                  next(6);
-                }
-              }}
-              data-reading-input={dataKey}
-              onKeyDown={fromEnter(() => {
-                if (isNoAdditionalFieldsRequired) {
-                  next(3);
-                }
-                if (isOnlySourceNumberRequired) {
-                  next(4);
-                }
-                if (isOnlySubscriberRequired) {
-                  next(5);
-                }
-                if (isSubscriberAndSourceNumberRequired) {
-                  next(6);
-                }
-              })}
-              open={isReasonOpen}
-              onBlur={() => setReasonOpen(false)}
-              onFocus={() => {
-                setReasonOpen(true);
-                handleClosePhoneNumber();
-              }}
-              onMouseDown={() => setReasonOpen(true)}
-            >
-              {taskReasonOptions.map((elem) => (
-                <Select.Option value={elem.value} key={elem.key}>
-                  {elem.label}
-                </Select.Option>
-              ))}
-            </SelectExpandable>
-          </FormItem>
+          <Reason
+            value={values.taskReasonOrderNumber}
+            setFieldValue={setFieldValue}
+            handleSelectTaskReason={handleSelectTaskReason}
+            handleSearchExecutor={handleSearchExecutor}
+            setReasonOpen={setReasonOpen}
+            isNoAdditionalFieldsRequired={isNoAdditionalFieldsRequired}
+            isOnlySourceNumberRequired={isOnlySourceNumberRequired}
+            isOnlySubscriberRequired={isOnlySubscriberRequired}
+            isSubscriberAndSourceNumberRequired={
+              isSubscriberAndSourceNumberRequired
+            }
+            isReasonOpen={isReasonOpen}
+            dataKey={dataKey}
+            handleClosePhoneNumber={handleClosePhoneNumber}
+            searchValue={values.taskReasonSearch}
+            taskReasons={taskReasons}
+          />
 
           <FormItem label="Тип заявки">
             <Select
