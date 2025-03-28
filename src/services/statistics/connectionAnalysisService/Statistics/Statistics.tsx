@@ -16,8 +16,6 @@ export const Statistics: FC<Props> = ({
 }) => {
   const isRealLoader = isLoading && !calculatorsSortedList;
 
-  console.log(calculatorsSortedList);
-
   return (
     <WithLoader isLoading={isRealLoader}>
       {calculatorsSortedList && (
