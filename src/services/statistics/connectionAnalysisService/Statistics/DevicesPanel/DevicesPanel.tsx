@@ -51,8 +51,6 @@ export const DevicesPanel: FC<Props> = ({
     }
   }, [isDownloading]);
 
-  // const [pageNumber, setPageNumber] = useState(1);
-
   return (
     <Wrapper>
       <PanelInfo

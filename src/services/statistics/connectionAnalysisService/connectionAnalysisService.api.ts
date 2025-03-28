@@ -20,7 +20,7 @@ export const getCalculatorsQuery = createQuery<
       params: {
         pageSize: 30,
         pageNumber: payload.pageNumber,
-        filterConnectionGroupType: payload.filterConnectionGroupType,
+        ['Filter.ConnectionGroupType']: payload.filterConnectionGroupType,
       },
     }),
 });
