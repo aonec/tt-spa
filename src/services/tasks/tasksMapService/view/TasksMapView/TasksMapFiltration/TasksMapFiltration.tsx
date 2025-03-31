@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { ChevronUp } from 'react-bootstrap-icons';
 import { SearchIcon } from 'ui-kit/icons';
 import {
@@ -30,7 +30,7 @@ import { HousingStockTasks } from './HousingStockTasks';
 import { Select } from 'ui-kit/Select';
 import { HideExtendedSearchButton } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
 import { FilterButtonForMap } from 'ui-kit/shared/filterButton/FIlterButton';
-import { getAutocompleteOptions } from './TasksMapFiltration.utils';
+import { useAutocompleteOptions } from './TasksMapFiltration.utils';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   taskTypes,
@@ -70,9 +70,10 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
     title: ResourceMapNamesDictionary[resource],
   }));
 
-  const searchResult = useMemo(
-    () => getAutocompleteOptions(search, housingStocksWithTasks, 10),
-    [search, housingStocksWithTasks],
+  const searchResult = useAutocompleteOptions(
+    search,
+    housingStocksWithTasks,
+    10,
   );
 
   const searchOptions = searchResult?.options ?? [];
