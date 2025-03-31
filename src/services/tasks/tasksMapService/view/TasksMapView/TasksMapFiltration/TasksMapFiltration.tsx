@@ -14,6 +14,7 @@ import { Button } from 'ui-kit/Button';
 import { FormItem } from 'ui-kit/FormItem';
 import { ItemPanelsSelect } from 'ui-kit/shared/ItemPanelsSelect';
 import {
+  BuildingWithTasksResponse,
   EResourceType,
   EStageTimeStatus,
   ETaskEngineeringElement,
@@ -29,6 +30,7 @@ import { HousingStockTasks } from './HousingStockTasks';
 import { Select } from 'ui-kit/Select';
 import { HideExtendedSearchButton } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
 import { FilterButtonForMap } from 'ui-kit/shared/filterButton/FIlterButton';
+import { useAutocompleteOptions } from './TasksMapFiltration.utils';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   taskTypes,
@@ -43,8 +45,11 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   isLoadingTask,
   clearTask,
   organizationUsers,
+  housingStocksWithTasks,
+  handleSelectObject,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState('');
 
   const { values, setFieldValue, handleSubmit, resetForm } = useFormik({
     initialValues: filtrationValues,
@@ -65,6 +70,14 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
     title: ResourceMapNamesDictionary[resource],
   }));
 
+  const searchResult = useAutocompleteOptions(
+    search,
+    housingStocksWithTasks,
+    10,
+  );
+
+  const searchOptions = searchResult?.options ?? [];
+
   return (
     <Wrapper>
       {!isOpen && (
@@ -80,10 +93,16 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
               ].some(Boolean)}
             />
             <SearchInput
+              options={searchOptions}
+              value={search}
+              onSearch={setSearch}
               small
-              placeholder="Введите номер задачи или адрес"
-              prefix={<SearchIcon />}
-              disabled
+              placeholder="Введите адрес"
+              suffixIcon={<SearchIcon />}
+              onSelect={(_, object) => {
+                handleSelectObject(object as BuildingWithTasksResponse);
+              }}
+              allowClear
             />
           </FilterHeader>
           {selectedHousingStock && (
