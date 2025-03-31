@@ -130,6 +130,7 @@ export const ReportsListContainer = () => {
           current={pageNumber}
           total={reportsHistoryListPagedData?.totalItems}
           showSizeChanger={false}
+          style={{ marginTop: 16 }}
         />
       )}
     </>
