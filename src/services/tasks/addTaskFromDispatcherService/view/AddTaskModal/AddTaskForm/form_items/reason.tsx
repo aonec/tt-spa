@@ -45,8 +45,7 @@ export const Reason = ({
   dataKey: string;
   handleClosePhoneNumber: () => void;
   taskReasons: ErpTaskReasonGroupResponse[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setFieldValue: (field: string, value: any) => void;
+  setFieldValue: (field: string, value: null | string) => void;
 }) => {
   const next = useSwitchInputOnEnter(dataKey, false, false);
 
