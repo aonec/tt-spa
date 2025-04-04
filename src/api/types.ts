@@ -715,7 +715,7 @@ export interface CalculatorFilterResponse {
 }
 
 export interface CalculatorGroupedByConnectionResponse {
-  connectionGroup: ECalculatorConnectionGroupingType;
+  connectionGroupType: ECalculatorConnectionGroupType;
   calculatorConnectionStatisticsList: CalculatorConnectionStatisticsResponsePagedList | null;
 }
 
@@ -1404,13 +1404,6 @@ export interface DashboardBaseTaskItemModel {
   expiredTasksCount?: number;
 }
 
-export interface DashboardChartModel {
-  /** @format date-time */
-  date?: string;
-  /** @format int32 */
-  value?: number;
-}
-
 export interface DashboardFilterParameters {
   /** @format date-time */
   from?: string | null;
@@ -1426,11 +1419,43 @@ export interface DashboardFilterParameters {
   isTest?: boolean;
 }
 
+export interface DashboardMalfunctionChartItemModel {
+  /** @format int32 */
+  totalTasksCount?: number;
+  /** @format int32 */
+  expiredTasksCount?: number;
+  malfunctionType?: ManagingFirmTaskType;
+}
+
+export interface DashboardMalfunctionDetailChartItemModel {
+  /** @format date-time */
+  date?: string;
+  /** @format int32 */
+  value?: number;
+  details?: DashboardMalfunctionChartItemModel[] | null;
+}
+
 export interface DashboardNavigationBreadCrumbs {
   city?: string | null;
   managingFirmName?: string | null;
   /** @format int32 */
   managingFirmId?: number | null;
+}
+
+export interface DashboardResourceChartItemModel {
+  /** @format int32 */
+  totalTasksCount?: number;
+  /** @format int32 */
+  expiredTasksCount?: number;
+  resourceType?: ResourceType;
+}
+
+export interface DashboardResourceDetailChartItemModel {
+  /** @format date-time */
+  date?: string;
+  /** @format int32 */
+  value?: number;
+  details?: DashboardResourceChartItemModel[] | null;
 }
 
 export interface DashboardServiceQualityDetailsModel {
@@ -1503,7 +1528,7 @@ export interface DashboardTaskMalfunctionModel {
   /** @format int32 */
   expiredTasksCount?: number;
   details?: DashboardTaskMalfunctionDetailsModel[] | null;
-  chart?: DashboardChartModel[] | null;
+  chart?: DashboardMalfunctionDetailChartItemModel[] | null;
 }
 
 export interface DashboardTaskMalfunctionResponse {
@@ -1515,7 +1540,7 @@ export interface DashboardTaskMalfunctionResponse {
   /** @format int32 */
   expiredTasksCount: number;
   details: DashboardTaskMalfunctionDetailsModel[] | null;
-  chart: DashboardChartModel[] | null;
+  chart: DashboardMalfunctionDetailChartItemModel[] | null;
 }
 
 export interface DashboardTaskQualityResponse {
@@ -1551,7 +1576,7 @@ export interface DashboardTaskResourceModel {
   /** @format int32 */
   expiredTasksCount?: number;
   details?: DashboardTaskResourceDetailsModel[] | null;
-  chart?: DashboardChartModel[] | null;
+  chart?: DashboardResourceDetailChartItemModel[] | null;
 }
 
 export interface DashboardTaskResourceResponse {
@@ -1563,7 +1588,7 @@ export interface DashboardTaskResourceResponse {
   /** @format int32 */
   expiredTasksCount: number;
   details: DashboardTaskResourceDetailsModel[] | null;
-  chart: DashboardChartModel[] | null;
+  chart: DashboardResourceDetailChartItemModel[] | null;
 }
 
 export interface DataAfterSplittingHomeownerAccountResponse {
@@ -1686,7 +1711,7 @@ export enum EApartmentStatus {
   Pause = 'Pause',
 }
 
-export enum ECalculatorConnectionGroupingType {
+export enum ECalculatorConnectionGroupType {
   Success = 'Success',
   NotPolling = 'NotPolling',
   Error = 'Error',
@@ -4955,11 +4980,11 @@ export interface ResourceDisconnectingUpdateRequest {
 }
 
 export enum ResourceType {
-  None = 'None',
   Heat = 'Heat',
   HotWaterSupply = 'HotWaterSupply',
   ColdWaterSupply = 'ColdWaterSupply',
   Electricity = 'Electricity',
+  None = 'None',
 }
 
 export interface SendGroupReportRequest {
@@ -7708,7 +7733,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
-        filterConnectionGroup?: ECalculatorConnectionGroupingType;
+        filterConnectionGroupType?: ECalculatorConnectionGroupType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -7765,7 +7790,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
-        filterConnectionGroup?: ECalculatorConnectionGroupingType;
+        filterConnectionGroupType?: ECalculatorConnectionGroupType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -7971,11 +7996,20 @@ export class Api<
      */
     calculatorsPingdeviceDetail: (
       deviceId: number,
+      query?: {
+        /**
+         * Время на опрос устройства(ms)
+         * @format int32
+         * @default 3000
+         */
+        timeout?: number;
+      },
       params: RequestParams = {},
     ) =>
       this.request<PingDeviceResponse, ErrorApiResponse>({
         path: `/api/Calculators/pingdevice/${deviceId}`,
         method: 'GET',
+        query: query,
         secure: true,
         format: 'json',
         ...params,
@@ -8014,7 +8048,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
-        filterConnectionGroup?: ECalculatorConnectionGroupingType;
+        filterConnectionGroupType?: ECalculatorConnectionGroupType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -8071,7 +8105,7 @@ export class Api<
         filterNodeStatus?: ENodeCommercialAccountStatus;
         filterNodeRegistrationType?: ENodeRegistrationType;
         filterConnectionStatus?: EConnectionStatusType;
-        filterConnectionGroup?: ECalculatorConnectionGroupingType;
+        filterConnectionGroupType?: ECalculatorConnectionGroupType;
         Question?: string;
         OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean;
@@ -12153,6 +12187,7 @@ export class Api<
         /** @format int32 */
         CalculatorId?: number;
         IsConnected?: boolean;
+        HasInvalidConfiguration?: boolean;
         /** @format int32 */
         BuildingId?: number;
         addressCity?: string;

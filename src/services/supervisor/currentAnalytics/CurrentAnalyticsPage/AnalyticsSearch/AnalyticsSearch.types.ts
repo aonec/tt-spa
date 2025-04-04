@@ -7,7 +7,7 @@ export type Props = {
   resetDashboardFilters: () => void;
   isCommon?: boolean;
   selectValue?: EDateRange;
-  setValue?: React.Dispatch<React.SetStateAction<EDateRange>>;
+  setValue?: (payload: EDateRange) => void;
   organizationsList: OrganizationResponsePagedList | null;
 };
 

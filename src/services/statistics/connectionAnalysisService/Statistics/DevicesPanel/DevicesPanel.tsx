@@ -1,14 +1,6 @@
-import React, { FC, useMemo, useState } from 'react';
-import {
-  DevicesAmount,
-  InfoWrapper,
-  RighContentWrapper,
-  Title,
-  TitleWrapper,
-  Wrapper,
-} from './DevicesPanel.styled';
+import React, { FC, useEffect, useMemo, useState } from 'react';
+import { PaginationSC, Wrapper } from './DevicesPanel.styled';
 import { Props } from './DevicesPanel.types';
-import { ListOpeningChevron } from 'ui-kit/shared/ListOpeningChevron';
 import { CalculatorInfo } from './CalculatorDevices';
 import { getDevicesCountText } from 'services/nodes/createNodeService/view/CreateNodePage/ConnectedDevices/CommunicationPipeListItem/CommunicationPipeListItem.utils';
 import {
@@ -17,48 +9,84 @@ import {
   StopOrangeIcon,
   WarningIcon,
 } from 'ui-kit/icons';
-import { PanelTitleDictionary } from '../Statistics.constants';
-import { ConnectionStatuses } from '../../connectionAnalysisService.types';
+import { ECalculatorConnectionGroupType } from 'api/types';
+import { PanelInfo } from './PanelInfo';
 
-export const DevicesPanel: FC<Props> = ({ panelTitle, calculators }) => {
+export const DevicesPanel: FC<Props> = ({
+  panelTitle,
+  calculators,
+  handlePing,
+  handleDownload,
+  isDownloading,
+  pageNumbers,
+  setPageNumber,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const devicesCount = calculators.length;
+  const devicesCount = calculators?.totalItems || 0;
 
   const devicesCountText = getDevicesCountText(devicesCount);
 
   const panelIcon = useMemo(() => {
-    if (panelTitle === ConnectionStatuses.Success) {
+    if (panelTitle === ECalculatorConnectionGroupType.Success) {
       return <CheckGreenIcon />;
     }
-    if (panelTitle === ConnectionStatuses.NotPolled) {
+    if (panelTitle === ECalculatorConnectionGroupType.NotPolling) {
       return <StopOrangeIcon />;
     }
-    if (panelTitle === ConnectionStatuses.WithError) {
+    if (panelTitle === ECalculatorConnectionGroupType.Error) {
       return <WarningIcon />;
     }
-    if (panelTitle === ConnectionStatuses.NoArchive) {
+    if (panelTitle === ECalculatorConnectionGroupType.NoArchives) {
       return <MagnifierIcon />;
     }
   }, [panelTitle]);
 
+  const [downloadType, setType] =
+    useState<ECalculatorConnectionGroupType | null>(null);
+
+  useEffect(() => {
+    if (!isDownloading) {
+      setType(null);
+    }
+  }, [isDownloading]);
+
   return (
-    <Wrapper onClick={() => setIsOpen((prev) => !prev)}>
-      <InfoWrapper>
-        <TitleWrapper>
-          {panelIcon} <Title>{PanelTitleDictionary[panelTitle]}</Title>
-        </TitleWrapper>
-        <RighContentWrapper>
-          <DevicesAmount>
-            {devicesCount} {devicesCountText}
-          </DevicesAmount>
-          <ListOpeningChevron isOpen={isOpen} />
-        </RighContentWrapper>
-      </InfoWrapper>
+    <Wrapper>
+      <PanelInfo
+        handleDownload={handleDownload}
+        setIsOpen={setIsOpen}
+        devicesCountText={devicesCountText}
+        devicesCount={devicesCount}
+        downloadType={downloadType}
+        panelIcon={panelIcon}
+        panelTitle={panelTitle}
+        setType={setType}
+        isOpen={isOpen}
+      />
+
       {isOpen &&
-        calculators.map((device) => (
-          <CalculatorInfo device={device} key={device.id} />
+        calculators?.items?.map((device) => (
+          <CalculatorInfo
+            device={device}
+            key={device.id}
+            handlePing={handlePing}
+          />
         ))}
+      {isOpen && (
+        <PaginationSC
+          pageSize={30}
+          total={devicesCount}
+          current={pageNumbers[panelTitle]}
+          onChange={(pageNumber) => {
+            setPageNumber({ [panelTitle]: pageNumber } as Record<
+              ECalculatorConnectionGroupType,
+              number
+            >);
+          }}
+          showSizeChanger={false}
+        />
+      )}
     </Wrapper>
   );
 };

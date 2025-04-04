@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import {
   DeviceInfoWrapper,
   DeviceTitleWrapper,
@@ -13,8 +13,9 @@ import { CalculatorIcon } from 'ui-kit/icons';
 import { StatusBar } from 'ui-kit/shared/IndividualDeviceInfo/DeviceStatus/DeviceStatus.styled';
 import { getBuildingAddress } from 'utils/getBuildingAddress';
 import dayjs from 'dayjs';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 
-export const CalculatorInfo: FC<Props> = ({ device }) => {
+export const CalculatorInfo: FC<Props> = ({ device, handlePing }) => {
   const deviceInfo = (
     <DeviceInfoWrapper>
       <Model>{device.model}</Model>
@@ -43,11 +44,21 @@ export const CalculatorInfo: FC<Props> = ({ device }) => {
       </div>
 
       <StatusWrapper>
-        <StatusBar isActive={device.isConnected} />
+        <StatusBar isActive={device.isConnected || false} />
         {device.isConnected ? 'Активен' : 'Нет соединения'}
       </StatusWrapper>
 
       {getBuildingAddress(device.address)}
+
+      <ContextMenuButton
+        size="small"
+        menuButtons={[
+          {
+            title: 'Опросить вычислитель',
+            onClick: () => handlePing(device.id),
+          },
+        ]}
+      />
     </Wrapper>
   );
 };

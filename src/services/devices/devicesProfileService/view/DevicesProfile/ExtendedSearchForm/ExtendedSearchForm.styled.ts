@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Slider } from 'antd';
+import { Checkbox, Slider } from 'antd';
 
 export const StyledFormThreeRows = styled.div`
   display: grid;
@@ -33,4 +33,13 @@ export const StyledContainerTwoItems = styled.div`
 
 export const SegmentedContainer = styled.div`
   margin-top: 31px;
+`;
+
+export const CheckboxSC = styled(Checkbox)`
+  display: flex;
+  align-items: center;
+  color: rgba(39, 47, 90, 1);
+  font-weight: 500;
+  margin-top: 16px;
+  user-select: none;
 `;

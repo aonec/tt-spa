@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { ChevronUp } from 'react-bootstrap-icons';
 import { SearchIcon } from 'ui-kit/icons';
 import {
@@ -30,10 +30,9 @@ import { HousingStockTasks } from './HousingStockTasks';
 import { Select } from 'ui-kit/Select';
 import { HideExtendedSearchButton } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
 import { FilterButtonForMap } from 'ui-kit/shared/filterButton/FIlterButton';
-import { BaseOptionType, DefaultOptionType } from 'antd/lib/select';
-import { useAutocomplete } from './TasksMapFiltration.utils';
 import { useUnit } from 'effector-react';
 import { tasksMapService } from 'services/tasks/tasksMapService';
+import { useAutocompleteOptions } from './TasksMapFiltration.utils';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
   taskTypes,
@@ -77,16 +76,13 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
     title: ResourceMapNamesDictionary[resource],
   }));
 
-  const searchResult = useMemo(
-    () => useAutocomplete(search, housingStocksWithTasks, 10),
-    [search, housingStocksWithTasks],
+  const searchResult = useAutocompleteOptions(
+    search,
+    housingStocksWithTasks,
+    10,
   );
 
-  const searchOptions = useMemo((): (DefaultOptionType | BaseOptionType)[] => {
-    if (!searchResult) return [];
-
-    return searchResult.options;
-  }, [searchResult]);
+  const searchOptions = searchResult?.options ?? [];
 
   return (
     <Wrapper>

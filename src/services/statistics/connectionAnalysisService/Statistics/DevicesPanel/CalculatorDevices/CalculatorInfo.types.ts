@@ -1,5 +1,6 @@
-import { CalculatorAnalysisType } from 'services/statistics/connectionAnalysisService/connectionAnalysisService.types';
+import { CalculatorConnectionStatisticsResponse } from 'api/types';
 
 export type Props = {
-  device: CalculatorAnalysisType;
+  handlePing: (payload: number) => void;
+  device: CalculatorConnectionStatisticsResponse;
 };
