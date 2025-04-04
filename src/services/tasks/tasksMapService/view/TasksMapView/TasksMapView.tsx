@@ -44,6 +44,7 @@ export const TasksMapView: FC<TasksMapViewProps> = ({
         handleClickMarker={handleClickMarker}
         selectedHousingStockId={selectedHousingStock?.building?.id}
         organizationCoordinates={organizationCoordinates}
+        clearSelectedHousingStock={clearSelectedHousingStock}
       />
     </Wrapper>
   );
