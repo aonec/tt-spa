@@ -30,8 +30,6 @@ import { HousingStockTasks } from './HousingStockTasks';
 import { Select } from 'ui-kit/Select';
 import { HideExtendedSearchButton } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
 import { FilterButtonForMap } from 'ui-kit/shared/filterButton/FIlterButton';
-import { BaseOptionType, DefaultOptionType } from 'antd/lib/select';
-import { useAutocomplete } from './TasksMapFiltration.utils';
 import { useUnit } from 'effector-react';
 import { tasksMapService } from 'services/tasks/tasksMapService';
 import { useAutocompleteOptions } from './TasksMapFiltration.utils';
