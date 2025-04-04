@@ -1,5 +1,7 @@
 import { createEvent, createStore, sample } from 'effector';
-import { exportTasksService } from 'services/tasks/exportTasksListService/exportTasksListService.model';
+import { tasksExportQuery } from './exportTasksListService.api';
+import { message } from 'antd';
+// import { message } from 'antd';
 
 const openModal = createEvent();
 const closeModal = createEvent();
@@ -9,8 +11,20 @@ const $isOpen = createStore(false)
   .reset(closeModal);
 
 sample({
-  clock: exportTasksService.inputs.exportTasksList,
+  clock: tasksExportQuery.finished.success,
   target: closeModal,
+});
+
+tasksExportQuery.finished.failure.watch(async ({ error }) => {
+  const json = await (
+    error.response.data as unknown as {
+      text: () => Promise<string>;
+    }
+  ).text();
+
+  const data = JSON.parse(json);
+
+  message.error(data.error.Text || data.error.Message);
 });
 
 export const exportTasksListService = {

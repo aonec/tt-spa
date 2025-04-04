@@ -4,12 +4,14 @@ import { FormModal } from 'ui-kit/Modals/FormModal';
 import { FormItem } from 'ui-kit/FormItem';
 import { Select } from 'ui-kit/Select';
 import { tasksProfileService } from 'services/tasks/tasksProfileService';
-import { tasksCountQuery } from './exportTasksListService.api';
+import {
+  tasksCountQuery,
+  tasksExportQuery,
+} from './exportTasksListService.api';
 import { useEffect, useState } from 'react';
 import { EManagingFirmTaskFilterType } from 'api/types';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { Card } from './exportTasksListService.styled';
-import { exportTasksService } from 'services/tasks/exportTasksListService/exportTasksListService.model';
 
 const { inputs, outputs } = exportTasksListService;
 
@@ -25,6 +27,7 @@ export const ExportTasksListContainer = () => {
     isLoadingTasksCount,
     tasksCountData,
     handleExport,
+    isLoadingExport,
   } = useUnit({
     isOpen: outputs.$isOpen,
     closeModal: inputs.closeModal,
@@ -32,7 +35,8 @@ export const ExportTasksListContainer = () => {
     tasksCountData: tasksCountQuery.$data,
     isLoadingTasksCount: tasksCountQuery.$pending,
     getTasksCountByType: tasksCountQuery.start,
-    handleExport: exportTasksService.inputs.exportTasksList,
+    handleExport: tasksExportQuery.start,
+    isLoadingExport: tasksExportQuery.$pending,
   });
 
   const count = tasksCountData?.totalItems || null;
@@ -49,9 +53,17 @@ export const ExportTasksListContainer = () => {
       title="Выгрузить список задач"
       formId="export-tasks-form"
       visible={isOpen}
-      onCancel={closeModal}
+      onCancel={() => {
+        if (!tasksCountData) {
+          closeModal();
+          return;
+        }
+
+        tasksCountQuery.reset();
+        setTasksType(null);
+      }}
       submitBtnText={tasksCountData ? 'Выгрузить' : 'Продолжить'}
-      loading={isLoadingTasksCount}
+      loading={isLoadingTasksCount || isLoadingExport}
       onSubmit={() => {
         if (!tasksType) return;
 
@@ -60,7 +72,7 @@ export const ExportTasksListContainer = () => {
           return;
         }
 
-        handleExport();
+        handleExport({ TaskType: tasksType });
       }}
       disabled={!tasksType}
       form={
