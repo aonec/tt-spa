@@ -4,13 +4,26 @@ import {
   DownloadParams,
 } from './connectionAnalysisService.types';
 import { downloadURI } from 'utils/downloadByURL';
+import { createQuery } from '@farfetched/core';
 
-export const getCalculators = (payload: {
-  pageNumber: number;
-}): Promise<CalculatorsSortedListApi> =>
-  axios.get('CalculatorsStatistics', {
-    params: { pageSize: 100, pageNumber: payload.pageNumber },
-  });
+export const getCalculatorsQuery = createQuery<
+  [
+    payload: {
+      pageNumber: number;
+      filterConnectionGroupType?: string;
+    },
+  ],
+  CalculatorsSortedListApi
+>({
+  handler: (payload) =>
+    axios.get('CalculatorsStatistics', {
+      params: {
+        pageSize: 30,
+        pageNumber: payload.pageNumber,
+        ['Filter.ConnectionGroupType']: payload.filterConnectionGroupType,
+      },
+    }),
+});
 
 export const downloadCalculators = async ({
   filterConnectionGroupType,
