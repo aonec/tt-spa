@@ -20,6 +20,7 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
     creationReason,
     perpetrator,
     houseCategory,
+    firstTrigger,
   } = task;
 
   const apartmentId = apartment?.id;
@@ -41,6 +42,10 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
     ? getTimeStringByUTC(creationTime)
     : '-';
 
+  const preparedFirstTrigger = firstTrigger
+    ? getTimeStringByUTC(firstTrigger)
+    : '-';
+
   const navigate = useNavigate();
 
   return (
@@ -58,6 +63,10 @@ export const TaskBaseInfo: FC<TaskBaseInfoProps> = ({ task }) => {
         <RowWrapper>
           <div>Дата создания</div>
           <div data-test="task-creation-time">{preparedCreationTime}</div>
+        </RowWrapper>
+        <RowWrapper>
+          <div>Первый повод</div>
+          <div>{preparedFirstTrigger}</div>
         </RowWrapper>
         <RowWrapper>
           <div>Адрес</div>

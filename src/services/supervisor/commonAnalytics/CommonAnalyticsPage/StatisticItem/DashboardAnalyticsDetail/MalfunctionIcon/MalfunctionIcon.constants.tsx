@@ -6,6 +6,12 @@ import {
   MeasurementSmallIcon,
   NoConnectionIcon,
 } from 'ui-kit/icons';
+import {
+  CalculatorIconSC,
+  IndividualDeviceSmallIconSC,
+  MeasurementSmallIconSC,
+  NoConnectionIconSC,
+} from './MalfunctionIcon.styled';
 
 export const MalfunctionIcons: { [key in ManagingFirmTaskType]: ReactNode } = {
   [ManagingFirmTaskType.CalculatorLackOfConnection]: <NoConnectionIcon />,
@@ -34,6 +40,39 @@ export const MalfunctionIcons: { [key in ManagingFirmTaskType]: ReactNode } = {
   [ManagingFirmTaskType.ResourceDisconnecting]: <CalculatorIcon />,
   [ManagingFirmTaskType.RiserNoReadings]: <CalculatorIcon />,
   [ManagingFirmTaskType.TemperatureNormativeDeviation]: <CalculatorIcon />,
+};
+
+export const MalfunctionWhiteIcons: {
+  [key in ManagingFirmTaskType]: ReactNode;
+} = {
+  [ManagingFirmTaskType.CalculatorLackOfConnection]: <NoConnectionIconSC />,
+  [ManagingFirmTaskType.CalculatorMalfunction]: <CalculatorIconSC />,
+  [ManagingFirmTaskType.CalculatorMalfunctionNonCommercial]: (
+    <CalculatorIconSC />
+  ),
+  [ManagingFirmTaskType.CurrentApplication]: <CalculatorIconSC />,
+  [ManagingFirmTaskType.CurrentApplicationUnassigned]: <CalculatorIconSC />,
+  [ManagingFirmTaskType.EmergencyApplication]: <CalculatorIconSC />,
+  [ManagingFirmTaskType.EmergencyApplicationUnassigned]: <CalculatorIconSC />,
+  [ManagingFirmTaskType.HousingDeviceMalfunction]: <CalculatorIconSC />,
+  [ManagingFirmTaskType.HousingDeviceMalfunctionNonCommercial]: (
+    <CalculatorIconSC />
+  ),
+  [ManagingFirmTaskType.IndividualDeviceCheck]: <IndividualDeviceSmallIconSC />,
+  [ManagingFirmTaskType.IndividualDeviceCheckNoReadings]: (
+    <IndividualDeviceSmallIconSC />
+  ),
+  [ManagingFirmTaskType.IndividualDeviceReadingsCheck]: (
+    <IndividualDeviceSmallIconSC />
+  ),
+  [ManagingFirmTaskType.MeasurementErrorCommercial]: <MeasurementSmallIconSC />,
+  [ManagingFirmTaskType.MeasurementErrorNonCommercial]: (
+    <MeasurementSmallIconSC />
+  ),
+  [ManagingFirmTaskType.PipeRupture]: <CalculatorIconSC />,
+  [ManagingFirmTaskType.ResourceDisconnecting]: <CalculatorIconSC />,
+  [ManagingFirmTaskType.RiserNoReadings]: <CalculatorIconSC />,
+  [ManagingFirmTaskType.TemperatureNormativeDeviation]: <CalculatorIconSC />,
 };
 
 export const MalfunctionDescription: { [key: string]: string } = {

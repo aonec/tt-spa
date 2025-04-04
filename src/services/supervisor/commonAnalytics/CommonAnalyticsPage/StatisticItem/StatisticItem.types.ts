@@ -1,4 +1,6 @@
 import {
+  DashboardMalfunctionChartItemModel,
+  DashboardResourceChartItemModel,
   DashboardTaskMalfunctionResponse,
   DashboardTaskResourceResponse,
 } from 'api/types';
@@ -15,4 +17,8 @@ export type ChartType = {
   x: string;
   y: number;
   label: number;
+  details?:
+    | DashboardResourceChartItemModel[]
+    | DashboardMalfunctionChartItemModel[]
+    | null;
 };

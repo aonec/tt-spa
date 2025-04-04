@@ -15,9 +15,7 @@ export const verticalAxisStyle = {
   axis: { stroke: 'none' },
   ticks: { stroke: 'none' },
   tickLabels: {
-    fill: 'var(--main-70)',
-    fontSize: 8,
-    borderBottom: '1px solid black',
+    fontSize: 14,
   },
   grid: { stroke: 'var(--frame)', strokeDasharray: '0' },
 };

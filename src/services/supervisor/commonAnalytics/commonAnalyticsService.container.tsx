@@ -27,6 +27,8 @@ export const CommonAnalyticsContainer = () => {
     isLoadingSummary,
     analyticsData,
     organizations,
+    dateRangeType,
+    setDateRangeType,
   } = useUnit({
     setDashboardFilters: inputs.setDashboardFilters,
     dashboardFilters: outputs.$dashboardFilters,
@@ -38,6 +40,8 @@ export const CommonAnalyticsContainer = () => {
     isLoadingSummary: commonSummaryQuery.$pending,
     analyticsData: outputs.$analyticsData,
     organizations: dashboardOrganizationsQuery.$data,
+    dateRangeType: outputs.$dateRangeType,
+    setDateRangeType: inputs.setDateRangeType,
   });
 
   return (
@@ -55,6 +59,8 @@ export const CommonAnalyticsContainer = () => {
         isLoadingSummary={isLoadingSummary}
         analyticsData={analyticsData}
         organizations={organizations}
+        dateRangeType={dateRangeType}
+        setDateRangeType={setDateRangeType}
       />
     </>
   );

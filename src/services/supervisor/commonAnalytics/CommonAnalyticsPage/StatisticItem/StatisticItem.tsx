@@ -47,7 +47,7 @@ export const StatisticItem: FC<Props> = ({
       <TitleWrapper>
         <Dictrict>{title}</Dictrict>
         <Count>
-          {totalTasksCount}{' '}
+          {totalTasksCount}
           {Boolean(totalTasksPercentage) && (
             <Percentage isPositive={isPositive}>
               {isPositive && '+'}
@@ -57,7 +57,11 @@ export const StatisticItem: FC<Props> = ({
         </Count>
       </TitleWrapper>
       <StatisticsWrapper>
-        <Chart chart={preparedChart} />
+        <Chart
+          chart={preparedChart}
+          type={selectValue}
+          currentDashboardType={currentDashboardType}
+        />
         <Resource>
           {details?.map((elem) => (
             <DetailComponent

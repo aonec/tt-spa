@@ -10,8 +10,10 @@ import {
 } from 'victory';
 import { TickComponent } from 'ui-kit/shared/GraphComponents/TickComponent';
 import { getMax } from './Chart.utils';
+import { TooltipComponent } from './TooltipComponent';
+import { EDateRange } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/AnalyticsSearch/AnalyticsSearch.types';
 
-export const Chart: FC<Props> = ({ chart }) => {
+export const Chart: FC<Props> = ({ chart, type, currentDashboardType }) => {
   const mock = [{ x: ' ', y: 0 }];
 
   const maxY = useMemo(() => {
@@ -34,6 +36,16 @@ export const Chart: FC<Props> = ({ chart }) => {
       <VictoryAxis
         style={horizontalAxisStyle}
         tickComponent={<TickComponent />}
+        tickFormat={(x: string, index: number, ticks: string[]) => {
+          if (type === EDateRange.Month) {
+            if (index === 0 || index % 5 === 0 || ticks.length - 1 === index) {
+              return x;
+            } else {
+              return '';
+            }
+          }
+          return x;
+        }}
       />
       <VictoryAxis
         dependentAxis
@@ -48,16 +60,16 @@ export const Chart: FC<Props> = ({ chart }) => {
       <VictoryBar
         style={{ data: { fill: 'rgba(24, 158, 233, 1)' } }}
         data={chart || mock}
-        barWidth={40}
+        barWidth={
+          type === EDateRange.Week ? 55 : type === EDateRange.Month ? 12 : 100
+        }
         cornerRadius={2}
         labelComponent={
           <VictoryTooltip
-            flyoutWidth={40}
-            cornerRadius={2}
-            style={{ stroke: '#fff' }}
-            flyoutStyle={{
-              fill: ' rgb(39, 47, 90)',
-            }}
+            style={{ fill: 'none' }}
+            flyoutComponent={
+              <TooltipComponent currentDashboardType={currentDashboardType} />
+            }
           />
         }
       />
