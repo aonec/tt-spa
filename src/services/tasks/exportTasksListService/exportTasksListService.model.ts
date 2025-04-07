@@ -50,3 +50,5 @@ export const exportTasksListService = {
     $isLoading,
   },
 };
+
+export const exportTasksService = exportTasksListService;

@@ -25,9 +25,11 @@ import { TasksPageSegment, TasksProfileProps } from './TasksProfile.types';
 import { Button } from 'ui-kit/Button';
 import { TasksSummary } from '../TasksSummary';
 import { TasksControls } from './TasksControls';
+import { ExportTasksListContainer } from './exportTasksList';
+import { exportTasksListService } from './exportTasksList/exportTasksListService.models';
 
 export const TasksProfile: FC<TasksProfileProps> = ({
-  handleExportTasksList,
+  // handleExportTasksList,
   tasks,
   grouptype,
   handleSearch,
@@ -57,8 +59,9 @@ export const TasksProfile: FC<TasksProfileProps> = ({
   isControlMode,
   handleReassignTasks,
 }) => {
-  const { featureToggles } = useUnit({
+  const { featureToggles, handleExportTasks } = useUnit({
     featureToggles: developmentSettingsService.outputs.$featureToggles,
+    handleExportTasks: exportTasksListService.inputs.openModal,
   });
 
   const navigate = useNavigate();
@@ -101,7 +104,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
           menuButtons: [
             {
               title: 'Выгрузить список задач',
-              onClick: handleExportTasksList,
+              onClick: handleExportTasks,
             },
           ],
         }}
@@ -150,6 +153,7 @@ export const TasksProfile: FC<TasksProfileProps> = ({
 
   return (
     <Wrapper>
+      <ExportTasksListContainer />
       {tasksPageSegment === 'map' && header}
       {tasksPageSegment === 'list' && (
         <div>
