@@ -3,8 +3,8 @@ import {
   BuildingWithTasksResponse,
   HousingStockWithTasksResponse,
 } from 'api/types';
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { MapZoomControl } from '../../../../../../ui-kit/shared/MapZoomControl';
+import { FC, useEffect, useRef, useState } from 'react';
+import { MapZoomControl } from 'ui-kit/shared/MapZoomControl';
 import { Wrapper } from './TasksMapsNative.styled';
 import { TasksMapsNativeProps } from './TasksMapsNative.types';
 import {
@@ -13,6 +13,7 @@ import {
   getTaskPlacemarkerLink,
 } from './TasksMapsNative.utils';
 import { EXTENDED_PLACEMARK_ZOOM_LIMIT } from './TasksMapsNative.constants';
+import { tasksMapService } from 'services/tasks/tasksMapService/tasksMapService.model';
 
 export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   buildingsWithTasks,
@@ -27,6 +28,14 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   const [isExtendedPlacemark, setIsExtendedPlacemarks] =
     useState<boolean>(false);
   const [isCentered, setIsCentered] = useState(false);
+
+  useEffect(() => {
+    if (!map) return;
+
+    return tasksMapService.inputs.handleSetCoordinates.watch((coords) => {
+      map.setCenter(coords, 18, { duration: 200 });
+    }).unsubscribe;
+  }, [map]);
 
   useEffect(() => {
     if (!ymaps || !mapRef.current) {

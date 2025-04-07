@@ -30,6 +30,8 @@ import { HousingStockTasks } from './HousingStockTasks';
 import { Select } from 'ui-kit/Select';
 import { HideExtendedSearchButton } from 'ui-kit/ExtendedSearch/ExtendedSearch.styled';
 import { FilterButtonForMap } from 'ui-kit/shared/filterButton/FIlterButton';
+import { useUnit } from 'effector-react';
+import { tasksMapService } from 'services/tasks/tasksMapService';
 import { useAutocompleteOptions } from './TasksMapFiltration.utils';
 
 export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
@@ -58,6 +60,10 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
       applyFilters(values);
     },
   });
+
+  const handleSetCoordinates = useUnit(
+    tasksMapService.inputs.handleSetCoordinates,
+  );
 
   const baseResourceOptions = [
     EResourceType.ColdWaterSupply,
@@ -100,7 +106,18 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
               placeholder="Введите адрес"
               suffixIcon={<SearchIcon />}
               onSelect={(_, object) => {
-                handleSelectObject(object as BuildingWithTasksResponse);
+                const building = object as BuildingWithTasksResponse;
+
+                handleSelectObject(building);
+
+                const coordinates = building.building?.coordinates;
+
+                if (coordinates) {
+                  handleSetCoordinates([
+                    coordinates.latitude,
+                    coordinates.longitude,
+                  ]);
+                }
               }}
               allowClear
             />
