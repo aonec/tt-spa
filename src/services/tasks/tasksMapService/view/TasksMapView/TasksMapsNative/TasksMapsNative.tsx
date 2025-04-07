@@ -20,6 +20,7 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   handleClickMarker,
   selectedHousingStockId,
   organizationCoordinates,
+  clearSelectedHousingStock,
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const ymaps = useYMaps(['Map', 'Placemark', 'Clusterer']);
@@ -166,9 +167,39 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
     setIsCentered(true);
   }, [buildingsWithTasks, map, isCentered]);
 
+  const [clickStart, setClickStart] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    setClickStart({ x: event.clientX, y: event.clientY });
+  };
+
+  const handleMouseUp = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!clickStart) return;
+
+    const { x, y } = clickStart;
+    const threshold = 5; // Порог для минимального движения
+
+    if (
+      Math.abs(event.clientX - x) < threshold &&
+      Math.abs(event.clientY - y) < threshold
+    ) {
+      clearSelectedHousingStock();
+    }
+
+    setClickStart(null);
+  };
+
   return (
     <Wrapper>
-      <div ref={mapRef} style={{ width: '100%', height: '84vh' }} />
+      <div
+        ref={mapRef}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        style={{ width: '100%', height: '84vh' }}
+      />
       {map && <MapZoomControl map={map} />}
     </Wrapper>
   );

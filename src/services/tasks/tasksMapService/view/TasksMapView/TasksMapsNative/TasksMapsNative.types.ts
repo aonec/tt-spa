@@ -25,6 +25,7 @@ export type TasksMapsNativeProps = {
   handleClickMarker: (payload: BuildingWithTasksResponse) => void;
   selectedHousingStockId: number | undefined;
   organizationCoordinates: OrganizationCoordinates | null;
+  clearSelectedHousingStock: () => void;
 };
 
 export type DiagramData = {
