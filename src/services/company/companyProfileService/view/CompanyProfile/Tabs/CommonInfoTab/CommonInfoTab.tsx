@@ -2,20 +2,22 @@ import React, { FC } from 'react';
 import { CommonInfoTabProps } from './CommonInfoTab.types';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
 import { TabTitle, Wrapper } from './CommonInfoTab.styled';
-import { BuildingAddress } from 'api/types';
+import { OrganizationAddressResponse } from 'api/types';
 
 export const CommonInfoTab: FC<CommonInfoTabProps> = ({
   currentManagingFirm,
 }) => {
-  const getHousingStockAddress = (address: BuildingAddress | null) => {
+  const getHousingStockAddress = (
+    address: OrganizationAddressResponse | null,
+  ) => {
     if (!address) return null;
 
-    const { city, houseCorpus, street, houseNumber } = address || {};
+    const { city, corpus, street, houseNumber } = address || {};
 
     const cityText = city ? `${city}` : '';
     const streetText = street ? `, ${street}` : '';
     const houseNumberText = houseNumber ? `, ${houseNumber}` : '';
-    const corpusText = houseCorpus ? `, корпус ${houseCorpus}` : '';
+    const corpusText = corpus ? `, корпус ${corpus}` : '';
 
     return `${cityText}${streetText}${houseNumberText}${corpusText}`;
   };
