@@ -11,7 +11,6 @@
     "@types/react-virtualized": "^9.21.30",
     "antd": "^5.20.6",
     "axios": "^1.8.4",
-    "cypress": "^13.14.2",
     "dayjs": "^1.11.13",
     "effector": "^23.3.0",
     "effector-react": "^23.3.0",
@@ -44,7 +43,6 @@
     "build": "tsc && vite build",
     "updateTypes": "npx swagger-typescript-api -p https://stage.k8s.transparent-technology.ru/openapi/site/ttm_api.json -o ./src/api -n types.ts && npx swagger-typescript-api -p https://stage.k8s.transparent-technology.ru/openapi/mvitu/ttm_api.json -o ./src/api -n mvitu.types.ts",
     "prepare": "husky install",
-    "cypress:open": "cypress open",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -91,6 +89,7 @@
     "@types/yup": "^0.29.11",
     "@vitejs/plugin-react": "^4.3.4",
     "babel-plugin-named-exports-order": "^0.0.2",
+    "esbuild": "^0.25.2",
     "esbuild-plugin-react-virtualized": "^1.0.4",
     "eslint": "^9.24.0",
     "eslint-plugin-react": "^7.37.4",
