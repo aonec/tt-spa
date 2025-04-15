@@ -905,10 +905,10 @@
   resolved "https://registry.npmjs.org/@exodus/schemasafe/-/schemasafe-1.3.0.tgz"
   integrity sha512-5Aap/GaRupgNx/feGBwLLTVv8OQFfv3pq2lPRzPg9R+IOBnDgghTGW7l7EuVXOvg5cc/xSAlRW8rBrjIC3Nvqw==
 
-"@farfetched/core@0.12.8":
-  version "0.12.8"
-  resolved "https://registry.npmjs.org/@farfetched/core/-/core-0.12.8.tgz"
-  integrity sha512-fufM7W8YfYBbL3uwoei3akicun68ru4AQCPp4GT2PBD/g8S9ztL7nE+pI0YDLiDxnbRwI6pnmSz92Mmp3aA8rA==
+"@farfetched/core@0.13.1":
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/@farfetched/core/-/core-0.13.1.tgz#37c6a8d0b5ad97dbf21028c315733b0b08931c38"
+  integrity sha512-b0v3W+Z/uerIG8iz5IKfGxh2bC8L36eYQvozzBEtydCb8NshvyBrZ+exAzB7yL5Qm6PhIhD5K6POvvCq+0Cc9w==
 
 "@humanfs/core@^0.19.1":
   version "0.19.1"
