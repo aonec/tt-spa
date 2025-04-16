@@ -18,6 +18,7 @@ export type CreateObjectMainInfoStageProps = {
   openCreateHeatingStationModal: () => void;
   openEditHeatingStationModal: () => void;
   heatingStationCapture: (payload: HeatingStationResponse) => void;
+  handleOpenHouseManagementModal: () => void;
 };
 
 export type ObjectMainInfoValues = {

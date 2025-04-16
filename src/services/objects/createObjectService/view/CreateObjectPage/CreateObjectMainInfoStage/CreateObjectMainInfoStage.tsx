@@ -12,6 +12,7 @@ import {
   Title,
   WrapperLinkButton,
   ButtonSC,
+  HouseManagementWrapper,
 } from './CreateObjectMainInfoStage.styled';
 import {
   CreateObjectMainInfoStageProps,
@@ -55,6 +56,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   openCreateHeatingStationModal,
   openEditHeatingStationModal,
   heatingStationCapture,
+  handleOpenHouseManagementModal,
 }) => {
   const { gates } = createObjectService;
   const { HeatingStationsFetchGate } = gates;
@@ -179,38 +181,46 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
         {values.objectCategory === EHouseCategory.Living && (
           <>
             <SpaceLine />
-            <FormItem label="Домоуправления">
-              <Select
-                placeholder="Выберите из списка"
-                onChange={(value) => {
-                  if (value === withoutHouseMagement) {
-                    return setFieldValue('houseManagement', null);
+            <HouseManagementWrapper>
+              <FormItem label="Домоуправления">
+                <Select
+                  placeholder="Выберите из списка"
+                  onChange={(value) => {
+                    if (value === withoutHouseMagement) {
+                      return setFieldValue('houseManagement', null);
+                    }
+                    setFieldValue('houseManagement', value);
+                  }}
+                  value={
+                    values.houseManagement === null
+                      ? withoutHouseMagement
+                      : values.houseManagement || undefined
                   }
-                  setFieldValue('houseManagement', value);
-                }}
-                value={
-                  values.houseManagement === null
-                    ? withoutHouseMagement
-                    : values.houseManagement || undefined
-                }
-              >
-                <Select.Option value={withoutHouseMagement}>
-                  Без домоуправления
-                </Select.Option>
-                {houseManagements?.map(
-                  (houseManagement) =>
-                    houseManagement.name && (
-                      <Select.Option
-                        value={houseManagement.id}
-                        key={houseManagement.id}
-                      >
-                        {houseManagement.name}
-                      </Select.Option>
-                    ),
-                )}
-              </Select>
-              <ErrorMessage>{errors.houseManagement}</ErrorMessage>
-            </FormItem>
+                >
+                  <Select.Option value={withoutHouseMagement}>
+                    Без домоуправления
+                  </Select.Option>
+                  {houseManagements?.map(
+                    (houseManagement) =>
+                      houseManagement.name && (
+                        <Select.Option
+                          value={houseManagement.id}
+                          key={houseManagement.id}
+                        >
+                          {houseManagement.name}
+                        </Select.Option>
+                      ),
+                  )}
+                </Select>
+                <ErrorMessage>{errors.houseManagement}</ErrorMessage>
+              </FormItem>
+
+              <WrapperLinkButton>
+                <LinkButton onClick={handleOpenHouseManagementModal}>
+                  + Добавить новое домоуправление
+                </LinkButton>
+              </WrapperLinkButton>
+            </HouseManagementWrapper>
           </>
         )}
 

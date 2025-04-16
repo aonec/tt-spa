@@ -7,6 +7,8 @@ import { EditHeatingStationContainer } from '../heatingStations/editHeatingStati
 import { createObjectService } from './createObjectService.model';
 import { CreateObjectPage } from './view/CreateObjectPage';
 import { EHouseCategory } from 'api/types';
+import { houseManagementsService } from '../houseManagementsService';
+import { CreateHouseManagementContainer } from '../houseManagementsService/houseManagementsService.container';
 
 const { inputs, outputs, gates } = createObjectService;
 const { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate } =
@@ -30,6 +32,7 @@ export const CreateObjectContainer = () => {
     openEditHeatingStationModal,
     openPreviewModal,
     stageNumber,
+    handleOpenHouseManagementModal,
   } = useUnit({
     existingCities: addressSearchService.outputs.$existingCities,
     existingStreets: addressSearchService.outputs.$existingStreets,
@@ -47,6 +50,8 @@ export const CreateObjectContainer = () => {
     openEditHeatingStationModal: inputs.openEditHeatingStationModal,
     heatingStationCapture: inputs.heatingStationCapture,
     goBackStage: inputs.goBackStage,
+    handleOpenHouseManagementModal:
+      houseManagementsService.inputs.handleOpenModal,
   });
 
   const navigate = useNavigate();
@@ -74,6 +79,7 @@ export const CreateObjectContainer = () => {
       <HouseManagementsFetchGate />
       <HeatingStationsFetchGate />
       <CreateHeatingStationContainer />
+      <CreateHouseManagementContainer />
       <EditHeatingStationContainer />
       <CreateObjectPage
         existingCities={existingCities}
@@ -93,6 +99,7 @@ export const CreateObjectContainer = () => {
         openEditHeatingStationModal={() => openEditHeatingStationModal()}
         heatingStationCapture={heatingStationCapture}
         isCreateLoading={isCreateLoading}
+        handleOpenHouseManagementModal={handleOpenHouseManagementModal}
       />
     </>
   );

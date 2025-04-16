@@ -23,4 +23,5 @@ export type CreateObjectPageProps = {
   openEditHeatingStationModal: () => void;
   heatingStationCapture: (payload: HeatingStationResponse) => void;
   isCreateLoading: boolean;
+  handleOpenHouseManagementModal: () => void;
 };
