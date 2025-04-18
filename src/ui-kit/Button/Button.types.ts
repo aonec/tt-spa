@@ -1,3 +1,4 @@
+import { ButtonColorType } from 'antd/lib/button';
 import { HTMLAttributes, ReactElement } from 'react';
 
 export type ButtonProps = {
@@ -9,6 +10,7 @@ export type ButtonProps = {
   isLoading?: boolean;
   htmlForm?: string;
   htmlType?: 'submit' | 'button';
+  color?: ButtonColorType;
 } & HTMLAttributes<HTMLButtonElement>;
 
 export type ButtonSizeType = 'middle' | 'small';
