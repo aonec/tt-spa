@@ -3,6 +3,7 @@ import {
   ButtonPadding,
   Footer,
   GridContainer,
+  HouseManagementWrapper,
   PageTitle,
   RightButtonBlock,
   Wrapper,
@@ -44,6 +45,8 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
   houseCategory,
   housingStock,
   nonResidentialBuilding,
+  handleOpenEditHouseManagementModal,
+  handleOpenHouseManagementModal,
 }) => {
   const initialValues = useMemo(
     () => ({
@@ -76,6 +79,9 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
   const selectedHeatingStation = heatingStations?.items?.find(
     (station) => station.id === values.heatingStationId,
   );
+  const selectedHouseManagement = houseManagements?.find(
+    (management) => management.id === values.houseManagementId,
+  );
 
   useEffect(
     () =>
@@ -92,43 +98,71 @@ export const MainInfoTab: FC<MainInfoTabProps> = ({
       <Wrapper>
         <PageTitle>Основная информация </PageTitle>
 
-        {houseCategory === EHouseCategory.Living && (
-          <FormItem label="Домоуправления">
-            <Select
-              placeholder="Выберите из списка"
-              onChange={(value) => {
-                if (value === withoutHouseMagement) {
-                  return setFieldValue('houseManagementId', null);
-                }
-                setFieldValue('houseManagementId', value);
-              }}
-              value={
-                !isHouseManagementsLoading
-                  ? values.houseManagementId === null
-                    ? withoutHouseMagement
-                    : values.houseManagementId
-                  : undefined
-              }
-              disabled={isHouseManagementsLoading}
-            >
-              <Select.Option value={withoutHouseMagement}>
-                Без домоуправления
-              </Select.Option>
-              {houseManagements?.map(
-                (houseManagement) =>
-                  houseManagement.name && (
-                    <Select.Option
-                      value={houseManagement.id}
-                      key={houseManagement.id}
-                    >
-                      {houseManagement.name}
-                    </Select.Option>
-                  ),
-              )}
-            </Select>
-            <ErrorMessage>{errors.houseManagementId}</ErrorMessage>
-          </FormItem>
-        )}
+        {houseCategory === EHouseCategory.Living &&
+          !values.houseManagementId && (
+            <HouseManagementWrapper>
+              <FormItem label="Домоуправления">
+                <Select
+                  placeholder="Выберите из списка"
+                  onChange={(value) => {
+                    if (value === withoutHouseMagement) {
+                      return setFieldValue('houseManagementId', null);
+                    }
+                    setFieldValue('houseManagementId', value);
+                  }}
+                  value={
+                    !isHouseManagementsLoading
+                      ? values.houseManagementId === null
+                        ? withoutHouseMagement
+                        : values.houseManagementId
+                      : undefined
+                  }
+                  disabled={isHouseManagementsLoading}
+                >
+                  <Select.Option value={withoutHouseMagement}>
+                    Без домоуправления
+                  </Select.Option>
+                  {houseManagements?.map(
+                    (houseManagement) =>
+                      houseManagement.name && (
+                        <Select.Option
+                          value={houseManagement.id}
+                          key={houseManagement.id}
+                        >
+                          {houseManagement.name}
+                        </Select.Option>
+                      ),
+                  )}
+                </Select>
+                <ErrorMessage>{errors.houseManagementId}</ErrorMessage>
+              </FormItem>
+
+              <WrapperLinkButton>
+                <LinkButton onClick={handleOpenHouseManagementModal}>
+                  + Добавить домоуправление
+                </LinkButton>
+              </WrapperLinkButton>
+            </HouseManagementWrapper>
+          )}
+
+        {houseCategory === EHouseCategory.Living &&
+          values.houseManagementId && (
+            <FormItem label="Домоуправление">
+              <SelectedEntityPanel
+                onEdit={() => {
+                  handleOpenEditHouseManagementModal({
+                    id: values.houseManagementId || '',
+                    name: selectedHouseManagement?.name || '',
+                  });
+                }}
+                onRemove={() => {
+                  setFieldValue('houseManagementId', null);
+                }}
+              >
+                {selectedHouseManagement?.name}
+              </SelectedEntityPanel>
+            </FormItem>
+          )}
 
         {!values.heatingStationId && (
           <GridContainer>

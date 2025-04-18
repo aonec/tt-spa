@@ -6,6 +6,10 @@ import { useUnit } from 'effector-react';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { createObjectService } from '../createObjectService';
 import { EHouseCategory } from 'api/types';
+import { houseManagementsService } from '../houseManagementsService';
+import { updateHouseManagementService } from '../updateHouseManagement/updateHouseManagementService.models';
+import { CreateHouseManagementContainer } from '../houseManagementsService/houseManagementsService.container';
+import { UpdateHouseManagementContainer } from '../updateHouseManagement';
 
 const { inputs, outputs, gates } = editObjectService;
 const { ObjectIdGate } = gates;
@@ -54,6 +58,8 @@ export const EditObjectContainer = () => {
     onPageCancel,
     openCreateHeatingStationModal,
     openEditHeatingStationModal,
+    handleOpenHouseManagementModal,
+    handleOpenModal,
   } = useUnit({
     existingCities: addressSearchService.outputs.$existingCities,
     housingStock: outputs.$housingStock,
@@ -75,6 +81,9 @@ export const EditObjectContainer = () => {
     handleUpdateHousingStockAddress: inputs.handleUpdateHousingStockAddress,
     handleDeleteHousingStockAddress: inputs.handleDeleteHousingStockAddress,
     handleRefetchHousingStock: inputs.handleRefetchBuilding,
+    handleOpenHouseManagementModal:
+      houseManagementsService.inputs.handleOpenModal,
+    handleOpenModal: updateHouseManagementService.inputs.handleOpenModal,
   });
 
   useEffect(() => {
@@ -89,6 +98,10 @@ export const EditObjectContainer = () => {
       />
       <HouseManagementsFetchGate />
       <HeatingStationsFetchGate />
+
+      <CreateHouseManagementContainer />
+      <UpdateHouseManagementContainer />
+
       {(housingStock || nonResidentialBuilding) && (
         <EditObjectPage
           housingStock={housingStock}
@@ -112,6 +125,8 @@ export const EditObjectContainer = () => {
           isUpdateLoading={isUpdateLoading}
           handleRefetchHousingStock={handleRefetchHousingStock}
           houseCategory={preparedHouseCategory}
+          handleOpenHouseManagementModal={handleOpenHouseManagementModal}
+          handleOpenEditHouseManagementModal={handleOpenModal}
         />
       )}
     </>

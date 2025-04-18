@@ -1,0 +1,1 @@
+export { UpdateHouseManagementForm } from './UpdateHouseManagementForm';

@@ -32,6 +32,8 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
   houseCategory,
   housingStock,
   nonResidentialBuilding,
+  handleOpenHouseManagementModal,
+  handleOpenEditHouseManagementModal,
 }) => {
   const [activeTab, setTab] = useState(EditObjectPageTabs.Address);
 
@@ -82,6 +84,8 @@ export const EditObjectPage: FC<EditObjectPageProps> = ({
         isHeatingStationsLoading={isHeatingStationsLoading}
         isHouseManagementsLoading={isHouseManagementsLoading}
         houseCategory={houseCategory}
+        handleOpenEditHouseManagementModal={handleOpenEditHouseManagementModal}
+        handleOpenHouseManagementModal={handleOpenHouseManagementModal}
       />
     ),
     [EditObjectPageTabs.AdditionalInfo]: houseCategory && (

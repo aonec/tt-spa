@@ -3,7 +3,6 @@ import { Props } from './CreateHouseManagementModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
 import { CreateHouseManagementForm } from './CreateHouseManagementForm';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
 
 const formId = 'create-new-house-management-form';
 
@@ -17,10 +16,6 @@ export const CreateHouseManagementModal: FC<Props> = ({
     onSubmit: (data) => {
       handleCreateHouseManagement({ name: data.name });
     },
-    validateOnChange: false,
-    validationSchema: yup.object().shape({
-      name: yup.string().nullable().required('Обязательное поле'),
-    }),
   });
 
   return (

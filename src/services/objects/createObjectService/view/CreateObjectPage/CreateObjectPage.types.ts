@@ -4,6 +4,7 @@ import {
   HouseManagementResponse,
 } from 'api/types';
 import { ObjectCreateSubmitData } from '../../createObjectService.types';
+import { OpenPayload } from 'services/objects/updateHouseManagement/updateHouseManagementService.types';
 
 export type CreateObjectPageProps = {
   existingStreets: string[] | null;
@@ -24,4 +25,5 @@ export type CreateObjectPageProps = {
   heatingStationCapture: (payload: HeatingStationResponse) => void;
   isCreateLoading: boolean;
   handleOpenHouseManagementModal: () => void;
+  handleOpenUpdateHouseManagementModal: (payload: OpenPayload) => void;
 };
