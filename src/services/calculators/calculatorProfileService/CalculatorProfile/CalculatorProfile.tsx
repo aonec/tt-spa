@@ -199,12 +199,10 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   const { isConnected, connectionInfo } = calculator;
   const isConnectionError =
     !(calculator.connection?.port && calculator.connection?.ipV4) ||
-    connectionInfo?.connectionStatus ===
-      EConnectionStatusType.UnstableConnection;
+    connectionInfo?.status === EConnectionStatusType.UnstableConnection;
 
   const isMalfunction =
-    connectionInfo?.connectionStatus ===
-    EConnectionStatusType.DeviceMalfunction;
+    connectionInfo?.status === EConnectionStatusType.DeviceMalfunction;
 
   return (
     <div>

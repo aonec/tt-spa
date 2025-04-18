@@ -52,3 +52,9 @@ export const PageTitle = styled.div`
   letter-spacing: 0em;
   margin-bottom: 10px;
 `;
+
+export const HouseManagementWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 10px;
+`;
