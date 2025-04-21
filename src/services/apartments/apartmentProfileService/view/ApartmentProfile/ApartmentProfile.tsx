@@ -27,7 +27,7 @@ import {
 } from './ApartmentProfile.types';
 import { HomeownersList } from './HomeownersList';
 import { LinkCard } from 'ui-kit/shared/LinkCard';
-import { stringifyUrl } from 'query-string';
+import queryString from 'query-string';
 import { TaskGroupingFilter } from 'api/types';
 
 export const ApartmentProfile: FC<ApartmentProfileProps> = ({
@@ -181,7 +181,7 @@ export const ApartmentProfile: FC<ApartmentProfileProps> = ({
             <CardsWrapper>
               <LinkCard
                 text={`Задачи: ${tasksCount}`}
-                link={stringifyUrl({
+                link={queryString.stringifyUrl({
                   url: `/tasks/list/${TaskGroupingFilter.Executing}`,
                   query: { apartmentId: apartment.id },
                 })}

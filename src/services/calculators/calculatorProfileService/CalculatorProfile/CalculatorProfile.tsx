@@ -1,4 +1,4 @@
-import { stringifyUrl } from 'query-string';
+import queryString from 'query-string';
 import React, { FC, ReactElement, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
@@ -249,7 +249,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           <CalculatorCommentContainer comment={comment} calculatorId={id} />
           <LinkCard
             text={`Задачи: ${numberOfTasks}`}
-            link={stringifyUrl({
+            link={queryString.stringifyUrl({
               url: `/tasks/list/${TaskGroupingFilter.Executing}`,
               query: { calculatorId: id },
             })}
