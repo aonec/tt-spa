@@ -1,5 +1,7 @@
 import { TreeSelectProps } from 'antd';
 
+export type TreeKey = string | number;
+
 export type AddressTreeSelectProps = {
   treeData: TreeSelectElement[];
   small?: boolean;
@@ -12,12 +14,12 @@ export type AddressTreeSelectProps = {
 
 export type TreeSelectElement = {
   title: string;
-  key: string | number;
-  value: string | number;
+  key: TreeKey;
+  value: TreeKey;
   buildingId?: number;
   children?: TreeSelectElement[];
 };
 
 export type TreeSelectElementWithParents = TreeSelectElement & {
-  parents: (string | number)[];
+  parents: TreeKey[];
 };
