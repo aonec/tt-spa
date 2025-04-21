@@ -15,7 +15,7 @@ import {
 } from './HousingStockProfile.styled';
 import { HousingStockProfileProps } from './HousingStockProfile.types';
 import { LinkCard } from 'ui-kit/shared/LinkCard';
-import { stringifyUrl } from 'query-string';
+import queryString from 'query-string';
 
 export const HousingStockProfile: FC<HousingStockProfileProps> = ({
   housingStock,
@@ -104,7 +104,7 @@ export const HousingStockProfile: FC<HousingStockProfileProps> = ({
         <div>
           <LinkCard
             text={`Задачи: ${tasksCount}`}
-            link={stringifyUrl({
+            link={queryString.stringifyUrl({
               url: '/tasks/list/Executing',
               query: { housingStockId: housingStock?.id },
             })}

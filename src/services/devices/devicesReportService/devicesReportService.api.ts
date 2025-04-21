@@ -1,5 +1,5 @@
 import { axios } from 'api/axios';
-import { stringify } from 'query-string';
+import queryString from 'query-string';
 import { downloadURI } from 'utils/downloadByURL';
 import { DevicesReportPayload } from './devicesReportService.types';
 
@@ -10,7 +10,7 @@ export const fetchDownloadDevicesReport = async ({
   const res: string = await axios.get('Calculators/Export', {
     responseType: 'blob',
     params,
-    paramsSerializer: (params) => stringify(params),
+    paramsSerializer: (params) => queryString.stringify(params),
   });
 
   const url = window.URL.createObjectURL(new Blob([res]));

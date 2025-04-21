@@ -5,7 +5,7 @@ import { useUnit } from 'effector-react';
 import { currentAnalyticsService } from 'services/supervisor/currentAnalytics/currentAnalyticsService.models';
 import { useNavigate } from 'react-router-dom';
 import { dashboardSummaryQuery } from 'services/supervisor/currentAnalytics/currentAnalyticsService.api';
-import { stringify } from 'query-string';
+import queryString from 'query-string';
 import { getTasksFilters } from './AnalyticsDetail.utils';
 
 export const AnalyticsDetail: FC<Props> = ({
@@ -32,7 +32,7 @@ export const AnalyticsDetail: FC<Props> = ({
       dashboardSummary?.breadCrumbs?.managingFirmId ||
       dashboardSummary?.breadCrumbs?.city
     ) {
-      const queryString = stringify({
+      const queryStr = queryString.stringify({
         city: dashboardSummary?.breadCrumbs?.city,
         street: data.label,
         ...getTasksFilters({
@@ -41,7 +41,8 @@ export const AnalyticsDetail: FC<Props> = ({
           malfunctionType,
         }),
       });
-      navigate(`/tasks/list/Observing?${queryString}`);
+
+      navigate(`/tasks/list/Observing?${queryStr}`);
 
       return;
     }
