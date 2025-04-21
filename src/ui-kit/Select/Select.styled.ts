@@ -42,7 +42,8 @@ export const Select = styled(AntSelect)<{ small?: boolean }>`
   .ant-select-arrow {
     padding: ${({ small }) => (small ? '0px' : ' 0 8px')} !important;
 
-    ${({ suffixIcon }) => suffixIcon && selectIconStyles}
+    ${({ suffixIcon }: { suffixIcon?: React.ReactNode }) =>
+      suffixIcon ? selectIconStyles : ''}
   }
 
   .ant-select-item {

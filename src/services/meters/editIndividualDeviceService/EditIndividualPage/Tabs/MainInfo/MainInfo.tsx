@@ -114,7 +114,7 @@ export const MainInfo: FC<MainInfoProps> = ({
           <Select value={resource} disabled>
             <Select.Option value={resource} key={resource}>
               <ResouceWrapper>
-                {ResourceIconLookup({ resource })}
+                <ResourceIconLookup resource={resource} />
                 {ResourceShortNamesDictionary[resource]}
               </ResouceWrapper>
             </Select.Option>
