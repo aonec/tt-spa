@@ -1993,11 +1993,6 @@
   resolved "https://registry.npmjs.org/@types/yandex-maps/-/yandex-maps-2.1.36.tgz"
   integrity sha512-SxKOLe627WMFkC3jo7VelT29Uvbvg+LHRtD3cA6W0qWNuf7WQBv+lTaN+os1Vdum+EpglKBJbzjV8PJqwPZUQA==
 
-"@types/yup@^0.29.11":
-  version "0.29.14"
-  resolved "https://registry.npmjs.org/@types/yup/-/yup-0.29.14.tgz"
-  integrity sha512-Ynb/CjHhE/Xp/4bhHmQC4U1Ox+I2OpfRYF3dnNgQqn1cHa6LK3H1wJMNPT02tSVZA6FYuXE2ITORfbnb6zBCSA==
-
 "@typescript-eslint/eslint-plugin@8.29.0":
   version "8.29.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-8.29.0.tgz#151c4878700a5ad229ce6713d2674d58b626b3d9"

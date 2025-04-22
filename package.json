@@ -86,7 +86,6 @@
     "@types/lodash": "^4.17.16",
     "@types/styled-components": "^5.1.7",
     "@types/yandex-maps": "^2.1.35",
-    "@types/yup": "^0.29.11",
     "@vitejs/plugin-react": "^4.3.4",
     "babel-plugin-named-exports-order": "^0.0.2",
     "esbuild": "^0.25.2",
