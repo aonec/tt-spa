@@ -42,7 +42,7 @@
     "start": "vite",
     "build": "tsc && vite build",
     "updateTypes": "npx swagger-typescript-api -p https://stage.k8s.transparent-technology.ru/openapi/site/ttm_api.json -o ./src/api -n types.ts && npx swagger-typescript-api -p https://stage.k8s.transparent-technology.ru/openapi/mvitu/ttm_api.json -o ./src/api -n mvitu.types.ts",
-    "prepare": "husky install",
+    "prepare": "husky",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -94,7 +94,7 @@
     "eslint": "^9.24.0",
     "eslint-plugin-react": "^7.37.4",
     "globals": "^16.0.0",
-    "husky": "^8.0.3",
+    "husky": "^9.1.7",
     "prettier": "^2.8.3",
     "prop-types": "^15.8.1",
     "sass": "^1.86.3",
