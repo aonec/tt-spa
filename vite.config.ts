@@ -9,7 +9,7 @@ import eslint from 'vite-plugin-eslint';
 export default defineConfig({
   optimizeDeps: {
     esbuildOptions: {
-      plugins: [fixReactVirtualized as any],
+      plugins: [fixReactVirtualized],
     },
     exclude: ['js-big-decimal'],
   },
