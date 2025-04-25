@@ -15,10 +15,10 @@ export const UpdateHouseManagementModal: FC<Props> = ({
   const { values, handleSubmit, setFieldValue } = useFormik({
     initialValues: { name: initialValues?.name },
     enableReinitialize: true,
-    onSubmit: () => {
+    onSubmit: (data) => {
       handleUpdateHouseManagement({
         houseManagementId: initialValues?.id || '',
-        requestPayload: {},
+        requestPayload: { name: data.name },
       });
     },
   });

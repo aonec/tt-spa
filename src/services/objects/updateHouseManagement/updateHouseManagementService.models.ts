@@ -10,10 +10,6 @@ const handleUpdateHouseManagement = createEvent<UpdateType>();
 const handleOpenModal = createEvent<OpenPayload>();
 const handleCloseModal = createEvent();
 
-const $isModalOpen = createStore<boolean>(false)
-  .on(handleOpenModal, () => true)
-  .on(handleCloseModal, () => false);
-
 const $initialValues = createStore<OpenPayload | null>(null)
   .on(handleOpenModal, (_, data) => data)
   .reset(handleCloseModal);
@@ -35,7 +31,19 @@ updateHouseManagementFx.failData.watch((error) => {
   );
 });
 
+const successUpdateHouseManagement = updateHouseManagementFx.doneData;
+
+const $isModalOpen = createStore<boolean>(false)
+  .on(handleOpenModal, () => true)
+  .on(handleCloseModal, () => false)
+  .reset(successUpdateHouseManagement);
+
 export const updateHouseManagementService = {
-  inputs: { handleOpenModal, handleCloseModal, handleUpdateHouseManagement },
+  inputs: {
+    handleOpenModal,
+    handleCloseModal,
+    handleUpdateHouseManagement,
+    successUpdateHouseManagement,
+  },
   outputs: { $isModalOpen, $initialValues },
 };

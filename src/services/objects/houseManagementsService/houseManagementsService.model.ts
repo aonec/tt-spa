@@ -12,10 +12,14 @@ import {
 import { GetHouseManagementsRequestPayload } from './houseManagementsService.types';
 import { EffectFailDataAxiosError } from 'types';
 import { message } from 'antd';
+import { updateHouseManagementService } from '../updateHouseManagement/updateHouseManagementService.models';
 
 const HouseManagementsGate = createGate<GetHouseManagementsRequestPayload>();
 
 const handleCreateHouseManagement = createEvent<CreateHouseManagementRequest>();
+
+const successUpdateHouseManagement =
+  updateHouseManagementService.inputs.successUpdateHouseManagement;
 
 const handleOpenModal = createEvent();
 
@@ -36,6 +40,14 @@ const $houseManagements = createStore<HouseManagementResponse[] | null>(null)
   .on(fetchHouseManagementFx.doneData, (_, list) => list)
   .on(createHouseManagementFx.doneData, (prev, data) => {
     return data ? [data, ...(prev || [])] : prev;
+  })
+  .on(successUpdateHouseManagement, (prev, data) => {
+    const index = prev?.findIndex((item) => item.id === data?.id);
+
+    if (data) {
+      return prev?.map((item, i) => (i === index ? data : item));
+    }
+    return prev;
   });
 
 const $isModalOpen = createStore<boolean>(false)
