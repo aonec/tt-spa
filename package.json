@@ -44,7 +44,8 @@
     "updateTypes": "npx swagger-typescript-api -p https://stage.k8s.transparent-technology.ru/openapi/site/ttm_api.json -o ./src/api -n types.ts && npx swagger-typescript-api -p https://stage.k8s.transparent-technology.ru/openapi/mvitu/ttm_api.json -o ./src/api -n mvitu.types.ts",
     "prepare": "husky",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "analyze": "ANALYZE=true yarn build"
   },
   "husky": {
     "hooks": {
@@ -96,6 +97,7 @@
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "prop-types": "^15.8.1",
+    "rollup-plugin-visualizer": "^5.14.0",
     "sass": "^1.87.0",
     "storybook": "^8.6.12",
     "tsconfig-paths-webpack-plugin": "^4.2.0",

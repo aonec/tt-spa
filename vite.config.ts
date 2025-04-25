@@ -4,43 +4,65 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
 import fixReactVirtualized from 'esbuild-plugin-react-virtualized';
 import eslint from 'vite-plugin-eslint';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  optimizeDeps: {
-    esbuildOptions: {
-      plugins: [fixReactVirtualized],
+export default defineConfig(() => {
+  const isAnalyze = process.env.ANALYZE === 'true';
+
+  return {
+    optimizeDeps: {
+      esbuildOptions: {
+        plugins: [fixReactVirtualized],
+      },
+      exclude: ['js-big-decimal'],
     },
-    exclude: ['js-big-decimal'],
-  },
-  plugins: [
-    react(),
-    viteTsconfigPaths(),
-    svgr({
-      include: '**/*.svg?react',
-    }),
-    eslint(),
-  ],
-  server: {
-    open: true,
-    port: 3000,
-  },
-  resolve: {
-    alias: {
-      App: '/src/App',
-      services: '/src/services',
-      api: '/src/api',
-      css: '/src/css',
-      utils: '/src/utils',
-      'ui-kit': '/src/ui-kit',
-      hooks: '/src/hooks',
-      featureToggles: '/src/featureToggles',
-      types: '/src/types',
-      dictionaries: '/src/dictionaries',
+    plugins: [
+      react(),
+      viteTsconfigPaths(),
+      svgr({
+        include: '**/*.svg?react',
+      }),
+      eslint(),
+      isAnalyze &&
+        visualizer({
+          filename: 'build/stats.html',
+          open: true,
+          gzipSize: true,
+          brotliSize: true,
+        }),
+    ].filter(Boolean),
+    server: {
+      open: true,
+      port: 3000,
     },
-  },
-  build: {
-    outDir: 'build',
-  },
-  assetsInclude: ['/sb-preview/runtime.js'],
+    resolve: {
+      alias: {
+        App: '/src/App',
+        services: '/src/services',
+        api: '/src/api',
+        css: '/src/css',
+        utils: '/src/utils',
+        'ui-kit': '/src/ui-kit',
+        hooks: '/src/hooks',
+        featureToggles: '/src/featureToggles',
+        types: '/src/types',
+        dictionaries: '/src/dictionaries',
+      },
+    },
+    build: {
+      outDir: 'build',
+      rollupOptions: {
+        output: {
+          manualChunks: undefined,
+        },
+        treeshake: {
+          moduleSideEffects: false,
+          propertyReadSideEffects: false,
+          tryCatchDeoptimization: false,
+        },
+      },
+    },
+    assetsInclude: ['/sb-preview/runtime.js'],
+  };
 });
