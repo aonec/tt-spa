@@ -15,8 +15,10 @@ const { inputs, outputs, gates } = editObjectService;
 const { ObjectIdGate } = gates;
 
 const {
-  gates: { HeatingStationsFetchGate, HouseManagementsFetchGate },
+  gates: { HeatingStationsFetchGate },
 } = createObjectService;
+
+const HouseManagementsGate = houseManagementsService.gates.HouseManagementsGate;
 
 export const EditObjectContainer = () => {
   const { buildingId, houseCategory } = useParams<{
@@ -64,13 +66,14 @@ export const EditObjectContainer = () => {
     existingCities: addressSearchService.outputs.$existingCities,
     housingStock: outputs.$housingStock,
     nonResidentialBuilding: outputs.$nonResidentialBuilding,
-    houseManagements: outputs.$houseManagements,
+    houseManagements: houseManagementsService.outputs.$houseManagements,
     heatingStations: outputs.$heatingStations,
     isHeatingStationsLoading: outputs.$isHeatingStationsLoading,
     isDeleteLoading: outputs.$isDeleteLoading,
     isUpdateLoading: outputs.$isUpdateLoading,
     isCreateLoading: outputs.$isCreateLoading,
-    isHouseManagementsLoading: outputs.$isHouseManagementsLoading,
+    isHouseManagementsLoading:
+      houseManagementsService.outputs.$isHouseManagementsLoading,
     existingStreets: addressSearchService.outputs.$existingStreets,
     openCreateHeatingStationModal: inputs.openCreateHeatingStationModal,
     openEditHeatingStationModal: inputs.openEditHeatingStationModal,
@@ -96,7 +99,7 @@ export const EditObjectContainer = () => {
         buildingId={buildingIdNumber}
         houseCategory={preparedHouseCategory}
       />
-      <HouseManagementsFetchGate />
+      <HouseManagementsGate />
       <HeatingStationsFetchGate />
 
       <CreateHouseManagementContainer />

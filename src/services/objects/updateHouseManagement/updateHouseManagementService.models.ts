@@ -14,10 +14,9 @@ const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false);
 
-const $initialValues = createStore<OpenPayload | null>(null).on(
-  handleOpenModal,
-  (_, data) => data,
-);
+const $initialValues = createStore<OpenPayload | null>(null)
+  .on(handleOpenModal, (_, data) => data)
+  .reset(handleCloseModal);
 
 const updateHouseManagementFx = createEffect<
   UpdateType,

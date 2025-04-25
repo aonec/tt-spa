@@ -37,6 +37,7 @@ import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { createHeatingStationService } from 'services/objects/heatingStations/createHeatingStationService';
 import { editHeatingStationService } from 'services/objects/heatingStations/editHeatingStationService';
 import { SelectedEntityPanel } from 'ui-kit/shared/SelectedEntityPanel';
+import { houseManagementsService } from 'services/objects/houseManagementsService';
 
 const {
   inputs: { handleHeatingStationCreated },
@@ -44,6 +45,11 @@ const {
 const {
   inputs: { handleHeatingStationEdited },
 } = editHeatingStationService;
+
+const {
+  inputs: { handleHouseManagementCreated },
+} = houseManagementsService;
+
 const withoutHouseMagement = 'withoutHouseMagement';
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
@@ -101,6 +107,13 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
       handleHeatingStationEdited.watch((editedHeatingStationData) =>
         setFieldValue('heatingStationId', editedHeatingStationData?.id),
       ),
+    [setFieldValue],
+  );
+  useEffect(
+    () =>
+      handleHouseManagementCreated.watch((newHouseManagement) =>
+        setFieldValue('houseManagement', newHouseManagement?.id),
+      ).unsubscribe,
     [setFieldValue],
   );
 
@@ -221,7 +234,7 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
                 </FormItem>
 
                 <WrapperLinkButton>
-                  <LinkButton onClick={handleOpenHouseManagementModal}>
+                  <LinkButton onClick={() => handleOpenHouseManagementModal()}>
                     + Добавить новое домоуправление
                   </LinkButton>
                 </WrapperLinkButton>

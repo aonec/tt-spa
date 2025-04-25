@@ -13,8 +13,8 @@ import { UpdateHouseManagementContainer } from '../updateHouseManagement';
 import { updateHouseManagementService } from '../updateHouseManagement/updateHouseManagementService.models';
 
 const { inputs, outputs, gates } = createObjectService;
-const { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate } =
-  gates;
+const { PageCloseGate, HeatingStationsFetchGate } = gates;
+const HouseManagementsGate = houseManagementsService.gates.HouseManagementsGate;
 
 export const CreateObjectContainer = () => {
   const {
@@ -42,7 +42,7 @@ export const CreateObjectContainer = () => {
     stageNumber: outputs.$stageNumber,
     isPreviewModalOpen: outputs.$isPreviewModalOpen,
     isCreateLoading: outputs.$isCreateLoading,
-    houseManagements: outputs.$houseManagements,
+    houseManagements: houseManagementsService.outputs.$houseManagements,
     createObjectData: outputs.$createObjectData,
     heatingStations: outputs.$heatingStations,
     handleSubmitCreateObject: inputs.handleSubmitCreateObject,
@@ -80,7 +80,7 @@ export const CreateObjectContainer = () => {
   return (
     <>
       <PageCloseGate />
-      <HouseManagementsFetchGate />
+      <HouseManagementsGate />
       <HeatingStationsFetchGate />
       <CreateHeatingStationContainer />
       <CreateHouseManagementContainer />

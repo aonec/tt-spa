@@ -1257,8 +1257,6 @@ export interface CreateGroupReportRequest {
 }
 
 export interface CreateHouseManagementRequest {
-  /** @format int32 */
-  housingStockId?: number;
   name?: string | null;
   phone?: string | null;
   comment?: string | null;
@@ -5691,6 +5689,7 @@ export interface UpdateHeatingStationRequest {
 }
 
 export interface UpdateHouseManagementRequest {
+  name?: string | null;
   phone?: string | null;
   comment?: string | null;
 }

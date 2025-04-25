@@ -32,13 +32,19 @@ const createHouseManagementFx = createEffect<
   EffectFailDataAxiosError
 >(createHouseManagement);
 
-const $houseManagements = createStore<HouseManagementResponse[] | null>(
-  null,
-).on(fetchHouseManagementFx.doneData, (_, list) => list);
+const $houseManagements = createStore<HouseManagementResponse[] | null>(null)
+  .on(fetchHouseManagementFx.doneData, (_, list) => list)
+  .on(createHouseManagementFx.doneData, (prev, data) => {
+    return data ? [data, ...(prev || [])] : prev;
+  });
 
 const $isModalOpen = createStore<boolean>(false)
   .on(handleOpenModal, () => true)
   .on(handleCloseModal, () => false);
+
+const $housingStockId = createStore<number | null>(null)
+  .on(handleOpenModal, (_, data) => data)
+  .reset(handleCloseModal);
 
 sample({
   source: $houseManagements,
@@ -50,8 +56,18 @@ sample({
 
 sample({
   clock: handleCreateHouseManagement,
+  source: $housingStockId,
+  fn: (source, clock) =>
+    ({
+      housingStockId: Number(source),
+      name: clock.name,
+    } as CreateHouseManagementRequest),
   target: createHouseManagementFx,
 });
+
+const $isHouseManagementsLoading = createHouseManagementFx.pending;
+
+const handleHouseManagementCreated = createHouseManagementFx.doneData;
 
 createHouseManagementFx.failData.watch((error) => {
   message.error(
@@ -60,10 +76,16 @@ createHouseManagementFx.failData.watch((error) => {
 });
 
 export const houseManagementsService = {
-  inputs: { handleOpenModal, handleCloseModal, handleCreateHouseManagement },
+  inputs: {
+    handleOpenModal,
+    handleCloseModal,
+    handleCreateHouseManagement,
+    handleHouseManagementCreated,
+  },
   outputs: {
     $houseManagements,
     $isModalOpen,
+    $isHouseManagementsLoading,
   },
   gates: {
     HouseManagementsGate,
