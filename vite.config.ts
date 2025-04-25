@@ -52,16 +52,6 @@ export default defineConfig(() => {
     },
     build: {
       outDir: 'build',
-      rollupOptions: {
-        output: {
-          manualChunks: undefined,
-        },
-        treeshake: {
-          moduleSideEffects: false,
-          propertyReadSideEffects: false,
-          tryCatchDeoptimization: false,
-        },
-      },
     },
     assetsInclude: ['/sb-preview/runtime.js'],
   };
