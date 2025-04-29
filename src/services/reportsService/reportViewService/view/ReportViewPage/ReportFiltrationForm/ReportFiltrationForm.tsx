@@ -131,7 +131,10 @@ export const ReportFiltrationForm: FC<ReportFiltrationFormProps> = ({
         values.reportOption ===
         EIndividualDeviceReportOption.ClosedDeviceOnOneOfRisers;
 
-      if (isClosedDeviceOnOneOfRisers) {
+      const isInvalidBitDepth =
+        values.reportOption === EIndividualDeviceReportOption.InvalidBitDepth;
+
+      if (isClosedDeviceOnOneOfRisers || isInvalidBitDepth) {
         return isAddressSelected && Boolean(values.reportOption);
       }
 
