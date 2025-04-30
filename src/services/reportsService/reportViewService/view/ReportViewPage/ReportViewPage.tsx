@@ -58,8 +58,6 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
 
   const filtersViewArray = getFiltersList(filtrationValues, houseManagements);
 
-  console.log(isSubmitButtonDisable);
-
   return (
     <Wrapper>
       <HeaderWrapper>
