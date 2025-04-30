@@ -4,7 +4,6 @@ import {
   EHouseCategory,
   HeatingStationResponse,
   HeatingStationResponsePagedList,
-  HouseManagementResponse,
   HousingStockCreateRequest,
   HousingStockResponse,
   NonResidentialBuildingCreateRequest,
@@ -14,12 +13,6 @@ import {
   CreateBuildingRequest,
   CreateBuildingResponse,
 } from './createObjectService.types';
-
-export const getHouseManagements = (): Promise<
-  HouseManagementResponse[] | null
-> => {
-  return axios.get('HouseManagements');
-};
 
 export const getHeatingStations =
   (): Promise<HeatingStationResponsePagedList | null> => {

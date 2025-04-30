@@ -7,6 +7,7 @@ import {
   HouseManagementResponse,
 } from 'api/types';
 import { ObjectCreateSubmitData } from 'services/objects/createObjectService/createObjectService.types';
+import { OpenPayload } from 'services/objects/updateHouseManagement/updateHouseManagementService.types';
 
 export type CreateObjectMainInfoStageProps = {
   houseManagements: HouseManagementResponse[] | null;
@@ -18,6 +19,8 @@ export type CreateObjectMainInfoStageProps = {
   openCreateHeatingStationModal: () => void;
   openEditHeatingStationModal: () => void;
   heatingStationCapture: (payload: HeatingStationResponse) => void;
+  handleOpenHouseManagementModal: () => void;
+  handleOpenUpdateHouseManagementModal: (payload: OpenPayload) => void;
 };
 
 export type ObjectMainInfoValues = {

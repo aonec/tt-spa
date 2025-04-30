@@ -668,7 +668,8 @@ export interface CalculatorCommentResponse {
 }
 
 export interface CalculatorConnectionInfoResponse {
-  connectionStatus: EConnectionStatusType | null;
+  status: EConnectionStatusType | null;
+  statusDescription: string | null;
   /** @format date-time */
   lastDailyArchiveTime: string | null;
   /** @format date-time */
@@ -1253,6 +1254,12 @@ export interface CreateGroupReportConfigurationRequest {
 export interface CreateGroupReportRequest {
   title?: string | null;
   housingStockIds?: number[] | null;
+}
+
+export interface CreateHouseManagementRequest {
+  name?: string | null;
+  phone?: string | null;
+  comment?: string | null;
 }
 
 export interface CreateHousingMeteringDeviceReadingsRequest {
@@ -4532,6 +4539,7 @@ export interface OrganizationUserWorkingStatusResponse {
 }
 
 export interface PingDeviceResponse {
+  deviceReady: boolean;
   status: IPStatus;
   description: string | null;
 }
@@ -4980,11 +4988,11 @@ export interface ResourceDisconnectingUpdateRequest {
 }
 
 export enum ResourceType {
+  None = 'None',
   Heat = 'Heat',
   HotWaterSupply = 'HotWaterSupply',
   ColdWaterSupply = 'ColdWaterSupply',
   Electricity = 'Electricity',
-  None = 'None',
 }
 
 export interface SendGroupReportRequest {
@@ -5681,6 +5689,7 @@ export interface UpdateHeatingStationRequest {
 }
 
 export interface UpdateHouseManagementRequest {
+  name?: string | null;
   phone?: string | null;
   comment?: string | null;
 }
@@ -10303,17 +10312,16 @@ export class Api<
      *
      * @tags HouseManagements
      * @name HouseManagementsCreate
-     * @summary HouseManagementUpdate
-     * @request POST:/api/HouseManagements/{houseManagementId}
+     * @summary HouseManagementCreate
+     * @request POST:/api/HouseManagements
      * @secure
      */
     houseManagementsCreate: (
-      houseManagementId: string,
-      data: UpdateHouseManagementRequest,
+      data: CreateHouseManagementRequest,
       params: RequestParams = {},
     ) =>
       this.request<HouseManagementResponse, ErrorApiResponse>({
-        path: `/api/HouseManagements/${houseManagementId}`,
+        path: `/api/HouseManagements`,
         method: 'POST',
         body: data,
         secure: true,
@@ -10342,6 +10350,32 @@ export class Api<
         method: 'GET',
         query: query,
         secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор</li><li>Старший оператор</li><li>Оператор</li><li>Администратор УК без назначений задач</li>
+     *
+     * @tags HouseManagements
+     * @name HouseManagementsCreate2
+     * @summary HouseManagementUpdate
+     * @request POST:/api/HouseManagements/{houseManagementId}
+     * @originalName houseManagementsCreate
+     * @duplicate
+     * @secure
+     */
+    houseManagementsCreate2: (
+      houseManagementId: string,
+      data: UpdateHouseManagementRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<HouseManagementResponse, ErrorApiResponse>({
+        path: `/api/HouseManagements/${houseManagementId}`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),

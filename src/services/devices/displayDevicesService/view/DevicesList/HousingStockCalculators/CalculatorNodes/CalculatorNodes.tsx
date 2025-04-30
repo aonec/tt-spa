@@ -41,8 +41,7 @@ export const CalculatorNodes: FC<CalculatorNodesProps> = ({ devices }) => {
   );
 
   const isMalfunction =
-    connectionInfo?.connectionStatus ===
-    EConnectionStatusType.DeviceMalfunction;
+    connectionInfo?.status === EConnectionStatusType.DeviceMalfunction;
 
   return (
     <>
