@@ -118,6 +118,8 @@ import OtherSourceIcon from './svg/otherSource.svg?react';
 import ChevronActiveIcon from './svg/chevronActive.svg?react';
 import CloseBlueIcon from './svg/closeBlue.svg?react';
 import ReloadBlueIcon from './svg/reloadBlue.svg?react';
+import WarningYellowIcon from './svg/warningYellow.svg?react';
+import StopRedIcon from './svg/stopRed.svg?react';
 
 export {
   FinishIcon,
@@ -240,4 +242,6 @@ export {
   ChevronActiveIcon,
   CloseBlueIcon,
   ReloadBlueIcon,
+  WarningYellowIcon,
+  StopRedIcon,
 };

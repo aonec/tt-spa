@@ -5,9 +5,9 @@ import { CalculatorInfo } from './CalculatorDevices';
 import { getDevicesCountText } from 'services/nodes/createNodeService/view/CreateNodePage/ConnectedDevices/CommunicationPipeListItem/CommunicationPipeListItem.utils';
 import {
   CheckGreenIcon,
-  MagnifierIcon,
-  StopOrangeIcon,
-  WarningIcon,
+  NoConnectionIcon,
+  StopRedIcon,
+  WarningYellowIcon,
 } from 'ui-kit/icons';
 import { ECalculatorConnectionGroupType } from 'api/types';
 import { PanelInfo } from './PanelInfo';
@@ -32,13 +32,13 @@ export const DevicesPanel: FC<Props> = ({
       return <CheckGreenIcon />;
     }
     if (panelTitle === ECalculatorConnectionGroupType.NotPolling) {
-      return <StopOrangeIcon />;
+      return <NoConnectionIcon />;
     }
     if (panelTitle === ECalculatorConnectionGroupType.Error) {
-      return <WarningIcon />;
+      return <WarningYellowIcon />;
     }
     if (panelTitle === ECalculatorConnectionGroupType.NoArchives) {
-      return <MagnifierIcon />;
+      return <StopRedIcon />;
     }
   }, [panelTitle]);
 
