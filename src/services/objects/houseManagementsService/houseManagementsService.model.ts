@@ -50,10 +50,6 @@ const $houseManagements = createStore<HouseManagementResponse[] | null>(null)
     return prev;
   });
 
-const $isModalOpen = createStore<boolean>(false)
-  .on(handleOpenModal, () => true)
-  .on(handleCloseModal, () => false);
-
 const $housingStockId = createStore<number | null>(null)
   .on(handleOpenModal, (_, data) => data)
   .reset(handleCloseModal);
@@ -73,13 +69,18 @@ sample({
     ({
       housingStockId: Number(source),
       name: clock.name,
-    } as CreateHouseManagementRequest),
+    }) as CreateHouseManagementRequest,
   target: createHouseManagementFx,
 });
 
 const $isHouseManagementsLoading = createHouseManagementFx.pending;
 
 const handleHouseManagementCreated = createHouseManagementFx.doneData;
+
+const $isModalOpen = createStore<boolean>(false)
+  .on(handleOpenModal, () => true)
+  .on(handleCloseModal, () => false)
+  .reset(handleHouseManagementCreated);
 
 createHouseManagementFx.failData.watch((error) => {
   message.error(
