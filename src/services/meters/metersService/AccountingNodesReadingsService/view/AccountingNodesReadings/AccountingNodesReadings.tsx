@@ -75,6 +75,7 @@ export const AccountingNodesReadings: FC<AccountingNodesReadingsProps> = ({
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
               description="Нет приборов"
+              style={{ marginTop: '80px', fontSize: '22px' }}
             />
           )}
           {electricNodesExist && address && (

@@ -33,7 +33,7 @@ export const AccountingNodesReadingsContainer = () => {
   } = useUnit({
     address: outputs.$housingStockAddress,
     electricNodes: getElectricNodesQuery.$data,
-    isElectricNodesFetched: getElectricNodesQuery.$succeeded,
+    isElectricNodesFetched: getElectricNodesQuery.$finished,
     isLoading: outputs.$isLoading,
     sliderIndex: outputs.$sliderIndex,
     sum: outputs.$sumOfReadings,
