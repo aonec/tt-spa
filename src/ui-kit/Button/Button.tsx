@@ -13,6 +13,7 @@ export const Button: FC<ButtonProps> = (props) => {
     floating,
     htmlForm,
     htmlType,
+    color,
     ...antdProps
   } = props;
 
@@ -25,6 +26,7 @@ export const Button: FC<ButtonProps> = (props) => {
       disabled={disabled || isLoading}
       form={htmlForm}
       htmlType={htmlType}
+      color={color}
     >
       {props.children}
       {!isLoading && icon}

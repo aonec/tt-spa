@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { stringifyUrl } from 'query-string';
+import queryString from 'query-string';
 
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
@@ -147,7 +147,7 @@ export const HousingMeteringDeviceProfile: FC<
           <RightBlock>
             <LinkCard
               text={`Задачи: ${tasksCount}`}
-              link={stringifyUrl({
+              link={queryString.stringifyUrl({
                 url: `/tasks/list/${TaskGroupingFilter.Executing}`,
                 query: { housingMeteringDeviceId: housingMeteringDevice?.id },
               })}

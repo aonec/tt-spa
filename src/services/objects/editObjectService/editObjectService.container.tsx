@@ -6,13 +6,19 @@ import { useUnit } from 'effector-react';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { createObjectService } from '../createObjectService';
 import { EHouseCategory } from 'api/types';
+import { houseManagementsService } from '../houseManagementsService';
+import { updateHouseManagementService } from '../updateHouseManagement/updateHouseManagementService.models';
+import { CreateHouseManagementContainer } from '../houseManagementsService/houseManagementsService.container';
+import { UpdateHouseManagementContainer } from '../updateHouseManagement';
 
 const { inputs, outputs, gates } = editObjectService;
 const { ObjectIdGate } = gates;
 
 const {
-  gates: { HeatingStationsFetchGate, HouseManagementsFetchGate },
+  gates: { HeatingStationsFetchGate },
 } = createObjectService;
+
+const HouseManagementsGate = houseManagementsService.gates.HouseManagementsGate;
 
 export const EditObjectContainer = () => {
   const { buildingId, houseCategory } = useParams<{
@@ -54,17 +60,20 @@ export const EditObjectContainer = () => {
     onPageCancel,
     openCreateHeatingStationModal,
     openEditHeatingStationModal,
+    handleOpenHouseManagementModal,
+    handleOpenModal,
   } = useUnit({
     existingCities: addressSearchService.outputs.$existingCities,
     housingStock: outputs.$housingStock,
     nonResidentialBuilding: outputs.$nonResidentialBuilding,
-    houseManagements: outputs.$houseManagements,
+    houseManagements: houseManagementsService.outputs.$houseManagements,
     heatingStations: outputs.$heatingStations,
     isHeatingStationsLoading: outputs.$isHeatingStationsLoading,
     isDeleteLoading: outputs.$isDeleteLoading,
     isUpdateLoading: outputs.$isUpdateLoading,
     isCreateLoading: outputs.$isCreateLoading,
-    isHouseManagementsLoading: outputs.$isHouseManagementsLoading,
+    isHouseManagementsLoading:
+      houseManagementsService.outputs.$isHouseManagementsLoading,
     existingStreets: addressSearchService.outputs.$existingStreets,
     openCreateHeatingStationModal: inputs.openCreateHeatingStationModal,
     openEditHeatingStationModal: inputs.openEditHeatingStationModal,
@@ -75,6 +84,9 @@ export const EditObjectContainer = () => {
     handleUpdateHousingStockAddress: inputs.handleUpdateHousingStockAddress,
     handleDeleteHousingStockAddress: inputs.handleDeleteHousingStockAddress,
     handleRefetchHousingStock: inputs.handleRefetchBuilding,
+    handleOpenHouseManagementModal:
+      houseManagementsService.inputs.handleOpenModal,
+    handleOpenModal: updateHouseManagementService.inputs.handleOpenModal,
   });
 
   useEffect(() => {
@@ -87,8 +99,12 @@ export const EditObjectContainer = () => {
         buildingId={buildingIdNumber}
         houseCategory={preparedHouseCategory}
       />
-      <HouseManagementsFetchGate />
+      <HouseManagementsGate />
       <HeatingStationsFetchGate />
+
+      <CreateHouseManagementContainer />
+      <UpdateHouseManagementContainer />
+
       {(housingStock || nonResidentialBuilding) && (
         <EditObjectPage
           housingStock={housingStock}
@@ -112,6 +128,8 @@ export const EditObjectContainer = () => {
           isUpdateLoading={isUpdateLoading}
           handleRefetchHousingStock={handleRefetchHousingStock}
           houseCategory={preparedHouseCategory}
+          handleOpenHouseManagementModal={handleOpenHouseManagementModal}
+          handleOpenEditHouseManagementModal={handleOpenModal}
         />
       )}
     </>

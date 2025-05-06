@@ -70,6 +70,7 @@ export const DevicesProfile: FC<DeviceProfileProps> = ({
       connectionType: preparedConnectionType,
       PageNumber: searchState?.PageNumber,
       PageSize: searchState?.PageSize,
+      HasInvalidConfiguration: searchState?.HasInvalidConfiguration,
     },
     enableReinitialize: true,
     onSubmit: (values) => {

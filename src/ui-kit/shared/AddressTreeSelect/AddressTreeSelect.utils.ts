@@ -6,6 +6,7 @@ import {
 import {
   TreeSelectElement,
   TreeSelectElementWithParents,
+  TreeKey,
 } from './AddressTreeSelect.types';
 
 type PrepareAddressesParams = {
@@ -98,7 +99,7 @@ export const prepareAddressesWithParentsForTreeSelect = (
 
 export const getParents = (
   data: TreeSelectElement[],
-  parentKeys?: (number | string)[],
+  parentKeys?: TreeKey[],
 ): TreeSelectElementWithParents[] =>
   data.reduce((acc, elem) => {
     if (elem.children) {

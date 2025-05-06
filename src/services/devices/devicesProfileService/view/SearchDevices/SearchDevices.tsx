@@ -38,7 +38,6 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   serialNumber,
   setSerialNumber,
   handleClear,
-  isSearchError,
 }) => {
   const { marks, maxValue, minValue, diameters } = diametersConfig;
 
@@ -72,30 +71,21 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
   const searchComponent = useMemo(() => {
     if (devicesSearchType === DevicesSearchType.Address) {
       return (
-        <div>
-          <AddressSearchContainer
-            fields={[
-              SearchFieldType.City,
-              SearchFieldType.Street,
-              SearchFieldType.House,
-              SearchFieldType.Corpus,
-            ]}
-            isError={isSearchError}
-            initialValues={{
-              city: values['Address.City'],
-              street: values['Address.Street'],
-              house: values['Address.HousingStockNumber'],
-              corpus: values['Address.Corpus'],
-            }}
-            onChange={(key, value) =>
-              setFieldValue(
-                `['Address.${SearchDevicesFormikFieldsLookup[key]}']`,
-                value,
-              )
-            }
-            handleSubmit={() => submitForm()}
-          />
-        </div>
+        <AddressSearchContainer
+          fields={[
+            SearchFieldType.City,
+            SearchFieldType.Street,
+            SearchFieldType.House,
+            SearchFieldType.Corpus,
+          ]}
+          onChange={(key, value) =>
+            setFieldValue(
+              `['Address.${SearchDevicesFormikFieldsLookup[key]}']`,
+              value,
+            )
+          }
+          handleSubmit={() => submitForm()}
+        />
       );
     }
     return (
@@ -115,12 +105,10 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
     );
   }, [
     setFieldValue,
-    values,
     devicesSearchType,
     submitForm,
     serialNumber,
     setSerialNumber,
-    isSearchError,
   ]);
 
   return (

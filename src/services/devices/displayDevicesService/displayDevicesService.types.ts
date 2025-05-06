@@ -36,6 +36,7 @@ export type NodesListRequestPayload = {
   'CommercialDateRange.From'?: string;
   'CommercialDateRange.To'?: string;
   ExpiresAdmissionActDateAt?: EExpiresDateAt;
+  HasInvalidConfiguration?: boolean;
   PageNumber?: number;
   PageSize?: number;
   OrderBy?: EOrderByRule;

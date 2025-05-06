@@ -4,7 +4,7 @@ import { Certificate } from './view/Certificate';
 import { useUnit } from 'effector-react';
 import { Props } from './printApartmentDevicesCertificateService.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
-import ReactToPrint from 'react-to-print';
+import { useReactToPrint } from 'react-to-print';
 import { Button } from 'ui-kit/Button';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { currentOrganizationService } from 'services/currentOrganizationService';
@@ -36,6 +36,10 @@ export const PrintApartmentDevicesCertificateContainer: FC<Props> = ({
 
   const certificateRef = useRef<HTMLDivElement>(null);
 
+  const handlePrint = useReactToPrint({
+    contentRef: certificateRef,
+  });
+
   return (
     <>
       {isOpen && <HomeownerCerificateGate id={homeownerId} />}
@@ -46,14 +50,9 @@ export const PrintApartmentDevicesCertificateContainer: FC<Props> = ({
         title="Выдача справки"
         submitBtnText="Печать"
         customSubmit={
-          <ReactToPrint
-            trigger={() => <Button isLoading={isLoading}>Печать</Button>}
-            content={() => {
-              const node = certificateRef.current;
-
-              return node;
-            }}
-          />
+          <Button onClick={() => handlePrint()} isLoading={isLoading}>
+            Печать
+          </Button>
         }
         form={
           <WithLoader isLoading={isLoading}>

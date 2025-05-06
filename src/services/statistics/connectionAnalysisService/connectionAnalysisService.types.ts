@@ -25,3 +25,7 @@ export type DownloadParams = {
   name: string;
   filterConnectionGroupType: ECalculatorConnectionGroupType;
 };
+
+export type PageNumberStoreType = {
+  [key in ECalculatorConnectionGroupType]: number;
+};

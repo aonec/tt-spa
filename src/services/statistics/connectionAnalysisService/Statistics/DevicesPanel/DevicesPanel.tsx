@@ -1,28 +1,16 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import {
-  DevicesAmount,
-  DownloadIconSC,
-  InfoWrapper,
-  LoadingBlueIconSC,
-  PaginationSC,
-  RighContentWrapper,
-  Title,
-  TitleWrapper,
-  Wrapper,
-} from './DevicesPanel.styled';
+import { PaginationSC, Wrapper } from './DevicesPanel.styled';
 import { Props } from './DevicesPanel.types';
-import { ListOpeningChevron } from 'ui-kit/shared/ListOpeningChevron';
 import { CalculatorInfo } from './CalculatorDevices';
 import { getDevicesCountText } from 'services/nodes/createNodeService/view/CreateNodePage/ConnectedDevices/CommunicationPipeListItem/CommunicationPipeListItem.utils';
 import {
   CheckGreenIcon,
-  MagnifierIcon,
-  StopOrangeIcon,
-  WarningIcon,
+  NoConnectionIcon,
+  StopRedIcon,
+  WarningYellowIcon,
 } from 'ui-kit/icons';
-import { PanelTitleDictionary } from '../Statistics.constants';
-import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { ECalculatorConnectionGroupType } from 'api/types';
+import { PanelInfo } from './PanelInfo';
 
 export const DevicesPanel: FC<Props> = ({
   panelTitle,
@@ -30,7 +18,7 @@ export const DevicesPanel: FC<Props> = ({
   handlePing,
   handleDownload,
   isDownloading,
-  pageNumber,
+  pageNumbers,
   setPageNumber,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,13 +32,13 @@ export const DevicesPanel: FC<Props> = ({
       return <CheckGreenIcon />;
     }
     if (panelTitle === ECalculatorConnectionGroupType.NotPolling) {
-      return <StopOrangeIcon />;
+      return <NoConnectionIcon />;
     }
     if (panelTitle === ECalculatorConnectionGroupType.Error) {
-      return <WarningIcon />;
+      return <WarningYellowIcon />;
     }
     if (panelTitle === ECalculatorConnectionGroupType.NoArchives) {
-      return <MagnifierIcon />;
+      return <StopRedIcon />;
     }
   }, [panelTitle]);
 
@@ -64,35 +52,19 @@ export const DevicesPanel: FC<Props> = ({
   }, [isDownloading]);
 
   return (
-    <Wrapper onClick={() => setIsOpen((prev) => !prev)}>
-      <InfoWrapper>
-        <TitleWrapper>
-          {panelIcon} <Title>{PanelTitleDictionary[panelTitle]}</Title>
-        </TitleWrapper>
-        <RighContentWrapper>
-          <DevicesAmount>
-            {devicesCount} {devicesCountText}
-          </DevicesAmount>
+    <Wrapper>
+      <PanelInfo
+        handleDownload={handleDownload}
+        setIsOpen={setIsOpen}
+        devicesCountText={devicesCountText}
+        devicesCount={devicesCount}
+        downloadType={downloadType}
+        panelIcon={panelIcon}
+        panelTitle={panelTitle}
+        setType={setType}
+        isOpen={isOpen}
+      />
 
-          {downloadType !== panelTitle && (
-            <Tooltip title="Выгрузить список приборов">
-              <DownloadIconSC
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleDownload({
-                    name: PanelTitleDictionary[panelTitle],
-                    filterConnectionGroupType: panelTitle,
-                  });
-                  setType(panelTitle);
-                }}
-              />
-            </Tooltip>
-          )}
-          {downloadType === panelTitle && <LoadingBlueIconSC />}
-
-          <ListOpeningChevron isOpen={isOpen} />
-        </RighContentWrapper>
-      </InfoWrapper>
       {isOpen &&
         calculators?.items?.map((device) => (
           <CalculatorInfo
@@ -103,12 +75,14 @@ export const DevicesPanel: FC<Props> = ({
         ))}
       {isOpen && (
         <PaginationSC
-          pageSize={100}
+          pageSize={30}
           total={devicesCount}
-          current={pageNumber}
-          onChange={(event) => {
-            setPageNumber(event);
-            setIsOpen((prev) => !prev);
+          current={pageNumbers[panelTitle]}
+          onChange={(pageNumber) => {
+            setPageNumber({ [panelTitle]: pageNumber } as Record<
+              ECalculatorConnectionGroupType,
+              number
+            >);
           }}
           showSizeChanger={false}
         />

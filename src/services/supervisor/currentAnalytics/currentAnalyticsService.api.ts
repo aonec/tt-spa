@@ -9,7 +9,7 @@ import {
   OrganizationResponsePagedList,
 } from 'api/types';
 import { DashboardQueryParams } from './currentAnalyticsService.types';
-import { stringify } from 'query-string';
+import queryString from 'query-string';
 import { getDetailSuffix } from './currentAnalyticsService.utils';
 
 export const dashboardOrganizationsQuery = createQuery<
@@ -27,7 +27,7 @@ export const dashboardSummaryQuery = createQuery<
   handler: (params) =>
     axios.get(`/Dashboard/current/summary`, {
       params,
-      paramsSerializer: (params) => stringify(params),
+      paramsSerializer: (params) => queryString.stringify(params),
     }),
 });
 
@@ -38,7 +38,7 @@ export const dashboardPiperuptersQuery = createQuery<
   handler: (params) =>
     axios.get(`/Dashboard/current/piperuptures/${getDetailSuffix(params)}`, {
       params,
-      paramsSerializer: (params) => stringify(params),
+      paramsSerializer: (params) => queryString.stringify(params),
     }),
 });
 
@@ -51,7 +51,7 @@ export const dashboardResourceDisconnectionQuery = createQuery<
       `/Dashboard/current/resourcedisconnects/${getDetailSuffix(params)}`,
       {
         params,
-        paramsSerializer: (params) => stringify(params),
+        paramsSerializer: (params) => queryString.stringify(params),
       },
     ),
 });
@@ -63,7 +63,7 @@ export const dashboardMalfunctionsQuery = createQuery<
   handler: (params) =>
     axios.get(`/Dashboard/current/malfunctions/${getDetailSuffix(params)}`, {
       params,
-      paramsSerializer: (params) => stringify(params),
+      paramsSerializer: (params) => queryString.stringify(params),
     }),
 });
 
@@ -74,7 +74,7 @@ export const dashboardAverageTimeQuery = createQuery<
   handler: (params) =>
     axios.get(`/Dashboard/current/averagetime/${getDetailSuffix(params)}`, {
       params,
-      paramsSerializer: (params) => stringify(params),
+      paramsSerializer: (params) => queryString.stringify(params),
     }),
 });
 
@@ -85,6 +85,6 @@ export const dashboardServiceQualityQuery = createQuery<
   handler: (params) =>
     axios.get(`/Dashboard/current/servicequality/${getDetailSuffix(params)}`, {
       params,
-      paramsSerializer: (params) => stringify(params),
+      paramsSerializer: (params) => queryString.stringify(params),
     }),
 });

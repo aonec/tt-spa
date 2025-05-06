@@ -1,4 +1,4 @@
-import { stringifyUrl } from 'query-string';
+import queryString from 'query-string';
 import React, { FC, ReactElement, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CommonInfo } from 'ui-kit/shared/CommonInfo';
@@ -199,12 +199,10 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
   const { isConnected, connectionInfo } = calculator;
   const isConnectionError =
     !(calculator.connection?.port && calculator.connection?.ipV4) ||
-    connectionInfo?.connectionStatus ===
-      EConnectionStatusType.UnstableConnection;
+    connectionInfo?.status === EConnectionStatusType.UnstableConnection;
 
   const isMalfunction =
-    connectionInfo?.connectionStatus ===
-    EConnectionStatusType.DeviceMalfunction;
+    connectionInfo?.status === EConnectionStatusType.DeviceMalfunction;
 
   return (
     <div>
@@ -249,7 +247,7 @@ export const CalculatorProfile: FC<CalculatorProfileProps> = ({
           <CalculatorCommentContainer comment={comment} calculatorId={id} />
           <LinkCard
             text={`Задачи: ${numberOfTasks}`}
-            link={stringifyUrl({
+            link={queryString.stringifyUrl({
               url: `/tasks/list/${TaskGroupingFilter.Executing}`,
               query: { calculatorId: id },
             })}

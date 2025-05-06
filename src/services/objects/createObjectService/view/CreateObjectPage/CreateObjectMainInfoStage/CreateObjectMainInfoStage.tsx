@@ -12,6 +12,7 @@ import {
   Title,
   WrapperLinkButton,
   ButtonSC,
+  HouseManagementWrapper,
 } from './CreateObjectMainInfoStage.styled';
 import {
   CreateObjectMainInfoStageProps,
@@ -36,6 +37,7 @@ import { LinkButton } from 'ui-kit/shared/LinkButton';
 import { createHeatingStationService } from 'services/objects/heatingStations/createHeatingStationService';
 import { editHeatingStationService } from 'services/objects/heatingStations/editHeatingStationService';
 import { SelectedEntityPanel } from 'ui-kit/shared/SelectedEntityPanel';
+import { houseManagementsService } from 'services/objects/houseManagementsService';
 
 const {
   inputs: { handleHeatingStationCreated },
@@ -43,6 +45,11 @@ const {
 const {
   inputs: { handleHeatingStationEdited },
 } = editHeatingStationService;
+
+const {
+  inputs: { handleHouseManagementCreated },
+} = houseManagementsService;
+
 const withoutHouseMagement = 'withoutHouseMagement';
 
 export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
@@ -55,6 +62,8 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
   openCreateHeatingStationModal,
   openEditHeatingStationModal,
   heatingStationCapture,
+  handleOpenHouseManagementModal,
+  handleOpenUpdateHouseManagementModal,
 }) => {
   const { gates } = createObjectService;
   const { HeatingStationsFetchGate } = gates;
@@ -100,9 +109,20 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
       ),
     [setFieldValue],
   );
+  useEffect(
+    () =>
+      handleHouseManagementCreated.watch((newHouseManagement) =>
+        setFieldValue('houseManagement', newHouseManagement?.id),
+      ).unsubscribe,
+    [setFieldValue],
+  );
 
   const selectedHeatingStation = heatingStationsValues?.find(
     (station) => station.id === values.heatingStationId,
+  );
+
+  const selectedHouseManagement = houseManagements?.find(
+    (management) => management.id === values.houseManagement,
   );
 
   return (
@@ -176,43 +196,70 @@ export const CreateObjectMainInfoStage: FC<CreateObjectMainInfoStageProps> = ({
           </FormItem>
         </GridContainer>
 
-        {values.objectCategory === EHouseCategory.Living && (
-          <>
-            <SpaceLine />
-            <FormItem label="Домоуправления">
-              <Select
-                placeholder="Выберите из списка"
-                onChange={(value) => {
-                  if (value === withoutHouseMagement) {
-                    return setFieldValue('houseManagement', null);
-                  }
-                  setFieldValue('houseManagement', value);
-                }}
-                value={
-                  values.houseManagement === null
-                    ? withoutHouseMagement
-                    : values.houseManagement || undefined
+        {values.objectCategory === EHouseCategory.Living &&
+          !values.houseManagement && (
+            <>
+              <HouseManagementWrapper>
+                <FormItem label="Домоуправления">
+                  <Select
+                    placeholder="Выберите из списка"
+                    onChange={(value) => {
+                      if (value === withoutHouseMagement) {
+                        return setFieldValue('houseManagement', null);
+                      }
+                      setFieldValue('houseManagement', value);
+                    }}
+                    value={
+                      values.houseManagement === null
+                        ? withoutHouseMagement
+                        : values.houseManagement || undefined
+                    }
+                  >
+                    <Select.Option value={withoutHouseMagement}>
+                      Без домоуправления
+                    </Select.Option>
+                    {houseManagements?.map(
+                      (houseManagement) =>
+                        houseManagement.name && (
+                          <Select.Option
+                            value={houseManagement.id}
+                            key={houseManagement.id}
+                          >
+                            {houseManagement.name}
+                          </Select.Option>
+                        ),
+                    )}
+                  </Select>
+                  <ErrorMessage>{errors.houseManagement}</ErrorMessage>
+                </FormItem>
+
+                <WrapperLinkButton>
+                  <LinkButton onClick={() => handleOpenHouseManagementModal()}>
+                    + Добавить новое домоуправление
+                  </LinkButton>
+                </WrapperLinkButton>
+              </HouseManagementWrapper>
+            </>
+          )}
+
+        {values.objectCategory === EHouseCategory.Living &&
+          values.houseManagement && (
+            <FormItem label="Домоуправление">
+              <SelectedEntityPanel
+                onEdit={() =>
+                  handleOpenUpdateHouseManagementModal({
+                    name: selectedHouseManagement?.name || '',
+                    id: values.houseManagement || '',
+                  })
                 }
+                onRemove={() => {
+                  setFieldValue('houseManagement', null);
+                }}
               >
-                <Select.Option value={withoutHouseMagement}>
-                  Без домоуправления
-                </Select.Option>
-                {houseManagements?.map(
-                  (houseManagement) =>
-                    houseManagement.name && (
-                      <Select.Option
-                        value={houseManagement.id}
-                        key={houseManagement.id}
-                      >
-                        {houseManagement.name}
-                      </Select.Option>
-                    ),
-                )}
-              </Select>
-              <ErrorMessage>{errors.houseManagement}</ErrorMessage>
+                <Title>{selectedHouseManagement?.name}</Title>
+              </SelectedEntityPanel>
             </FormItem>
-          </>
-        )}
+          )}
 
         <SpaceLine />
 
