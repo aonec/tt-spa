@@ -2,11 +2,11 @@ import { axios } from 'api/axios';
 import {
   AddApartmentActRequest,
   ApartmentActResponsePagedList,
+  DocumentResponse,
   EDocumentType,
 } from 'api/types';
 import queryString from 'query-string';
 import { ActsJournalRequestParams } from './actsJournalService.types';
-import { Document } from 'ui-kit/DocumentsService';
 
 export const fetchActs = (
   params: ActsJournalRequestParams,
@@ -24,7 +24,7 @@ export const fetchActs = (
 export const addAct = (payload: AddApartmentActRequest): Promise<void> =>
   axios.post('ApartmentActs', payload);
 
-export function uploadFile(file: File): Promise<Document> {
+export function uploadFile(file: File): Promise<DocumentResponse[]> {
   const formData = new FormData();
 
   formData.append('file', file);

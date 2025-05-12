@@ -4,13 +4,13 @@ import { addAct, fetchActs, uploadFile } from './actsJournalService.api';
 import {
   AddApartmentActRequest,
   ApartmentActResponsePagedList,
+  DocumentResponse,
 } from 'api/types';
 import { message } from 'antd';
 import { createGate } from 'effector-react';
 import { ActsJournalRequestParams } from './actsJournalService.types';
 import dayjs from 'api/dayjs';
 import { addressIdSearchService } from './addressIdSearchService';
-import { Document } from 'ui-kit/DocumentsService';
 
 const ActsJournalGate = createGate();
 
@@ -18,14 +18,7 @@ const updateActsFilter = createEvent<ActsJournalRequestParams>();
 
 const setPageNumber = createEvent<number>();
 
-const setModalOpen = createEvent<boolean>();
-
 const setFile = createEvent<File | null>();
-
-const $isDocumentModalOpen = createStore(false).on(
-  setModalOpen,
-  (_, data) => data,
-);
 
 const $file = createStore<File | null>(null).on(setFile, (_, file) => file);
 
@@ -59,17 +52,28 @@ const createAct = createEvent<Omit<AddApartmentActRequest, 'apartmentId'>>();
 const createActFx = createEffect<AddApartmentActRequest, void>(addAct);
 
 const handleUploadFile = createEvent<File>();
-const uploadFileFx = createEffect<File, Document>(uploadFile);
+const uploadFileFx = createEffect<File, DocumentResponse[]>(uploadFile);
 
-const $uploadedFile = createStore<Document | null>(null).on(
+const $uploadedFile = createStore<DocumentResponse | null>(null).on(
   uploadFileFx.doneData,
-  (_, doc) => doc,
+  (_, doc) => doc[0],
 );
 
 const $isCreateLoading = createActFx.pending;
 const $isActsLoading = getActsFx.pending;
 
 const actCreated = createActFx.doneData;
+
+const setModalOpen = createEvent<boolean>();
+const $isDocumentModalOpen = createStore(false)
+  .on(setModalOpen, (_, data) => data)
+  .reset(uploadFileFx.doneData);
+
+const setViewModalOpen = createEvent<boolean>();
+const $isViewModalOpen = createStore(false).on(
+  setViewModalOpen,
+  (_, data) => data,
+);
 
 actCreated.watch(() => message.success('Акт успешно добавлен'));
 createActFx.failData.watch(() => message.error('Ошибка при добавлении акта'));
@@ -106,6 +110,8 @@ sample({
   target: uploadFileFx,
 });
 
+const $isUploading = uploadFileFx.pending;
+
 export const actsJournalService = {
   inputs: {
     createAct,
@@ -115,6 +121,7 @@ export const actsJournalService = {
     setModalOpen,
     setFile,
     handleUploadFile,
+    setViewModalOpen,
   },
   outputs: {
     $isCreateLoading,
@@ -124,6 +131,8 @@ export const actsJournalService = {
     $isDocumentModalOpen,
     $file,
     $uploadedFile,
+    $isUploading,
+    $isViewModalOpen,
   },
   gates: { ActsJournalGate },
 };

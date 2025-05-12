@@ -20,4 +20,5 @@ export type ActsJournalProfileProps = {
   handleResetAddressSearchForm: () => void;
   setModalOpen: (payload: boolean) => void;
   uploadedFile: Document | null;
+  setViewModalOpen: (payload: boolean) => void;
 };

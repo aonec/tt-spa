@@ -4,4 +4,5 @@ export type Props = {
   setFile: (payload: File | null) => void;
   file: File | null;
   handleUploadFile: (payload: File) => void;
+  isUploading: boolean;
 };

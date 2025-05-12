@@ -8,6 +8,7 @@ export type AddNewActFormProps = {
   actCreated: Event<void>;
   setModalOpen: (payload: boolean) => void;
   uploadedFile: Document | null;
+  setViewModalOpen: (payload: boolean) => void;
 };
 
 export type AddApartmentActFormik = Omit<

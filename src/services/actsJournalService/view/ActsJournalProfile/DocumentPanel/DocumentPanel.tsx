@@ -1,17 +1,21 @@
 import { FC } from 'react';
-import { NameWrapper, Wrapper } from './DocumentPanel.styled';
+import {
+  CloseDarkIconSC,
+  LeftBlock,
+  NameWrapper,
+  Wrapper,
+} from './DocumentPanel.styled';
 import { Props } from './DocumentPanel.types';
-import { ClipIcon, XCircleIcon } from 'ui-kit/icons';
+import { ClipIcon } from 'ui-kit/icons';
 
-export const DocumentPanel: FC<Props> = ({ name }) => {
+export const DocumentPanel: FC<Props> = ({ name, setViewModalOpen }) => {
   return (
     <Wrapper>
-      <ClipIcon />
-      <NameWrapper>
-        {name}
-        {'name'}
-      </NameWrapper>
-      <XCircleIcon />
+      <LeftBlock onClick={() => setViewModalOpen(true)}>
+        <ClipIcon />
+        <NameWrapper>{name || 'Документ'}</NameWrapper>
+      </LeftBlock>
+      <CloseDarkIconSC />
     </Wrapper>
   );
 };

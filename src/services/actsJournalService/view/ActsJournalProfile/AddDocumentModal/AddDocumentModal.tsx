@@ -13,6 +13,7 @@ export const AddDocumentModal: FC<Props> = ({
   file,
   setFile,
   handleUploadFile,
+  isUploading,
 }) => {
   const handleSubmit = () => {
     if (file) handleUploadFile(file);
@@ -20,18 +21,13 @@ export const AddDocumentModal: FC<Props> = ({
 
   return (
     <FormModal
-      title="Загрузить скан"
+      title="Добавить скан"
       visible={isModalOpen}
       onCancel={() => setModalOpen(false)}
       formId={formId}
-      submitBtnText="Загрузить"
       customSubmit={
-        <Button
-          disabled={!file}
-          onClick={handleSubmit}
-          // isLoading={isFileLoading}
-        >
-          Загрузить график
+        <Button disabled={!file} onClick={handleSubmit} isLoading={isUploading}>
+          Добавить
         </Button>
       }
       form={

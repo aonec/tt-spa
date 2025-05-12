@@ -33,6 +33,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
   actCreated,
   setModalOpen,
   uploadedFile,
+  setViewModalOpen,
 }) => {
   const { values, submitForm, setFieldValue, setValues, resetForm } =
     useFormik<AddApartmentActFormik>({
@@ -169,7 +170,12 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           </ButtonBlue>
         )}
 
-        {uploadedFile && <DocumentPanel name={uploadedFile.name} />}
+        {uploadedFile && (
+          <DocumentPanel
+            name={uploadedFile.name}
+            setViewModalOpen={setViewModalOpen}
+          />
+        )}
 
         <ButtonsWrapper>
           <Button
