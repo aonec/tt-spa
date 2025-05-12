@@ -1,15 +1,22 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { sample } from 'effector';
-import { addAct, fetchActs } from './actsJournalService.api';
+import {
+  addAct,
+  deleteDocument,
+  fetchActs,
+  uploadFile,
+} from './actsJournalService.api';
 import {
   AddApartmentActRequest,
   ApartmentActResponsePagedList,
+  DocumentResponse,
 } from 'api/types';
 import { message } from 'antd';
 import { createGate } from 'effector-react';
 import { ActsJournalRequestParams } from './actsJournalService.types';
 import dayjs from 'api/dayjs';
 import { addressIdSearchService } from './addressIdSearchService';
+import { EffectFailDataAxiosError } from 'types';
 
 const ActsJournalGate = createGate();
 
@@ -46,6 +53,38 @@ const $actsPagedData = createStore<ApartmentActResponsePagedList | null>(
 const createAct = createEvent<Omit<AddApartmentActRequest, 'apartmentId'>>();
 const createActFx = createEffect<AddApartmentActRequest, void>(addAct);
 
+const handleUploadFile = createEvent<File>();
+const uploadFileFx = createEffect<
+  File,
+  DocumentResponse[],
+  EffectFailDataAxiosError
+>(uploadFile);
+
+const setModalOpen = createEvent<boolean>();
+const $isDocumentModalOpen = createStore(false)
+  .on(setModalOpen, (_, data) => data)
+  .reset(uploadFileFx.doneData);
+
+const setViewModalOpen = createEvent<boolean>();
+const $isViewModalOpen = createStore(false).on(
+  setViewModalOpen,
+  (_, data) => data,
+);
+
+const setFile = createEvent<File | null>();
+const $file = createStore<File | null>(null)
+  .on(setFile, (_, file) => file)
+  .reset(setModalOpen);
+
+const handleDeleteDoc = createEvent<number>();
+const deleteDocumentFx = createEffect<number, void, EffectFailDataAxiosError>(
+  deleteDocument,
+);
+
+const $uploadedFile = createStore<DocumentResponse | null>(null)
+  .on(uploadFileFx.doneData, (_, doc) => doc[0])
+  .reset(deleteDocumentFx.doneData);
+
 const $isCreateLoading = createActFx.pending;
 const $isActsLoading = getActsFx.pending;
 
@@ -81,18 +120,56 @@ sample({
   target: getActsFx,
 });
 
+sample({
+  clock: handleUploadFile,
+  target: uploadFileFx,
+});
+
+sample({
+  clock: handleDeleteDoc,
+  target: deleteDocumentFx,
+});
+
+const $isUploading = uploadFileFx.pending;
+
+uploadFileFx.failData.watch((error) =>
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  ),
+);
+
+deleteDocumentFx.failData.watch((error) =>
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  ),
+);
+
 export const actsJournalService = {
   inputs: {
     createAct,
     updateActsFilter,
     setPageNumber,
     actCreated,
+    setModalOpen,
+    setFile,
+    handleUploadFile,
+    setViewModalOpen,
+    handleDeleteDoc,
   },
   outputs: {
     $isCreateLoading,
     $actsPagedData,
     $actsFilter,
     $isActsLoading,
+    $isDocumentModalOpen,
+    $file,
+    $uploadedFile,
+    $isUploading,
+    $isViewModalOpen,
   },
   gates: { ActsJournalGate },
 };

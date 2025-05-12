@@ -6,6 +6,8 @@ import { ActTypesNamesLookup } from 'dictionaries';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
+import { ClipIcon } from 'ui-kit/icons';
+import { Button } from 'ui-kit/Button';
 
 export const ActsListItem: FC<ActsListItemProps> = ({ act }) => {
   const actAddress = getApartmentFromFullAddress(act.apartment, false);
@@ -25,6 +27,9 @@ export const ActsListItem: FC<ActsListItemProps> = ({ act }) => {
         <Comment>{act.comment || '-'}</Comment>
       </Tooltip>
       <div>{dayjs(act.actJobDate).format('DD.MM.YYYY')}</div>
+      <Button disabled={!act.document} type="ghost" size="small">
+        <ClipIcon />
+      </Button>
     </Wrapper>
   );
 };
