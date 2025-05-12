@@ -9,7 +9,9 @@ import {
 } from './AddNewActForm.types';
 import {
   ActDate,
-  BottomBlock,
+  Blue,
+  ButtonBlock,
+  ButtonBlue,
   ButtonSC,
   ButtonsWrapper,
   Comment,
@@ -21,6 +23,7 @@ import { ActTypesNamesLookup } from 'dictionaries';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { AddressIdSearchContainer } from 'services/actsJournalService/addressIdSearchService';
 import { EActResourceType } from 'api/types';
+import { DocumentPanel } from '../DocumentPanel';
 
 const dataKey = 'add-new-act';
 
@@ -28,6 +31,8 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
   addNewAct,
   isCreateLoading,
   actCreated,
+  setModalOpen,
+  uploadedFile,
 }) => {
   const { values, submitForm, setFieldValue, setValues, resetForm } =
     useFormik<AddApartmentActFormik>({
@@ -80,6 +85,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
     <>
       <Wrapper>
         <ActDate>{dayjs().format('DD.MM.YYYY')}</ActDate>
+
         <Input
           small
           value={values.registryNumber || undefined}
@@ -139,19 +145,31 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
         />
       </Wrapper>
 
-      <BottomBlock>
-        <Comment
-          placeholder="Комментарий"
-          autoSize={{ minRows: 2, maxRows: 6 }}
-          value={values.comment as string}
-          onChange={(value) => {
-            if (values.comment?.length === 0 && value.target.value === '\n') {
-              return;
-            }
-            setFieldValue('comment', value.target.value);
-          }}
-          data-reading-input={dataKey}
-        />
+      <Comment
+        placeholder="Комментарий"
+        autoSize={{ minRows: 2, maxRows: 6 }}
+        value={values.comment as string}
+        onChange={(value) => {
+          if (values.comment?.length === 0 && value.target.value === '\n') {
+            return;
+          }
+          setFieldValue('comment', value.target.value);
+        }}
+        data-reading-input={dataKey}
+      />
+
+      <ButtonBlock>
+        {!uploadedFile && (
+          <ButtonBlue
+            type="ghost"
+            size="small"
+            onClick={() => setModalOpen(true)}
+          >
+            <Blue>+ Добавить скан</Blue>
+          </ButtonBlue>
+        )}
+
+        {uploadedFile && <DocumentPanel name={uploadedFile.name} />}
 
         <ButtonsWrapper>
           <Button
@@ -171,7 +189,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
             Сохранить
           </ButtonSC>
         </ButtonsWrapper>
-      </BottomBlock>
+      </ButtonBlock>
     </>
   );
 };

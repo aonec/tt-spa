@@ -1,6 +1,6 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { sample } from 'effector';
-import { addAct, fetchActs } from './actsJournalService.api';
+import { addAct, fetchActs, uploadFile } from './actsJournalService.api';
 import {
   AddApartmentActRequest,
   ApartmentActResponsePagedList,
@@ -10,12 +10,24 @@ import { createGate } from 'effector-react';
 import { ActsJournalRequestParams } from './actsJournalService.types';
 import dayjs from 'api/dayjs';
 import { addressIdSearchService } from './addressIdSearchService';
+import { Document } from 'ui-kit/DocumentsService';
 
 const ActsJournalGate = createGate();
 
 const updateActsFilter = createEvent<ActsJournalRequestParams>();
 
 const setPageNumber = createEvent<number>();
+
+const setModalOpen = createEvent<boolean>();
+
+const setFile = createEvent<File | null>();
+
+const $isDocumentModalOpen = createStore(false).on(
+  setModalOpen,
+  (_, data) => data,
+);
+
+const $file = createStore<File | null>(null).on(setFile, (_, file) => file);
 
 const $actsFilter = createStore<ActsJournalRequestParams>({
   PageSize: 20,
@@ -45,6 +57,14 @@ const $actsPagedData = createStore<ApartmentActResponsePagedList | null>(
 
 const createAct = createEvent<Omit<AddApartmentActRequest, 'apartmentId'>>();
 const createActFx = createEffect<AddApartmentActRequest, void>(addAct);
+
+const handleUploadFile = createEvent<File>();
+const uploadFileFx = createEffect<File, Document>(uploadFile);
+
+const $uploadedFile = createStore<Document | null>(null).on(
+  uploadFileFx.doneData,
+  (_, doc) => doc,
+);
 
 const $isCreateLoading = createActFx.pending;
 const $isActsLoading = getActsFx.pending;
@@ -81,18 +101,29 @@ sample({
   target: getActsFx,
 });
 
+sample({
+  clock: handleUploadFile,
+  target: uploadFileFx,
+});
+
 export const actsJournalService = {
   inputs: {
     createAct,
     updateActsFilter,
     setPageNumber,
     actCreated,
+    setModalOpen,
+    setFile,
+    handleUploadFile,
   },
   outputs: {
     $isCreateLoading,
     $actsPagedData,
     $actsFilter,
     $isActsLoading,
+    $isDocumentModalOpen,
+    $file,
+    $uploadedFile,
   },
   gates: { ActsJournalGate },
 };

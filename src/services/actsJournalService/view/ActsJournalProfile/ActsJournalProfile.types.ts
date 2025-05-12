@@ -4,6 +4,7 @@ import {
   ApartmentActResponsePagedList,
 } from 'api/types';
 import { ActsJournalRequestParams } from 'services/actsJournalService/actsJournalService.types';
+import { Document } from 'ui-kit/DocumentsService';
 
 export type ActsJournalProfileProps = {
   handleCreateAct: (
@@ -17,4 +18,6 @@ export type ActsJournalProfileProps = {
   setPageNumber: (pageNumber: number) => void;
   actCreated: Event<void>;
   handleResetAddressSearchForm: () => void;
+  setModalOpen: (payload: boolean) => void;
+  uploadedFile: Document | null;
 };

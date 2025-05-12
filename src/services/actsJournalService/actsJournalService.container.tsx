@@ -4,6 +4,7 @@ import { actsJournalService } from './actsJournalService.model';
 import { useUnit } from 'effector-react';
 import './actsJournalService.relations';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
+import { AddDocumentModal } from './view/ActsJournalProfile/AddDocumentModal';
 
 const { inputs, outputs, gates } = actsJournalService;
 const { ActsJournalGate } = gates;
@@ -18,6 +19,12 @@ export const ActsJournalContainer = () => {
     isCreateLoading,
     setPageNumber,
     updateActsFilter,
+    setModalOpen,
+    isDocumentModalOpen,
+    setFile,
+    file,
+    handleUploadFile,
+    uploadedFile,
   } = useUnit({
     handleCreateAct: inputs.createAct,
     updateActsFilter: inputs.updateActsFilter,
@@ -27,6 +34,12 @@ export const ActsJournalContainer = () => {
     actsPagedData: outputs.$actsPagedData,
     actsFilter: outputs.$actsFilter,
     handleResetAddressSearchForm: addressSearchService.inputs.handleResetForm,
+    setModalOpen: inputs.setModalOpen,
+    isDocumentModalOpen: outputs.$isDocumentModalOpen,
+    setFile: inputs.setFile,
+    file: outputs.$file,
+    handleUploadFile: inputs.handleUploadFile,
+    uploadedFile: outputs.$uploadedFile,
   });
 
   const actCreated = inputs.actCreated;
@@ -34,6 +47,13 @@ export const ActsJournalContainer = () => {
   return (
     <>
       <ActsJournalGate />
+      <AddDocumentModal
+        setModalOpen={setModalOpen}
+        isModalOpen={isDocumentModalOpen}
+        setFile={setFile}
+        file={file}
+        handleUploadFile={handleUploadFile}
+      />
       <ActsJournalProfile
         handleCreateAct={handleCreateAct}
         isCreateLoading={isCreateLoading}
@@ -44,6 +64,8 @@ export const ActsJournalContainer = () => {
         setPageNumber={setPageNumber}
         actCreated={actCreated}
         handleResetAddressSearchForm={handleResetAddressSearchForm}
+        setModalOpen={setModalOpen}
+        uploadedFile={uploadedFile}
       />
     </>
   );

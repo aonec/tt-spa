@@ -120,6 +120,7 @@ import CloseBlueIcon from './svg/closeBlue.svg?react';
 import ReloadBlueIcon from './svg/reloadBlue.svg?react';
 import WarningYellowIcon from './svg/warningYellow.svg?react';
 import StopRedIcon from './svg/stopRed.svg?react';
+import ClipIcon from './svg/clip.svg?react';
 
 export {
   FinishIcon,
@@ -244,4 +245,5 @@ export {
   ReloadBlueIcon,
   WarningYellowIcon,
   StopRedIcon,
+  ClipIcon,
 };
