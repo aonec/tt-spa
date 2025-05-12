@@ -34,6 +34,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
   setModalOpen,
   uploadedFile,
   setViewModalOpen,
+  handleDeleteDoc,
 }) => {
   const { values, submitForm, setFieldValue, setValues, resetForm } =
     useFormik<AddApartmentActFormik>({
@@ -174,6 +175,8 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           <DocumentPanel
             name={uploadedFile.name}
             setViewModalOpen={setViewModalOpen}
+            handleDeleteDoc={handleDeleteDoc}
+            docId={uploadedFile.id}
           />
         )}
 

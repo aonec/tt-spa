@@ -29,6 +29,7 @@ export const ActsJournalContainer = () => {
     isUploading,
     isViewModalOpen,
     setViewModalOpen,
+    handleDeleteDoc,
   } = useUnit({
     handleCreateAct: inputs.createAct,
     updateActsFilter: inputs.updateActsFilter,
@@ -47,6 +48,7 @@ export const ActsJournalContainer = () => {
     isUploading: outputs.$isUploading,
     isViewModalOpen: outputs.$isViewModalOpen,
     setViewModalOpen: inputs.setViewModalOpen,
+    handleDeleteDoc: inputs.handleDeleteDoc,
   });
 
   const actCreated = inputs.actCreated;
@@ -80,6 +82,7 @@ export const ActsJournalContainer = () => {
         setModalOpen={setModalOpen}
         uploadedFile={uploadedFile}
         setViewModalOpen={setViewModalOpen}
+        handleDeleteDoc={handleDeleteDoc}
       />
     </>
   );

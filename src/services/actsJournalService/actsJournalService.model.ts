@@ -1,6 +1,11 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { sample } from 'effector';
-import { addAct, fetchActs, uploadFile } from './actsJournalService.api';
+import {
+  addAct,
+  deleteDocument,
+  fetchActs,
+  uploadFile,
+} from './actsJournalService.api';
 import {
   AddApartmentActRequest,
   ApartmentActResponsePagedList,
@@ -11,16 +16,13 @@ import { createGate } from 'effector-react';
 import { ActsJournalRequestParams } from './actsJournalService.types';
 import dayjs from 'api/dayjs';
 import { addressIdSearchService } from './addressIdSearchService';
+import { EffectFailDataAxiosError } from 'types';
 
 const ActsJournalGate = createGate();
 
 const updateActsFilter = createEvent<ActsJournalRequestParams>();
 
 const setPageNumber = createEvent<number>();
-
-const setFile = createEvent<File | null>();
-
-const $file = createStore<File | null>(null).on(setFile, (_, file) => file);
 
 const $actsFilter = createStore<ActsJournalRequestParams>({
   PageSize: 20,
@@ -52,17 +54,11 @@ const createAct = createEvent<Omit<AddApartmentActRequest, 'apartmentId'>>();
 const createActFx = createEffect<AddApartmentActRequest, void>(addAct);
 
 const handleUploadFile = createEvent<File>();
-const uploadFileFx = createEffect<File, DocumentResponse[]>(uploadFile);
-
-const $uploadedFile = createStore<DocumentResponse | null>(null).on(
-  uploadFileFx.doneData,
-  (_, doc) => doc[0],
-);
-
-const $isCreateLoading = createActFx.pending;
-const $isActsLoading = getActsFx.pending;
-
-const actCreated = createActFx.doneData;
+const uploadFileFx = createEffect<
+  File,
+  DocumentResponse[],
+  EffectFailDataAxiosError
+>(uploadFile);
 
 const setModalOpen = createEvent<boolean>();
 const $isDocumentModalOpen = createStore(false)
@@ -74,6 +70,25 @@ const $isViewModalOpen = createStore(false).on(
   setViewModalOpen,
   (_, data) => data,
 );
+
+const setFile = createEvent<File | null>();
+const $file = createStore<File | null>(null)
+  .on(setFile, (_, file) => file)
+  .reset(setModalOpen);
+
+const handleDeleteDoc = createEvent<number>();
+const deleteDocumentFx = createEffect<number, void, EffectFailDataAxiosError>(
+  deleteDocument,
+);
+
+const $uploadedFile = createStore<DocumentResponse | null>(null)
+  .on(uploadFileFx.doneData, (_, doc) => doc[0])
+  .reset(deleteDocumentFx.doneData);
+
+const $isCreateLoading = createActFx.pending;
+const $isActsLoading = getActsFx.pending;
+
+const actCreated = createActFx.doneData;
 
 actCreated.watch(() => message.success('Акт успешно добавлен'));
 createActFx.failData.watch(() => message.error('Ошибка при добавлении акта'));
@@ -110,7 +125,28 @@ sample({
   target: uploadFileFx,
 });
 
+sample({
+  clock: handleDeleteDoc,
+  target: deleteDocumentFx,
+});
+
 const $isUploading = uploadFileFx.pending;
+
+uploadFileFx.failData.watch((error) =>
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  ),
+);
+
+deleteDocumentFx.failData.watch((error) =>
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  ),
+);
 
 export const actsJournalService = {
   inputs: {
@@ -122,6 +158,7 @@ export const actsJournalService = {
     setFile,
     handleUploadFile,
     setViewModalOpen,
+    handleDeleteDoc,
   },
   outputs: {
     $isCreateLoading,

@@ -33,8 +33,5 @@ export function uploadFile(file: File): Promise<DocumentResponse[]> {
   return axios.post('documents/upload', formData);
 }
 
-// export const deleteFileMutation = createMutation({
-//   handler: createEffect<TemperatureNormativeDeleteRequest, void>((payload) =>
-//     axios.delete('ManagingFirms/TemperatureNormatives', { data: payload }),
-//   ),
-// });
+export const deleteDocument = (id: number): Promise<void> =>
+  axios.delete(`Documents/${id}`);
