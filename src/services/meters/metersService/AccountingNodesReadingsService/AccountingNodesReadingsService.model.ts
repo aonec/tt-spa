@@ -8,7 +8,10 @@ import {
 import { createGate } from 'effector-react';
 import { PREVIOUS_READING_INDEX_LIMIT } from './AccountingNodesReadingsService.constants';
 import { round } from 'utils/round';
-import { getElectricNodesQuery } from './AccountingNodesReadingsService.api';
+import {
+  getBuildingQuery,
+  getElectricNodesQuery,
+} from './AccountingNodesReadingsService.api';
 
 const HousingStockIdGate = createGate<{ id?: number }>();
 
@@ -29,9 +32,9 @@ const $sliderIndex = createStore(0)
 
 const fetchElectricNodes = createEvent<GetElectricNodesByAddress>();
 
-const $housingStockAddress = getElectricNodesQuery.$data.map((nodes) => {
-  if (nodes?.length) {
-    return nodes[0].address?.address?.mainAddress || null;
+const $housingStockAddress = getBuildingQuery.$data.map((addressList) => {
+  if (addressList?.length) {
+    return addressList[0].address?.mainAddress || null;
   }
   return null;
 });
@@ -90,7 +93,7 @@ sample({
 
 sample({
   clock: fetchElectricNodes,
-  target: getElectricNodesQuery.start,
+  target: [getElectricNodesQuery.start, getBuildingQuery.start],
 });
 
 sample({
