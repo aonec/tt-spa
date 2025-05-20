@@ -45,3 +45,12 @@ export const Footer = styled.div`
   margin-top: 26px;
   margin-bottom: 30px;
 `;
+
+export const Language = styled.div`
+  display: flex;
+  margin: 2px 2px 2px -6px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  background-color: rgba(49, 50, 52, 0.14);
+  color: #272f5a;
+`;
