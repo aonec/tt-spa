@@ -8,7 +8,7 @@ const formId = 'Document-View-Modal';
 export const DocumentViewModal: FC<Props> = ({
   isViewModalOpen,
   setViewModalOpen,
-  viewFile,
+  docUrl,
 }) => {
   return (
     <FormModal
@@ -19,9 +19,13 @@ export const DocumentViewModal: FC<Props> = ({
       customFooter={<></>}
       form={
         <Wrapper>
-          {viewFile?.url && (
-            <img style={{ width: '100%' }} src={viewFile.url} />
-          )}
+          <embed src={docUrl || undefined} width="100%" height="100%" />
+
+          {/* <iframe
+            src={`https://mozilla.github.io/pdf.js/web/viewer.html?file=${docUrl}`}
+            width="100%"
+            height="600px"
+          /> */}
         </Wrapper>
       }
     />

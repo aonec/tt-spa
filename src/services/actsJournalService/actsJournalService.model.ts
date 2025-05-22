@@ -4,6 +4,7 @@ import {
   addAct,
   deleteDocument,
   fetchActs,
+  fetchDocUrl,
   uploadFile,
 } from './actsJournalService.api';
 import {
@@ -65,11 +66,18 @@ const $isDocumentModalOpen = createStore(false)
   .on(setModalOpen, (_, data) => data)
   .reset(uploadFileFx.doneData);
 
-const setViewModalOpen = createEvent<boolean>();
-const $isViewModalOpen = createStore(false).on(
-  setViewModalOpen,
-  (_, data) => data,
+const handleOpenDoc = createEvent<number>();
+const fetchDocUrlFx = createEffect<number, string, EffectFailDataAxiosError>(
+  fetchDocUrl,
 );
+const $docUrl = createStore<string | null>(null)
+  .on(fetchDocUrlFx.doneData, (_, url) => url)
+  .reset(setModalOpen);
+
+const setViewModalOpen = createEvent<boolean>();
+const $isViewModalOpen = createStore(false)
+  .on(setViewModalOpen, (_, data) => data)
+  .on(fetchDocUrlFx.doneData, (_, url) => Boolean(url));
 
 const setFile = createEvent<File | null>();
 const $file = createStore<File | null>(null)
@@ -130,6 +138,11 @@ sample({
   target: deleteDocumentFx,
 });
 
+sample({
+  clock: handleOpenDoc,
+  target: fetchDocUrlFx,
+});
+
 const $isUploading = uploadFileFx.pending;
 
 uploadFileFx.failData.watch((error) =>
@@ -148,6 +161,14 @@ deleteDocumentFx.failData.watch((error) =>
   ),
 );
 
+fetchDocUrlFx.failData.watch((error) =>
+  message.error(
+    error.response.data.error.Text ||
+      error.response.data.error.Message ||
+      'Произошла ошибка',
+  ),
+);
+
 export const actsJournalService = {
   inputs: {
     createAct,
@@ -159,6 +180,7 @@ export const actsJournalService = {
     handleUploadFile,
     setViewModalOpen,
     handleDeleteDoc,
+    handleOpenDoc,
   },
   outputs: {
     $isCreateLoading,
@@ -170,6 +192,7 @@ export const actsJournalService = {
     $uploadedFile,
     $isUploading,
     $isViewModalOpen,
+    $docUrl,
   },
   gates: { ActsJournalGate },
 };

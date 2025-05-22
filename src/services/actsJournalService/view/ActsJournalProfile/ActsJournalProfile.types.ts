@@ -22,4 +22,5 @@ export type ActsJournalProfileProps = {
   uploadedFile: Document | null;
   setViewModalOpen: (payload: boolean) => void;
   handleDeleteDoc: (payload: number) => void;
+  handleOpenDoc: (payload: number) => void;
 };

@@ -35,3 +35,6 @@ export function uploadFile(file: File): Promise<DocumentResponse[]> {
 
 export const deleteDocument = (id: number): Promise<void> =>
   axios.delete(`Documents/${id}`);
+
+export const fetchDocUrl = (id: number): Promise<string> =>
+  axios.get(`Documents/${id}`);

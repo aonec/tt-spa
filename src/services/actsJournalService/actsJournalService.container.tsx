@@ -30,6 +30,8 @@ export const ActsJournalContainer = () => {
     isViewModalOpen,
     setViewModalOpen,
     handleDeleteDoc,
+    handleOpenDoc,
+    docUrl,
   } = useUnit({
     handleCreateAct: inputs.createAct,
     updateActsFilter: inputs.updateActsFilter,
@@ -49,6 +51,8 @@ export const ActsJournalContainer = () => {
     isViewModalOpen: outputs.$isViewModalOpen,
     setViewModalOpen: inputs.setViewModalOpen,
     handleDeleteDoc: inputs.handleDeleteDoc,
+    handleOpenDoc: inputs.handleOpenDoc,
+    docUrl: outputs.$docUrl,
   });
 
   const actCreated = inputs.actCreated;
@@ -67,7 +71,7 @@ export const ActsJournalContainer = () => {
       <DocumentViewModal
         isViewModalOpen={isViewModalOpen}
         setViewModalOpen={setViewModalOpen}
-        viewFile={uploadedFile}
+        docUrl={docUrl || uploadedFile?.url || null}
       />
       <ActsJournalProfile
         handleCreateAct={handleCreateAct}
@@ -83,6 +87,7 @@ export const ActsJournalContainer = () => {
         uploadedFile={uploadedFile}
         setViewModalOpen={setViewModalOpen}
         handleDeleteDoc={handleDeleteDoc}
+        handleOpenDoc={handleOpenDoc}
       />
     </>
   );

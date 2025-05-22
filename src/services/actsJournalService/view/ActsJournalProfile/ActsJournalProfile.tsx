@@ -26,6 +26,7 @@ export const ActsJournalProfile: FC<ActsJournalProfileProps> = ({
   uploadedFile,
   setViewModalOpen,
   handleDeleteDoc,
+  handleOpenDoc,
 }) => {
   const handleClearAddress = useCallback(() => {
     updateActsFilter({
@@ -100,6 +101,7 @@ export const ActsJournalProfile: FC<ActsJournalProfileProps> = ({
           actsPagedData={actsPagedData}
           isActsLoading={isActsLoading}
           setPageNumber={setPageNumber}
+          handleOpenDoc={handleOpenDoc}
         />
       </Wrapper>
     </>
