@@ -53,6 +53,7 @@ const $actsPagedData = createStore<ApartmentActResponsePagedList | null>(
 
 const createAct = createEvent<Omit<AddApartmentActRequest, 'apartmentId'>>();
 const createActFx = createEffect<AddApartmentActRequest, void>(addAct);
+const actCreated = createActFx.doneData;
 
 const handleUploadFile = createEvent<File>();
 const uploadFileFx = createEffect<
@@ -91,12 +92,10 @@ const deleteDocumentFx = createEffect<number, void, EffectFailDataAxiosError>(
 
 const $uploadedFile = createStore<DocumentResponse | null>(null)
   .on(uploadFileFx.doneData, (_, doc) => doc[0])
-  .reset(deleteDocumentFx.doneData);
+  .reset([deleteDocumentFx.doneData, deleteDocumentFx.failData, actCreated]);
 
 const $isCreateLoading = createActFx.pending;
 const $isActsLoading = getActsFx.pending;
-
-const actCreated = createActFx.doneData;
 
 actCreated.watch(() => message.success('Акт успешно добавлен'));
 createActFx.failData.watch(() => message.error('Ошибка при добавлении акта'));

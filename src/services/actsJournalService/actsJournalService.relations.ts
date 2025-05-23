@@ -9,8 +9,11 @@ sample({
     actsJournalService.outputs.$actsFilter,
     (values, filter) => ({ ...values, City: filter.City }),
   ),
-  filter: (payload): payload is FindApartmentParams =>
-    Boolean(payload.ApartmentNumber && payload.HousingNumber && payload.Street),
+  filter: (payload): payload is FindApartmentParams => {
+    return Boolean(
+      payload.ApartmentNumber && payload.HousingNumber && payload.Street,
+    );
+  },
   clock: addressIdSearchService.inputs.getApartmentSearchId,
   target: addressIdSearchService.inputs.getApartmentSearchIdFx,
 });

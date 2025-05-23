@@ -27,6 +27,7 @@ export const ActsJournalProfile: FC<ActsJournalProfileProps> = ({
   setViewModalOpen,
   handleDeleteDoc,
   handleOpenDoc,
+  resetActAddress,
 }) => {
   const handleClearAddress = useCallback(() => {
     updateActsFilter({
@@ -95,6 +96,7 @@ export const ActsJournalProfile: FC<ActsJournalProfileProps> = ({
             uploadedFile={uploadedFile}
             setViewModalOpen={setViewModalOpen}
             handleDeleteDoc={handleDeleteDoc}
+            resetActAddress={resetActAddress}
           />
         </StickyWrapper>
         <ActsList

@@ -35,6 +35,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
   uploadedFile,
   setViewModalOpen,
   handleDeleteDoc,
+  resetActAddress,
 }) => {
   const { values, submitForm, setFieldValue, setValues, resetForm } =
     useFormik<AddApartmentActFormik>({
@@ -44,7 +45,9 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
         actResourceType: null,
         actType: null,
         comment: '',
+        documentId: uploadedFile?.id,
       },
+      enableReinitialize: true,
       onSubmit: (values) => {
         const { actResourceType, actType } = values;
 
@@ -186,6 +189,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
             size="small"
             onClick={() => {
               resetForm();
+              resetActAddress();
             }}
           >
             Сбросить

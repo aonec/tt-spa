@@ -23,4 +23,5 @@ export type ActsJournalProfileProps = {
   setViewModalOpen: (payload: boolean) => void;
   handleDeleteDoc: (payload: number) => void;
   handleOpenDoc: (payload: number) => void;
+  resetActAddress: () => void;
 };

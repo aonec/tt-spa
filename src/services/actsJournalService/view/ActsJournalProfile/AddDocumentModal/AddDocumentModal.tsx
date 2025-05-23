@@ -5,7 +5,7 @@ import { DocumentPreload } from 'ui-kit/DocumentPreload';
 import { Button } from 'ui-kit/Button';
 
 const formId = 'Add-Document-Modal';
-const accept = 'image/*';
+const accept = 'image/*,.pdf';
 
 export const AddDocumentModal: FC<Props> = ({
   isModalOpen,

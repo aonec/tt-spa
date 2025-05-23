@@ -21,6 +21,7 @@ const setWithApartment = createEvent<boolean>();
 const fetchExistingCities = createEffect<void, string[] | null>(
   getExistingCities,
 );
+const successFetchExistingCities = createEvent();
 
 const getApartmentsFx = createEffect<
   GetApartmentsRequest,
@@ -90,8 +91,13 @@ sample({
       Street: values.street,
       HousingStockNumber: values.house,
       Corpus: values.corpus,
-    } as GetApartmentsRequest),
+    }) as GetApartmentsRequest,
   target: getApartmentsFx,
+});
+
+sample({
+  clock: fetchExistingCities.doneData,
+  target: successFetchExistingCities,
 });
 
 export const addressSearchService = {
@@ -105,6 +111,7 @@ export const addressSearchService = {
     handleSearchApartNumber,
     setWithApartment,
     handleResetForm,
+    successFetchExistingCities,
   },
   gates: {
     ExistingCitiesGate,

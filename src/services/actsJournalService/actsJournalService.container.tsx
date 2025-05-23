@@ -6,6 +6,7 @@ import './actsJournalService.relations';
 import { addressSearchService } from 'services/addressSearchService/addressSearchService.models';
 import { AddDocumentModal } from './view/ActsJournalProfile/AddDocumentModal';
 import { DocumentViewModal } from './view/ActsJournalProfile/DocumentViewModal';
+import { addressIdSearchService } from './addressIdSearchService';
 
 const { inputs, outputs, gates } = actsJournalService;
 const { ActsJournalGate } = gates;
@@ -32,6 +33,7 @@ export const ActsJournalContainer = () => {
     handleDeleteDoc,
     handleOpenDoc,
     docUrl,
+    resetActAddress,
   } = useUnit({
     handleCreateAct: inputs.createAct,
     updateActsFilter: inputs.updateActsFilter,
@@ -53,6 +55,7 @@ export const ActsJournalContainer = () => {
     handleDeleteDoc: inputs.handleDeleteDoc,
     handleOpenDoc: inputs.handleOpenDoc,
     docUrl: outputs.$docUrl,
+    resetActAddress: addressIdSearchService.inputs.resetAddress,
   });
 
   const actCreated = inputs.actCreated;
@@ -88,6 +91,7 @@ export const ActsJournalContainer = () => {
         setViewModalOpen={setViewModalOpen}
         handleDeleteDoc={handleDeleteDoc}
         handleOpenDoc={handleOpenDoc}
+        resetActAddress={resetActAddress}
       />
     </>
   );
