@@ -32,7 +32,7 @@ export const Comment = styled(Input.TextArea)`
   border: 1px solid #dcdee4;
   border-radius: 4px;
   margin-top: 12px;
-  margin-left: 108px;
+  margin-left: 102px;
 
   width: 335px;
   height: 34px;
@@ -57,6 +57,6 @@ export const Blue = styled.div`
 export const ButtonBlock = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-left: 108px;
+  margin-left: 102px;
   margin-top: 12px;
 `;

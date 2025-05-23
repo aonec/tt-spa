@@ -20,12 +20,12 @@ export const DocumentViewModal: FC<Props> = ({
       form={
         <Wrapper>
           <embed src={docUrl || undefined} width="100%" height="100%" />
-
-          {/* <iframe
+          {/* 
+          <iframe
             src={`https://mozilla.github.io/pdf.js/web/viewer.html?file=${docUrl}`}
             width="100%"
             height="600px"
-          /> */}
+          ></iframe> */}
         </Wrapper>
       }
     />
