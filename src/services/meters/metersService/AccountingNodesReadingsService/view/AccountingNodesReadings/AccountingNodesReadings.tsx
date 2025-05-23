@@ -50,6 +50,7 @@ export const AccountingNodesReadings: FC<AccountingNodesReadingsProps> = ({
           SearchFieldType.City,
           SearchFieldType.Street,
           SearchFieldType.House,
+          SearchFieldType.Corpus,
         ]}
         handleSubmit={({ city, corpus, street, house }) => {
           const isAddressFull = city && street && house;

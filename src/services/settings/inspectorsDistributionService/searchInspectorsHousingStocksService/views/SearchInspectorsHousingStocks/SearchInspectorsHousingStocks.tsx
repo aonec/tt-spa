@@ -109,6 +109,7 @@ export const SearchInspectorsHousingStocks: FC<
               SearchFieldType.City,
               SearchFieldType.Street,
               SearchFieldType.House,
+              SearchFieldType.Corpus,
             ]}
             customTemplate={[
               { fieldType: SearchFieldType.City, templateValue: '0.5fr' },

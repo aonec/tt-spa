@@ -58,12 +58,14 @@ export const HousesReadingsPage: FC<HousesReadingsPageProps> = ({
           SearchFieldType.City,
           SearchFieldType.Street,
           SearchFieldType.House,
+          SearchFieldType.Corpus,
         ]}
         handleSubmit={(values) => {
           handleSearchHousingStock({
             City: values.city || undefined,
             Street: values.street || undefined,
             BuildingNumber: values.house || undefined,
+            Corpus: values.corpus || undefined,
           });
         }}
         initialValues={addressData}
