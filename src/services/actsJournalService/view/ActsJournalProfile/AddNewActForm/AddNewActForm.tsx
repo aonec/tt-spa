@@ -24,8 +24,13 @@ import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { AddressIdSearchContainer } from 'services/actsJournalService/addressIdSearchService';
 import { EActResourceType } from 'api/types';
 import { DocumentPanel } from '../DocumentPanel';
+import { actsJournalService } from 'services/actsJournalService/actsJournalService.model';
 
 const dataKey = 'add-new-act';
+
+const {
+  inputs: { successUploadFile },
+} = actsJournalService;
 
 export const AddNewActForm: FC<AddNewActFormProps> = ({
   addNewAct,
@@ -45,9 +50,8 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
         actResourceType: null,
         actType: null,
         comment: '',
-        documentId: uploadedFile?.id,
+        documentId: null,
       },
-      enableReinitialize: true,
       onSubmit: (values) => {
         const { actResourceType, actType } = values;
 
@@ -63,11 +67,22 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
   useEffect(
     () =>
       actCreated.watch(() => {
-        setValues({ ...values, actJobDate: '', registryNumber: '' });
+        setValues({
+          ...values,
+          actJobDate: '',
+          registryNumber: '',
+          comment: '',
+        });
         next(-1);
       }).unsubscribe,
     [setValues, actCreated, values, next],
   );
+
+  useEffect(() => {
+    return successUploadFile.watch((data) =>
+      setFieldValue('documentId', data[0].id),
+    ).unsubscribe;
+  }, [successUploadFile]);
 
   const handleEnterOnRegistryNumberInput = useCallback(() => {
     if (values.actResourceType) {

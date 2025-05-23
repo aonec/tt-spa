@@ -61,11 +61,12 @@ const uploadFileFx = createEffect<
   DocumentResponse[],
   EffectFailDataAxiosError
 >(uploadFile);
+const successUploadFile = uploadFileFx.doneData;
 
 const setModalOpen = createEvent<boolean>();
 const $isDocumentModalOpen = createStore(false)
   .on(setModalOpen, (_, data) => data)
-  .reset(uploadFileFx.doneData);
+  .reset(successUploadFile);
 
 const handleOpenDoc = createEvent<number>();
 const fetchDocUrlFx = createEffect<number, string, EffectFailDataAxiosError>(
@@ -91,7 +92,7 @@ const deleteDocumentFx = createEffect<number, void, EffectFailDataAxiosError>(
 );
 
 const $uploadedFile = createStore<DocumentResponse | null>(null)
-  .on(uploadFileFx.doneData, (_, doc) => doc[0])
+  .on(successUploadFile, (_, doc) => doc[0])
   .reset([deleteDocumentFx.doneData, deleteDocumentFx.failData, actCreated]);
 
 const $isCreateLoading = createActFx.pending;
@@ -180,6 +181,7 @@ export const actsJournalService = {
     setViewModalOpen,
     handleDeleteDoc,
     handleOpenDoc,
+    successUploadFile,
   },
   outputs: {
     $isCreateLoading,
