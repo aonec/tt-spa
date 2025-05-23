@@ -6,11 +6,12 @@ import {
 } from './addressIdSearchService.types';
 import { fetchApartmentId } from './addressIdSearchService.api';
 
+const resetAddress = createEvent();
+
 const setAddress = createEvent<FindAddressFilter>();
-const $searchAddressFilter = createStore<FindAddressFilter>({}).on(
-  setAddress,
-  (_, address) => address,
-);
+const $searchAddressFilter = createStore<FindAddressFilter>({})
+  .on(setAddress, (_, address) => address)
+  .reset(resetAddress);
 
 const getApartmentSearchId = createEvent();
 const getApartmentSearchIdFx = createEffect<FindApartmentParams, number | null>(
@@ -18,7 +19,7 @@ const getApartmentSearchIdFx = createEffect<FindApartmentParams, number | null>(
 );
 const $apartmentSearchId = createStore<number | null>(null)
   .on(getApartmentSearchIdFx.doneData, (_, id) => id)
-  .reset($searchAddressFilter);
+  .reset([$searchAddressFilter, resetAddress]);
 
 const $isSuccess = $apartmentSearchId.map(Boolean);
 
@@ -33,6 +34,7 @@ export const addressIdSearchService = {
     getApartmentSearchId,
     getApartmentSearchIdFx,
     setAddress,
+    resetAddress,
   },
   outputs: {
     $apartmentSearchId,
