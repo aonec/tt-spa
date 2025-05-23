@@ -16,6 +16,7 @@ export const AccountingNodesList: FC<AccountingNodesListProps> = ({
     () =>
       electricNodes.map((device, index) => {
         const counter = device.counter;
+
         if (!counter) {
           return null;
         }

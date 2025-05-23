@@ -3,8 +3,8 @@ import {
   BuildingWithTasksResponse,
   HousingStockWithTasksResponse,
 } from 'api/types';
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { MapZoomControl } from '../../../../../../ui-kit/shared/MapZoomControl';
+import { FC, useEffect, useRef, useState } from 'react';
+import { MapZoomControl } from 'ui-kit/shared/MapZoomControl';
 import { Wrapper } from './TasksMapsNative.styled';
 import { TasksMapsNativeProps } from './TasksMapsNative.types';
 import {
@@ -13,12 +13,14 @@ import {
   getTaskPlacemarkerLink,
 } from './TasksMapsNative.utils';
 import { EXTENDED_PLACEMARK_ZOOM_LIMIT } from './TasksMapsNative.constants';
+import { tasksMapService } from 'services/tasks/tasksMapService/tasksMapService.model';
 
 export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   buildingsWithTasks,
   handleClickMarker,
   selectedHousingStockId,
   organizationCoordinates,
+  clearSelectedHousingStock,
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const ymaps = useYMaps(['Map', 'Placemark', 'Clusterer']);
@@ -27,6 +29,14 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
   const [isExtendedPlacemark, setIsExtendedPlacemarks] =
     useState<boolean>(false);
   const [isCentered, setIsCentered] = useState(false);
+
+  useEffect(() => {
+    if (!map) return;
+
+    return tasksMapService.inputs.handleSetCoordinates.watch((coords) => {
+      map.setCenter(coords, 18, { duration: 200 });
+    }).unsubscribe;
+  }, [map]);
 
   useEffect(() => {
     if (!ymaps || !mapRef.current) {
@@ -157,9 +167,39 @@ export const TasksMapsNative: FC<TasksMapsNativeProps> = ({
     setIsCentered(true);
   }, [buildingsWithTasks, map, isCentered]);
 
+  const [clickStart, setClickStart] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    setClickStart({ x: event.clientX, y: event.clientY });
+  };
+
+  const handleMouseUp = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!clickStart) return;
+
+    const { x, y } = clickStart;
+    const threshold = 5; // Порог для минимального движения
+
+    if (
+      Math.abs(event.clientX - x) < threshold &&
+      Math.abs(event.clientY - y) < threshold
+    ) {
+      clearSelectedHousingStock();
+    }
+
+    setClickStart(null);
+  };
+
   return (
     <Wrapper>
-      <div ref={mapRef} style={{ width: '100%', height: '84vh' }} />
+      <div
+        ref={mapRef}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        style={{ width: '100%', height: '84vh' }}
+      />
       {map && <MapZoomControl map={map} />}
     </Wrapper>
   );

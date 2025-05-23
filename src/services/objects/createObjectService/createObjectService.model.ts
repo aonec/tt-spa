@@ -2,12 +2,11 @@ import { createEffect, createEvent, createStore } from 'effector';
 import { message } from 'antd';
 import { sample } from 'effector';
 import { createGate } from 'effector-react';
-import { HouseManagementResponse } from 'api/types';
 import { EffectFailDataAxiosError } from 'types';
 import { createHeatingStationService } from '../heatingStations/createHeatingStationService';
 import { displayHeatingStationsService } from '../heatingStations/displayHeatingStationsService';
 import { editHeatingStationService } from '../heatingStations/editHeatingStationService';
-import { createObject, getHouseManagements } from './createObjectService.api';
+import { createObject } from './createObjectService.api';
 import {
   CreateBuildingRequest,
   CreateBuildingResponse,
@@ -37,16 +36,10 @@ const handleHeatindStationModalOpen =
 
 const resetter = createEvent();
 
-const HouseManagementsFetchGate = createGate();
 const PageCloseGate = createGate();
 
 const HeatingStationsFetchGate =
   displayHeatingStationsService.gates.HeatingStationsFetchGate;
-
-const fetchHouseManagementsFx = createEffect<
-  void,
-  HouseManagementResponse[] | null
->(getHouseManagements);
 
 const createObjectFx = createEffect<
   CreateBuildingRequest,
@@ -75,20 +68,11 @@ sample({
   target: goNextStage,
 });
 
-const $houseManagements = createStore<HouseManagementResponse[] | null>(
-  null,
-).on(fetchHouseManagementsFx.doneData, (_, data) => data);
-
 const $isPreviewModalOpen = createStore<boolean>(false)
   .on(openPreviewModal, () => true)
   .reset(resetter, closePreviewModal);
 
 const $heatingStations = displayHeatingStationsService.outputs.$heatingStations;
-
-sample({
-  clock: HouseManagementsFetchGate.open,
-  target: fetchHouseManagementsFx,
-});
 
 sample({
   clock: PageCloseGate.close,
@@ -171,7 +155,6 @@ createObjectFx.failData.watch((error) => {
 
 createObjectFx.doneData.watch(() => message.success('Дом успешно создан!'));
 
-const $isHouseManagementsLoading = fetchHouseManagementsFx.pending;
 const $isCreateLoading = createObjectFx.pending;
 
 export const createObjectService = {
@@ -189,11 +172,9 @@ export const createObjectService = {
   outputs: {
     $createObjectData,
     $stageNumber,
-    $houseManagements,
     $isPreviewModalOpen,
     $heatingStations,
-    $isHouseManagementsLoading,
     $isCreateLoading,
   },
-  gates: { HouseManagementsFetchGate, PageCloseGate, HeatingStationsFetchGate },
+  gates: { PageCloseGate, HeatingStationsFetchGate },
 };

@@ -231,9 +231,7 @@ export const editObjectService = {
   outputs: {
     $housingStock,
     $nonResidentialBuilding,
-    $houseManagements: createObjectService.outputs.$houseManagements,
-    $isHouseManagementsLoading:
-      createObjectService.outputs.$isHouseManagementsLoading,
+
     $heatingStations: displayHeatingStationsService.outputs.$heatingStations,
     $isHeatingStationsLoading:
       displayHeatingStationsService.outputs.$isHeatingStationsLoading,
@@ -243,7 +241,5 @@ export const editObjectService = {
   },
   gates: {
     ObjectIdGate,
-    HouseManagementsFetchGate:
-      createObjectService.gates.HouseManagementsFetchGate,
   },
 };

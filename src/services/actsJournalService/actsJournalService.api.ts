@@ -3,7 +3,7 @@ import {
   AddApartmentActRequest,
   ApartmentActResponsePagedList,
 } from 'api/types';
-import { stringify } from 'query-string';
+import queryString from 'query-string';
 import { ActsJournalRequestParams } from './actsJournalService.types';
 
 export const fetchActs = (
@@ -12,7 +12,7 @@ export const fetchActs = (
   axios.get('ApartmentActs', {
     params,
     paramsSerializer: (params) =>
-      stringify(params, {
+      queryString.stringify(params, {
         arrayFormat: 'none',
         skipEmptyString: true,
         skipNull: true,
