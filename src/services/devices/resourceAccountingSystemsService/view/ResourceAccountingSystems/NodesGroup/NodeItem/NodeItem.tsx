@@ -6,10 +6,10 @@ import { ResourceIconLookup } from 'ui-kit/shared/ResourceIconLookup';
 import { CalculatorInfo } from '../CalculatorInfo';
 import {
   BaseNodeInfo,
+  Container,
   DeviceIconWrapper,
   IncorrectConfigurationIconSC,
   NoCalculatorTextWrapper,
-  NodeEntryNumber,
   NodeInfo,
   NodeInfoWrapper,
   NodeName,
@@ -22,12 +22,20 @@ import {
 } from './NodeItem.styled';
 import { NodeItemProps } from './NodeItem.types';
 import { NodeStatus } from './NodeStatus';
+import { Checkbox } from 'antd';
 
 export const NodeItem: FC<NodeItemProps> = ({
   node,
   segmentName,
   openDevicesListModal,
+  index,
 }) => {
+  const sortByCalculator = useMemo(() => {
+    if (segmentName === 'resource' && index === 0) {
+      return <Checkbox> Сортировать по вычислителю </Checkbox>;
+    }
+  }, [segmentName, index]);
+
   const content = useMemo(() => {
     const isIncorrectConfig =
       node?.pipeNodeValidationStatus?.validationResult?.errors?.length !== 0 ||
@@ -38,24 +46,17 @@ export const NodeItem: FC<NodeItemProps> = ({
         <Link to={`/nodes/${node.id}`}>
           <NodeZoneWrapper>
             <NodeName>
-              Узел {node.title}
+              {node.serviceZone?.name || 'Зона не указана'}
               {isIncorrectConfig && <IncorrectConfigurationIconSC />}{' '}
-              <NodeEntryNumber>
-                {node.entryNumber && `Ввод ${node.entryNumber}`}
-              </NodeEntryNumber>
             </NodeName>
             <NodeServiceZone isZoneExist={Boolean(node.serviceZone?.name)}>
               <ZoneWrapper>
-                {node.serviceZone?.name || 'Зона не указана'}
+                Узел {node.title}
+                {node.entryNumber && `, Ввод ${node.entryNumber}`}
               </ZoneWrapper>
             </NodeServiceZone>
           </NodeZoneWrapper>
         </Link>
-        <Tooltip title="Показать приборы">
-          <DeviceIconWrapper>
-            <DeviceIcon onClick={() => openDevicesListModal(node)} />
-          </DeviceIconWrapper>
-        </Tooltip>
       </BaseNodeInfo>
     );
 
@@ -85,11 +86,20 @@ export const NodeItem: FC<NodeItemProps> = ({
   }, [segmentName, node, openDevicesListModal]);
 
   return (
-    <Wrapper segmentName={segmentName}>
-      {content}
-      <NodeStatusWrapper>
-        <NodeStatus status={node.status} />
-      </NodeStatusWrapper>
-    </Wrapper>
+    <Container>
+      {sortByCalculator}
+      <Wrapper segmentName={segmentName}>
+        {content}
+        <NodeStatusWrapper>
+          <NodeStatus status={node.status} />
+        </NodeStatusWrapper>
+
+        <Tooltip title="Показать приборы">
+          <DeviceIconWrapper>
+            <DeviceIcon onClick={() => openDevicesListModal(node)} />
+          </DeviceIconWrapper>
+        </Tooltip>
+      </Wrapper>
+    </Container>
   );
 };

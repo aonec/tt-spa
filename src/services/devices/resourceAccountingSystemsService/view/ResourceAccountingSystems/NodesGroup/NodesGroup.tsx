@@ -71,16 +71,17 @@ export const NodesGroup: FC<NodesGroupProps> = ({
         </GroupInfoWrapper>
       </Header>
       {isOpen && (
-        <div>
-          {nodes.map((node) => (
+        <>
+          {nodes.map((node, index) => (
             <NodeItem
               key={node.id}
               node={node}
               segmentName={segmentName}
               openDevicesListModal={openDevicesListModal}
+              index={index}
             />
           ))}
-        </div>
+        </>
       )}
     </Wrapper>
   );
