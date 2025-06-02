@@ -1,12 +1,15 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
 import { EHouseCategory, BuildingAddress } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import {
   CalculatorNodesListWrapper,
+  ChevronSC,
+  ChevronWrapper,
   HousingStockAddress,
   HousingStockAddressHeaderWrapper,
+  Wrapper,
 } from './HousingStockCalculators.styled';
 import { Switcher } from 'ui-kit/shared/Switcher';
 import {
@@ -39,6 +42,8 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
     },
     [setAddressBySwither, mainFilterSearchType, setMainFilterSearchType],
   );
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const pipeNodeDevicesGroupedByCalculator = housingStockDevices.devices;
 
@@ -80,7 +85,9 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
         });
 
     return (
-      <HousingStockAddressHeaderWrapper>
+      <HousingStockAddressHeaderWrapper
+        onClick={() => setIsOpen((isOpen) => !isOpen)}
+      >
         <Tooltip title={fullAddress}>
           <HousingStockAddress to={`/buildings/${buildingProfilePath}/${id}`}>
             {fullAddress}
@@ -92,6 +99,10 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
           textConstructor={(address) => getBuildingAddressString(address)}
           handleClick={handleClickAddress}
         />
+
+        <ChevronWrapper>
+          <ChevronSC isOpen={isOpen} />
+        </ChevronWrapper>
       </HousingStockAddressHeaderWrapper>
     );
   }, [
@@ -103,11 +114,14 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
   ]);
 
   return (
-    <>
+    <Wrapper>
       {addressComponent}
-      <CalculatorNodesListWrapper>
-        {calculatorNodesList}
-      </CalculatorNodesListWrapper>
-    </>
+
+      {isOpen && (
+        <CalculatorNodesListWrapper>
+          {calculatorNodesList}
+        </CalculatorNodesListWrapper>
+      )}
+    </Wrapper>
   );
 };
