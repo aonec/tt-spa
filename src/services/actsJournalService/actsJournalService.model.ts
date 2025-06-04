@@ -18,6 +18,7 @@ import { ActsJournalRequestParams } from './actsJournalService.types';
 import dayjs from 'api/dayjs';
 import { addressIdSearchService } from './addressIdSearchService';
 import { EffectFailDataAxiosError } from 'types';
+import { checkDocExtension } from './actsJournalService.utils';
 
 const ActsJournalGate = createGate();
 
@@ -79,7 +80,7 @@ const $docUrl = createStore<string | null>(null)
 const setViewModalOpen = createEvent<boolean>();
 const $isViewModalOpen = createStore(false)
   .on(setViewModalOpen, (_, data) => data)
-  .on(fetchDocUrlFx.doneData, (_, url) => Boolean(url));
+  .on(fetchDocUrlFx.doneData, (_, url) => checkDocExtension(url));
 
 const setFile = createEvent<File | null>();
 const $file = createStore<File | null>(null)

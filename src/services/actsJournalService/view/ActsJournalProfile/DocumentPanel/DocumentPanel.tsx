@@ -7,20 +7,25 @@ import {
 } from './DocumentPanel.styled';
 import { Props } from './DocumentPanel.types';
 import { ClipIcon } from 'ui-kit/icons';
+import { checkDocExtension } from 'services/actsJournalService/actsJournalService.utils';
 
 export const DocumentPanel: FC<Props> = ({
   name,
   setViewModalOpen,
   handleDeleteDoc,
-  docId,
+  doc,
 }) => {
   return (
     <Wrapper>
-      <LeftBlock onClick={() => setViewModalOpen(true)}>
+      <LeftBlock
+        onClick={() =>
+          setViewModalOpen(doc.url ? checkDocExtension(doc.url) : false)
+        }
+      >
         <ClipIcon />
         <NameWrapper>{name || 'Документ'}</NameWrapper>
       </LeftBlock>
-      <CloseDarkIconSC onClick={() => handleDeleteDoc(docId)} />
+      <CloseDarkIconSC onClick={() => handleDeleteDoc(doc.id)} />
     </Wrapper>
   );
 };

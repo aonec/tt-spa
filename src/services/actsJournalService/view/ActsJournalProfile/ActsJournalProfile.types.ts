@@ -2,9 +2,9 @@ import { Event } from 'effector';
 import {
   AddApartmentActRequest,
   ApartmentActResponsePagedList,
+  DocumentResponse,
 } from 'api/types';
 import { ActsJournalRequestParams } from 'services/actsJournalService/actsJournalService.types';
-import { Document } from 'ui-kit/DocumentsService';
 
 export type ActsJournalProfileProps = {
   handleCreateAct: (
@@ -19,7 +19,7 @@ export type ActsJournalProfileProps = {
   actCreated: Event<void>;
   handleResetAddressSearchForm: () => void;
   setModalOpen: (payload: boolean) => void;
-  uploadedFile: Document | null;
+  uploadedFile: DocumentResponse | null;
   setViewModalOpen: (payload: boolean) => void;
   handleDeleteDoc: (payload: number) => void;
   handleOpenDoc: (payload: number) => void;

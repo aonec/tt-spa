@@ -194,7 +194,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
             name={uploadedFile.name}
             setViewModalOpen={setViewModalOpen}
             handleDeleteDoc={handleDeleteDoc}
-            docId={uploadedFile.id}
+            doc={uploadedFile}
           />
         )}
 
