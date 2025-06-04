@@ -4,11 +4,10 @@ import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
 import { EHouseCategory, BuildingAddress } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import {
-  CalculatorNodesListWrapper,
-  ChevronSC,
-  ChevronWrapper,
+  AddressWrapper,
   HousingStockAddress,
   HousingStockAddressHeaderWrapper,
+  NodesListWrapper,
   Wrapper,
 } from './HousingStockCalculators.styled';
 import { Switcher } from 'ui-kit/shared/Switcher';
@@ -52,6 +51,8 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
       <CalculatorNodes
         devices={pipeNodeDevices}
         key={pipeNodeDevices[0].calculatorId}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
       />
     ),
   );
@@ -99,10 +100,6 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
           textConstructor={(address) => getBuildingAddressString(address)}
           handleClick={handleClickAddress}
         />
-
-        <ChevronWrapper>
-          <ChevronSC isOpen={isOpen} />
-        </ChevronWrapper>
       </HousingStockAddressHeaderWrapper>
     );
   }, [
@@ -115,13 +112,8 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
 
   return (
     <Wrapper>
-      {addressComponent}
-
-      {isOpen && (
-        <CalculatorNodesListWrapper>
-          {calculatorNodesList}
-        </CalculatorNodesListWrapper>
-      )}
+      <AddressWrapper>{addressComponent}</AddressWrapper>
+      <NodesListWrapper>{calculatorNodesList}</NodesListWrapper>
     </Wrapper>
   );
 };

@@ -5,8 +5,12 @@ import {
   CalculatorModelWrapper,
   CalculatorTitle,
   CalculatorWithStatusWrapper,
+  ChevronSC,
+  ChevronWrapper,
   DeviceLink,
+  DevicesWrapper,
   NoCalculatorText,
+  NodeScore,
   SerialNumber,
 } from './CalculatorNodes.styled';
 import {
@@ -19,8 +23,13 @@ import { NodeDevices } from './NodeDevices';
 import { DateRange } from 'ui-kit/shared/DateRange';
 import { EConnectionStatusType } from 'api/types';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
+import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 
-export const CalculatorNodes: FC<CalculatorNodesProps> = ({ devices }) => {
+export const CalculatorNodes: FC<CalculatorNodesProps> = ({
+  devices,
+  isOpen,
+  setIsOpen,
+}) => {
   const calculator = devices[0].calculator;
   const devicesList = devices?.map((node) => (
     <NodeDevices node={node} key={node.id} />
@@ -29,8 +38,15 @@ export const CalculatorNodes: FC<CalculatorNodesProps> = ({ devices }) => {
   if (!calculator) {
     return (
       <>
-        <NoCalculatorText>Нет вычислителя</NoCalculatorText>
-        {devicesList}
+        <NoCalculatorText>
+          <div>Нет вычислителя</div>
+          <NodeScore>{devices.length} узла</NodeScore>
+          <ContextMenuButton size="small" />
+          <ChevronWrapper onClick={() => setIsOpen(!isOpen)}>
+            <ChevronSC isOpen={isOpen} />
+          </ChevronWrapper>
+        </NoCalculatorText>
+        {isOpen && <DevicesWrapper> {devicesList}</DevicesWrapper>}
       </>
     );
   }
@@ -78,9 +94,16 @@ export const CalculatorNodes: FC<CalculatorNodesProps> = ({ devices }) => {
           firstDate={calculator.lastCheckingDate}
           lastDate={calculator.futureCheckingDate}
         />
-      </CalculatorTitle>
 
-      {devicesList}
+        <NodeScore>{devices.length} узла</NodeScore>
+
+        <ContextMenuButton size="small" />
+
+        <ChevronWrapper onClick={() => setIsOpen(!isOpen)}>
+          <ChevronSC isOpen={isOpen} />
+        </ChevronWrapper>
+      </CalculatorTitle>
+      {isOpen && <DevicesWrapper> {devicesList}</DevicesWrapper>}
     </>
   );
 };
