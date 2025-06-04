@@ -38,6 +38,18 @@ export const ObjectsListContainer: FC<HeaderInject> = ({ Header }) => {
           isSearchError={isBuildingFetched && !housingStocks?.length}
         />
       </Header>
+
+      {isNotEmpty && !isLoading && (
+        <Pagination
+          showSizeChanger={false}
+          defaultCurrent={1}
+          current={pagedHousingStocks?.pageNumber}
+          onChange={handlePageNumberChanged}
+          total={pagedHousingStocks?.totalItems}
+          pageSize={pagedHousingStocks?.pageSize}
+        />
+      )}
+
       <SizeWrapper>
         <ObjectsList
           isLoading={isLoading}
