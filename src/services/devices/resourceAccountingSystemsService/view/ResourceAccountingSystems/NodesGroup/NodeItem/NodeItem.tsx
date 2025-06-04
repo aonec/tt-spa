@@ -22,20 +22,12 @@ import {
 } from './NodeItem.styled';
 import { NodeItemProps } from './NodeItem.types';
 import { NodeStatus } from './NodeStatus';
-import { Checkbox } from 'antd';
 
 export const NodeItem: FC<NodeItemProps> = ({
   node,
   segmentName,
   openDevicesListModal,
-  index,
 }) => {
-  const sortByCalculator = useMemo(() => {
-    if (segmentName === 'resource' && index === 0) {
-      return <Checkbox> Сортировать по вычислителю </Checkbox>;
-    }
-  }, [segmentName, index]);
-
   const content = useMemo(() => {
     const isIncorrectConfig =
       node?.pipeNodeValidationStatus?.validationResult?.errors?.length !== 0 ||
@@ -87,7 +79,6 @@ export const NodeItem: FC<NodeItemProps> = ({
 
   return (
     <Container>
-      {sortByCalculator}
       <Wrapper segmentName={segmentName}>
         {content}
         <NodeStatusWrapper>

@@ -78,13 +78,12 @@ export const NodesGroup: FC<NodesGroupProps> = ({
       </Header>
       {isOpen && (
         <>
-          {sortedNodes.map((node, index) => (
+          {sortedNodes.map((node) => (
             <NodeItem
               key={node.id}
               node={node}
               segmentName={segmentName}
               openDevicesListModal={openDevicesListModal}
-              index={index}
             />
           ))}
         </>
