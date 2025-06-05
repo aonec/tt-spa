@@ -4,7 +4,7 @@ import { Props } from './AnalyticsDetail.types';
 import { useUnit } from 'effector-react';
 import { commonAnalyticsService } from 'services/supervisor/commonAnalytics/commonAnalyticsService.models';
 import { getTasksFilters } from 'services/supervisor/currentAnalytics/CurrentAnalyticsPage/DashboardPanel/ResourceStatistic/AnalyticsDetail/AnalyticsDetail.utils';
-import { stringify } from 'query-string';
+import queryString from 'query-string';
 import { useNavigate } from 'react-router-dom';
 
 export const AnalyticsDetail: FC<Props> = ({
@@ -31,7 +31,7 @@ export const AnalyticsDetail: FC<Props> = ({
       return;
     }
 
-    const queryString = stringify({
+    const queryStr = queryString.stringify({
       city: filters.City,
       street: data.label,
       ...getTasksFilters({
@@ -40,7 +40,7 @@ export const AnalyticsDetail: FC<Props> = ({
         malfunctionType,
       }),
     });
-    navigate(`/tasks/list/Observing?${queryString}`);
+    navigate(`/tasks/list/Observing?${queryStr}`);
   }, [
     dashboardType,
     data.id,

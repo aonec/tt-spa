@@ -12,7 +12,8 @@ export const DisplayFileWrapper = styled.div`
   border: 1px solid #f3f5f6;
   background: #fff;
 
-  box-shadow: 0px 8px 16px 0px rgba(78, 93, 146, 0.08),
+  box-shadow:
+    0px 8px 16px 0px rgba(78, 93, 146, 0.08),
     0px 4px 4px 0px rgba(78, 93, 146, 0.16);
 `;
 
@@ -39,6 +40,7 @@ export const BottomBlock = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 6px;
 `;
 
 export const FileName = styled.p`
@@ -64,7 +66,7 @@ export const FileTypeAndSize = styled.p`
 export const TrashIconWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 10px;
+  margin-left: 4px;
 
   cursor: pointer;
 `;

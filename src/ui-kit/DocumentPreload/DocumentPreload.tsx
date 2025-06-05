@@ -48,7 +48,7 @@ export const DocumentPreload: FC<DocumentPreloadProps> = ({
           </Center>
           <BottomBlock>
             <FileName>{file?.name}</FileName>
-            <FileTypeAndSize>.doc ({fileSizeKb}kb)</FileTypeAndSize>
+            <FileTypeAndSize> ({fileSizeKb}kb)</FileTypeAndSize>
             <TrashIconWrapper onClick={() => setFile(null)}>
               <TrashIcon />
             </TrashIconWrapper>

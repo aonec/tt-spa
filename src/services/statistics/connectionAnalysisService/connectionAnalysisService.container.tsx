@@ -14,7 +14,7 @@ export const ConnectionAnalysisContainer = () => {
     isLoading,
     handleDownload,
     isDownloading,
-    pageNumber,
+    pageNumbers,
     setPageNumber,
     handlePing,
   } = useUnit({
@@ -23,7 +23,7 @@ export const ConnectionAnalysisContainer = () => {
     handleDownload: inputs.handleDownload,
     isDownloading: outputs.$isDownloading,
     setPageNumber: inputs.setPageNumber,
-    pageNumber: outputs.$pageNumber,
+    pageNumbers: outputs.$pageNumbers,
     handlePing: pingCalculatorService.inputs.openModal,
   });
 
@@ -37,7 +37,7 @@ export const ConnectionAnalysisContainer = () => {
         handlePing={handlePing}
         handleDownload={handleDownload}
         isDownloading={isDownloading}
-        pageNumber={pageNumber}
+        pageNumbers={pageNumbers}
         setPageNumber={setPageNumber}
       />
     </>

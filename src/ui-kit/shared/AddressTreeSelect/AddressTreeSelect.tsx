@@ -14,7 +14,7 @@ import { TreeSelectValue } from 'services/resources/createResourceDisconnectionS
 import { getAllHousingStocks } from 'services/resources/createResourceDisconnectionService/view/CreateResourceDisconnectionForm/CreateresourceDisconnectionForm.utils';
 import { getCountText } from 'utils/getCountText';
 import { TreeSelectSC } from './AddressTreeSelect.styled';
-import { AddressTreeSelectProps } from './AddressTreeSelect.types';
+import { AddressTreeSelectProps, TreeKey } from './AddressTreeSelect.types';
 import _ from 'lodash';
 import { getParents } from './AddressTreeSelect.utils';
 
@@ -28,7 +28,7 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
   placement,
 }) => {
   const isAllPrevious = useRef(false);
-  const [expandedNodes, setExpandedNodes] = useState<React.Key[]>([]);
+  const [expandedNodes, setExpandedNodes] = useState<TreeKey[]>([]);
   const [foundTitle, setFoundTitle] = useState<string | null>(null);
 
   const allHousingStocks = useMemo(
@@ -92,7 +92,7 @@ export const AddressTreeSelect: FC<AddressTreeSelectProps> = ({
   }, [foundTitle]);
 
   const handleExpandTree = useCallback(
-    (keys: React.Key[]) => {
+    (keys: TreeKey[]) => {
       const expandedKey = _.first(_.difference(keys, expandedNodes));
       const node = parents.find((elem) => elem.key === expandedKey);
       setFoundTitle(node?.title || null);

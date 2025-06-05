@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 1.3fr 1fr 3fr 1.5fr 3fr 3fr 1fr;
+  grid-template-columns: 1.5fr 1fr 3fr 1.5fr 3fr 3fr 1fr;
   grid-column-gap: 16px;
   align-items: center;
 
@@ -26,15 +26,14 @@ export const DocumentNameText = styled.div`
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  max-width: 200px;
+  max-width: 130px;
   font-weight: 500;
   font-size: 14px;
   margin-left: 8px;
   color: #272f5a;
 `;
 
-export const ActNumber = styled.div`
-`;
+export const ActNumber = styled.div``;
 
 export const DocumentType = styled.div`
   display: flex;

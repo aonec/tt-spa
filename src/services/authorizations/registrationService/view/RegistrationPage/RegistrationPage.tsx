@@ -16,8 +16,8 @@ import {
   TopHeader,
 } from './RegistrationPage.styled';
 import { RegistrationPageProps } from './RegistrationPage.types';
-import  Emblem from '../../../loginService/view/LoginPage/assets/emblem.svg?react';
-import  LoginPageBackground from '../../../loginService/view/LoginPage/assets/loginPageBackground.svg?react';
+import Emblem from '../../../loginService/view/LoginPage/assets/emblem.svg?react';
+import LoginPageBackground from '../../../loginService/view/LoginPage/assets/loginPageBackground.svg?react';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 
 export const RegistrationPage: FC<RegistrationPageProps> = ({
@@ -45,7 +45,7 @@ export const RegistrationPage: FC<RegistrationPageProps> = ({
       }
       handleConfirmRegistration({
         password: data.password,
-        token: typeof token === 'string' ? token : token[0],
+        token: typeof token === 'string' ? token : token[0] ?? '',
       });
     },
   });

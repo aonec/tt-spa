@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { Input } from 'ui-kit/Input';
+import { AutoComplete } from 'ui-kit/AutoComplete';
 import { CloseIcon } from 'ui-kit/icons';
 
 export const Wrapper = styled.div`
@@ -32,7 +32,7 @@ export const FilterHeader = styled.div`
   z-index: 1;
 `;
 
-export const SearchInput = styled(Input)`
+export const SearchInput = styled(AutoComplete)`
   width: 100%;
   margin: 0 !important;
 `;

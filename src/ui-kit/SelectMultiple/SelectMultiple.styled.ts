@@ -5,7 +5,7 @@ export const SelectMultiple = styled(AntSelect).attrs({ mode: 'multiple' })`
   min-height: 48px;
 
   .ant-select-selection-placeholder {
-    padding-left: 8px;
+    padding-top: 8px;
   }
 
   .ant-select-selection-item {

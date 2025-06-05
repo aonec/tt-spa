@@ -1,4 +1,8 @@
-import { BuildingAddressResponse, BuildingAddress } from 'api/types';
+import {
+  BuildingAddressResponse,
+  BuildingAddress,
+  BuildingAddressItemResponse,
+} from 'api/types';
 
 export const getBuildingAddress = (
   housingStock: { address: BuildingAddressResponse | null } | null,
@@ -22,4 +26,16 @@ export const getBuildingAddressString = (address?: BuildingAddress | null) => {
   const corpusText = houseCorpus ? `, корпус ${houseCorpus}` : '';
 
   return `ул. ${street}, ${houseNumber}${corpusText}`;
+};
+
+export const getBuildingItemAddressString = (
+  address?: BuildingAddressItemResponse | null,
+) => {
+  if (!address) {
+    return '';
+  }
+  const { street, number, corpus } = address;
+  const corpusText = corpus ? `, корпус ${number}` : '';
+
+  return `ул. ${street}, ${number}${corpusText}`;
 };

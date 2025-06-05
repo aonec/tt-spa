@@ -45,3 +45,9 @@ export const WrapperLinkButton = styled.div`
 export const ButtonSC = styled(Button)`
   padding: 0 40px;
 `;
+
+export const HouseManagementWrapper = styled.div`
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr 1fr;
+`;

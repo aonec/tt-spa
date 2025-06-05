@@ -6,8 +6,11 @@ import { ActTypesNamesLookup } from 'dictionaries';
 import { getApartmentFromFullAddress } from 'utils/getApartmentFromFullAddress';
 import { ResourceInfo } from 'ui-kit/shared/ResourceInfo';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
+import { ClipIcon } from 'ui-kit/icons';
+import { Button } from 'ui-kit/Button';
+import { message } from 'antd';
 
-export const ActsListItem: FC<ActsListItemProps> = ({ act }) => {
+export const ActsListItem: FC<ActsListItemProps> = ({ act, handleOpenDoc }) => {
   const actAddress = getApartmentFromFullAddress(act.apartment, false);
 
   return (
@@ -25,6 +28,17 @@ export const ActsListItem: FC<ActsListItemProps> = ({ act }) => {
         <Comment>{act.comment || '-'}</Comment>
       </Tooltip>
       <div>{dayjs(act.actJobDate).format('DD.MM.YYYY')}</div>
+      {act.document && (
+        <Button type="ghost" size="small">
+          <ClipIcon
+            onClick={() =>
+              act.document?.id
+                ? handleOpenDoc(act.document.id)
+                : message.error('Документ не найден')
+            }
+          />
+        </Button>
+      )}
     </Wrapper>
   );
 };

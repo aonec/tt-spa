@@ -10,7 +10,6 @@ export const ButtonSC = styled(Button)`
 
 export const ButtonsWrapper = styled.div`
   display: flex;
-  margin-top: 50px;
 `;
 
 export const Wrapper = styled.div`
@@ -33,7 +32,7 @@ export const Comment = styled(Input.TextArea)`
   border: 1px solid #dcdee4;
   border-radius: 4px;
   margin-top: 12px;
-  margin-left: 108px;
+  margin-left: 102px;
 
   width: 335px;
   height: 34px;
@@ -44,4 +43,20 @@ export const BottomBlock = styled.div`
   justify-content: space-between;
   padding-bottom: 8px;
   border-bottom: 2px solid #f3f3f3;
+`;
+
+export const ButtonBlue = styled(Button)`
+  width: 100px;
+  border-color: rgba(24, 158, 233, 1);
+`;
+
+export const Blue = styled.div`
+  color: rgba(24, 158, 233, 1);
+`;
+
+export const ButtonBlock = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-left: 102px;
+  margin-top: 12px;
 `;
