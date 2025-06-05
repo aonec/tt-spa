@@ -2,22 +2,31 @@ import styled from 'styled-components';
 import { IncorrectConfigurationIcon } from 'ui-kit/icons';
 import { ResourceAccountingSystemsSegment } from '../../ResourceAccountingSystems.types';
 
-export const Wrapper = styled.div<{
-  segmentName: ResourceAccountingSystemsSegment;
-}>`
-  height: 60px;
-  padding: 0 24px;
-  display: grid;
-  grid-gap: 15px;
-  grid-template-columns: ${({ segmentName }) =>
-    segmentName === 'resource' ? '1.2fr 1.2fr 1fr' : '1fr 1fr'};
-  align-items: center;
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  gap: 26px;
 
   border-top: 1px solid #e9e9e9;
 
+  padding: 12px 24px;
+
   &:first-child {
     border-top: 1px solid #d9d9d9;
+    height: 100px;
   }
+`;
+
+export const Wrapper = styled.div<{
+  segmentName: ResourceAccountingSystemsSegment;
+}>`
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: ${({ segmentName }) =>
+    segmentName === 'resource' ? '1.2fr 1.2fr 1fr 0.2fr' : '1fr 1fr 0.2fr'};
+  align-items: center;
 `;
 
 export const NodeZoneWrapper = styled.div`
@@ -37,7 +46,7 @@ export const NodeName = styled.span`
   display: flex;
   align-items: center;
 
-  font-weight: 400;
+  font-weight: 500;
   font-size: 16px;
   line-height: 18px;
   color: #272f5a;

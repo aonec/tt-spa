@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
 
 export const CalculatorModel = styled.div`
   margin-left: 8px;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   color: #272f5a;
   white-space: nowrap;
