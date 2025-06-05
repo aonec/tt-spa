@@ -2,6 +2,4 @@ import { GroupedByCalculatorPipeNodes } from 'services/devices/displayDevicesSer
 
 export type CalculatorNodesProps = {
   devices: GroupedByCalculatorPipeNodes;
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };

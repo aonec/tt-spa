@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { CalculatorNodesProps } from './CalculatorNodes.types';
 import {
   CalculatorIconWrapper,
@@ -25,20 +25,18 @@ import { EConnectionStatusType } from 'api/types';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
 
-export const CalculatorNodes: FC<CalculatorNodesProps> = ({
-  devices,
-  isOpen,
-  setIsOpen,
-}) => {
+export const CalculatorNodes: FC<CalculatorNodesProps> = ({ devices }) => {
   const calculator = devices[0].calculator;
   const devicesList = devices?.map((node) => (
     <NodeDevices node={node} key={node.id} />
   ));
 
+  const [isOpen, setIsOpen] = useState(false);
+
   if (!calculator) {
     return (
       <>
-        <NoCalculatorText>
+        <NoCalculatorText onClick={() => setIsOpen((isOpen) => !isOpen)}>
           <div>Нет вычислителя</div>
           <NodeScore>{devices.length} узла</NodeScore>
           <ContextMenuButton size="small" />
@@ -61,9 +59,12 @@ export const CalculatorNodes: FC<CalculatorNodesProps> = ({
 
   return (
     <>
-      <CalculatorTitle>
+      <CalculatorTitle onClick={() => setIsOpen((isOpen) => !isOpen)}>
         <CalculatorWithStatusWrapper>
-          <DeviceLink to={`/calculators/${calculator.id}/profile`}>
+          <DeviceLink
+            to={`/calculators/${calculator.id}/profile`}
+            onClick={(event) => event.stopPropagation()}
+          >
             <CalculatorModelWrapper>
               <CalculatorIconWrapper>
                 <CalculatorIcon />
@@ -99,7 +100,7 @@ export const CalculatorNodes: FC<CalculatorNodesProps> = ({
 
         <ContextMenuButton size="small" />
 
-        <ChevronWrapper onClick={() => setIsOpen(!isOpen)}>
+        <ChevronWrapper>
           <ChevronSC isOpen={isOpen} />
         </ChevronWrapper>
       </CalculatorTitle>

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
 import { EHouseCategory, BuildingAddress } from 'api/types';
@@ -42,8 +42,6 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
     [setAddressBySwither, mainFilterSearchType, setMainFilterSearchType],
   );
 
-  const [isOpen, setIsOpen] = useState(false);
-
   const pipeNodeDevicesGroupedByCalculator = housingStockDevices.devices;
 
   const calculatorNodesList = pipeNodeDevicesGroupedByCalculator.map(
@@ -51,8 +49,6 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
       <CalculatorNodes
         devices={pipeNodeDevices}
         key={pipeNodeDevices[0].calculatorId}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
       />
     ),
   );
@@ -86,9 +82,7 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
         });
 
     return (
-      <HousingStockAddressHeaderWrapper
-        onClick={() => setIsOpen((isOpen) => !isOpen)}
-      >
+      <HousingStockAddressHeaderWrapper>
         <Tooltip title={fullAddress}>
           <HousingStockAddress to={`/buildings/${buildingProfilePath}/${id}`}>
             {fullAddress}
