@@ -4,9 +4,11 @@ import { HousingStockCalculatorsProps } from './HousingStockCalculators.types';
 import { EHouseCategory, BuildingAddress } from 'api/types';
 import { DevicesSearchType } from 'services/devices/devicesPageService/devicesPageService.types';
 import {
-  CalculatorNodesListWrapper,
+  AddressWrapper,
   HousingStockAddress,
   HousingStockAddressHeaderWrapper,
+  NodesListWrapper,
+  Wrapper,
 } from './HousingStockCalculators.styled';
 import { Switcher } from 'ui-kit/shared/Switcher';
 import {
@@ -103,11 +105,9 @@ export const HousingStockCalculators: FC<HousingStockCalculatorsProps> = ({
   ]);
 
   return (
-    <>
-      {addressComponent}
-      <CalculatorNodesListWrapper>
-        {calculatorNodesList}
-      </CalculatorNodesListWrapper>
-    </>
+    <Wrapper>
+      <AddressWrapper>{addressComponent}</AddressWrapper>
+      <NodesListWrapper>{calculatorNodesList}</NodesListWrapper>
+    </Wrapper>
   );
 };
