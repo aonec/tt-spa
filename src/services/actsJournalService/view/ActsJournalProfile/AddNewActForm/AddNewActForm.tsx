@@ -9,7 +9,9 @@ import {
 } from './AddNewActForm.types';
 import {
   ActDate,
-  BottomBlock,
+  Blue,
+  ButtonBlock,
+  ButtonBlue,
   ButtonSC,
   ButtonsWrapper,
   Comment,
@@ -21,13 +23,24 @@ import { ActTypesNamesLookup } from 'dictionaries';
 import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { AddressIdSearchContainer } from 'services/actsJournalService/addressIdSearchService';
 import { EActResourceType } from 'api/types';
+import { DocumentPanel } from '../DocumentPanel';
+import { actsJournalService } from 'services/actsJournalService/actsJournalService.model';
 
 const dataKey = 'add-new-act';
+
+const {
+  inputs: { successUploadFile },
+} = actsJournalService;
 
 export const AddNewActForm: FC<AddNewActFormProps> = ({
   addNewAct,
   isCreateLoading,
   actCreated,
+  setModalOpen,
+  uploadedFile,
+  setViewModalOpen,
+  handleDeleteDoc,
+  resetActAddress,
 }) => {
   const { values, submitForm, setFieldValue, setValues, resetForm } =
     useFormik<AddApartmentActFormik>({
@@ -37,6 +50,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
         actResourceType: null,
         actType: null,
         comment: '',
+        documentId: null,
       },
       onSubmit: (values) => {
         const { actResourceType, actType } = values;
@@ -53,11 +67,22 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
   useEffect(
     () =>
       actCreated.watch(() => {
-        setValues({ ...values, actJobDate: '', registryNumber: '' });
+        setValues({
+          ...values,
+          actJobDate: '',
+          registryNumber: '',
+          comment: '',
+        });
         next(-1);
       }).unsubscribe,
     [setValues, actCreated, values, next],
   );
+
+  useEffect(() => {
+    return successUploadFile.watch((data) =>
+      setFieldValue('documentId', data[0].id),
+    ).unsubscribe;
+  }, [successUploadFile]);
 
   const handleEnterOnRegistryNumberInput = useCallback(() => {
     if (values.actResourceType) {
@@ -80,6 +105,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
     <>
       <Wrapper>
         <ActDate>{dayjs().format('DD.MM.YYYY')}</ActDate>
+
         <Input
           small
           value={values.registryNumber || undefined}
@@ -139,19 +165,38 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
         />
       </Wrapper>
 
-      <BottomBlock>
-        <Comment
-          placeholder="Комментарий"
-          autoSize={{ minRows: 2, maxRows: 6 }}
-          value={values.comment as string}
-          onChange={(value) => {
-            if (values.comment?.length === 0 && value.target.value === '\n') {
-              return;
-            }
-            setFieldValue('comment', value.target.value);
-          }}
-          data-reading-input={dataKey}
-        />
+      <Comment
+        placeholder="Комментарий"
+        autoSize={{ minRows: 2, maxRows: 6 }}
+        value={values.comment as string}
+        onChange={(value) => {
+          if (values.comment?.length === 0 && value.target.value === '\n') {
+            return;
+          }
+          setFieldValue('comment', value.target.value);
+        }}
+        data-reading-input={dataKey}
+      />
+
+      <ButtonBlock>
+        {!uploadedFile && (
+          <ButtonBlue
+            type="ghost"
+            size="small"
+            onClick={() => setModalOpen(true)}
+          >
+            <Blue>+ Добавить скан</Blue>
+          </ButtonBlue>
+        )}
+
+        {uploadedFile && (
+          <DocumentPanel
+            name={uploadedFile.name}
+            setViewModalOpen={setViewModalOpen}
+            handleDeleteDoc={handleDeleteDoc}
+            doc={uploadedFile}
+          />
+        )}
 
         <ButtonsWrapper>
           <Button
@@ -159,6 +204,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
             size="small"
             onClick={() => {
               resetForm();
+              resetActAddress();
             }}
           >
             Сбросить
@@ -171,7 +217,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
             Сохранить
           </ButtonSC>
         </ButtonsWrapper>
-      </BottomBlock>
+      </ButtonBlock>
     </>
   );
 };
