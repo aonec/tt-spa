@@ -4,10 +4,6 @@ import {
   ClosingDate,
   FullAddressWrapper,
   LinkSc,
-  PhoneNumber,
-  ReadingDate,
-  ReadingValue,
-  ReadingWrapper,
   ResourceWrapper,
 } from './IndividualDevicesReport.styled';
 import { IndividualDevicesReportProps } from './IndividualDevicesReport.types';
@@ -27,6 +23,7 @@ import { Empty } from 'antd';
 import { getReportElemAddress } from '../ReportViewTable.utils';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { usePermission } from 'hooks/usePermission';
+import { DeviceCheckingExpirationTable } from './DeviceCheckingExpirationTable';
 
 export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
   individualDevicesReportData,
@@ -57,6 +54,15 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
       <Empty
         image={Empty.PRESENTED_IMAGE_SIMPLE}
         description={'Выберите фильтры для формирования отчета'}
+      />
+    );
+  }
+
+  if (isDeviceCheckingDateExpirationOption) {
+    return (
+      <DeviceCheckingExpirationTable
+        individualDevicesReportData={individualDevicesReportData}
+        isOperators={isOperators}
       />
     );
   }
@@ -119,61 +125,7 @@ export const IndividualDevicesReport: FC<IndividualDevicesReportProps> = ({
           size: '180px',
           render: (elem) => elem.model,
         },
-        {
-          label: 'Дата последней поверки',
-          size: '170px',
-          hidden: !isDeviceCheckingDateExpirationOption,
-          render: (elem) =>
-            dayjs(
-              elem.deviceCheckingDateExpirationOption?.lastCheckingDate,
-            ).format('DD.MM.YYYY'),
-        },
-        {
-          label: 'Дата следующей поверки',
-          size: '170px',
-          hidden: !isDeviceCheckingDateExpirationOption,
-          render: (elem) =>
-            dayjs(
-              elem.deviceCheckingDateExpirationOption?.futureCheckingDate,
-            ).format('DD.MM.YYYY'),
-        },
-        {
-          label: 'Последнее показание',
-          size: '170px',
-          render: (elem) => (
-            <ReadingWrapper>
-              <ReadingValue>
-                <div>
-                  {elem.deviceCheckingDateExpirationOption?.lastReading
-                    ?.value1 || '-'}
-                </div>
-                <div>
-                  {elem.deviceCheckingDateExpirationOption?.lastReading?.value2}
-                </div>
-              </ReadingValue>
-              <ReadingDate>
-                {dayjs(
-                  elem.deviceCheckingDateExpirationOption?.lastReading
-                    ?.actualReadingDate,
-                ).format('DD.MM.YYYY')}
-              </ReadingDate>
-            </ReadingWrapper>
-          ),
-          hidden: !isDeviceCheckingDateExpirationOption,
-        },
-        {
-          label: 'Номер телефона',
-          size: '400px',
-          hidden: !isDeviceCheckingDateExpirationOption,
-          render: (elem) => (
-            <PhoneNumber>
-              {(
-                elem.deviceCheckingDateExpirationOption
-                  ?.homeownerPhoneNumbers || []
-              ).join(', ')}
-            </PhoneNumber>
-          ),
-        },
+
         {
           label: 'Дата поверки',
           size: '150px',

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Switch } from 'antd';
 import { useFormik } from 'formik';
 import { BaseInfoStageProps } from './BaseInfoStage.types';
@@ -6,6 +6,7 @@ import {
   Footer,
   FormHeader,
   FormWrap,
+  Language,
   SwitchWrapper,
   TextWrapper,
   Wrap,
@@ -30,6 +31,7 @@ import { addIndividualDeviceService } from '../../../addIndividualDeviceService.
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from 'ui-kit/Button';
 import { validationSchema } from './BaseInfoStage.constants';
+import { languageDetect } from 'utils/languageDetect';
 
 const {
   gates: { ContractorsGate, IndividualDeviceMountPlacesGate },
@@ -108,6 +110,8 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
       } as unknown as CreateIndividualDeviceRequest);
     },
   });
+
+  const [language, setLanguage] = useState('unknown');
 
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -237,12 +241,14 @@ export const BaseInfoStage: FC<BaseInfoStageProps> = ({
 
         <FormItem label="Модель прибора">
           <AutoComplete
+            prefix={language !== 'unknown' && <Language>{language}</Language>}
             size="large"
             value={values.model}
             placeholder="Введите модель прибора"
             onChange={(value) => {
               setFieldValue('model', value);
               handleFetchModels(String(value));
+              setLanguage(languageDetect(value as string));
             }}
             options={modelNames?.map((elem) => ({ value: elem })) || []}
           />

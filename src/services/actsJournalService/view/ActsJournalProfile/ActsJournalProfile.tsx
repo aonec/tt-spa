@@ -22,6 +22,12 @@ export const ActsJournalProfile: FC<ActsJournalProfileProps> = ({
   setPageNumber,
   actCreated,
   handleResetAddressSearchForm,
+  setModalOpen,
+  uploadedFile,
+  setViewModalOpen,
+  handleDeleteDoc,
+  handleOpenDoc,
+  resetActAddress,
 }) => {
   const handleClearAddress = useCallback(() => {
     updateActsFilter({
@@ -86,12 +92,18 @@ export const ActsJournalProfile: FC<ActsJournalProfileProps> = ({
             addNewAct={handleCreateAct}
             isCreateLoading={isCreateLoading}
             actCreated={actCreated}
+            setModalOpen={setModalOpen}
+            uploadedFile={uploadedFile}
+            setViewModalOpen={setViewModalOpen}
+            handleDeleteDoc={handleDeleteDoc}
+            resetActAddress={resetActAddress}
           />
         </StickyWrapper>
         <ActsList
           actsPagedData={actsPagedData}
           isActsLoading={isActsLoading}
           setPageNumber={setPageNumber}
+          handleOpenDoc={handleOpenDoc}
         />
       </Wrapper>
     </>

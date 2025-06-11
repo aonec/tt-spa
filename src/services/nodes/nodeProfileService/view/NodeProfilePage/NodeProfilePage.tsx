@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useCallback, useMemo } from 'react';
-import { stringifyUrl } from 'query-string';
+import queryString from 'query-string';
 import { Empty, Tooltip, message } from 'antd';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { HeaderInfoString } from 'ui-kit/shared/HeaderInfoString';
@@ -214,7 +214,7 @@ export const NodeProfilePage: FC<NodeProfilePageProps> = ({
               )}
               <LinkCard
                 text={`Задачи: ${pipeNode.numberOfTasks}`}
-                link={stringifyUrl({
+                link={queryString.stringifyUrl({
                   url: `/tasks/list/${TaskGroupingFilter.Executing}`,
                   query: { pipeNodeId: pipeNode.id },
                 })}

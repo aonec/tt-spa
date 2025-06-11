@@ -33,6 +33,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     setWithApartment,
     existingApartmentNumbers,
     defaultOrganizationCity,
+    successFetchExistingCities,
   } = useUnit({
     cities: outputs.$existingCities,
     streets: outputs.$existingStreets,
@@ -41,6 +42,7 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
     setWithApartment: inputs.setWithApartment,
     existingApartmentNumbers: outputs.$existingApartmentNumbers,
     defaultOrganizationCity: currentOrganizationService.outputs.$defaultCity,
+    successFetchExistingCities: inputs.successFetchExistingCities,
   });
 
   const { values, setFieldValue, handleSubmit } = useFormik({
@@ -83,22 +85,23 @@ export const AddressSearchContainer: FC<AddressSearchContainerProps> = ({
 
     if (isCityPreselected) {
       setFieldValue('city', defaultCity);
-
       if (onChange) onChange('city', defaultCity);
-    }
-
-    if (autoBurn) {
-      handleSubmit();
     }
   }, [
     cities,
     setFieldValue,
     onChange,
     handleSubmit,
-    autoBurn,
     isCityPreselected,
     defaultOrganizationCity,
+    successFetchExistingCities,
   ]);
+
+  useEffect(() => {
+    if (autoBurn) {
+      handleSubmit();
+    }
+  }, [autoBurn, values.city]);
 
   const handleChange = (key: SearchFieldType, value: string) => {
     setFieldValue(`${key}`, value);

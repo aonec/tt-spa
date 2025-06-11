@@ -9,6 +9,7 @@ import {
   NonResidentialBuildingResponse,
   EHouseCategory,
 } from 'api/types';
+import { OpenPayload } from 'services/objects/updateHouseManagement/updateHouseManagementService.types';
 
 export type EditObjectPageProps = {
   housingStock: HousingStockResponse | null;
@@ -37,6 +38,8 @@ export type EditObjectPageProps = {
   isUpdateLoading: boolean;
   handleRefetchHousingStock: () => void;
   houseCategory: EHouseCategory | null;
+  handleOpenHouseManagementModal: () => void;
+  handleOpenEditHouseManagementModal: (payload: OpenPayload) => void;
 };
 
 export enum EditObjectPageTabs {

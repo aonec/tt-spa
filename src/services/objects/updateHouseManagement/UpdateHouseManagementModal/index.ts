@@ -1,0 +1,1 @@
+export { UpdateHouseManagementModal } from './UpdateHouseManagementModal';

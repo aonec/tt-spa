@@ -7,6 +7,7 @@ import {
   HousingStockUpdateRequest,
   NonResidentialBuildingResponse,
 } from 'api/types';
+import { OpenPayload } from 'services/objects/updateHouseManagement/updateHouseManagementService.types';
 
 export type MainInfoTabProps = {
   housingStock: HousingStockResponse | null;
@@ -21,4 +22,6 @@ export type MainInfoTabProps = {
   isHeatingStationsLoading: boolean;
   isHouseManagementsLoading: boolean;
   houseCategory: EHouseCategory;
+  handleOpenEditHouseManagementModal: (payload: OpenPayload) => void;
+  handleOpenHouseManagementModal: () => void;
 };
