@@ -18,7 +18,7 @@ on:
 
 jobs:
   publish:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       GITHUB_LOGIN: YCloudTT
       GITHUB_TOKEN: ${{secrets.YCLOUDTT_PAT}}
