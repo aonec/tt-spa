@@ -1,0 +1,14 @@
+name: Publish Frontend
+
+on:
+  workflow_dispatch:
+        
+jobs:
+  call_publish_workflow:
+    uses: ./.github/workflows/publish.yml
+    with:
+      docker_registry: cr.yandex/crpnm76utfphmac4qo1t
+      image_name: frontend
+      dockerfile_path: ./Dockerfile
+      image_tag: ${{ github.ref_name }}
+    secrets: inherit
