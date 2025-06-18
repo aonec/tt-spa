@@ -1,6 +1,6 @@
 import { createEvent, createStore } from 'effector';
 
-const devUrl = 'https://stage.k8s.transparent-technology.ru/api/';
+const devUrl = 'https://prod.k8s.transparent-technology.ru/api/';
 const devApiURL = localStorage.getItem('dev-api-url');
 
 export const baseURL = import.meta.env.VITE_API_URL || devUrl;
