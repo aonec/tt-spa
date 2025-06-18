@@ -59,6 +59,8 @@ export const ConsumptionReportCalculatorForm: FC<
 
   const nodeIdForSono = calculator?.nodes && calculator.nodes[0].id;
 
+  const isKM = calculator?.model?.startsWith('КМ');
+
   const { errors, values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
       archiveType: isSono ? ArchiveType.AnyPeriod : ArchiveType.StartOfMonth,
@@ -280,7 +282,7 @@ export const ConsumptionReportCalculatorForm: FC<
         </FormItem>
       </GridContainer>
 
-      {!isSono && (
+      {!isSono && !isKM && (
         <>
           <SpaceLine />
           <Checkbox
@@ -292,7 +294,7 @@ export const ConsumptionReportCalculatorForm: FC<
         </>
       )}
 
-      {values.currentResourceType === EResourceType.HotWaterSupply && (
+      {values.currentResourceType === EResourceType.HotWaterSupply && !isKM && (
         <UndersupplyCheckbox>
           <Checkbox
             checked={values.isUndersupply}
