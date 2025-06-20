@@ -9,6 +9,9 @@ on:
       dockerfile_path:
         required: true
         type: string
+      project_path:
+        required: true
+        type: string
       image_name:
         required: true
         type: string
@@ -35,5 +38,5 @@ jobs:
       - name: Call publish script
         run: |
           chmod +x scripts/build_and_push_base.sh 
-          scripts/build_and_push_base.sh ${{ inputs.image_name }} ${{ inputs.docker_registry }} ${{ inputs.dockerfile_path }} ${{ inputs.image_tag }}
+          scripts/build_and_push_base.sh ${{ inputs.project_path }} ${{ inputs.image_name }} ${{ inputs.docker_registry }} ${{ inputs.dockerfile_path }} ${{ inputs.image_tag }}
         shell: bash
