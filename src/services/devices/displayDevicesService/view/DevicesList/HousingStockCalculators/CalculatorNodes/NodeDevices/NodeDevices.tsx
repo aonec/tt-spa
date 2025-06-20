@@ -57,11 +57,11 @@ export const NodeDevices: FC<NodeDevicesProps> = ({ node }) => {
             </ResourceIconWrapper>
 
             <NodeTitleWrapper>
-              <span>{`Узел ${node.title}`}</span>
+              <span> {node.nodeServiceZone?.name}</span>
               {isIncorrectConfig && <IncorrectConfigurationIconSC />}
             </NodeTitleWrapper>
           </DeviceLink>
-          <ServiceZone>{node.nodeServiceZone?.name}</ServiceZone>
+          <ServiceZone>{`Узел ${node.title}`}</ServiceZone>
         </TitleWrapper>
 
         <CommercialAct>
