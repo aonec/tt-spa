@@ -2,8 +2,27 @@ name: Publish Frontend
 
 on:
   workflow_dispatch:
+    inputs:
+      revision:
+        type: choice
+        required: true
+        default: 'patch'
+        options:
+        - minor
+        - major
+        - patch
         
 jobs:
+  bump_version:
+    if: |
+      !cancelled()
+    uses: ./.github/workflows/bump_version.yml
+    with:
+      revision: ${{ inputs.revision }}
+      project_name: SPA
+      node_version: 20.18.0
+    secrets: inherit
+
   call_publish_workflow:
     uses: ./.github/workflows/publish.yml
     with:

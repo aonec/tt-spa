@@ -1,0 +1,63 @@
+name: _bump nvm version
+
+on:
+  workflow_call:
+    inputs:
+      revision:
+        required: true
+        type: string
+      project_name:
+        required: true
+        type: string
+      node_version:
+        required: false
+        type: string
+        default: 20.18.0
+
+jobs:
+  bump-nvm-version:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_LOGIN: YCloudTT
+      GITHUB_TOKEN: ${{ secrets.YCLOUDTT_PAT }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node_version }}
+
+      - name: Get old version
+        id: get_old_version
+        run: |
+          OLD_VERSION=$(node -p "require('./package.json').version")
+          echo "OLD_VERSION=$OLD_VERSION" >> $GITHUB_ENV
+          echo "old_version=$OLD_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Bump version in package.json
+        run: |
+          if [[ "${{ inputs.revision }}" == "major" ]]; then
+            npm version major --no-git-tag-version
+          elif [[ "${{ inputs.revision }}" == "minor" ]]; then
+            npm version minor --no-git-tag-version
+          else
+            npm version patch --no-git-tag-version
+          fi
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "PROJECT_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+      - name: Commit and push changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: ${{ inputs.project_name }} version bumped from ${{ env.OLD_VERSION }} to ${{ env.PROJECT_VERSION }}
+          author_name: GitHub Actions
+          author_email: 41898282+github-actions[bot]@users.noreply.github.com
+          committer_name: GitHub Actions
+          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
+          pull: '--ff'
+          add: "./package.json"
+          push: true
