@@ -1,21 +1,24 @@
 #!/bin/bash
+BuildVersion=$(grep -oP '(?<="version": ").*?(?=",)' $1)
+echo Image Version $BuildVersion
 echo GITHUB_LOGIN $GITHUB_LOGIN
-echo Docker registry $2
-echo Image name $1
-echo Docker file $3
-echo Docker image tags: $4
-docker build . -t $1 --build-arg GITHUB_LOGIN=$GITHUB_LOGIN --build-arg GITHUB_TOKEN=$GITHUB_TOKEN -f $3
-docker tag $1 $2/$1
-if [ -z "$4" ]
+echo Project path $1
+echo Docker registry $3
+echo Image name $2
+echo Docker file $4
+echo Docker image tags: $BuildVersion, $5
+docker build . -t $2:${BuildVersion} --build-arg GITHUB_LOGIN=$GITHUB_LOGIN --build-arg GITHUB_TOKEN=$GITHUB_TOKEN -f $4
+docker tag $2:${BuildVersion} $3/$2:${BuildVersion}
+if [ -z "$5" ]
 then
-	echo "\$4 is empty"
+	echo "\$5 is empty"
 else
-  docker tag $1 $2/$1:$4
+  docker tag $2:${BuildVersion} $3/$2:$5
 fi
-docker push $2/$1
-if [ -z "$4" ]
+docker push $3/$2:${BuildVersion}
+if [ -z "$5" ]
 then
-	echo "\$4 is empty"
+	echo "\$5 is empty"
 else
-  docker push $2/$1:$4
+  docker push $3/$2:$5
 fi

@@ -11,4 +11,5 @@ jobs:
       image_name: frontend
       dockerfile_path: ./Dockerfile
       image_tag: ${{ github.ref_name }}
+      project_path: ./package.json
     secrets: inherit
