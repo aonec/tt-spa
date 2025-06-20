@@ -1,7 +1,9 @@
 import { FC } from 'react';
 import { Props } from './DocumentViewModal.types';
 import { FormModal } from 'ui-kit/Modals/FormModal';
-import { Wrapper } from './DocumentViewModal.styled';
+import { TitleWrapper, Wrapper } from './DocumentViewModal.styled';
+import { Button } from 'ui-kit/Button';
+import { downloadURI } from 'utils/downloadByURL';
 
 const formId = 'Document-View-Modal';
 
@@ -12,7 +14,14 @@ export const DocumentViewModal: FC<Props> = ({
 }) => {
   return (
     <FormModal
-      title="Скан журнала актов"
+      title={
+        <TitleWrapper>
+          Скан журнала актов
+          <Button onClick={() => docUrl && downloadURI(docUrl, '')}>
+            Скачать
+          </Button>
+        </TitleWrapper>
+      }
       visible={isViewModalOpen}
       onCancel={() => setViewModalOpen(false)}
       formId={formId}
