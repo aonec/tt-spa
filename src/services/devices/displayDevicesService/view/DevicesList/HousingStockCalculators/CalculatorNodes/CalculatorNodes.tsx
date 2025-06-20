@@ -24,6 +24,8 @@ import { DateRange } from 'ui-kit/shared/DateRange';
 import { EConnectionStatusType } from 'api/types';
 import { Tooltip } from 'ui-kit/shared/Tooltip';
 import { ContextMenuButton } from 'ui-kit/ContextMenuButton';
+import { getCountText } from 'utils/getCountText';
+import { devicesCountTexts } from 'services/nodes/createNodeService/view/CreateNodePage/ConnectedDevices/CommunicationPipeListItem/CommunicationPipeListItem.constants';
 
 export const CalculatorNodes: FC<CalculatorNodesProps> = ({ devices }) => {
   const calculator = devices[0].calculator;
@@ -96,7 +98,9 @@ export const CalculatorNodes: FC<CalculatorNodesProps> = ({ devices }) => {
           lastDate={calculator.futureCheckingDate}
         />
 
-        <NodeScore>{devices.length} узла</NodeScore>
+        <NodeScore>
+          {devices.length} {getCountText(devices.length, devicesCountTexts)}
+        </NodeScore>
 
         <ContextMenuButton size="small" />
 

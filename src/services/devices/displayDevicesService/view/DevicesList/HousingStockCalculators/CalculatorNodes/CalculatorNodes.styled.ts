@@ -4,7 +4,7 @@ import { ChevronIcon } from 'ui-kit/icons';
 
 export const CalculatorTitle = styled.div`
   display: grid;
-  grid-template-columns: 3fr 4fr 0.5fr 0.2fr 0.1fr;
+  grid-template-columns: 3fr 4fr 0.7fr 0.2fr 0.1fr;
   align-items: center;
   justify-content: center;
   height: 60px;
@@ -73,6 +73,9 @@ export const ChevronSC = styled(ChevronIcon)<{ isOpen: boolean }>`
 `;
 
 export const NodeScore = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
   font-size: 14px;
   font-weight: 400;
   color: rgba(39, 47, 90, 0.7);
