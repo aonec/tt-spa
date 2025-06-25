@@ -57,6 +57,12 @@ export const NodesGroup: FC<NodesGroupProps> = ({
 
   const systemText = getSystemText(nodes.length);
 
+  const sortedNodes = nodes.sort(
+    (a, b) =>
+      Number(a.networkDevice?.serialNumber) -
+      Number(b.networkDevice?.serialNumber),
+  );
+
   return (
     <Wrapper>
       <Header onClick={() => setIsOpen((isOpen) => !isOpen)}>
@@ -71,8 +77,8 @@ export const NodesGroup: FC<NodesGroupProps> = ({
         </GroupInfoWrapper>
       </Header>
       {isOpen && (
-        <div>
-          {nodes.map((node) => (
+        <>
+          {sortedNodes.map((node) => (
             <NodeItem
               key={node.id}
               node={node}
@@ -80,7 +86,7 @@ export const NodesGroup: FC<NodesGroupProps> = ({
               openDevicesListModal={openDevicesListModal}
             />
           ))}
-        </div>
+        </>
       )}
     </Wrapper>
   );
