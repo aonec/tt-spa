@@ -1,4 +1,3 @@
-import { Pagination } from 'ui-kit/Pagination';
 import { useUnit } from 'effector-react';
 import React, { FC } from 'react';
 import { displayObjectsListService } from './displayObjectsListService.model';
@@ -7,6 +6,10 @@ import { SearchObjects } from './view/SearchObjects';
 import { HeaderInject } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.types';
 import { SizeWrapper } from '../objectsProfileService/view/ObjectsProfile/ObjectsProfile.styled';
 import { getBuildingsQuery } from './displayObjectsListService.api';
+import {
+  PaginationSC,
+  StickyPanel,
+} from './view/ObjectsList/ObjectsList.styled';
 
 const { HousingStocksGate } = displayObjectsListService.gates;
 
@@ -38,6 +41,7 @@ export const ObjectsListContainer: FC<HeaderInject> = ({ Header }) => {
           isSearchError={isBuildingFetched && !housingStocks?.length}
         />
       </Header>
+
       <SizeWrapper>
         <ObjectsList
           isLoading={isLoading}
@@ -46,14 +50,16 @@ export const ObjectsListContainer: FC<HeaderInject> = ({ Header }) => {
         />
       </SizeWrapper>
       {isNotEmpty && !isLoading && (
-        <Pagination
-          showSizeChanger={false}
-          defaultCurrent={1}
-          current={pagedHousingStocks?.pageNumber}
-          onChange={handlePageNumberChanged}
-          total={pagedHousingStocks?.totalItems}
-          pageSize={pagedHousingStocks?.pageSize}
-        />
+        <StickyPanel>
+          <PaginationSC
+            showSizeChanger={false}
+            defaultCurrent={1}
+            current={pagedHousingStocks?.pageNumber}
+            onChange={handlePageNumberChanged}
+            total={pagedHousingStocks?.totalItems}
+            pageSize={pagedHousingStocks?.pageSize}
+          />
+        </StickyPanel>
       )}
     </div>
   );
