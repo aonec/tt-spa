@@ -31,7 +31,7 @@ jobs:
     uses: ./.github/workflows/publish.yml
     with:
       docker_registry: cr.yandex/crpnm76utfphmac4qo1t
-      image_name: frontend
+      image_name: spa
       dockerfile_path: ./Dockerfile
       image_tag: ${{ github.ref_name }}
       project_path: ./package.json
