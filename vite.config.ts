@@ -5,12 +5,18 @@ import svgr from 'vite-plugin-svgr';
 import fixReactVirtualized from 'esbuild-plugin-react-virtualized';
 import eslint from 'vite-plugin-eslint';
 import { visualizer } from 'rollup-plugin-visualizer';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // https://vitejs.dev/config/
 export default defineConfig(() => {
   const isAnalyze = process.env.ANALYZE === 'true';
 
   return {
+    define: {
+      'import.meta.env.API_URL': JSON.stringify(process.env.API_URL),
+    },
     optimizeDeps: {
       esbuildOptions: {
         plugins: [fixReactVirtualized],
