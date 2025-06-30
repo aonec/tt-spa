@@ -42,7 +42,7 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "updateTypes": "npx swagger-typescript-api -p https://stage.k8s.transparent-technology.ru/openapi/site/ttm_api.json -o ./src/api -n types.ts && npx swagger-typescript-api -p https://stage.k8s.transparent-technology.ru/openapi/mvitu/ttm_api.json -o ./src/api -n mvitu.types.ts",
+    "updateTypes": "yarn dlx swagger-typescript-api -p https://stage.k8s.transparent-technology.ru/openapi/site/ttm_api.json -o ./src/api -n types.ts && yarn dlx swagger-typescript-api -p https://stage.k8s.transparent-technology.ru/openapi/mvitu/ttm_api.json -o ./src/api -n mvitu.types.ts",
     "prepare": "husky",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",

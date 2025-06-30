@@ -1,10 +1,12 @@
 ## Code requirements
 
 ### Наименование веток и коммитов
+
 1. Наименование веток - `R2-1318-add-incpectors-to-object`
 2. Наименование коммитов `[R2-1318]: add modal to main page`
 
 # Правила создания сервисов
+
 1. новый сервис добавляется в папку features
 2. если он связан с некой центральной сущностью, то добавляем в папку этой сущности
 
@@ -17,7 +19,7 @@
     - editNodeService.types.ts
     - editNodeService.container.ts
     - editNodeService.api.ts
-    - views 
+    - views
       - EditNodeForm
         - EditNodeForm.tsx
         - EditNodeForm.styled.ts
@@ -27,36 +29,36 @@
       - EditNodeModal.styled.ts
 
 ### Что такое container
+
 Контейнер связывает локальную модель сервиса с ее view.
 Таким образом внутри контейнера может быть использована только локальная модель сервиса.
 Если нужны данные с другой модели, то реэкспортим внутри локальной модели.
 
 ### deleteIndividualDeviceService.models.ts
-Объявляются базовые компоненты сервиса, описывются связи внутри сервиса, экспортится объект модели с полями inputs и outputs 
+
+Объявляются базовые компоненты сервиса, описывются связи внутри сервиса, экспортится объект модели с полями inputs и outputs
+
 ```ts
 import { createDomain, sample } from 'effector';
 import { IndividualDeviceListItemResponse } from 'api/types';
 import { deleteDevice } from './deleteIndividualDeviceService.api';
 
-const domain = createDomain(
-  'deleteIndividualDeviceService'
-);
+const domain = createDomain('deleteIndividualDeviceService');
 
-const $currentIndividualDevice = domain.createStore<IndividualDeviceListItemResponse | null>(
-  null
-);
+const $currentIndividualDevice =
+  domain.createStore<IndividualDeviceListItemResponse | null>(null);
 
 const $isModalOpen = $currentIndividualDevice.map(Boolean);
 
-const deleteDeviceModalOpened = domain.createEvent<IndividualDeviceListItemResponse>();
+const deleteDeviceModalOpened =
+  domain.createEvent<IndividualDeviceListItemResponse>();
 const deleteDeviceModalClosed = domain.createEvent();
 
 const acceptDeleteDevice = domain.createEvent();
 
-const deleteIndividualDeviceFx = domain.createEffect<
-  number,
-  void
->(deleteDevice);
+const deleteIndividualDeviceFx = domain.createEffect<number, void>(
+  deleteDevice,
+);
 
 const deletingComplete = deleteIndividualDeviceFx.doneData;
 
@@ -87,6 +89,7 @@ export const deleteIndividualDeviceService = {
 ```
 
 ### deleteIndividualDeviceService.api.ts
+
 Описываются ассинхранные запросы к апи
 
 ```ts
@@ -97,7 +100,9 @@ export const deleteDevice = (id: number): Promise<void> =>
 ```
 
 ### deleteIndividualDeviceService.container.tsx
+
 Контейнер связывает локальную модель сервиса с ее view
+
 ```tsx
 import { useEvent, useStore } from 'effector-react';
 import React from 'react';
@@ -107,15 +112,15 @@ import { DeleteIndividualDeviceModal } from './views/DeleteIndividualDeviceModal
 export const DeleteIndividualDeviceModalContainer = () => {
   const visible = useStore(deleteIndividualDeviceService.outputs.$isModalOpen);
   const device = useStore(
-    deleteIndividualDeviceService.outputs.$currentIndividualDevice
+    deleteIndividualDeviceService.outputs.$currentIndividualDevice,
   );
   const loading = useStore(deleteIndividualDeviceService.outputs.$loading);
 
   const handleClose = useEvent(
-    deleteIndividualDeviceService.inputs.deleteDeviceModalClosed
+    deleteIndividualDeviceService.inputs.deleteDeviceModalClosed,
   );
   const handleDelete = useEvent(
-    deleteIndividualDeviceService.inputs.acceptDeleteDevice
+    deleteIndividualDeviceService.inputs.acceptDeleteDevice,
   );
 
   return (
@@ -130,27 +135,29 @@ export const DeleteIndividualDeviceModalContainer = () => {
 };
 ```
 
-## Использование ttcodegen 
+## Использование ttcodegen
 
 ### документация: [ttcodegen](https://www.npmjs.com/package/@pronix/ttcodegen)
 
 ### Установка:
+
 ```cmd
-npm i -g @pronix/ttcodegen
+yarn global add @pronix/ttcodegen
 ```
 
 ## Правила оставления коментариев в коде:
+
 Коментарии на русском языке.
 Если нужно оставить метку в коде о том что будет дорабатыватся, то комент дожн выглядить так:
- // todo: kek-kek
+// todo: kek-kek
 Например: // todo: регулярная выгрузка
 
-
 ## Правила загрузки документов:
-Следует использовать компонент **DocumentsUploadContainer** . 
-Он принимает props ***type***, обязательный для парсинга на бэке. 
+
+Следует использовать компонент **DocumentsUploadContainer** .
+Он принимает props **_type_**, обязательный для парсинга на бэке.
 Тип назначает согласно **enum EDocumentType** .
-Типы можно получить: GET /api/Documents/types 
+Типы можно получить: GET /api/Documents/types
 
 Дикшинари:
 
@@ -238,5 +245,3 @@ npm i -g @pronix/ttcodegen
         "key": "ApartmentStoppingStatement",
         "value": "Заявление от абонента о постановке квартиры на паузу"
     }
-
-
