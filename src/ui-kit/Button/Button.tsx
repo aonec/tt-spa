@@ -21,6 +21,7 @@ export const Button: FC<ButtonProps> = (props) => {
     htmlType,
     children,
     className,
+    onClick,
   } = props;
 
   const rightElement = useMemo(() => {
@@ -39,6 +40,7 @@ export const Button: FC<ButtonProps> = (props) => {
       disabled={disabled || isLoading}
       form={htmlForm}
       htmlType={htmlType}
+      onClick={onClick}
     >
       {children}
       {rightElement}
