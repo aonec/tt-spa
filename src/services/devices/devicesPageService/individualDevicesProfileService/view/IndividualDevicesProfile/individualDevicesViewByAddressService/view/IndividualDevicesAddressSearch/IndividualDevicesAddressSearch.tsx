@@ -106,7 +106,7 @@ export const IndividualDevicesAddressSearch: FC<
                 clearSearchPayload();
                 resetForm();
               }}
-              size="small"
+              size="s"
               icon={<ClearIconSC />}
             >
               Сбросить

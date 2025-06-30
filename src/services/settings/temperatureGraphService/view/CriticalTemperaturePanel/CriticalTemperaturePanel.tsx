@@ -27,7 +27,7 @@ export const CriticalTemperaturePanel: FC<CriticalTemperaturePanelProps> = ({
           <TemperatureValue>{temperatureLimits.max}%</TemperatureValue>
         </TemperatureBlock>
         <ButtonSc
-          size="small"
+          size="s"
           type="ghost"
           onClick={() => setEditDeviationModalOpen(true)}
         >

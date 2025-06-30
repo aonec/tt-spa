@@ -87,7 +87,7 @@ export const PanelItem: FC<Props> = ({
             pollState?.status === EPollState.Running
           }
           type="ghost"
-          size="small"
+          size="s"
           onClick={btnOnClick}
         >
           {btnText}

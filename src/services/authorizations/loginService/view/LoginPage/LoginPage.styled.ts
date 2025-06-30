@@ -85,7 +85,7 @@ export const InputPassword = styled(AntInput.Password)`
 
 export const ButtonDevSettings = styled(Button).attrs({
   type: 'ghost',
-  size: 'small',
+  size: 's',
 })`
   color: white !important;
 

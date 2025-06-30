@@ -83,7 +83,7 @@ export const TaskInfoPanel: FC<TaskInfoPanelProps> = ({ task }) => {
       ))}
       <FooterWrapper>
         <Link to={`/tasks/profile/${task.id}`}>
-          <Button size="small">Перейти к задаче</Button>
+          <Button size="s">Перейти к задаче</Button>
         </Link>
       </FooterWrapper>
     </Wrapper>

@@ -1,36 +1,47 @@
-import React, { FC } from 'react';
-import { ButtonProps } from './Button.types';
-import { ButtonSC } from './Button.styled';
+import React, { FC, useMemo } from 'react';
+import classNames from 'classnames/bind';
+import { Button as ButtonAntd } from 'antd';
+
 import { Loader } from 'ui-kit/Loader';
+
+import { ButtonProps } from './Button.types';
+import styles from './Button.module.scss';
+
+const cx = classNames.bind(styles);
 
 export const Button: FC<ButtonProps> = (props) => {
   const {
-    icon,
+    size = 'm',
     type = 'primary',
+    icon,
     isLoading,
-    size = 'middle',
     disabled = false,
     floating,
     htmlForm,
     htmlType,
-    color,
-    ...antdProps
+    children,
+    className,
   } = props;
 
+  const rightElement = useMemo(() => {
+    if (isLoading) {
+      return <Loader show />;
+    }
+
+    return icon;
+  }, [isLoading, icon]);
+
   return (
-    <ButtonSC
-      {...antdProps}
-      size={size}
-      btnType={type}
-      floating={floating}
+    <ButtonAntd
+      className={cx('root', className, `size-${size}`, type, {
+        'is-floating': floating,
+      })}
       disabled={disabled || isLoading}
       form={htmlForm}
       htmlType={htmlType}
-      color={color}
     >
-      {props.children}
-      {!isLoading && icon}
-      {isLoading && <Loader show />}
-    </ButtonSC>
+      {children}
+      {rightElement}
+    </ButtonAntd>
   );
 };

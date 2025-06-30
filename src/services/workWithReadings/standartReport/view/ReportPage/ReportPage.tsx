@@ -75,7 +75,7 @@ export const ReportPage: FC<Props> = ({
       </Container>
 
       <Footer>
-        <Button size="small" onClick={handleExport}>
+        <Button size="s" onClick={handleExport}>
           Экспортировать
         </Button>
       </Footer>

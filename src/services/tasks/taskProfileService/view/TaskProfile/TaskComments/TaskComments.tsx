@@ -40,7 +40,7 @@ export const TaskComments: FC<TaskCommentsProps> = ({
         <Button
           disabled={disabled}
           type={disabled ? 'ghost' : 'primary'}
-          size="small"
+          size="s"
           onClick={handleAddComment}
         >
           Добавить комментарий

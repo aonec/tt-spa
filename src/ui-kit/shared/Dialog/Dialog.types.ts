@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
-import { ButtonStyleType } from 'ui-kit/Button/Button.types';
+import { ButtonType } from 'ui-kit/Button/Button.types';
 
 export type DialogProps = {
   isOpen: boolean;
   title: string;
   onCancel: () => void;
   onSubmit?: () => void;
-  type: ButtonStyleType;
+  type?: ButtonType;
   submitText?: string;
   cancelText?: string;
   isLoading?: boolean;

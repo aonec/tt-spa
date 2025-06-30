@@ -22,7 +22,7 @@ export default {
 
 export const All = () => (
   <div style={{ display: 'flex', gap: 20, padding: 32 }}>
-    <Button type="primary">Primary</Button>
+    <Button>Primary</Button>
     <Button type="danger">Danger</Button>
     <Button type="ghost">Ghost</Button>
   </div>
@@ -30,16 +30,14 @@ export const All = () => (
 
 export const Sizes = () => (
   <div style={{ display: 'flex', gap: 20, padding: 32 }}>
-    <Button size="middle">middle</Button>
-    <Button size="small">small</Button>
+    <Button size="s">small</Button>
+    <Button>middle</Button>
   </div>
 );
 
 export const Loading = () => (
   <div style={{ display: 'flex', gap: 20, padding: 32 }}>
-    <Button type="primary" isLoading={true}>
-      Primary
-    </Button>
+    <Button isLoading={true}>Primary</Button>
     <Button type="danger" isLoading={true}>
       Danger
     </Button>
@@ -50,7 +48,7 @@ export const Loading = () => (
 );
 
 export const WithIcon = () => (
-  <Button size="small" icon={<SettingsIcon />}>
+  <Button size="s" icon={<SettingsIcon />}>
     Reset
   </Button>
 );

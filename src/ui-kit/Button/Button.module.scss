@@ -1,0 +1,80 @@
+:root {
+  .primary {
+    --shadow-color: #189ee940;
+    --font-color: white;
+    --bg-color: #189ee9;
+    --border-color: 'none';
+  }
+
+  .danger {
+    --shadow-color: #ff454540;
+    --font-color: white;
+    --bg-color: #ff4545;
+    --border-color: 'none';
+  }
+
+  .ghost {
+    --shadow-color: #00000014;
+    --font-color: #191b35;
+    --bg-color: transparent;
+    --border-color: #dcdee4;
+  }
+}
+
+.root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: 0.25s;
+  width: min-content;
+}
+
+.root,
+.root:hover,
+.root:active,
+.root:focus,
+.root[disabled],
+.root[disabled]:hover,
+.root[disabled]:active {
+  color: var(--font-color) !important;
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--bg-color) !important;
+
+  svg path {
+    fill: var(--font-color) !important;
+  }
+}
+
+.root:not([disabled]):hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0px var(--shadow-color);
+}
+
+.root:not([disabled]):active {
+  transform: translate(-2px, -2px);
+  box-shadow: 2px 2px 0px var(--shadow-color);
+}
+
+.root[disabled] {
+  opacity: 0.6;
+}
+
+.root .size-s {
+  height: 32px;
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+.size-m {
+  height: 48px;
+  padding: 0 20px;
+  font-size: 16px;
+}
+
+.is-floating {
+  width: 100%;
+}

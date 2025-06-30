@@ -145,7 +145,7 @@ export const NewTemperatureRowForm: FC<Props> = ({
         {isExistValue && (
           <Button
             icon={<PlusIconSC />}
-            size="small"
+            size="s"
             onClick={() => handleSubmit()}
           />
         )}
@@ -153,7 +153,7 @@ export const NewTemperatureRowForm: FC<Props> = ({
           type="danger"
           onClick={onCancel}
           icon={<TrashFill />}
-          size="small"
+          size="s"
         />
       </ButtonsWrapper>
     </NewLineWrapper>

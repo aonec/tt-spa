@@ -17,7 +17,7 @@ export const SealBottomPanel: FC<SealBottomPanelProps> = ({
       <Panel id="bottomPanel">
         <Button
           type="ghost"
-          size="small"
+          size="s"
           onClick={() => navigate(`/apartments/${apartment.id}`)}
         >
           Перейти в профиль квартиры
@@ -25,7 +25,7 @@ export const SealBottomPanel: FC<SealBottomPanelProps> = ({
         {!isAppointmentExist && (
           <Button
             onClick={openCreateSealAppointmentModal}
-            size="small"
+            size="s"
             type={'primary'}
           >
             Записать на опломбировку
@@ -35,14 +35,14 @@ export const SealBottomPanel: FC<SealBottomPanelProps> = ({
           <>
             <Button
               onClick={openCreateSealAppointmentModal}
-              size="small"
+              size="s"
               type={'ghost'}
             >
               Редактировать запись
             </Button>
             <Button
               onClick={openRemoveAppointmentModal}
-              size="small"
+              size="s"
               type={'danger'}
             >
               Удалить запись

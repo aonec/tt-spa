@@ -29,7 +29,7 @@ export const ActsListItem: FC<ActsListItemProps> = ({ act, handleOpenDoc }) => {
       </Tooltip>
       <div>{dayjs(act.actJobDate).format('DD.MM.YYYY')}</div>
       {act.document && (
-        <Button type="ghost" size="small">
+        <Button type="ghost" size="s">
           <ClipIcon
             onClick={() =>
               act.document?.id

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import dayjs from 'api/dayjs';
 import { useFormik } from 'formik';
 import { Form, Radio, Tooltip } from 'antd';
+import classNames from 'classnames/bind';
 import {
   ArchiveReadingsFilter,
   FormikDateRange,
@@ -25,6 +26,9 @@ import { Button } from 'ui-kit/Button';
 import { ReportType } from '../StatisticsGraph.types';
 import { SortingIcon } from 'ui-kit/icons';
 import { Select } from 'ui-kit/Select';
+import styles from './GraphFilterForm.module.scss';
+
+const cx = classNames.bind(styles);
 
 const rangeWrapperId = 'node-statistics-filter-wrapper';
 
@@ -204,7 +208,7 @@ export const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
             <FormFooter>
               <Button
                 type="ghost"
-                style={{ marginRight: 16 }}
+                className={cx('button')}
                 onClick={() => closeModal()}
               >
                 Отмена

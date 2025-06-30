@@ -88,7 +88,7 @@ export const CommentPanel: FC<CommentPanelProps> = ({
             <CommentFooter>
               <Button
                 type="ghost"
-                size="small"
+                size="s"
                 onClick={() => {
                   setNewComment(oldCommentText);
                   setIsEditing(false);
@@ -97,7 +97,7 @@ export const CommentPanel: FC<CommentPanelProps> = ({
                 Отмена
               </Button>
               <Button
-                size="small"
+                size="s"
                 onClick={() => {
                   setIsEditing(false);
                   handleSubmit(newComment);

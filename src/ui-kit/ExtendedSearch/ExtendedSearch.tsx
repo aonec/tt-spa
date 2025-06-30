@@ -42,7 +42,7 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
             <Button
               type="ghost"
               onClick={handleClear}
-              size="small"
+              size="s"
               icon={<ClearIconSC />}
             >
               Очистить

@@ -26,7 +26,7 @@ export const ApplicationInfoBlock: FC<ApplicationInfoBlockProps> = ({
       />
 
       {isDispacher && (
-        <ButtonSc type="danger" size="small" onClick={() => setOpen(true)}>
+        <ButtonSc type="danger" size="s" onClick={() => setOpen(true)}>
           Удалить заявку
         </ButtonSc>
       )}

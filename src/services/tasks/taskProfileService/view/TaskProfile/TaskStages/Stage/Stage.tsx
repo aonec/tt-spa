@@ -98,7 +98,7 @@ export const Stage: FC<StageProps> = ({
           <RevertStageButtonWrapper>
             <Button
               type="ghost"
-              size="small"
+              size="s"
               onClick={handleRevertStage}
               disabled={isRevertStageLoading}
             >

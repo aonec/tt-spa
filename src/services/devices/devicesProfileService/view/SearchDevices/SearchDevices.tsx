@@ -139,7 +139,7 @@ export const SearchDevices: FC<SearchDevicesProps> = ({
             <Button
               type="ghost"
               onClick={handleClear}
-              size="small"
+              size="s"
               icon={<ClearIconSC />}
             >
               Сбросить

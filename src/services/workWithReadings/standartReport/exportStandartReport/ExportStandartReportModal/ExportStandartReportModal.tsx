@@ -159,7 +159,7 @@ export const ExportStandartReportModal: FC<Props> = ({
                   </ExportDateTime>
                   <Button
                     icon={<DownloadIconSC />}
-                    size="small"
+                    size="s"
                     type="ghost"
                     onClick={handleDownload}
                   >

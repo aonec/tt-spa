@@ -64,7 +64,7 @@ export const DevelopmentSettingsModal: FC<DevelopmentSettingsModalProps> = ({
                 disabled={isAuth}
               />
               <Button
-                size="small"
+                size="s"
                 icon={<SettingsIcon />}
                 onClick={() => setDevUrl(baseURL)}
                 disabled={isAuth}

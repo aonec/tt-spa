@@ -83,7 +83,7 @@ export const Comment: FC<CommentProps> = ({
             <CommentFooter>
               <Button
                 type="ghost"
-                size="small"
+                size="s"
                 onClick={() => {
                   setComment(text);
                   setIsEditing(false);
@@ -92,7 +92,7 @@ export const Comment: FC<CommentProps> = ({
                 Отмена
               </Button>
               <Button
-                size="small"
+                size="s"
                 onClick={() => {
                   setIsEditing(false);
                   handleUpdate({
