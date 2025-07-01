@@ -1,0 +1,38 @@
+name: Publish Frontend
+
+on:
+  workflow_dispatch:
+    inputs:
+      revision:
+        type: choice
+        required: true
+        default: 'patch'
+        options:
+        - minor
+        - major
+        - patch
+        
+jobs:
+  bump_version:
+    if: |
+      !cancelled()
+    uses: ./.github/workflows/bump_version.yml
+    with:
+      revision: ${{ inputs.revision }}
+      project_name: SPA
+      node_version: 20.18.0
+    secrets: inherit
+
+  call_publish_workflow:
+    needs: [bump_version]
+    if: | 
+        !cancelled() &&
+        (needs.bump_version.result == 'success')
+    uses: ./.github/workflows/publish.yml
+    with:
+      docker_registry: cr.yandex/crpnm76utfphmac4qo1t
+      image_name: spa
+      dockerfile_path: ./Dockerfile
+      image_tag: ${{ github.ref_name }}
+      project_path: ./package.json
+    secrets: inherit

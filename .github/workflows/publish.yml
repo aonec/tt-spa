@@ -1,0 +1,42 @@
+name: _build and push to CR
+
+on:
+  workflow_call:
+    inputs:
+      docker_registry:
+        required: true
+        type: string
+      dockerfile_path:
+        required: true
+        type: string
+      project_path:
+        required: true
+        type: string
+      image_name:
+        required: true
+        type: string
+      image_tag:
+        required: false
+        type: string
+
+jobs:
+  publish:
+    runs-on: self-hosted
+    env:
+      GITHUB_LOGIN: YCloudTT
+      GITHUB_TOKEN: ${{secrets.YCLOUDTT_PAT}}
+      
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Yandex Cloud CR "Login" Action for GitHub Actions
+        uses: yc-actions/yc-cr-login@v0.1-alpha
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+      - name: Call publish script
+        run: |
+          chmod +x scripts/build_and_push_base.sh 
+          scripts/build_and_push_base.sh ${{ inputs.project_path }} ${{ inputs.image_name }} ${{ inputs.docker_registry }} ${{ inputs.dockerfile_path }} ${{ inputs.image_tag }}
+        shell: bash
