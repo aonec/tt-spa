@@ -405,7 +405,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
                 {!(isDeletingMod || isNewLine) && (
                   <Button
                     icon={<PlusIconSC />}
-                    size="small"
+                    size="s"
                     onClick={() => setIsNewLine(true)}
                   />
                 )}
@@ -443,7 +443,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
                 return (
                   <Button
                     type="ghost"
-                    size="small"
+                    size="s"
                     icon={<CheckLg />}
                     onClick={toggleDeletion}
                   />
@@ -452,7 +452,7 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
               if (isSelected)
                 return (
                   <Button
-                    size="small"
+                    size="s"
                     type="danger"
                     icon={<DashLg />}
                     onClick={toggleDeletion}
@@ -476,7 +476,6 @@ export const TemperatureGraph: FC<TemperatureGraphProps> = ({
             Отмена
           </Button>
           <Button
-            type="primary"
             isLoading={isLoading}
             onClick={() => handleSubmit()}
             disabled={Boolean(columnErrors.length)}

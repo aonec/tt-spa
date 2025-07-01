@@ -16,7 +16,7 @@ export const Dialog: FC<DialogProps> = ({
   onCancel,
   onSubmit,
   isOpen,
-  type,
+  type = 'primary',
   description,
   footer,
   zIndex,

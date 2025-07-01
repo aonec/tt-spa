@@ -78,7 +78,7 @@ export const PhoneNumberFormField: FC<PhoneNumberFormFieldProps> = ({
           />
           <ButtonsWrapper>
             <Button
-              size="small"
+              size="s"
               type="ghost"
               onClick={() => {
                 setIsAdd(false);
@@ -88,7 +88,7 @@ export const PhoneNumberFormField: FC<PhoneNumberFormFieldProps> = ({
               Отмена
             </Button>
             <Button
-              size="small"
+              size="s"
               onClick={() => {
                 addPhoneNumber(newPhone || '');
                 setNewPhone(null);

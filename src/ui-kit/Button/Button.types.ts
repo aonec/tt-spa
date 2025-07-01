@@ -1,18 +1,19 @@
-import { ButtonColorType } from 'antd/lib/button';
-import { HTMLAttributes, ReactElement } from 'react';
+import { MouseEventHandler, ReactElement, ReactNode } from 'react';
+
+export type ButtonSize = 's' | 'm';
+
+export type ButtonType = 'primary' | 'ghost' | 'danger';
 
 export type ButtonProps = {
-  type?: ButtonStyleType;
-  disabled?: boolean;
+  size?: ButtonSize;
+  type?: ButtonType;
+  children?: ReactNode;
   icon?: ReactElement;
-  size?: ButtonSizeType;
+  disabled?: boolean;
   floating?: boolean;
   isLoading?: boolean;
   htmlForm?: string;
   htmlType?: 'submit' | 'button';
-  color?: ButtonColorType;
-} & HTMLAttributes<HTMLButtonElement>;
-
-export type ButtonSizeType = 'middle' | 'small';
-
-export type ButtonStyleType = 'primary' | 'ghost' | 'danger';
+  className?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+};

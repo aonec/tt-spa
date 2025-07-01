@@ -157,9 +157,11 @@ export const DistributeAppointmentsPanel: FC<
                 const node = elem as DataNode;
 
                 if (node.key !== node.title) {
-                  // title?: React.ReactNode | ((data: DataNode) => React.ReactNode)
-                  return <>{node.title}</>;
+                  return typeof node.title === 'function'
+                    ? node.title(node)
+                    : (node.title as React.ReactNode);
                 }
+
                 return (
                   <RootWrapperTitle>
                     {node.title}
@@ -242,12 +244,12 @@ export const DistributeAppointmentsPanel: FC<
             />
           )}
           <Footer>
-            <Button type="ghost" size="small" onClick={handleUnselectDistrict}>
+            <Button type="ghost" size="s" onClick={handleUnselectDistrict}>
               Назад
             </Button>
             <Button
               onClick={openDistributeAppointmentsModal}
-              size="small"
+              size="s"
               disabled={!selectedAppointmentsIds.length}
             >
               Распределить{' '}

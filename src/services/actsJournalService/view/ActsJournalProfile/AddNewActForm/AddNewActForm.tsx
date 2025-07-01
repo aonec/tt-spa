@@ -180,11 +180,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
 
       <ButtonBlock>
         {!uploadedFile && (
-          <ButtonBlue
-            type="ghost"
-            size="small"
-            onClick={() => setModalOpen(true)}
-          >
+          <ButtonBlue type="ghost" size="s" onClick={() => setModalOpen(true)}>
             <Blue>+ Добавить скан</Blue>
           </ButtonBlue>
         )}
@@ -201,7 +197,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
         <ButtonsWrapper>
           <Button
             type="ghost"
-            size="small"
+            size="s"
             onClick={() => {
               resetForm();
               resetActAddress();
@@ -209,11 +205,7 @@ export const AddNewActForm: FC<AddNewActFormProps> = ({
           >
             Сбросить
           </Button>
-          <ButtonSC
-            size="small"
-            onClick={submitForm}
-            isLoading={isCreateLoading}
-          >
+          <ButtonSC size="s" onClick={submitForm} isLoading={isCreateLoading}>
             Сохранить
           </ButtonSC>
         </ButtonsWrapper>

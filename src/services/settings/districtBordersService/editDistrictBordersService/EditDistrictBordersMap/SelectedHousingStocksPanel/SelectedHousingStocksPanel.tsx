@@ -39,10 +39,10 @@ export const SelectedHousingStocksPanel: FC<SelectedHousingStocksProps> = ({
         )}
       </ListWrapper>
       <Footer>
-        <Button size="small" type="ghost" onClick={handleCancel}>
+        <Button size="s" type="ghost" onClick={handleCancel}>
           Отмена
         </Button>
-        <Button size="small" isLoading={isLoading} onClick={handleUpdate}>
+        <Button size="s" isLoading={isLoading} onClick={handleUpdate}>
           Сохранить
         </Button>
       </Footer>

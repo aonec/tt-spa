@@ -222,7 +222,7 @@ export const ResourceConsumptionFilter: FC<ResourceConsumptionFilterProps> = ({
         <Button type="ghost" onClick={handleReset}>
           Сбросить
         </Button>
-        <Button type="primary" onClick={submitForm} isLoading={isLoading}>
+        <Button onClick={submitForm} isLoading={isLoading}>
           Применить фильтр
         </Button>
       </Footer>

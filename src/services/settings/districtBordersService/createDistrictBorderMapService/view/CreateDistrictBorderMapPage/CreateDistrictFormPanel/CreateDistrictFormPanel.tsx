@@ -90,10 +90,10 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
         )}
       </ListWrapper>
       <Footer>
-        <Button size="small" type="ghost" onClick={handleCancel}>
+        <Button size="s" type="ghost" onClick={handleCancel}>
           Отмена
         </Button>
-        <Button size="small" onClick={() => setFormSection(formSection + 1)}>
+        <Button size="s" onClick={() => setFormSection(formSection + 1)}>
           Продолжить
         </Button>
       </Footer>
@@ -131,7 +131,7 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
       </FormWrapper>
       <Footer>
         <Button
-          size="small"
+          size="s"
           type="ghost"
           disabled={isLoadingCreatingDistrict}
           onClick={() => setFormSection(formSection - 1)}
@@ -139,7 +139,7 @@ export const CreateDistrictFormPanel: FC<CreateDistrictFormPanelProps> = ({
           Назад
         </Button>
         <Button
-          size="small"
+          size="s"
           isLoading={isLoadingCreatingDistrict}
           onClick={handleSubmit}
         >

@@ -197,7 +197,7 @@ export const IndividualDevicesViewBySerialNumberSearch: FC<
               clearSearchPayload();
               resetForm();
             }}
-            size="small"
+            size="s"
             icon={<ClearIconSC />}
           >
             Сбросить

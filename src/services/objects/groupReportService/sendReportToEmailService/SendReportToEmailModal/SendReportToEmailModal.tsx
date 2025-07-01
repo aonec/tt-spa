@@ -19,7 +19,6 @@ export const SendReportToEmailModal: FC<SendReportToEmailModalProps> = ({
       isOpen={isOpen}
       onCancel={() => handleClose()}
       onSubmit={() => submitEmail()}
-      type="primary"
       zIndex={1001}
       description={<SendReportToEmailDescription email={defaultEmail} />}
       footer={

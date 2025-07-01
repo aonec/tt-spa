@@ -143,7 +143,7 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
             <Button
               type="ghost"
               icon={<CloseIconSC />}
-              size="small"
+              size="s"
               onClick={() => {
                 resetForm();
                 resetFilters();
@@ -243,11 +243,11 @@ export const TasksMapFiltration: FC<TasksMapFiltrationProps> = ({
             </FormItem>
           </ExtendedFiltration>
           <Footer>
-            <Button size="small" type="ghost" onClick={() => setIsOpen(false)}>
+            <Button size="s" type="ghost" onClick={() => setIsOpen(false)}>
               Отмена
             </Button>
             <Button
-              size="small"
+              size="s"
               onClick={() => {
                 setIsOpen(false);
                 handleSubmit();

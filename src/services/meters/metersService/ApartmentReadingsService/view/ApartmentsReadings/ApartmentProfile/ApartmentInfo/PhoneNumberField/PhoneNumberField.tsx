@@ -172,7 +172,7 @@ export const PhoneNumberField: FC<PhoneNumberFieldProps> = ({
           <ErrorMessage>{errors.phoneNumber}</ErrorMessage>
           <ButtonsWrapper>
             <Button
-              size="small"
+              size="s"
               type="ghost"
               onClick={() => {
                 setIsEditing(false);
@@ -181,7 +181,7 @@ export const PhoneNumberField: FC<PhoneNumberFieldProps> = ({
             >
               Отмена
             </Button>
-            <Button size="small" onClick={submitForm}>
+            <Button size="s" onClick={submitForm}>
               Сохранить
             </Button>
           </ButtonsWrapper>

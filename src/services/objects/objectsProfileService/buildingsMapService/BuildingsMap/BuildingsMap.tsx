@@ -120,7 +120,7 @@ export const BuildingsMap: FC<Props> = ({
             </PanelContent>
             <FooterWrapper>
               <Link to={buildingHref}>
-                <Button size="small">Перейти в профиль объекта</Button>
+                <Button size="s">Перейти в профиль объекта</Button>
               </Link>
             </FooterWrapper>
           </>

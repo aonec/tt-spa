@@ -61,10 +61,10 @@ export const CommentField: FC<CommentFieldProps> = ({
       )}
       {isEditing && (
         <CommentFooter>
-          <Button type="ghost" size="small" onClick={handleCancelEditComment}>
+          <Button type="ghost" size="s" onClick={handleCancelEditComment}>
             Отмена
           </Button>
-          <Button size="small" onClick={handleSaveComment}>
+          <Button size="s" onClick={handleSaveComment}>
             Сохранить
           </Button>
         </CommentFooter>

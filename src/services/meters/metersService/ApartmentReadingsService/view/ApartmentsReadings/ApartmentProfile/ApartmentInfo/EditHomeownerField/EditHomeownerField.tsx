@@ -81,14 +81,14 @@ export const EditHomeownerField: FC<EditHomeownerFieldProps> = ({
         <Footer>
           <Button
             type="ghost"
-            size="small"
+            size="s"
             onClick={handleCancelEdit}
             disabled={isUpdateHomeownerLoading}
           >
             Отмена
           </Button>
           <Button
-            size="small"
+            size="s"
             onClick={handleSave}
             isLoading={isUpdateHomeownerLoading}
             disabled={!fieldCurrentValue}

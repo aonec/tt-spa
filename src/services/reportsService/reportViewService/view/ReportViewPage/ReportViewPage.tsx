@@ -104,7 +104,7 @@ export const ReportViewPage: FC<ReportViewPageProps> = ({
                 )}
               </FiltrationInfoList>
               <ButtonSC
-                size="small"
+                size="s"
                 onClick={downloadReport}
                 disabled={isLoadingReport}
                 isLoading={isReportFileDownloading}

@@ -80,7 +80,7 @@ export const ActsJournalProfile: FC<ActsJournalProfileProps> = ({
                 })
               }
             />
-            <ButtonSC type="ghost" size="small" onClick={handleClearAddress}>
+            <ButtonSC type="ghost" size="s" onClick={handleClearAddress}>
               Очистить
             </ButtonSC>
           </HeaderWrapper>
