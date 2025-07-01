@@ -18,7 +18,6 @@ import { validationSchema } from './EditCalculatorConnection.constants';
 import { UpdatePipeNodeRequest } from 'api/types';
 import { useNavigate } from 'react-router-dom';
 import { RemoveConnectionConfirmModalContainer } from '../removeConnectionService';
-import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 
 const calculatorConnectionInputNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -58,7 +57,7 @@ export const EditCalculatorConnection: FC<AddCalculatorConnectionProps> = ({
     <>
       <RemoveConnectionConfirmModalContainer />
       {node?.calculatorId && (
-        <Alert icon={AlertIconType.info}>
+        <Alert icon="info">
           <AlertContentWrapper>
             <span>
               В профиле узла доступно только редактирование номера ввода

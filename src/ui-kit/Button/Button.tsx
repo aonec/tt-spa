@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames/bind';
 import { Button as ButtonAntd } from 'antd';
 
@@ -9,21 +9,19 @@ import styles from './Button.module.scss';
 
 const cx = classNames.bind(styles);
 
-export const Button: FC<ButtonProps> = (props) => {
-  const {
-    size = 'm',
-    type = 'primary',
-    icon,
-    isLoading,
-    disabled = false,
-    floating,
-    htmlForm,
-    htmlType,
-    children,
-    className,
-    onClick,
-  } = props;
-
+export const Button = ({
+  size = 'm',
+  type = 'primary',
+  icon,
+  isLoading,
+  disabled = false,
+  floating,
+  htmlForm,
+  htmlType,
+  children,
+  className,
+  onClick,
+}: ButtonProps) => {
   const rightElement = useMemo(() => {
     if (isLoading) {
       return <Loader show />;

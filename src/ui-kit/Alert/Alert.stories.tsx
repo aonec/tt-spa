@@ -1,7 +1,6 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
 import { Alert } from '.';
-import { AlertIconType, AlertType } from './Alert.types';
 
 const meta: Meta<typeof Alert> = {
   title: 'Alert',
@@ -12,26 +11,24 @@ const meta: Meta<typeof Alert> = {
 export default meta;
 
 export const Info = () => (
-  <Alert icon={AlertIconType.info} type={AlertType.default}>
-    Выходит срок поверки у прибора
-  </Alert>
+  <Alert icon="info">Выходит срок поверки у прибора</Alert>
 );
 
 export const Incorrect = () => (
-  <Alert icon={AlertIconType.incorrect} type={AlertType.danger}>
+  <Alert icon="incorrect" type="danger">
     Данные с вычислителя не обрабатываются, так как узел не соответствует
     выбранной конфигурации.
   </Alert>
 );
 
 export const Stop = () => (
-  <Alert icon={AlertIconType.stop} type={AlertType.danger}>
+  <Alert icon="stop" type="danger">
     На объекте отключение ресурса
   </Alert>
 );
 
 export const Warning = () => (
-  <Alert icon={AlertIconType.warning} type={AlertType.danger}>
+  <Alert icon="warning" type="danger">
     По данной квартире есть незакрытая задача. Возможность вводить показания
     появится после закрытия задачи.
   </Alert>

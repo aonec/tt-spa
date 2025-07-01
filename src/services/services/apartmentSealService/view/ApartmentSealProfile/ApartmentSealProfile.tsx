@@ -20,7 +20,6 @@ import { SealBottomPanel } from '../SealBottomPanel';
 import { GoBack } from 'ui-kit/shared/GoBack';
 import { NothingFound } from 'ui-kit/shared/NothingFound';
 import { Alert } from 'ui-kit/Alert';
-import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 import { getHousingStockItemAddress } from 'utils/getHousingStockItemAddress';
 
 export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
@@ -155,7 +154,7 @@ export const ApartmentSealProfile: FC<ApartmentSealProfileProps> = ({
               />
               {isAddressInDistrict === false && (
                 <AlertWrapper>
-                  <Alert type={AlertType.danger} icon={AlertIconType.info}>
+                  <Alert type="danger" icon="info">
                     Этот адрес не включен ни в один район, добавьте дом &quot;
                     {getHousingStockItemAddress(address!)}&quot; в один из
                     районов или создайте новый район.

@@ -11,7 +11,6 @@ import {
   HomeownerAccountChangeDate,
 } from './ReplacedAccountAlert.styled';
 import { ReplacedAccountAlertProps } from './ReplacedAccountAlert.types';
-import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 
 export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
   recentlyReplacedAccount,
@@ -26,7 +25,7 @@ export const ReplacedAccountAlert: FC<ReplacedAccountAlertProps> = ({
 
   return (
     <ApartmentAlertWrapper>
-      <Alert icon={AlertIconType.info}>
+      <Alert icon="info">
         <AlertContent>
           <AlertTextWrapper>
             Смена номера лицевого счёта

@@ -1,38 +1,35 @@
 import React from 'react';
+import classNames from 'classnames/bind';
 import {
   IncorrectConfigurationIcon,
   InfoIcon,
   StopIcon,
   WarningIcon,
 } from 'ui-kit/icons';
-import { AlertWrap, IconWrapper, Wide } from './Alert.styled';
-import {
-  AlertColorLookup,
-  AlertIconType,
-  AlertProps,
-  AlertType,
-} from './Alert.types';
+import { AlertProps } from './Alert.types';
+import styles from './Alert.module.scss';
 
-export const Alert: React.FC<AlertProps> = ({
+const cx = classNames.bind(styles);
+
+const iconsLookup = {
+  info: InfoIcon,
+  stop: StopIcon,
+  warning: WarningIcon,
+  incorrect: IncorrectConfigurationIcon,
+};
+
+export const Alert = ({
   children,
   icon,
-  type = AlertType.default,
+  type = 'default',
   centered,
-}) => {
-  const icons: { [key in AlertIconType]: React.FC } = {
-    [AlertIconType.info]: InfoIcon,
-    [AlertIconType.stop]: StopIcon,
-    [AlertIconType.warning]: WarningIcon,
-    [AlertIconType.incorrect]: IncorrectConfigurationIcon,
-  };
-
-  const Icon = icon && icons[icon];
-  const color = AlertColorLookup[type];
+}: AlertProps) => {
+  const Icon = iconsLookup[icon];
 
   return (
-    <AlertWrap color={color} centered={centered}>
-      <IconWrapper color={color}>{Icon ? <Icon /> : null}</IconWrapper>
-      <Wide>{children}</Wide>
-    </AlertWrap>
+    <div className={cx('root', type, { centered })}>
+      <Icon className={cx('icon')} />
+      <div className={cx('text')}>{children}</div>
+    </div>
   );
 };

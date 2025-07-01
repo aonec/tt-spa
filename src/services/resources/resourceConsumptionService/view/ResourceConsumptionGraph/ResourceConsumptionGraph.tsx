@@ -34,7 +34,6 @@ import {
 } from 'services/nodes/displayNodesStatisticsService/view/StatisticsGraph/StatisticsGraph.styled';
 import { CustomTooltip } from 'ui-kit/shared/GraphComponents/CustomTooltip';
 import { Alert } from 'ui-kit/Alert';
-import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 
 const height = 360;
 
@@ -72,8 +71,8 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
       const isLineChecked = !isAdditionalAddress
         ? checked[typeOfChecked]
         : selectedAddresses.currentAddress
-        ? checked[typeOfChecked]
-        : checked[typeOfChecked];
+          ? checked[typeOfChecked]
+          : checked[typeOfChecked];
 
       if (!monthData) {
         return null;
@@ -158,11 +157,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
       <>
         <Wrapper id="graphWrapper">
           <AlertWrapper>
-            <Alert
-              centered
-              type={AlertType.danger}
-              icon={AlertIconType.warning}
-            >
+            <Alert centered type="danger" icon="warning">
               <AlertTitle>Нет данных за выбранный период</AlertTitle>
             </Alert>
           </AlertWrapper>
@@ -201,7 +196,7 @@ export const ResourceConsumptionGraph: FC<ResourceConsumptionGraphProps> = ({
     <Wrapper id="graphWrapper" isLoading={isAllDataLoading}>
       {isOnlyHousingDataEmpty && (
         <AlertWrapper>
-          <Alert centered type={AlertType.default} icon={AlertIconType.warning}>
+          <Alert centered type="default" icon="warning">
             <AlertTitle>Нет данных по общедомовому потреблению.</AlertTitle>
           </Alert>
         </AlertWrapper>
