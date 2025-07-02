@@ -38,7 +38,6 @@ import { useSwitchInputOnEnter } from 'hooks/useSwitchInputOnEnter';
 import { fromEnter } from 'ui-kit/shared/DatePickerNative';
 import { validationSchema } from './AddTaskForm.constants';
 import { SavePhoneNumber } from './savePhoneNumberService';
-import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 import { addTaskFromDispatcherService } from 'services/tasks/addTaskFromDispatcherService';
 import { getPreparedStreetsOptions } from 'services/objects/createObjectService/view/CreateObjectPage/CreateObjectAddressStage/CreateObjectAddressStage.utils';
 import { DatePicker } from 'ui-kit/DatePicker';
@@ -542,7 +541,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({
 
         {Boolean(resourceDisconnection.length) &&
           resourceDisconnection.map((disconnection) => (
-            <Alert centered icon={AlertIconType.info} key={disconnection.id}>
+            <Alert centered icon="info" key={disconnection.id}>
               {getResourceDisconnectionAlert(
                 disconnection.disconnectingType,
                 disconnection.resource,

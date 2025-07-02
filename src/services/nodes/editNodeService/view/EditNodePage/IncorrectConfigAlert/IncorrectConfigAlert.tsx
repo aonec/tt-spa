@@ -6,7 +6,6 @@ import {
   WarningsList,
 } from './IncorrectConfigAlert.styled';
 import { IncorrectConfigAlertProps } from './IncorrectConfigAlert.types';
-import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 
 export const IncorrectConfigAlert: FC<IncorrectConfigAlertProps> = ({
   validationResultArray,
@@ -15,7 +14,7 @@ export const IncorrectConfigAlert: FC<IncorrectConfigAlertProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Alert type={AlertType.danger} icon={AlertIconType.incorrect}>
+    <Alert type="danger" icon="incorrect">
       <ErrorContentWrapper>
         <span>{description}</span>
 

@@ -31,7 +31,6 @@ import { DocumentIcon } from 'ui-kit/icons';
 import { PollActionTypeLookup } from 'services/workWithReadings/readingReportsArchive/ReadingReportsArchivePage/ReadingReportsArchivePage.constansts';
 import { downloadReportFile } from 'services/workWithReadings/readingReportsArchive/readingReportsArchiveService.api';
 import { Alert } from 'ui-kit/Alert';
-import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 import { SpaceLine } from 'ui-kit/SpaceLine';
 import { WithLoader } from 'ui-kit/shared/WithLoader';
 import { FormItem } from 'ui-kit/FormItem';
@@ -144,7 +143,7 @@ export const ExportStandartReportModal: FC<Props> = ({
                 {dayjs(lastPollState.doneAt).format('DD.MM.YYYY HH:mm')}
               </ExportResultDateTime>
               {lastPollState?.errorMessage && (
-                <Alert icon={AlertIconType.warning} type={AlertType.danger}>
+                <Alert icon="warning" type="danger">
                   {lastPollState?.errorMessage}
                 </Alert>
               )}

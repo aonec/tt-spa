@@ -45,7 +45,7 @@ export const AddTemperatureFileModal: FC<AddTemperatureFileModalProps> = ({
       }
       form={
         <FormWrapper>
-          <Alert centered>
+          <Alert icon="info" centered>
             <AlertWrapper>
               <LeftBlock>
                 <DocumentBlueIcon />

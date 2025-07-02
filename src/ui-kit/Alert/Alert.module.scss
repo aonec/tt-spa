@@ -1,0 +1,39 @@
+:root {
+  --text-color: #272f5a;
+
+  .default {
+    --color: #189ee9;
+    --bg-color: #189ee935;
+  }
+
+  .danger {
+    --color: #fc525b;
+    --bg-color: #fc525b35;
+  }
+}
+
+.root {
+  display: flex;
+  align-items: baseline;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border-left: 2px solid var(--color);
+  padding: 10px 18px;
+}
+
+.centered {
+  align-items: center;
+}
+
+.icon {
+  flex-shrink: 0;
+
+  path {
+    fill: var(--color);
+  }
+}
+
+.text {
+  margin-left: 16px;
+  width: 100%;
+}

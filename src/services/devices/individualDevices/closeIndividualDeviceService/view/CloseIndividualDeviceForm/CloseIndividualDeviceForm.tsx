@@ -21,7 +21,6 @@ import {
 } from './CloseIndividualDeviceForm.styled';
 import { IndividualDeviceLastReadingBar } from './IndividualDeviceLastReadingBar';
 import { Alert } from 'ui-kit/Alert';
-import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { prepareDeviceReadings } from 'services/devices/individualDevices/workWithIndividualDeviceService/workWithIndividualDeviceService.utils';
@@ -55,7 +54,7 @@ export const CloseIndividualDeviceForm: FC<CloseIndividualDeviceFormProps> = ({
     <>
       {isBannerShown && (
         <AlertWrapper>
-          <Alert type={AlertType.danger} icon={AlertIconType.info} centered>
+          <Alert type="danger" icon="info" centered>
             <AlertContainer>
               <AlertTitle>
                 У прибора есть показания дальше выбранной даты закрытия

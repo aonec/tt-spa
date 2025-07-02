@@ -14,7 +14,6 @@ import { Link } from 'react-router-dom';
 import { ReplacedAccountAlert } from './ReplacedAccountAlert';
 import { EditedAccountsAlert } from './EditedAccountsAlert';
 import { checkIsHomeownerAccountRecentlyModified } from './ApartmentAlerts.utils';
-import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 
 export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
   apartment,
@@ -53,7 +52,7 @@ export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
 
   const pausedAlert = isPaused && (
     <ApartmentAlertWrapper>
-      <Alert type={AlertType.danger} icon={AlertIconType.stop}>
+      <Alert type="danger" icon="stop">
         <AlertContent>
           <div>
             Квартира на паузе до{' '}
@@ -71,7 +70,7 @@ export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
 
   const apartmentTaskAlert = isApartmentTaskExist && (
     <ApartmentAlertWrapper>
-      <Alert type={AlertType.danger} icon={AlertIconType.warning}>
+      <Alert type="danger" icon="warning">
         <AlertContent>
           <div>
             По данной квартире есть незакрытая задача. Возможность вводить
@@ -115,7 +114,7 @@ export const ApartmentAlerts: FC<ApartmentAlertsProps> = ({
 
       return (
         <ApartmentAlertWrapper key={homeownerAccount.id}>
-          <Alert icon={AlertIconType.info}>
+          <Alert icon="info">
             <AlertContent>
               <div>
                 Добавлен новый номер лицевого счёта квартиры{' '}

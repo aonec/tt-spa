@@ -3,7 +3,6 @@ import { EApartmentStatus } from 'api/types';
 import React, { FC } from 'react';
 import { ApartmentOnPauseAlertProps } from './ApartmentOnPauseAlert.types';
 import dayjs from 'api/dayjs';
-import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 
 export const ApartmentOnPauseAlert: FC<ApartmentOnPauseAlertProps> = ({
   apartment,
@@ -23,7 +22,7 @@ export const ApartmentOnPauseAlert: FC<ApartmentOnPauseAlertProps> = ({
   }
 
   return (
-    <Alert type={AlertType.danger} icon={AlertIconType.stop}>
+    <Alert type="danger" icon="stop">
       Квартира на паузе: {from} - {to}
     </Alert>
   );

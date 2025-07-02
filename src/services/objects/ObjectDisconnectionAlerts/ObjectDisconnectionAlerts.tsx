@@ -4,7 +4,6 @@ import React, { FC } from 'react';
 import { actResourceNamesLookup } from 'utils/actResourceNamesLookup';
 import { AlertContent, AlertWrapper } from './ObjectDisconnectionAlerts.styled';
 import { ObjectDisconnectionAlertsProps } from './ObjectDisconnectionAlerts.types';
-import { AlertIconType, AlertType } from 'ui-kit/Alert/Alert.types';
 
 export const ObjectDisconnectionAlerts: FC<ObjectDisconnectionAlertsProps> = ({
   disconnections,
@@ -24,7 +23,7 @@ export const ObjectDisconnectionAlerts: FC<ObjectDisconnectionAlertsProps> = ({
 
     return (
       <AlertWrapper key={disconnection.id}>
-        <Alert type={AlertType.default} icon={AlertIconType.stop}>
+        <Alert type="default" icon="stop">
           <AlertContent>
             <div>
               На объекте отключение ресурса {resourceName}

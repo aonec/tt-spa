@@ -23,7 +23,6 @@ import { useFormik } from 'formik';
 import { validationSchema } from './AddNodeToIntegrationModal.constants';
 import { ErrorMessage } from 'ui-kit/ErrorMessage';
 import { Alert } from 'ui-kit/Alert';
-import { AlertIconType } from 'ui-kit/Alert/Alert.types';
 
 type SearchType = 'AddressTerm' | 'CalculatorSerialNumber';
 
@@ -139,7 +138,7 @@ export const AddNodeToIntegrationModal: FC<Props> = ({
       form={
         <Wrapper>
           {isIntegrationPaused && (
-            <Alert icon={AlertIconType.stop}>
+            <Alert icon="stop">
               Возможность добавления узлов приостановлена, включите интеграцию
               для продолжения
             </Alert>
